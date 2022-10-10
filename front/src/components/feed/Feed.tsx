@@ -1,4 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+const ImageList = styled.div<{ albumPage: number }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: ${(props) => `translateX(-${props.albumPage * 100}%)`};
+`;
 
 interface feedProps {
   images?: string[];
@@ -8,7 +16,6 @@ interface feedProps {
 
 function Feed({ images, isClass, author }: feedProps) {
   const [imageIndex, setImageIndex] = useState<number>(0);
-  const imagesAlbum = useRef<HTMLDivElement>(null);
 
   const IMAGE_LAST_INDEX = images!.length - 1;
   const IMAGE_FIRST_INDEX = 0;
@@ -19,20 +26,21 @@ function Feed({ images, isClass, author }: feedProps) {
     else imageIndex !== IMAGE_FIRST_INDEX && setImageIndex(imageIndex - 1);
   };
 
-  useEffect(() => {
-    imagesAlbum.current!.style.transform = `translateX(-${imageIndex * 100}%)`;
-  }, [imageIndex]);
-
   return (
     <div
       style={{ width: '30vw', backgroundColor: 'black', overflow: 'hidden' }}>
       <div
-        ref={imagesAlbum}
         style={{
           width: '100%',
           height: '30vw',
         }}>
-        <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+        <ImageList
+          albumPage={imageIndex}
+          style={{
+            display: 'flex',
+            width: '100%',
+            height: '100%',
+          }}>
           {images!.map((imageUrl: string) => (
             <img
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -40,7 +48,7 @@ function Feed({ images, isClass, author }: feedProps) {
               alt={imageUrl}
             />
           ))}
-        </div>
+        </ImageList>
       </div>
       <div>
         <button onClick={() => handleViewerClick(false)}>Prev</button>
