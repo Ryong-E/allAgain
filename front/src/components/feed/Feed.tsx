@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const ImageList = styled.div<{ albumPage: number }>`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transform: ${(props) => `translateX(-${props.albumPage * 100}%)`};
-`;
-
 interface feedProps {
   images?: string[];
   isClass?: boolean;
@@ -27,20 +20,9 @@ function Feed({ images, isClass, author }: feedProps) {
   };
 
   return (
-    <div
-      style={{ width: '30vw', backgroundColor: 'black', overflow: 'hidden' }}>
-      <div
-        style={{
-          width: '100%',
-          height: '30vw',
-        }}>
-        <ImageList
-          albumPage={imageIndex}
-          style={{
-            display: 'flex',
-            width: '100%',
-            height: '100%',
-          }}>
+    <FeedContainer>
+      <Album>
+        <ImageList albumPage={imageIndex}>
           {images!.map((imageUrl: string) => (
             <img
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -49,13 +31,56 @@ function Feed({ images, isClass, author }: feedProps) {
             />
           ))}
         </ImageList>
-      </div>
-      <div>
-        <button onClick={() => handleViewerClick(false)}>Prev</button>
-        <button onClick={() => handleViewerClick(true)}>Next</button>
-      </div>
-    </div>
+        <ButtonContainer>
+          <button onClick={() => handleViewerClick(false)}>Prev</button>
+          <button onClick={() => handleViewerClick(true)}>Next</button>
+        </ButtonContainer>
+      </Album>
+      <MenuContainer></MenuContainer>
+      <ProfileContainer></ProfileContainer>
+    </FeedContainer>
   );
 }
+
+const FeedContainer = styled.div`
+  width: 400px;
+  box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+`;
+
+const Album = styled.div`
+  width: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  overflow: hidden;
+`;
+
+const ImageList = styled.div<{ albumPage: number }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: ${(props) => `translateX(-${props.albumPage * 100}%)`};
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const MenuContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #e7e1d2;
+  display: flex;
+`;
+
+const ProfileContainer = styled.div`
+  height: 60px;
+  display: flex;
+`;
 
 export default Feed;
