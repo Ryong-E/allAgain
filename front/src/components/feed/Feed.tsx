@@ -36,7 +36,18 @@ function Feed({ images, isClass, author }: feedProps) {
           <button onClick={() => handleViewerClick(true)}>Next</button>
         </ButtonContainer>
       </Album>
-      <MenuContainer></MenuContainer>
+      <MenuContainer>
+        {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
+          <AlbumNavigator>
+            {Array.from(
+              { length: IMAGE_LAST_INDEX + 1 },
+              (value, index) => index,
+            ).map((index) => (
+              <Navigator observeIndex={index} currentIndex={imageIndex} />
+            ))}
+          </AlbumNavigator>
+        )}
+      </MenuContainer>
       <ProfileContainer></ProfileContainer>
     </FeedContainer>
   );
@@ -76,6 +87,25 @@ const MenuContainer = styled.div`
   height: 50px;
   border-bottom: 1px solid #e7e1d2;
   display: flex;
+`;
+
+const AlbumNavigator = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Navigator = styled.div<{
+  observeIndex: number;
+  currentIndex: number;
+}>`
+  border-radius: 6px;
+  width: 6px;
+  height: 6px;
+  background-color: ${(props) =>
+    props.observeIndex === props.currentIndex
+      ? '#E0D4B7'
+      : 'rgba(231, 225, 210, 0.5)'};
 `;
 
 const ProfileContainer = styled.div`
