@@ -57,7 +57,15 @@ function Feed({ images, isClass, author }: feedProps) {
           <SocialButton />
         </SocialAlbumSlideContainer>
       </MenuContainer>
-      <ProfileContainer></ProfileContainer>
+      <PostContainer>
+        <AuthorInfo>
+          <AuthorProfile />
+          <AuthorName>테스트용</AuthorName>
+          <AuthorBadge />
+          <AuthorFollow isFollowed={false}>팔로우</AuthorFollow>
+        </AuthorInfo>
+        <PostTime>3시간</PostTime>
+      </PostContainer>
     </FeedContainer>
   );
 }
@@ -174,9 +182,65 @@ const SocialButton = styled.div`
   }
 `;
 
-const ProfileContainer = styled.div`
+const PostContainer = styled.div`
+  width: calc(100% - 40px);
   height: 60px;
   display: flex;
+  padding: 0px 20px;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const AuthorInfo = styled.div`
+  height: 36px;
+  display: flex;
+  align-items: center;
+`;
+
+const AuthorProfile = styled.img`
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 36px;
+  background-color: gray;
+`;
+
+const AuthorName = styled.div`
+  margin: 0 0 0 14px;
+  font-size: 16px;
+  line-height: 19px;
+  color: black;
+`;
+
+const AuthorBadge = styled.div`
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+  background-color: #004d49;
+`;
+
+const AuthorFollow = styled.div<{ isFollowed: boolean }>`
+  margin-left: 14px;
+  width: 50px;
+  height: 20px;
+  border-radius: 40px;
+  background-color: ${(props) =>
+    props.isFollowed ? 'rgba(0,0,0,0)' : '#004d49'};
+  border: 0;
+  color: ${(props) => (props.isFollowed ? '#000000' : '#ffffff')};
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+`;
+
+const PostTime = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  text-align: right;
+  color: #aaaaaa;
 `;
 
 export default Feed;
