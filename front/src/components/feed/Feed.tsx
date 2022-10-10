@@ -87,6 +87,7 @@ const ImageList = styled.div<{ albumPage: number }>`
   width: 100%;
   height: 100%;
   transform: ${(props) => `translateX(-${props.albumPage * 100}%)`};
+  transition: transform 0.25s ease;
 `;
 
 const AlbumSlideContainer = styled.div`
@@ -141,6 +142,7 @@ const Navigator = styled.div<{
   &:last-child {
     margin-right: 0px;
   }
+  transition: background-color 0.25s ease;
 `;
 
 const Likes = styled.div`
