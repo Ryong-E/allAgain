@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
+import { useRef, useEffect } from "react"
 
 const ListItemBox = styled.div`
   display:flex;
@@ -6,7 +7,6 @@ const ListItemBox = styled.div`
 // max-width:1300px;
 // width:100%;
   width:1300px;
-
 `
 const ThumbnailImgBox = styled.div`
   width: 280px;
@@ -108,17 +108,24 @@ const LimitBox = styled.div`
   }
 `
 
+const rateAnimation = keyframes`
+  100%{
+    width:var(--rateLength);
+  }
+`
+
 const RateBox = styled.div`
   display: flex;
   align-items: center;
   .lengthBox{
-    .length{
-
-    }
-    .lengthBg{
-      width: 480px;
-      height: 2px;
+    width: 480px;
+    height: 2px;
     background: rgba(238, 238, 238, 1);
+    .length{
+      width:0;
+      height:2px;
+      background: rgba(0, 77, 73, 1);
+      animation: ${rateAnimation} 1.3s forwards;
     }
   }
   .participating{
@@ -135,13 +142,19 @@ export default function CampaignItem() {
   /* 테스트 시작 */
     const person  = 80;
     let endEvent = 48;
-
-
-    const nowRate = (endEvent/ person)*100; 
-
-
-
+    let rateLength = (endEvent/ person)*100; 
   /* 테스트 끝 */
+  const first = useRef<HTMLDivElement>(null);
+  const aniTest = ()=>{
+    const len = first.current;
+    if(len !== null){
+      len.style.setProperty("--rateLength", rateLength + "%");
+    }
+  }
+  useEffect(() => {
+    aniTest()
+  }, [])
+  
   return (
     <ListItemBox>
       <ThumbnailImgBox>
@@ -195,8 +208,7 @@ export default function CampaignItem() {
         <LimitBox>
           <RateBox>
             <div className="lengthBox">
-              <div className="length"></div>
-              <div className="lengthBg"></div>
+              <div className="length" ref={first}></div>
             </div>
             <div className="participating">
               <span>{48}명</span> 참여 중
