@@ -39,10 +39,7 @@ function Feed({ images, isClass, author }: feedProps) {
       <MenuContainer>
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
           <AlbumNavigator>
-            {Array.from(
-              { length: IMAGE_LAST_INDEX + 1 },
-              (value, index) => index,
-            ).map((index) => (
+            {images!.map((value, index) => (
               <Navigator observeIndex={index} currentIndex={imageIndex} />
             ))}
           </AlbumNavigator>
