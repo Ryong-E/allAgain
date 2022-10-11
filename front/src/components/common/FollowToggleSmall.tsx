@@ -6,9 +6,9 @@ import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png"
 export default function FollowToggleSmall() {
 
   const FollowLabel = styled.label`
-    background: ${(props) => props.theme.colors.dasidaGreen};
-    color: ${(props) => props.theme.colors.white};
-    border: 1px solid ${(props) => props.theme.colors.dasidaGreen};
+    background: ${({ theme }) => theme.colors.dasidaGreen};
+    color: ${({ theme }) => theme.colors.white};
+    border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
 
     position: relative;
     display: block;
@@ -38,7 +38,7 @@ export default function FollowToggleSmall() {
     }
 
     &.active {
-      color: ${(props) => props.theme.colors.dasidaGreen};
+      color: ${({ theme }) => theme.colors.dasidaGreen};
       background: transparent;
       padding: 0 0 0 14px;
     }
