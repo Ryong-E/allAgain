@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import addImageIcon from '../../assets/images/icons/icon_image_add.png';
 import shareIcon from '../../assets/images/icons/icon_share.png';
 import warningIcon from '../../assets/images/icons/icon_warning.png';
+import prevIcon from '../../assets/images/icons/icon_btn_prev.png';
+import nextIcon from '../../assets/images/icons/icon_btn_next.png';
 
 export const ButtonBlock = styled.div`
   display: flex;
@@ -123,4 +125,10 @@ export const ShareButton = styled(UtilButton)`
 `;
 export const WarningButton = styled(UtilButton)`
   background-image: url(${warningIcon});
+`;
+export const PrevNavigationButton = styled(UtilButton)`
+  background-image: url(${prevIcon});
+`;
+export const NextNavigationButton = styled(UtilButton)`
+  background-image: url(${nextIcon});
 `;

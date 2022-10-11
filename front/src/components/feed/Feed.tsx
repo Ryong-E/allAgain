@@ -1,5 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import {
+  NextNavigationButton,
+  PrevNavigationButton,
+  ShareButton,
+  WarningButton,
+} from '../common/Buttons';
+import FollowToggleSmall from '../common/FollowToggleSmall';
+import LikeToggle from '../common/LikeToggle';
 
 interface feedProps {
   user_id?: number;
@@ -36,18 +44,14 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
         </ImageList>
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
           <AlbumSlideContainer>
-            <AlbumSlideButton onClick={() => handleViewerClick(false)}>
-              {'<'}
-            </AlbumSlideButton>
-            <AlbumSlideButton onClick={() => handleViewerClick(true)}>
-              {'>'}
-            </AlbumSlideButton>
+            <PrevNavigationButton onClick={() => handleViewerClick(false)} />
+            <NextNavigationButton onClick={() => handleViewerClick(true)} />
           </AlbumSlideContainer>
         )}
       </Album>
       <MenuContainer>
         <Likes>
-          <LikesIcon />
+          <LikeToggle />
           <LikesCount>{100}</LikesCount>
         </Likes>
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
@@ -57,17 +61,17 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
             ))}
           </AlbumNavigator>
         )}
-        <SocialAlbumSlideContainer>
-          <SocialButton />
-          <SocialButton />
-        </SocialAlbumSlideContainer>
+        <SocialButtonContainer>
+          <WarningButton />
+          <ShareButton />
+        </SocialButtonContainer>
       </MenuContainer>
       <PostContainer>
         <AuthorInfo>
           <AuthorProfile />
           <AuthorName>테스트용</AuthorName>
           <AuthorBadge />
-          <AuthorFollow isFollowed={false}>팔로우</AuthorFollow>
+          <FollowToggleSmall />
         </AuthorInfo>
         <PostTime>3시간</PostTime>
       </PostContainer>
@@ -106,16 +110,6 @@ const AlbumSlideContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 13px 0 13px;
-`;
-
-const AlbumSlideButton = styled.button`
-  width: 24px;
-  height: 24px;
-  background-color: rgba(52, 52, 52, 0.15);
-  color: rgba(255, 255, 255, 0.8);
-  border: 0px;
-  border-radius: 24px;
-  font-size: 16px;
 `;
 
 const MenuContainer = styled.div`
@@ -159,12 +153,6 @@ const Likes = styled.div`
   align-items: center;
 `;
 
-const LikesIcon = styled.img`
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-`;
-
 const LikesCount = styled.div`
   margin-left: 8px;
   color: #000000;
@@ -174,21 +162,12 @@ const LikesCount = styled.div`
   line-height: 17px;
 `;
 
-const SocialAlbumSlideContainer = styled.div`
+const SocialButtonContainer = styled.div`
   margin-right: 17px;
+  width: 62px;
   height: 22px;
   display: flex;
   justify-content: space-between;
-`;
-
-const SocialButton = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  border: 2px solid black;
-  &:first-child {
-    margin-right: 12px;
-  }
 `;
 
 const PostContainer = styled.div`
@@ -224,25 +203,11 @@ const AuthorName = styled.div`
 
 const AuthorBadge = styled.div`
   margin-left: 5px;
+  margin-right: 14px;
   width: 16px;
   height: 16px;
   border-radius: 16px;
   background-color: #004d49;
-`;
-
-const AuthorFollow = styled.div<{ isFollowed: boolean }>`
-  margin-left: 14px;
-  width: 50px;
-  height: 20px;
-  border-radius: 40px;
-  background-color: ${(props) =>
-    props.isFollowed ? 'rgba(0,0,0,0)' : '#004d49'};
-  border: 0;
-  color: ${(props) => (props.isFollowed ? '#000000' : '#ffffff')};
-  text-align: center;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
 `;
 
 const PostTime = styled.div`
