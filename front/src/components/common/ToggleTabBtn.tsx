@@ -41,8 +41,15 @@ type PropsType = {
   isActive ?:  Boolean;
   setIsActive : React.Dispatch<React.SetStateAction<boolean>> ;
 }
-
-
+/**
+ * @leftIconImg  왼쪽 이미지
+ * @leftText  왼쪽 텍스트 
+ * @rightIconImg  오른쪽 이미지
+ * @rightText  오른쪽 텍스트
+ * @ isActive 와 setIsActive 는 useState로 ToggleTabBtn의 부모컴포넌트에 써주세요.
+ * @isActive  isActive가 False 이면 왼쪽 컴포넌트가 보이게끔 되어있습니다. 
+ * @setIsActive  isActive랑 setIsActive 를 props로 내려줘서 쓰세요.
+*/
 export default function ToggleTabBtn({leftIconImg,leftText,rightIconImg,rightText, isActive, setIsActive} : PropsType) {
 
   const handleClickIsActive = (e :React.MouseEvent<HTMLButtonElement> )=>{
