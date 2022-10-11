@@ -8,13 +8,13 @@ export default function FollowToggle() {
   // const FollowLabel = styled.label<{ checked: boolean }>`
   // background: ${({ checked }) => checked ? "transparent" : "#004D49"};
   // color: ${({ checked }) => checked ? "#004D49" : "#FFFFFF"};
-  // border: 1px solid ${(props) => props.theme.colors.dasidaGreen};
+  // border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
   // padding: ${({ checked }) => checked ? "12px 30px 12px 55px" : "12px 30px"};
 
   const FollowLabel = styled.label`
-    background: ${(props) => props.theme.colors.dasidaGreen};
-    color: ${(props) => props.theme.colors.white};
-    border: 1px solid ${(props) => props.theme.colors.dasidaGreen};
+    background: ${({ theme }) => theme.colors.dasidaGreen};
+    color: ${({ theme }) => theme.colors.white};
+    border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
 
     position: relative;
     display: block;
@@ -54,7 +54,7 @@ export default function FollowToggle() {
     }
 
     &.active {
-      color: ${(props) => props.theme.colors.dasidaGreen};
+      color: ${({ theme }) => theme.colors.dasidaGreen};
       background: transparent;
       padding: 12px 30px 12px 55px;
     }
