@@ -7,8 +7,8 @@ export default function LikeListToggle() {
 
   const LikeListLabel = styled.label`
     background: rgba(175, 168, 141, .6);
-    color: ${(props) => props.theme.colors.white};
-    box-shadow: ${(props) => props.theme.boxShadowDefault};
+    color: ${({ theme }) => theme.colors.white};
+    box-shadow: ${({ theme }) => theme.boxShadowDefault};
 
     position: relative;
     display: block;
@@ -40,7 +40,7 @@ export default function LikeListToggle() {
     }
 
     &.active {
-      background: ${(props) => props.theme.colors.darkBeige};
+      background: ${({ theme }) => theme.colors.darkBeige};
     }
 
     &.active:before {

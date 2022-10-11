@@ -4,9 +4,10 @@ export const theme: DefaultTheme = {
   boxShadowDefault: "5px 5px 10px rgba(231, 225, 210, 0.5);",
 
   fontSizes: {
-    bodyText: "16px",
+    bodyText: "15px",
     placeholder: "14px",
   },
+
   colors: {
     bodyBg: "#F9F7F2",
     bodyText: "#343434",
@@ -20,6 +21,7 @@ export const theme: DefaultTheme = {
     brown: "#6A6558",
     
   },
+
   borderRadius: {
     small: "5px",
     large: "10px",

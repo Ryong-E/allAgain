@@ -48,6 +48,7 @@ export default function Template() {
           <LikeListToggle />
           <LikeToggle />
       </Container>
+      <div style={{height: "500px"}}></div>
     </>
   )
 }
