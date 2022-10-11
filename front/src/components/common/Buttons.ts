@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import addImageIcon from "../../assets/images/icons/icon_image_add.png";
-import shareIcon from "../../assets/images/icons/icon_share.png";
-import warningIcon from "../../assets/images/icons/icon_warning.png";
+import styled from 'styled-components';
+import addImageIcon from '../../assets/images/icons/icon_image_add.png';
+import shareIcon from '../../assets/images/icons/icon_share.png';
+import warningIcon from '../../assets/images/icons/icon_warning.png';
 
 export const ButtonBlock = styled.div`
   display: flex;
-  justify-conent: flex-start;
+  justify-content: flex-start;
   align-items: center;
   margin: 80px 0 0;
 `;
@@ -21,7 +21,7 @@ export const Button = styled.button`
   text-align: center;
   border: none;
   padding: 12px 30px;
-  transition: all .3s;
+  transition: all 0.3s;
   cursor: pointer;
 
   & + & {
@@ -30,7 +30,7 @@ export const Button = styled.button`
 `;
 
 export const RoundedButton = styled(Button)`
-  border-radius: ${(props) => props.theme.borderRadius.small}
+  border-radius: ${(props) => props.theme.borderRadius.small};
 `;
 
 export const ConfirmButton = styled(RoundedButton)`
@@ -38,7 +38,7 @@ export const ConfirmButton = styled(RoundedButton)`
 
   &:hover {
     color: ${(props) => props.theme.colors.lightGreen};
-    background: #D1EDEB;
+    background: #d1edeb;
   }
 `;
 
@@ -47,7 +47,7 @@ export const DelButton = styled(RoundedButton)`
 
   &:hover {
     color: ${(props) => props.theme.colors.error};
-    background: #F3CAC5;
+    background: #f3cac5;
   }
 `;
 
@@ -56,7 +56,7 @@ export const ClsButton = styled(RoundedButton)`
 
   &:hover {
     color: ${(props) => props.theme.colors.bodyText};
-    background: #BBC3D2;
+    background: #bbc3d2;
   }
 `;
 
@@ -78,15 +78,15 @@ export const AddImageButton = styled(RoundedButton)`
   padding: 12px 30px 12px 60px;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 30px;
     transform: translate(0, -45%);
     width: 2em;
     height: 2em;
-    background: url(${addImageIcon}) no-repeat 50% 50%/contain;
-    transition: all .3s;
+    background: url(${addImageIcon}) no-repeat 50% 50% / contain;
+    transition: all 0.3s;
   }
 
   &:hover {
@@ -102,7 +102,7 @@ export const AddImageButton = styled(RoundedButton)`
 
 export const SaveButton = styled(Button)`
   background: ${(props) => props.theme.colors.lightBeige};
-  
+
   &:hover {
     background: ${(props) => props.theme.colors.dasidaGreen};
   }
@@ -112,20 +112,15 @@ export const UtilButton = styled.button`
   display: block;
   width: 24px;
   height: 24px;
-  background: no-repeat 50% 50%/contain;
+  background: no-repeat 50% 50% / contain;
   border: none;
-  transition: all .3s;
+  transition: all 0.3s;
   cursor: pointer;
 `;
 
 export const ShareButton = styled(UtilButton)`
   background-image: url(${shareIcon});
-`
+`;
 export const WarningButton = styled(UtilButton)`
   background-image: url(${warningIcon});
-`
-
-
-
-
-
+`;

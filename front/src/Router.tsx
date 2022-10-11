@@ -1,17 +1,19 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Test from "./components/test";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import FeedListPage from './pages/FeedListPage/FeedListPage';
 
-import Template from "./pages/Template"
+import Template from './pages/Template';
 
 function Router() {
-  return(
+  return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Template />}/>
+        <Route path='/' element={<Template />} />
         <Route path="/text" element={<Test/>}/>
+        <Route path='/feed-list' element={<FeedListPage />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
 export default Router;

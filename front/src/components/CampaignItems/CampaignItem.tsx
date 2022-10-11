@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components"
 import { useRef, useEffect } from "react"
+import LikeToggle from "../common/LikeToggle"
+import { ShareButton } from "../common/Buttons"
 
 const ListItemBox = styled.div`
   display:flex;
@@ -7,9 +9,10 @@ const ListItemBox = styled.div`
 // max-width:1300px;
 // width:100%;
   width:1300px;
+  height: 300px;
 `
 const ThumbnailImgBox = styled.div`
-  width: 280px;
+  width: 360px;
   flex-shrink: 0;
   border: 1px solid #000;
   img{
@@ -17,23 +20,31 @@ const ThumbnailImgBox = styled.div`
   }
 `
 const ContentsBox = styled.div`
-  padding: 20px 40px;
+  padding: 20px 28px 20px 40px;
   border: 1px solid #000;
-  width: calc(100% - 280px);
-
+  width: calc(100% - 320px);
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 const StatusBox = styled.div`
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom:20px;
   .status{
     font-size:13px;
     border: 1px solid #000;
-    padding: 7px 15px;
+    padding: 3px 15px;
     background: rgba(0, 77, 73, 1);
     color: #fff;
     letter-spacing: -0.4px;
+  }
+  .shareAndLikeBox{
+    display:flex;
+    align-items: center;
+    button + div{
+      margin-left: 20px;
+    }
   }
 `
 const ItemInfoBox = styled.div`
@@ -43,20 +54,20 @@ const ItemInfoBox = styled.div`
 const TextBox = styled.div`
   margin-bottom:20px;
   .title{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom:10px;
+    margin-bottom:5px;
   }
   .desc{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     color: rgba(169, 169, 169, 1);
-    font-size: 13px;
+    font-size: 14px;
   }
 `
 const PeriodBox = styled.div`
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom:20px;
   .recruitment{
     display:inline-block;
@@ -66,7 +77,7 @@ const PeriodBox = styled.div`
     display:inline-block;
   }
   .personnel{
-    margin-top:10px;
+    margin-top:5px;
   }
   strong{
     font-weight: bold;
@@ -78,7 +89,6 @@ const PeriodBox = styled.div`
 `
 const CreatedUser = styled.div`
   display: flex;
-  margin-bottom:20px;
   font-size: 14px;
 
   .userImg{
@@ -167,8 +177,8 @@ export default function CampaignItem() {
             모집 중
           </div>
           <div className="shareAndLikeBox">
-            <button>공</button>
-            <button>좋</button>
+            <ShareButton />
+            <LikeToggle />
           </div>
         </StatusBox>
         <ItemInfoBox>
