@@ -1,3 +1,4 @@
+import Test from "./components/test";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FeedListPage from './pages/FeedListPage/FeedListPage';
 
@@ -8,6 +9,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Template />} />
+        <Route path="/text" element={<Test/>}/>
         <Route path='/feed-list' element={<FeedListPage />} />
       </Routes>
     </BrowserRouter>
