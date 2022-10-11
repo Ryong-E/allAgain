@@ -77,6 +77,7 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
 
 const FeedContainer = styled.div`
   width: 400px;
+  background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   margin-bottom: 50px;
 `;

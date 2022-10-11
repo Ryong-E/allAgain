@@ -1,4 +1,4 @@
-import { Container1350 } from '../../components/common/Containers';
+import { Container, Container1300 } from '../../components/common/Containers';
 import FeedList from '../../components/feed/FeedList';
 import FeedTagFilter from '../../components/feed/FeedTagFilter';
 
@@ -96,10 +96,12 @@ const test: feed[] = [
 
 function FeedListPage() {
   return (
-    <Container1350>
-      <FeedTagFilter />
-      <FeedList feeds={test} />
-    </Container1350>
+    <Container>
+      <Container1300>
+        <FeedTagFilter />
+        <FeedList feeds={test} />
+      </Container1300>
+    </Container>
   );
 }
 

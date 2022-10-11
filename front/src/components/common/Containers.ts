@@ -7,12 +7,6 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
-export const Container1350 = styled.div`
-  width: 100%;
-  max-width: 1350px;
-  margin: 0 auto;
-`;
-
 export const Container1300 = styled.div`
   width: 100%;
   max-width: 1300px;
