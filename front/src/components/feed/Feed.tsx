@@ -34,14 +34,16 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
             />
           ))}
         </ImageList>
-        <AlbumSlideContainer>
-          <AlbumSlideButton onClick={() => handleViewerClick(false)}>
-            {'<'}
-          </AlbumSlideButton>
-          <AlbumSlideButton onClick={() => handleViewerClick(true)}>
-            {'>'}
-          </AlbumSlideButton>
-        </AlbumSlideContainer>
+        {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
+          <AlbumSlideContainer>
+            <AlbumSlideButton onClick={() => handleViewerClick(false)}>
+              {'<'}
+            </AlbumSlideButton>
+            <AlbumSlideButton onClick={() => handleViewerClick(true)}>
+              {'>'}
+            </AlbumSlideButton>
+          </AlbumSlideContainer>
+        )}
       </Album>
       <MenuContainer>
         <Likes>
