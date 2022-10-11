@@ -2,15 +2,18 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 interface feedProps {
-  images?: string[];
-  isClass?: boolean;
-  author?: string;
+  user_id?: number;
+  category?: string[];
+  tags?: string[];
+  image_urls?: string[];
+  description?: string;
+  feed_id?: number;
 }
 
-function Feed({ images, isClass, author }: feedProps) {
+function Feed({ user_id, image_urls, feed_id }: feedProps) {
   const [imageIndex, setImageIndex] = useState<number>(0);
 
-  const IMAGE_LAST_INDEX = images!.length - 1;
+  const IMAGE_LAST_INDEX = image_urls!.length - 1;
   const IMAGE_FIRST_INDEX = 0;
 
   const handleViewerClick = (isNext: boolean): void => {
@@ -23,7 +26,7 @@ function Feed({ images, isClass, author }: feedProps) {
     <FeedContainer>
       <Album>
         <ImageList albumPage={imageIndex}>
-          {images!.map((imageUrl: string) => (
+          {image_urls!.map((imageUrl: string) => (
             <img
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               src={imageUrl}
@@ -47,7 +50,7 @@ function Feed({ images, isClass, author }: feedProps) {
         </Likes>
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
           <AlbumNavigator>
-            {images!.map((value, index) => (
+            {image_urls!.map((value, index) => (
               <Navigator observeIndex={index} currentIndex={imageIndex} />
             ))}
           </AlbumNavigator>
@@ -73,6 +76,7 @@ function Feed({ images, isClass, author }: feedProps) {
 const FeedContainer = styled.div`
   width: 400px;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+  margin-bottom: 50px;
 `;
 
 const Album = styled.div`
@@ -91,7 +95,7 @@ const ImageList = styled.div<{ albumPage: number }>`
 `;
 
 const AlbumSlideContainer = styled.div`
-  width: calc(100% - 26px);
+  width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
@@ -185,7 +189,7 @@ const SocialButton = styled.div`
 `;
 
 const PostContainer = styled.div`
-  width: calc(100% - 40px);
+  width: 100%;
   height: 60px;
   display: flex;
   padding: 0px 20px;
