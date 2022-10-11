@@ -1,9 +1,15 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
   max-width: 1920px;
   padding: 0 80px;
+  margin: 0 auto;
+`;
+
+export const Container1350 = styled.div`
+  width: 100%;
+  max-width: 1350px;
   margin: 0 auto;
 `;
 
