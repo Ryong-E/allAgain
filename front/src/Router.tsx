@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Test from "./components/test";
 
 import Template from "./pages/Template"
 
@@ -7,6 +8,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Template />}/>
+        <Route path="/text" element={<Test/>}/>
       </Routes>
     </BrowserRouter>
   )
