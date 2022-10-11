@@ -4,7 +4,7 @@ import CampaignItem from '../CampaignItems/CampaignItem';
 import { ConfirmButton, DelButton } from '../common/Buttons';
 import CampaignComment from '../Comment/Comments';
 import CampaignIsJoin from './CampaignIsJoin';
-import ToggleBtn from './ToggleBtn';
+import ToggleBtn from './ToggleTabBtn';
 
 import contentIcon from '../../assets/images/icons/icon_content.png';
 import chatIcon from '../../assets/images/icons/icon_chat.png';
