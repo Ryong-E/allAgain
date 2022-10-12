@@ -14,7 +14,7 @@ userRouter.post(
     try {
       const { email, password, name, nickname, birthday, image_url } = req.body;
       // DB에 저장
-      const register = userService.register({
+      const register = await userService.register({
         email,
         password,
         name,

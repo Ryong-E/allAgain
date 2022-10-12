@@ -10,6 +10,15 @@ const User = {
 
     return user[0];
   },
+  findByNickname: async ({ nickname }) => {
+    const user = await connection
+      .promise()
+      .query("SELECT * FROM users WHERE nickname = ?", nickname, (error) => {
+        if (error) throw error;
+      });
+
+    return user[0];
+  },
   register: async ({
     email,
     password,
@@ -27,6 +36,7 @@ const User = {
           if (error) throw error;
         }
       );
+    return "회원가입 성공";
   },
 };
 
