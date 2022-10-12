@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Comments from '../../components/Comment/Comments';
 import { Container, Container1200 } from '../../components/common/Containers';
-import Album from '../../components/feed/Album';
 import FeedDetail from '../../components/feed/FeedDetail';
 
 interface feed {

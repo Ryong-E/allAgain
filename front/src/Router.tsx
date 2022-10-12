@@ -10,6 +10,7 @@ import Template from './pages/Template';
 import CampaignPage from './pages/CampaignPage/CampaignPage';
 import CampaignDetailPage from './pages/CampaignPage/CampaignDetailPage';
 import FeedDetailPage from './pages/FeedPage/FeedDetailPage';
+import FeedAddPage from './pages/FeedPage/FeedAddPage';
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path='/text' element={<Test />} />
         <Route path='/feeds' element={<FeedListPage />} />
         <Route path='/feeds/:id' element={<FeedDetailPage />} />
+        <Route path='/feeds/testadd' element={<FeedAddPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/campaign' element={<CampaignPage />} />
