@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { ShareButton, WarningButton } from '../common/Buttons';
+import {
+  DelButton,
+  ConfirmButton,
+  ShareButton,
+  WarningButton,
+} from '../common/Buttons';
 import Album from './Album';
 import AuthorInfo from './AuthorInfo';
 import LikesCount from './LikesCount';
@@ -16,6 +21,10 @@ interface feedProps {
 function FeedDetail({ image_urls, user_id, description, category }: feedProps) {
   return (
     <>
+      <ButtonContainer>
+        <DelButton>삭제</DelButton>
+        <ConfirmButton>수정</ConfirmButton>
+      </ButtonContainer>
       <Album image_urls={image_urls} size='detail' />
       <DetailContainer>
         <DetailHeader>
@@ -45,11 +54,19 @@ function FeedDetail({ image_urls, user_id, description, category }: feedProps) {
     </>
   );
 }
+const ButtonContainer = styled.div`
+  margin-top: 173px;
+  margin-bottom: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const DetailContainer = styled.div`
   width: 1200px;
   padding: 40px 60px;
   background-color: #ffffff;
+  margin-bottom: 43px;
 `;
 
 const DetailHeader = styled.div`
