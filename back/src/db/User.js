@@ -13,9 +13,13 @@ const User = {
   findByNickname: async ({ nickname }) => {
     const user = await connection
       .promise()
-      .query("SELECT * FROM users WHERE nickname = ?", nickname, (error) => {
-        if (error) throw error;
-      });
+      .query(
+        "SELECT * FROM users WHERE nickname = ? and nickname is not null",
+        nickname,
+        (error) => {
+          if (error) throw error;
+        }
+      );
 
     return user[0];
   },

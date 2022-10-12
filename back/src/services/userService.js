@@ -42,12 +42,17 @@ const userService = {
     password = await bcrypt.hash(password, 10);
 
     // 이메일 중복 체크
-    const user = await User.findByEmail({ email });
+    var user = await User.findByEmail({ email });
     if (user.length > 0) throw new Error("이미 가입된 이메일입니다.");
 
     // 닉네임 중복 체크
     user = await User.findByNickname({ nickname });
     if (user.length > 0) throw new Error("이미 존재하는 닉네임입니다.");
+
+    if (!name) name = null;
+    if (!nickname) nickname = null;
+    if (!birthday) birthday = null;
+    if (!image_url) image_url = null;
 
     const registeredUser = await User.register({
       email,
