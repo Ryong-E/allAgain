@@ -35,6 +35,8 @@ exports.userRegisterValidator = () => {
         }
         return true;
       }),
+    body("name").notEmpty().withMessage("이름 입력값이 없습니다."),
+    body("nickname").notEmpty().withMessage("닉네임 입력값이 없습니다."),
     validate,
   ];
 };
@@ -60,9 +62,7 @@ exports.userLoginValidator = () => {
 
 exports.userProfileUpdateVaildator = () => {
   return [
-    body("name").notEmpty().withMessage("이름이 없습니다."),
     body("nickname").notEmpty().withMessage("닉네임이 없습니다."),
-    body("birthday").notEmpty().withMessage("생일이 없습니다."),
     validate,
   ];
 };

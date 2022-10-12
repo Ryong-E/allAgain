@@ -32,31 +32,24 @@ const User = {
 
     return user[0];
   },
-  register: async ({
-    email,
-    password,
-    name,
-    nickname,
-    birthday,
-    image_url,
-  }) => {
+  register: async ({ email, password, name, nickname }) => {
     await connection
       .promise()
       .query(
-        "INSERT INTO users(email, password, name, nickname, birthday, image_url) VALUES(?, ?, ?, ?, ?, ?)",
-        [email, password, name, nickname, birthday, image_url],
+        "INSERT INTO users(email, password, name, nickname) VALUES(?, ?, ?, ?)",
+        [email, password, name, nickname],
         (error) => {
           if (error) throw error;
         }
       );
     return "회원가입 성공";
   },
-  update: async ({ userId, name, nickname, birthday }) => {
+  update: async ({ userId, nickname }) => {
     await connection
       .promise()
       .query(
-        "UPDATE users SET name=?, nickname=?, birthday=? WHERE id=?",
-        [name, nickname, birthday, userId],
+        "UPDATE users SET nickname=? WHERE id=?",
+        [nickname, userId],
         (error) => {
           if (error) throw error;
         }

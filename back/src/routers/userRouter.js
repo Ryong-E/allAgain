@@ -15,15 +15,13 @@ userRouter.post(
   userRegisterValidator(),
   async (req, res, next) => {
     try {
-      const { email, password, name, nickname, birthday, image_url } = req.body;
+      const { email, password, name, nickname } = req.body;
       // DB에 저장
       const register = await userService.register({
         email,
         password,
         name,
         nickname,
-        birthday,
-        image_url,
       });
       // 로그인 페이지로 이동
       res.status(200).send(register);
@@ -51,13 +49,11 @@ userRouter.put(
   async (req, res, next) => {
     try {
       const currentUserId = req.currentUserId;
-      const { name, nickname, birthday } = req.body;
+      const { nickname } = req.body;
 
       const updatedUser = await userService.updateProfile({
         userId: currentUserId,
-        name,
         nickname,
-        birthday,
       });
 
       res.status(201).json(updatedUser);

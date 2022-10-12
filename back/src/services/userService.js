@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const fs = require("fs");
 const path = require("path");
-const pathSep = path.sep;
 
 const userService = {
   login: async ({ email, password }) => {
@@ -23,25 +22,17 @@ const userService = {
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ userId: user[0].id }, secretKey);
 
-    const { name, nickname, birthday, image_url } = user[0];
+    const { name, nickname, image_url } = user[0];
     const loginUser = {
       token,
       name,
       nickname,
-      birthday: birthday === null ? birthday : birthday.toString(),
       image_url,
     };
 
     return loginUser;
   },
-  register: async ({
-    email,
-    password,
-    name,
-    nickname,
-    birthday,
-    image_url,
-  }) => {
+  register: async ({ email, password, name, nickname }) => {
     password = await bcrypt.hash(password, 10);
 
     // 이메일 중복 체크
@@ -52,36 +43,36 @@ const userService = {
     user = await User.findByNickname({ nickname });
     if (user.length > 0) throw new Error("이미 존재하는 닉네임입니다.");
 
-    if (!name) name = null;
-    if (!nickname) nickname = null;
-    if (!birthday) birthday = null;
-    if (!image_url) image_url = null;
-
     const registeredUser = await User.register({
       email,
       password,
       name,
       nickname,
-      birthday,
-      image_url,
     });
+
     return registeredUser;
   },
-  updateProfile: async ({ userId, name, nickname, birthday }) => {
-    const user = await User.findByUserId({ userId });
-    if (user.length === 0) {
+  updateProfile: async ({ userId, nickname }) => {
+    const userById = await User.findByUserId({ userId });
+    if (userById.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
 
-    await User.update({ userId, name, nickname, birthday });
+    const userByNickname = await User.findByNickname({ nickname });
+    if (
+      userByNickname.length > 0 &&
+      userById[0].nickname !== userByNickname[0].nickname
+    ) {
+      throw new Error("이미 존재하는 닉네임입니다.");
+    }
+    await User.update({ userId, nickname });
     const updatedUser = await User.findByUserId({ userId });
 
     const filterdUserData = {
-      name: updatedUser[0].name,
       nickname: updatedUser[0].nickname,
-      birthday: updatedUser[0].birthday,
       image_url: updatedUser[0].image_url,
     };
+
     return filterdUserData;
   },
   updateProfileImage: async ({ imagePath, userId }) => {
