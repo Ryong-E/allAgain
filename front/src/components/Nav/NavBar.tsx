@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { ROUTE } from "../../constant/route";
 
 let activeStyle = {
   textDecoration: "underline",
@@ -37,7 +38,7 @@ export default function NavBar() {
       <NavList>
         <NavListLi>
           <NavLink
-            to="feeds"
+            to={ ROUTE.FEED_LIST.link }
             style={({ isActive }) =>
               isActive ? activeStyle : undefined
             }
@@ -47,7 +48,7 @@ export default function NavBar() {
         </NavListLi>
         <NavListLi>
           <NavLink
-            to="campaigns"
+            to={ ROUTE.CAMPAGIN_LIST.link }
             className={({ isActive }) =>
               isActive ? activeClassName : undefined
             }
