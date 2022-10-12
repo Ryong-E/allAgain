@@ -6,6 +6,7 @@ import {
   userProfileUpdateVaildator,
 } from "../middlewares/userValidator";
 import { loginRequired } from "../middlewares/loginRequired";
+import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
 
 const userRouter = Router();
 
@@ -66,14 +67,32 @@ userRouter.put(
   }
 );
 
+userRouter.post(
+  "/profile/image",
+  loginRequired,
+  uploadStrategy("profiles").single("image"),
+  async function (req, res, next) {
+    try {
+      const { path } = req.file;
+      const currentUserId = req.currentUserId;
+
+      const updatedUser = await userService.updateProfileImage({
+        imagePath: path,
+        userId: currentUserId,
+      });
+
+      res.status(201).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // userRouter.delete("/", async function (req, res, next) {
 //   // 회원 탈퇴
 // });
 // userRouter.put("/profile", async function (req, res, next) {
 //   // 비밀번호, 닉네임 수정
-// });
-// userRouter.patch("/profile/image", async function (req, res, next) {
-//   // 프로필 이미지 수정
 // });
 
 // userRouter.get("/:userId", async function (req, res, next) {

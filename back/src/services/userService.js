@@ -1,6 +1,9 @@
 import { User } from "../db/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+const fs = require("fs");
+const path = require("path");
+const pathSep = path.sep;
 
 const userService = {
   login: async ({ email, password }) => {
@@ -80,6 +83,20 @@ const userService = {
       image_url: updatedUser[0].image_url,
     };
     return filterdUserData;
+  },
+  updateProfileImage: async ({ imagePath, userId }) => {
+    const re = new RegExp(`profiles.*`, "g");
+    const serverUrl = process.env.SERVER_URL || "localhost";
+    const serverPort = process.env.SERVER_PORT || 5000;
+    const imageUrl = path.join(
+      serverUrl + ":" + serverPort,
+      "/",
+      imagePath.match(re)[0]
+    );
+
+    await User.updateImageUrl({ userId, image_url: imageUrl });
+
+    return { image_url: imageUrl };
   },
 };
 
