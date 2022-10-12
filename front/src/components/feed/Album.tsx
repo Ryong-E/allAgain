@@ -45,7 +45,7 @@ function Album({ size, image_urls }: albumProps) {
         )}
       </ImageContainer>
       {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
-        <ImageNavigator>
+        <ImageNavigator size={size}>
           {image_urls!.map((value, index) => (
             <Navigator observeIndex={index} currentIndex={imageIndex} />
           ))}
@@ -68,6 +68,7 @@ const ImageContainer = styled.div<{ size: 'simple' | 'detail' }>`
       : css`
           width: 1200px;
           height: 650px;
+          box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
         `}
   position: relative;
   overflow: hidden;
@@ -92,10 +93,14 @@ const ImageSlideContainer = styled.div`
   padding: 0 13px 0 13px;
 `;
 
-const ImageNavigator = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+const ImageNavigator = styled.div<{ size: 'simple' | 'detail' }>`
+  ${(props) =>
+    props.size === 'simple' &&
+    css`
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    `}
   height: 50px;
   display: flex;
   align-items: center;
