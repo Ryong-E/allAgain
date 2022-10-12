@@ -19,8 +19,8 @@ function Router() {
         <Route path='/feed-list' element={<FeedListPage />} />
         <Route path="/login" element={<LoginPage />}/>
         <Route path="/register" element={<RegisterPage />}/>
-        <Route path="/campaign" element={<CampaignPage />}/>
-        <Route path="/campaign/:id" element={<CampaignDetailPage />}/>
+        <Route path="/campaigns" element={<CampaignPage />}/>
+        <Route path="/campaigns/:id" element={<CampaignDetailPage />}/>
       </Routes>
       <Footer />
     </BrowserRouter>
