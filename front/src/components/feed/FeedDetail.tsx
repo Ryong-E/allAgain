@@ -24,29 +24,31 @@ function FeedDetail({ image_urls, user_id, description, category }: feedProps) {
   };
 
   return (
-    <Album>
-      <ImageList albumPage={imageIndex}>
-        {image_urls!.map((imageUrl: string) => (
-          <img
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            src={imageUrl}
-            alt={imageUrl}
-          />
-        ))}
-      </ImageList>
-      {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
-        <AlbumSlideContainer>
-          <PrevNavigationButton
-            onClick={() => handleViewerClick(false)}
-            visibility={imageIndex !== IMAGE_FIRST_INDEX}
-          />
-          <NextNavigationButton
-            onClick={() => handleViewerClick(true)}
-            visibility={imageIndex !== IMAGE_LAST_INDEX}
-          />
-        </AlbumSlideContainer>
-      )}
-    </Album>
+    <>
+      <Album>
+        <ImageList albumPage={imageIndex}>
+          {image_urls!.map((imageUrl: string) => (
+            <img
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              src={imageUrl}
+              alt={imageUrl}
+            />
+          ))}
+        </ImageList>
+        {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
+          <AlbumSlideContainer>
+            <PrevNavigationButton
+              onClick={() => handleViewerClick(false)}
+              visibility={imageIndex !== IMAGE_FIRST_INDEX}
+            />
+            <NextNavigationButton
+              onClick={() => handleViewerClick(true)}
+              visibility={imageIndex !== IMAGE_LAST_INDEX}
+            />
+          </AlbumSlideContainer>
+        )}
+      </Album>
+    </>
   );
 }
 
@@ -75,5 +77,25 @@ const AlbumSlideContainer = styled.div`
   align-items: center;
   padding: 0 13px 0 13px;
 `;
+
+const DetailContainer = styled.div`
+  width: 1200px;
+`;
+
+const FeedHeader = styled.div`
+  width: 1080px;
+  height: 40px;
+  display: flex;
+`;
+
+const FeedProfile = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  object-fit: cover;
+  overflow: hidden;
+`;
+
+const FeedAuthor = styled.div;
 
 export default FeedDetail;
