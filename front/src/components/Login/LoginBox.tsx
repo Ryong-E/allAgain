@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Container } from "../common/Containers";
 import LoginForm from "./LoginForm";
 import { Link } from "react-router-dom";
+import { ROUTE } from "../../constant/route";
 
 
 const LoginWrap = styled.div`
@@ -38,7 +39,7 @@ export default function LoginBox() {
         <LoginTitle>로그인</LoginTitle>
         <LoginForm />
         <RegisterLinkWrap>아직 회원이 아니신가요?
-          <Link to="/register">
+          <Link to={ ROUTE.REGISTER.link }>
             <RegisterLinkButton>회원가입</RegisterLinkButton>
           </Link>
         </RegisterLinkWrap>
