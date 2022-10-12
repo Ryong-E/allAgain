@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 
 import Template from './pages/Template';
+import CampaignPage from './pages/CampaignPage/CampaignPage';
+import CampaignDetailPage from './pages/CampaignPage/CampaignDetailPage';
 
 function Router() {
   return (
@@ -18,6 +20,8 @@ function Router() {
         <Route path='/feeds' element={<FeedListPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
+        <Route path='/campaign' element={<CampaignPage />} />
+        <Route path='/campaign/:id' element={<CampaignDetailPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

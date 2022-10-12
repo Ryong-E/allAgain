@@ -1,17 +1,17 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import parse from 'html-react-parser'
 import 'react-quill/dist/quill.snow.css';
 
-type EditorProps = {
+interface EditorProps {
     value : string;
-    onChange : () => void;
+    onChange : (content : string) => void;
 }
 
-export default function TextEditor({value,onChange} : any){
+
+export default function TextEditor({value,onChange} : EditorProps){
     const quillRef = useRef<ReactQuill>();
-    const [editorValue,setEditorValue] = useState("");
+    const [editorValue,setEditorValue] = useState<string>("");
 
     const handleImage = useCallback(()=>{
         {
@@ -69,7 +69,7 @@ export default function TextEditor({value,onChange} : any){
                 image: handleImage
             },
         }
-    }),[]);
+    }),[handleImage]);
 
     useEffect(()=>{
         console.log(editorValue)
@@ -77,8 +77,7 @@ export default function TextEditor({value,onChange} : any){
 
     return (
     <>
-        <ReactQuill ref={(element) =>{if (element !== null){quillRef.current = element}}} modules={modules} onChange={onChange} defaultValue="asdasd"/>
-        <div style={{padding:"30px"}}>{parse(editorValue)}</div>
+        <ReactQuill ref={(element) =>{if (element !== null){quillRef.current = element}}} modules={modules} value={value} onChange={onChange}/>
     </>
     )
 }

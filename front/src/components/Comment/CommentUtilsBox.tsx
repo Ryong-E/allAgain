@@ -3,9 +3,9 @@ import {useState} from 'react'
 
 const UtilsBox = styled.div`
 display: flex;
-font-size:14px;
+font-size:12px;
 color: ${({theme})=> theme.colors.placeholder};
-margin-top: 15px;
+margin-top: 10px;
 button{
     border:none;
     background: inherit;
