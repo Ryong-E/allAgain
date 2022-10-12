@@ -1,10 +1,10 @@
-import Test from "./components/test";
+import Test from './components/test';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FeedListPage from './pages/FeedListPage/FeedListPage';
-import Footer from "./components/Footer/Footer";
-import Header from "./components/Header/Header";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
 
 import Template from './pages/Template';
 
@@ -14,10 +14,10 @@ function Router() {
       <Header />
       <Routes>
         <Route path='/' element={<Template />} />
-        <Route path="/text" element={<Test/>}/>
-        <Route path='/feed-list' element={<FeedListPage />} />
-        <Route path="/login" element={<LoginPage />}/>
-        <Route path="/register" element={<RegisterPage />}/>
+        <Route path='/text' element={<Test />} />
+        <Route path='/feeds' element={<FeedListPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/register' element={<RegisterPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

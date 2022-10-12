@@ -2,16 +2,9 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { SaveButton } from '../common/Buttons';
 
-type TagTypes =
-  | 'all'
-  | 'plastic'
-  | 'fiber'
-  | 'wood'
-  | 'paper'
-  | 'glass'
-  | 'metal'
-  | 'rubber'
-  | 'etc';
+interface TagState {
+  [key: string]: boolean;
+}
 
 const TagList = {
   all: '전체',
@@ -25,11 +18,30 @@ const TagList = {
   etc: '그 외',
 };
 
+const initialState: TagState = {
+  all: true,
+  plastic: false,
+  fiber: false,
+  wood: false,
+  paper: false,
+  glass: false,
+  metal: false,
+  rubber: false,
+  etc: false,
+};
+
 function FeedTagFilter() {
-  const [selectedTag, setSelectedTag] = useState<TagTypes>('all');
+  const [selectedTag, setSelectedTag] = useState<TagState>(initialState);
 
   const handleTagButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setSelectedTag((event.target as HTMLButtonElement).value as TagTypes);
+    const eventValue = (event.target as HTMLButtonElement).value;
+    if (eventValue !== 'all')
+      setSelectedTag({
+        ...selectedTag,
+        [eventValue]: !selectedTag[eventValue],
+        all: false,
+      });
+    else setSelectedTag(initialState);
   };
 
   return (
@@ -57,7 +69,7 @@ const TagButtonContainer = styled.div`
   padding: 0 30px;
 `;
 
-const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagTypes }>`
+const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagState }>`
   width: auto;
   height: 35px;
   font-size: 16px;
@@ -65,7 +77,7 @@ const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagTypes }>`
   border-radius: 5px;
   box-shadow: none;
   ${(props) =>
-    props.value === props.selectedTag
+    props.selectedTag[props.value] === true
       ? css`
           background-color: #afa58d;
           color: #ffffff;
