@@ -70,6 +70,15 @@ const User = {
 
     return null;
   },
+  delete: async ({ userId }) => {
+    await connection
+      .promise()
+      .query("DELETE FROM users WHERE id = ?", userId, (error) => {
+        if (error) throw error;
+      });
+
+    return null;
+  },
 };
 
 export { User };

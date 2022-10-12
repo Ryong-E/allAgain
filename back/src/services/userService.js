@@ -109,6 +109,11 @@ const userService = {
 
     return { image_url: imageUrl };
   },
+  withdrawalUser: async ({ userId }) => {
+    await User.delete({ userId });
+
+    return null;
+  },
 };
 
 export { userService };
