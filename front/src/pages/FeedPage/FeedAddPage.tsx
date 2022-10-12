@@ -35,6 +35,7 @@ function FeedAddPage() {
   };
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const index = parseInt((e.target as HTMLButtonElement).value);
     imgPreview.splice(index, 1);
     setImgPreview([...imgPreview]);
@@ -112,12 +113,14 @@ const ImageAlbum = styled.div`
 `;
 
 const ImageContainer = styled.div`
+  width: 300px;
+  height: 300px;
   position: relative;
 `;
 
 const ImageTest = styled.img`
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   overflow: hidden;
 `;
