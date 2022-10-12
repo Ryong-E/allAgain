@@ -20,7 +20,7 @@ export const InputText = styled.input`
   color: inherit;
   display: block;
   width: 100%;
-  max-width: 400px;
+  max-width: 1000px;
   padding: 15px 20px;
   border: none;
   background: #FFFFFF;

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css'
 
 interface EditorProps {
     value : string;
@@ -11,8 +12,6 @@ interface EditorProps {
 
 export default function TextEditor({value,onChange} : EditorProps){
     const quillRef = useRef<ReactQuill>();
-    const [editorValue,setEditorValue] = useState<string>("");
-
     const handleImage = useCallback(()=>{
         {
             const input = document.createElement('input');
@@ -52,10 +51,21 @@ export default function TextEditor({value,onChange} : EditorProps){
             }
         }
     },[quillRef])
+    const formats = [
+        'font','size',
+        'bold','italic','underline','strike',
+        'color','background',
+        'script',
+        'header','blockquote','code-block',
+        'indent','list',
+        'direction','align',
+        'link','image','video','formula',
+      ]
 
     const modules = useMemo(()=>({
         toolbar: {
             container: [
+              [{'view':['write','preview']}],
               [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
               [{ 'font': [] }],
               [{ 'align': [] }],
@@ -71,13 +81,9 @@ export default function TextEditor({value,onChange} : EditorProps){
         }
     }),[handleImage]);
 
-    useEffect(()=>{
-        console.log(editorValue)
-    },[editorValue])
-
     return (
     <>
-        <ReactQuill ref={(element) =>{if (element !== null){quillRef.current = element}}} modules={modules} value={value} onChange={onChange}/>
+        <ReactQuill ref={(element) => {if (element !== null){quillRef.current = element;}}} formats={formats} modules={modules} value={value} onChange={onChange} readOnly={true} theme={"snow"}/>
     </>
     )
 }
