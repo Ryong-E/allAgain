@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AddImageButton } from '../../components/common/Buttons';
 import { Container, Container1200 } from '../../components/common/Containers';
+import AuthorInfo from '../../components/feed/AuthorInfo';
+import FeedDetail from '../../components/feed/FeedDetail';
 
 type testType = {
   [key: number]: string;
@@ -76,6 +78,17 @@ function FeedAddPage() {
               </ImageContainer>
             ))}
           </ImageAlbum>
+          <TextContainer>
+            <DetailContainer>
+              <DetailHeader>
+                <AuthorInfo size='detail' user_id={132132} />
+              </DetailHeader>
+              <DetailSection contentEditable></DetailSection>
+            </DetailContainer>
+            <DetailTagContainer>
+              <DetailTag></DetailTag>
+            </DetailTagContainer>
+          </TextContainer>
         </FormContainer>
       </Container1200>
     </Container>
@@ -110,6 +123,7 @@ const ImageAlbum = styled.div`
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 40px;
 `;
 
 const ImageContainer = styled.div`
@@ -132,5 +146,58 @@ const ImageDelete = styled.button`
   border: 0;
   background-color: white;
   font-size: 20px;
+`;
+
+const TextContainer = styled.div`
+  width: 1200px;
+  box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+`;
+
+const DetailContainer = styled.div`
+  width: 1200px;
+  padding: 40px 60px;
+  background-color: #ffffff;
+`;
+
+const DetailHeader = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DetailSection = styled.div`
+  margin-top: 25px;
+  width: 100%;
+  min-height: 131px;
+  font-size: 15px;
+  line-height: 36px;
+  &:empty:before {
+    content: '내용 작성..';
+    color: #a9a9a9;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+
+const DetailTagContainer = styled.div`
+  width: 1200px;
+  padding: 14px 45px 14px 45px;
+  background-color: #004d49;
+  display: flex;
+  margin-bottom: 43px;
+`;
+
+const DetailTag = styled.div`
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 600;
+  text-align: center;
+  margin-right: 15px;
+  &:last-child {
+    margin-right: 0px;
+  }
 `;
 export default FeedAddPage;

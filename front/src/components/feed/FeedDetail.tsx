@@ -66,7 +66,6 @@ const DetailContainer = styled.div`
   width: 1200px;
   padding: 40px 60px;
   background-color: #ffffff;
-  margin-bottom: 43px;
 `;
 
 const DetailHeader = styled.div`
@@ -101,6 +100,7 @@ const DetailTagContainer = styled.div`
   padding: 14px 45px 14px 45px;
   background-color: #004d49;
   display: flex;
+  margin-bottom: 43px;
 `;
 
 const DetailTag = styled.div`
