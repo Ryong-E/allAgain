@@ -5,25 +5,40 @@ import { ShareButton } from "../common/Buttons"
 import { Link } from "react-router-dom"
 import UserImgBox from "../Comment/UserImgBox"
 import UserName from "../common/UserName"
+import CampaignDDay from "./CampaignDDay"
 
 const ListItemBox = styled.div`
   display:flex;
   width:100%;
   height: 300px;
-
+  background: ${({theme})=> theme.colors.white};
+  border: 1px solid #000;
+  & + & {
+    margin-top: 20px;
+  }
+  &.bright{
+    .thumbnailBox{
+      filter: grayscale(100%);
+    }
+    .statusBox{
+      
+      .status{
+        background:${({theme})=> theme.colors.placeholder};
+      }
+    }
+  }
 `
 const ThumbnailImgBox = styled.div`
   width: 360px;
   height:100%;
   flex-shrink: 0;
-  border: 1px solid #000;
   img{
     
   }
 `
 const ContentsBox = styled.div`
   padding: 20px 28px 20px 40px;
-  border: 1px solid #000;
+  border-left: 1px solid #000;
   width: calc(100% - 320px);
   display:flex;
   flex-direction: column;
@@ -35,8 +50,7 @@ const StatusBox = styled.div`
   align-items: center;
   .status{
     font-size:13px;
-    border: 1px solid #000;
-    padding: 3px 15px;
+    padding: 5px 15px;
     background: rgba(0, 77, 73, 1);
     color: #fff;
     letter-spacing: -0.4px;
@@ -158,9 +172,24 @@ const CampaignItemLinkBox = styled.div`
   }
 `
 
-export default function CampaignItem() {
-  const person  = 80;
-  let endEvent = 48;
+export interface DummyPropsType
+  { id ?: number;
+    thumbnailImg ?: string;
+    isLike ?: boolean;
+    title ?: string;
+    desc ?: string;
+    status ?: string;
+    recruitment ?: string[];
+    progress ?: string[];
+    personnel ?: number;
+    participating ?: number;
+    userImg ?: string;
+    userName ?: string;
+  }
+
+export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,recruitment,progress,personnel,participating,userImg,userName} : DummyPropsType) {
+  const person  = personnel!;
+  let endEvent = participating!;
   let lengthRate = (endEvent/ person)*100; 
   const length = useRef<HTMLDivElement>(null);
   const rateAnimation = ()=>{
@@ -174,19 +203,19 @@ export default function CampaignItem() {
   }, [])
   
   return (
-    <ListItemBox>
+    <ListItemBox className={status === "모집마감" ? "bright" : ""}>
       <CampaignItemLinkBox>
-        <Link to={`/campaigns/:id`}>
-          <ThumbnailImgBox>
-            <img src="" alt="썸네일이미지" />
+        <Link to={`/campaigns/${id}`}>
+          <ThumbnailImgBox className="thumbnailBox">
+            <img src={thumbnailImg} alt="썸네일이미지" />
           </ThumbnailImgBox>
         </Link>
       </CampaignItemLinkBox>
       <ContentsBox>
-        <StatusBox>
+        <StatusBox className="statusBox">
           <div className="status">
             {/* 상태 확인 state 넣어주세요 */}
-            모집 중
+            {status}
           </div>
           <div className="shareAndLikeBox">
             <ShareButton />
@@ -195,10 +224,10 @@ export default function CampaignItem() {
         </StatusBox>
         <ItemInfoBox>
           <CampaignItemLinkBox>
-            <Link to={`/campaigns/:id`}>
+            <Link to={`/campaigns/${id}`}>
               <TextBox>
-                <h3 className="title">폐자전거 업사이클링을 통한 자전거 기부</h3>
-                <div className="desc">버려진 폐자전거의 부품을 업사이클링하여 디자인 소품을 만듭니다. 수익금은 자전거 기부에 사용 수익금은 자전거 기부에 사용 수익금은 자전거 기부에 사용 수익금은 자전거 기부에 사용 수익금은 자전거 기부에 사용</div>
+                <h3 className="title">{title}</h3>
+                <div className="desc">{desc}</div>
               </TextBox>
             </Link>
           </CampaignItemLinkBox>
@@ -206,16 +235,16 @@ export default function CampaignItem() {
             <div className="recruitment">
               <strong>모집 기간</strong>
               {/* array 오면 0번 1번 넣어주세요 */}
-              <span>2022.09.28 ~ 2022.10.28</span>
+              <span>{recruitment![0]} ~ {recruitment![1]}</span>
             </div>
             <div className="progress">
               <strong>진행 기간</strong>
               {/* array 오면 0번 1번 넣어주세요 */}
-              <span>2022.11.01 ~ 2022.11.30</span>
+              <span>{progress![0]} ~ {progress![1]}</span>
             </div>
             <div className="personnel">
               <strong>모집 인원</strong>
-              <span>{80}명</span>
+              <span>{personnel!}명</span>
             </div>
           </PeriodBox>
           <CreatedUser>
@@ -231,11 +260,11 @@ export default function CampaignItem() {
               <div className="length" ref={length}></div>
             </div>
             <div className="participating">
-              <span>{48}명</span> 참여 중
+              <span>{participating!}명</span> 참여 중
             </div>
           </RateBox>
           <div className="endDate">
-            {21}일 남음
+            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitment![1] : status === "모집예정" ? recruitment![0] : ""} />
           </div>
         </LimitBox>
       </ContentsBox>
