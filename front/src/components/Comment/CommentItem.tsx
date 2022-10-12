@@ -4,21 +4,33 @@ import CampaignCommentWrite from './CommentWrite';
 import CampaignUtilsBox from './CommentUtilsBox';
 import UserImgBox from './UserImgBox';
 import UserName from '../common/UserName';
+import { Link } from 'react-router-dom';
 
 const CommentBox = styled.div`
   display: flex;
   padding: 25px 0 0;
-  > .userImgBox {
+
+  .userImgBox {
     margin: 10px 15px 0 30px !important;
   }
+  
   .commentTextBox {
-    .userNameBox{
+    > a{
+      display:inline-block;
       margin-bottom: 5px;
+      .userNameBox{
+
+        .userName {
+          font-weight: bold;
+          font-size: 15px;
+        }
+      }
+      .isFamousUser{
+
+      }
     }
-    .userName {
-      font-weight: bold;
-      font-size: 15px;
-    }
+    
+    
     .comment {
       font-size: 14px;
 
@@ -42,7 +54,9 @@ export default function CommentItem() {
       <CommentBox>
         <UserImgBox />
         <div className="commentTextBox">
-          <UserName/>
+          <Link to={`/user/:id`}>
+            <UserName/>
+          </Link>
           <div className="comment">
             {ts.length >= 100 ? 
                 <>

@@ -93,20 +93,21 @@ const PeriodBox = styled.div`
   }
 `
 const CreatedUser = styled.div`
-  display: flex;
-  align-items:center;
   font-size: 14px;
-
-  .userImgBox{
-    margin : 0;
-  }
-  .userNameBox{
-
-    .userName{
-      margin:0 3px 0 10px;
+  a{
+    display: inline-flex;
+    align-items:center;
+    .userImgBox{
+      margin : 0;
     }
-    .isFamousUser{
+    .userNameBox{
   
+      .userName{
+        margin:0 3px 0 10px;
+      }
+      .isFamousUser{
+    
+      }
     }
   }
 `
@@ -218,8 +219,10 @@ export default function CampaignItem() {
             </div>
           </PeriodBox>
           <CreatedUser>
-            <UserImgBox/>
-            <UserName/>
+            <Link to={`/user/:id`}>
+              <UserImgBox/>
+              <UserName/>
+            </Link>
           </CreatedUser>
         </ItemInfoBox>
         <LimitBox>
