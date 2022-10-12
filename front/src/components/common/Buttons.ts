@@ -20,7 +20,7 @@ export const Button = styled.button`
   font-weight: 500;
   text-align: center;
   padding: 12px 30px;
-  transition: all .3s;
+  transition: all 0.3s;
   cursor: pointer;
 
   & + & {
@@ -29,7 +29,7 @@ export const Button = styled.button`
 `;
 
 export const RoundedButton = styled(Button)`
-  border-radius: ${({ theme }) => theme.borderRadius.small}
+  border-radius: ${({ theme }) => theme.borderRadius.small};
 `;
 
 export const ConfirmButton = styled(RoundedButton)`
@@ -37,7 +37,7 @@ export const ConfirmButton = styled(RoundedButton)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.lightGreen};
-    background: #D1EDEB;
+    background: #d1edeb;
   }
 `;
 
@@ -46,7 +46,7 @@ export const DelButton = styled(RoundedButton)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.error};
-    background: #F3CAC5;
+    background: #f3cac5;
   }
 `;
 
@@ -55,7 +55,7 @@ export const ClsButton = styled(RoundedButton)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.bodyText};
-    background: #BBC3D2;
+    background: #bbc3d2;
   }
 `;
 
@@ -101,7 +101,7 @@ export const AddImageButton = styled(RoundedButton)`
 
 export const SaveButton = styled(Button)`
   background: ${({ theme }) => theme.colors.lightBeige};
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.dasidaGreen};
   }
@@ -123,9 +123,11 @@ export const ShareButton = styled(UtilButton)`
 export const WarningButton = styled(UtilButton)`
   background-image: url(${warningIcon});
 `;
-export const PrevNavigationButton = styled(UtilButton)`
+export const PrevNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
   background-image: url(${prevIcon});
+  visibility: ${(props) => (props.visibility ? 'visible' : 'hidden')};
 `;
-export const NextNavigationButton = styled(UtilButton)`
+export const NextNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
   background-image: url(${nextIcon});
+  visibility: ${(props) => (props.visibility ? 'visible' : 'hidden')};
 `;

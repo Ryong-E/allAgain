@@ -44,8 +44,14 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
         </ImageList>
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
           <AlbumSlideContainer>
-            <PrevNavigationButton onClick={() => handleViewerClick(false)} />
-            <NextNavigationButton onClick={() => handleViewerClick(true)} />
+            <PrevNavigationButton
+              onClick={() => handleViewerClick(false)}
+              visibility={imageIndex !== IMAGE_FIRST_INDEX}
+            />
+            <NextNavigationButton
+              onClick={() => handleViewerClick(true)}
+              visibility={imageIndex !== IMAGE_LAST_INDEX}
+            />
           </AlbumSlideContainer>
         )}
       </Album>
