@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { AddImageButton } from '../../components/common/Buttons';
+import {
+  AddImageButton,
+  ClsButton,
+  ConfirmButton,
+} from '../../components/common/Buttons';
 import { Container, Container1200 } from '../../components/common/Containers';
 import AuthorInfo from '../../components/feed/AuthorInfo';
 import FeedDetail from '../../components/feed/FeedDetail';
@@ -89,6 +93,10 @@ function FeedAddPage() {
               <DetailTag></DetailTag>
             </DetailTagContainer>
           </TextContainer>
+          <ButtonContainer>
+            <ClsButton>취소</ClsButton>
+            <ConfirmButton>완료</ConfirmButton>
+          </ButtonContainer>
         </FormContainer>
       </Container1200>
     </Container>
@@ -184,6 +192,7 @@ const DetailSection = styled.div`
 const DetailTagContainer = styled.div`
   width: 1200px;
   padding: 14px 45px 14px 45px;
+  min-height: 49px;
   background-color: #004d49;
   display: flex;
   margin-bottom: 43px;
@@ -199,5 +208,11 @@ const DetailTag = styled.div`
   &:last-child {
     margin-right: 0px;
   }
+`;
+
+const ButtonContainer = styled.div`
+  margin: 80px 0;
+  display: flex;
+  justify-content: center;
 `;
 export default FeedAddPage;
