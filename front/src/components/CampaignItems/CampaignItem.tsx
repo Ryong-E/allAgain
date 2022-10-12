@@ -5,11 +5,9 @@ import { ShareButton } from "../common/Buttons"
 
 const ListItemBox = styled.div`
   display:flex;
-// 임시 css
-// max-width:1300px;
-// width:100%;
-  width:1300px;
+  width:100%;
   height: 300px;
+
 `
 const ThumbnailImgBox = styled.div`
   width: 360px;
@@ -149,11 +147,9 @@ const RateBox = styled.div`
 
 
 export default function CampaignItem() {
-  /* 테스트 시작 */
-    const person  = 80;
-    let endEvent = 48;
-    let rateLength = (endEvent/ person)*100; 
-  /* 테스트 끝 */
+  const person  = 80;
+  let endEvent = 48;
+  let rateLength = (endEvent/ person)*100; 
   const first = useRef<HTMLDivElement>(null);
   const aniTest = ()=>{
     const len = first.current;
