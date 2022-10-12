@@ -48,6 +48,7 @@ function FeedTagFilter() {
     <TagButtonContainer>
       {Object.entries(TagList).map(([key, value]) => (
         <TagButton
+          key={key}
           value={key}
           selectedTag={selectedTag}
           onClick={handleTagButtonClick}>
