@@ -2,16 +2,19 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import CampaignCommentWrite from './CommentWrite';
 import CampaignUtilsBox from './CommentUtilsBox';
+import UserImgBox from '../CampaignItems/UserImgBox';
 
 const CommentBox = styled.div`
   display: flex;
-  padding: 25px 0;
+  padding: 25px 0 0;
   > .userImgBox {
-    margin-top: 10px !important;
+    margin: 10px 15px 0 30px  !important;
+    
   }
   .commentTextBox {
     .userName {
-      margin-bottom: 10px;
+      display:inline-block;
+      margin-bottom: 5px;
       font-weight: bold;
       font-size: 15px;
     }
@@ -27,9 +30,7 @@ export default function CommentItem() {
   return (
     <>
       <CommentBox>
-        <div className="userImgBox">
-          <img src="" alt="" />
-        </div>
+        <UserImgBox/>
         <div className="commentTextBox">
           <div className="userName">금잔디 명예소방관</div>
           <div className="comment">
