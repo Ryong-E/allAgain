@@ -49,10 +49,12 @@ userRouter.put(
   async (req, res, next) => {
     try {
       const currentUserId = req.currentUserId;
-      const { nickname } = req.body;
+      const { nickname, currentPassword, password } = req.body;
 
       const updatedUser = await userService.updateProfile({
         userId: currentUserId,
+        currentPassword,
+        password,
         nickname,
       });
 

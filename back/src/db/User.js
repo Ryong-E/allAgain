@@ -44,12 +44,12 @@ const User = {
       );
     return "회원가입 성공";
   },
-  update: async ({ userId, nickname }) => {
+  update: async ({ userId, nickname, password }) => {
     await connection
       .promise()
       .query(
-        "UPDATE users SET nickname=? WHERE id=?",
-        [nickname, userId],
+        "UPDATE users SET nickname = ?, password = ? WHERE id=?",
+        [nickname, password, userId],
         (error) => {
           if (error) throw error;
         }

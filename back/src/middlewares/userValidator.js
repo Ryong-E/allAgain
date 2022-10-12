@@ -62,7 +62,12 @@ exports.userLoginValidator = () => {
 
 exports.userProfileUpdateVaildator = () => {
   return [
-    body("nickname").notEmpty().withMessage("닉네임이 없습니다."),
+    body("password").custom((value, { req }) => {
+      if (value !== req.body.passwordConfirm) {
+        throw new Error("변경할 비밀번호가 일치하지 않습니다.");
+      }
+      return true;
+    }),
     validate,
   ];
 };

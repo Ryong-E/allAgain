@@ -52,25 +52,45 @@ const userService = {
 
     return registeredUser;
   },
-  updateProfile: async ({ userId, nickname }) => {
+  updateProfile: async ({ userId, currentPassword, nickname, password }) => {
     const userById = await User.findByUserId({ userId });
     if (userById.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
 
-    const userByNickname = await User.findByNickname({ nickname });
+    const correctPassword = userById[0].password;
+    const isPasswordCorrect = await bcrypt.compare(
+      currentPassword ? currentPassword : "default",
+      correctPassword
+    );
+    if (!isPasswordCorrect) {
+      throw new Error("현재 비밀번호가 일치하지 않습니다.");
+    }
+
+    const updatedNickname = nickname ? nickname : userById[0].nickname;
+    const updatedPassword = password
+      ? await bcrypt.hash(password, 10)
+      : userById[0].password;
+
+    const userByNickname = await User.findByNickname({
+      nickname: updatedNickname,
+    });
     if (
       userByNickname.length > 0 &&
       userById[0].nickname !== userByNickname[0].nickname
     ) {
       throw new Error("이미 존재하는 닉네임입니다.");
     }
-    await User.update({ userId, nickname });
+
+    await User.update({
+      userId,
+      nickname: updatedNickname,
+      password: updatedPassword,
+    });
     const updatedUser = await User.findByUserId({ userId });
 
     const filterdUserData = {
       nickname: updatedUser[0].nickname,
-      image_url: updatedUser[0].image_url,
     };
 
     return filterdUserData;
