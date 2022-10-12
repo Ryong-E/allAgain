@@ -109,10 +109,24 @@ const userService = {
 
     return { image_url: imageUrl };
   },
-  withdrawalUser: async ({ userId }) => {
+  withdrawal: async ({ userId }) => {
     await User.delete({ userId });
 
     return null;
+  },
+  getUserInfo: async ({ nickname }) => {
+    const user = await User.findByNickname({ nickname });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 닉네임입니다.");
+    }
+
+    const targetUser = {
+      name: user[0].name,
+      nickname,
+      image_url: user[0].image_url,
+    };
+
+    return targetUser;
   },
 };
 

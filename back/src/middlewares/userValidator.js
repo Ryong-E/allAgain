@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, param } from "express-validator";
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -68,6 +68,13 @@ exports.userProfileUpdateVaildator = () => {
       }
       return true;
     }),
+    validate,
+  ];
+};
+
+exports.getUserValidator = () => {
+  return [
+    param("nickname").notEmpty().withMessage("닉네임이 없습니다."),
     validate,
   ];
 };

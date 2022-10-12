@@ -4,6 +4,7 @@ import {
   userRegisterValidator,
   userLoginValidator,
   userProfileUpdateVaildator,
+  getUserValidator,
 } from "../middlewares/userValidator";
 import { loginRequired } from "../middlewares/loginRequired";
 import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
@@ -89,7 +90,7 @@ userRouter.post(
 userRouter.delete("/", loginRequired, async (req, res, next) => {
   try {
     const currentUserId = req.currentUserId;
-    await userService.withdrawalUser({ userId: currentUserId });
+    await userService.withdrawal({ userId: currentUserId });
 
     res.status(204).json("ok");
   } catch (error) {
@@ -97,13 +98,20 @@ userRouter.delete("/", loginRequired, async (req, res, next) => {
   }
 });
 
-// userRouter.get("/:userId", async function (req, res, next) {
-//   const { userId } = req.params;
-//   // userId에 해당하는 유저 조회
-//   // userId에 해당하는 유저정보 응답
-//   // userId가 있을 때와 없을 때 경우를 나눠서 처리
-//   // 1. userId가 없을 경우 -> validator에서 걸림 -> 404 error
-//   // 2. userId가 있는 경우 -> DB 조회 -> userId가 DB에 등록되어 있지 않을 경우 -> 400 error
-// });
+userRouter.get(
+  "/:nickname",
+  loginRequired,
+  getUserValidator(),
+  async (req, res, next) => {
+    try {
+      const { nickname } = req.params;
+      const targetUser = await userService.getUserInfo({ nickname });
+
+      res.status(200).json(targetUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export { userRouter };
