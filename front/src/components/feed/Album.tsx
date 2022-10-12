@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { NextNavigationButton, PrevNavigationButton } from '../common/Buttons';
 
 interface albumProps {
@@ -21,7 +21,7 @@ function Album({ size, image_urls }: albumProps) {
 
   return (
     <AlbumContainer>
-      <ImageContainer>
+      <ImageContainer size={size}>
         <ImageList albumPage={imageIndex}>
           {image_urls!.map((imageUrl: string) => (
             <img
@@ -58,17 +58,25 @@ const AlbumContainer = styled.div`
   position: relative;
 `;
 
-const ImageContainer = styled.div`
-  width: 100%;
-  aspect-ratio: 1/1;
+const ImageContainer = styled.div<{ size: 'simple' | 'detail' }>`
+  ${(props) =>
+    props.size === 'simple'
+      ? css`
+          width: 100%;
+          aspect-ratio: 1/1;
+        `
+      : css`
+          width: 1200px;
+          height: 650px;
+        `}
   position: relative;
   overflow: hidden;
 `;
 
 const ImageList = styled.div<{ albumPage: number }>`
   display: flex;
-  width: 100%;
   height: 100%;
+  aspect-ratio: 1/1;
   transform: ${(props) => `translateX(-${props.albumPage * 100}%)`};
   transition: transform 0.25s ease;
 `;
