@@ -64,6 +64,23 @@ const userService = {
     });
     return registeredUser;
   },
+  updateProfile: async ({ userId, name, nickname, birthday }) => {
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    await User.update({ userId, name, nickname, birthday });
+    const updatedUser = await User.findByUserId({ userId });
+
+    const filterdUserData = {
+      name: updatedUser[0].name,
+      nickname: updatedUser[0].nickname,
+      birthday: updatedUser[0].birthday,
+      image_url: updatedUser[0].image_url,
+    };
+    return filterdUserData;
+  },
 };
 
 export { userService };

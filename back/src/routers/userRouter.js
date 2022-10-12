@@ -3,7 +3,9 @@ import { userService } from "../services/userService";
 import {
   userRegisterValidator,
   userLoginValidator,
+  userProfileUpdateVaildator,
 } from "../middlewares/userValidator";
+import { loginRequired } from "../middlewares/loginRequired";
 
 const userRouter = Router();
 
@@ -40,6 +42,29 @@ userRouter.post("/login", userLoginValidator(), async (req, res, next) => {
     next(error);
   }
 });
+
+userRouter.put(
+  "/profile",
+  loginRequired,
+  userProfileUpdateVaildator(),
+  async (req, res, next) => {
+    try {
+      const currentUserId = req.currentUserId;
+      const { name, nickname, birthday } = req.body;
+
+      const updatedUser = await userService.updateProfile({
+        userId: currentUserId,
+        name,
+        nickname,
+        birthday,
+      });
+
+      res.status(201).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // userRouter.delete("/", async function (req, res, next) {
 //   // 회원 탈퇴

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-function login_required(req, res, next) {
+const loginRequired = (req, res, next) => {
   const userToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
 
   if (userToken === "null") {
@@ -18,6 +18,6 @@ function login_required(req, res, next) {
     res.status(400).send("정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.");
     return;
   }
-}
+};
 
-export { login_required };
+export { loginRequired };

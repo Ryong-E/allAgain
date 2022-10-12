@@ -23,6 +23,15 @@ const User = {
 
     return user[0];
   },
+  findByUserId: async ({ userId }) => {
+    const user = await connection
+      .promise()
+      .query("SELECT * FROM users WHERE id = ?", userId, (error) => {
+        if (error) throw error;
+      });
+
+    return user[0];
+  },
   register: async ({
     email,
     password,
@@ -41,6 +50,32 @@ const User = {
         }
       );
     return "회원가입 성공";
+  },
+  update: async ({ userId, name, nickname, birthday }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE users SET name=?, nickname=?, birthday=? WHERE id=?",
+        [name, nickname, birthday, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
+  },
+  updateImageUrl: async ({ userId, image_url }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE users SET image_url = ? WHERE id = ?",
+        [image_url, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
   },
 };
 
