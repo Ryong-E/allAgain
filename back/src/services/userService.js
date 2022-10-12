@@ -25,7 +25,7 @@ const userService = {
       token,
       name,
       nickname,
-      birthday: birthday.toString(),
+      birthday: birthday === null ? birthday : birthday.toString(),
       image_url,
     };
 
