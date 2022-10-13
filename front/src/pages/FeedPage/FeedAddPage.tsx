@@ -11,12 +11,12 @@ import AuthorInfo from '../../components/feed/AuthorInfo';
 
 interface FormValues {
   detail: string;
-  tags: string | string[];
+  tags: string;
 }
 
 function FeedAddPage() {
   const [imgPreview, setImgPreview] = useState<string[]>([]);
-  const [uploadImages, setUploadImages] = useState<Blob[]>([]);
+  const [uploadImages, setUploadImages] = useState<File[]>([]);
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ function FeedAddPage() {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     let fileURLs: string[] = [];
-    let filesArr: Blob[] = [];
+    let filesArr: File[] = [];
 
     if (files) {
       if (files.length > 8) {
@@ -38,10 +38,10 @@ function FeedAddPage() {
         reader.readAsDataURL(files[parseInt(key)]);
         reader.onloadend = () => {
           fileURLs.push(reader.result as string);
-          filesArr.push(files[parseInt(key)]);
           setImgPreview([...imgPreview, ...fileURLs]);
-          setUploadImages([...uploadImages, ...filesArr]);
         };
+        filesArr.push(files[parseInt(key)]);
+        setUploadImages([...uploadImages, ...filesArr]);
       });
     }
     e.target.value = '';
@@ -57,8 +57,15 @@ function FeedAddPage() {
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    data.tags = (data.tags as string).split('#').slice(1);
-    console.log(JSON.stringify(data));
+    if (uploadImages.length !== 0) {
+      const { detail, tags } = data;
+      const tagsArr: string[] = tags.split('#').slice(1);
+      const formData = new FormData();
+      uploadImages.forEach((file) => formData.append('images', file));
+      tagsArr.forEach((tag) => formData.append('tags', tag));
+      formData.append('detail', detail);
+      Array.from(formData).forEach((v) => console.log(v));
+    } else alert('파일 개수 미달');
   });
 
   return (
