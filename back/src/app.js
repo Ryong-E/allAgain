@@ -1,10 +1,34 @@
 import express from "express";
-var app = express();
+import { errorMiddleware } from "./middlewares/errorMiddleware";
+import { userRouter } from "./routers/userRouter";
+import cors from "cors";
+const mysql = require("mysql2");
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get("/", function (req, res) {
-  console.log("Hello");
-  res.send("hello world");
+const connection = mysql.createConnection({
+  host: "34.64.61.16",
+  user: "testuser",
+  password: "test",
+  database: "TESTDB",
 });
 
-export { app };
+connection.connect((error) => {
+  if (error) throw error;
+  console.log("Successfully connected to the database.");
+});
+
+const app = express();
+
+app.use(express.static(__dirname + "/images"));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.get("/", function (req, res) {
+  res.send("team02 project");
+});
+
+app.use("/users", userRouter);
+
+app.use(errorMiddleware);
+
+export { app, connection };
