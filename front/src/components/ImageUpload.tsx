@@ -5,7 +5,7 @@ import styled from "styled-components";
 import addImageIcon from '../assets/images/icons/icon_image_add.png';
 
 const UploadImageBox = styled.div`
-    width:350px;
+    width:360px;
     height:100%;
     background-color:red;
     display:flex;
@@ -31,6 +31,7 @@ const UploadFileLabel = styled.label`
   background: ${({ theme }) => theme.colors.darkBeige};
   width: 160px;
   padding: 12px 30px 12px 60px;
+  transition: all 0.3s;
 
   &:after {
     content: '';
@@ -82,7 +83,7 @@ function ImageUpload({register,watch} : any){
     return (
         <>
             <UploadImageBox>
-                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('image')}></UploadFile>
+                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('image')} multiple></UploadFile>
                 {previewImage ? <PreviewImage background={previewImage}></PreviewImage> : <><UploadFileLabel htmlFor="upload-file">사진 추가</UploadFileLabel><Text>
                 파일 크기 제한 :5MB
                 </Text></>}

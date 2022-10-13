@@ -90,7 +90,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
-
   ::-webkit-scrollbar {
     width: 10px;
   }
