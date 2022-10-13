@@ -3,7 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
   IUser,
   ILoginResponse,
-  IUserResponse
+  IUserResponse,
+  IRegisterRequiredParams,
+  IRegisterResponse
 } from "./types";
 
 const BASE_URL = "http://localhost:5001/users/";
@@ -14,6 +16,16 @@ const userApi  = axios.create({
   },
 });
 
+
+export const createUser = async ({ email, password, passwordConfirm, name, nickname }: IRegisterRequiredParams) => {
+  try {
+    const response = await userApi.post<IRegisterResponse>('register', { email, password, passwordConfirm, name, nickname });
+    console.log(response);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
 
 export const loginUser = async ({ email, password }: IUser) => {
   try {

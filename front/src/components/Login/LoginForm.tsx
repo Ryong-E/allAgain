@@ -12,11 +12,6 @@ import { loginUser } from "../../api/userApi";
 import { authUserState } from "../../atoms/atoms";
 import { loginUserFn } from "../../api/authApi";
 
-type Inputs = {
-  email: string,
-  password: string,
-  loginError: string,
-};
 
 const FormContainer = styled.form`
   width: 100%;
@@ -33,7 +28,14 @@ const FindPassword = styled.div`
   text-align: right;
   font-size: 14px;
   margin: 20px 0 0;
-`
+`;
+
+type Inputs = {
+  email: string,
+  password: string,
+  loginError: string,
+};
+
 
 export default function LoginForm() {
 
@@ -92,7 +94,6 @@ export default function LoginForm() {
     onSettled: () => {
       console.log("end");
     },
-    retry: true,
   });
 
   const handleLoginVaildate = ({ email, password }: ILoginRequiredParams) => {
@@ -107,7 +108,7 @@ export default function LoginForm() {
           <InputIconText 
             {...register("email", { 
               required: "이메일이 입력되지 않았습니다.",
-              pattern: { value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, message: "이메일 형식으로 작성해주세요" }
+              pattern: { value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, message: "이메일 형식으로 작성해주세요." }
             })}
             placeholder="이메일을 입력하세요" 
           />
@@ -121,6 +122,7 @@ export default function LoginForm() {
               required: "비밀번호가 입력되지 않았습니다.", 
               minLength: { value: 6, message: "비밀번호를 6자 이상 입력하세요." }
             })}
+            type="password" 
             placeholder="비밀번호를 입력하세요" 
           />
           <InputIcon iconStyle="password" />
