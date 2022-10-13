@@ -200,7 +200,7 @@ export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,r
   }
   useEffect(() => {
     rateAnimation()
-  }, [])
+  }, [status])
   
   return (
     <ListItemBox className={status === "모집마감" ? "bright" : ""}>
@@ -250,7 +250,7 @@ export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,r
           <CreatedUser>
             <Link to={`/user/:id`}>
               <UserImgBox/>
-              <UserName/>
+              <UserName userName={userName}/>
             </Link>
           </CreatedUser>
         </ItemInfoBox>
