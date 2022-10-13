@@ -5,11 +5,15 @@ const UserNameBox = styled.div`
   align-items:center;
 `
 
-export default function UserName() {
+interface userNameType{
+  userName ?: String
+}
+
+export default function UserName({userName}:userNameType) {
   return (
     <UserNameBox className="userNameBox">
       <div className="userName">
-        김다시
+        {userName}
       </div>
       {/* 조건문 넣어주세요 */}
       <div className="isFamousUser">

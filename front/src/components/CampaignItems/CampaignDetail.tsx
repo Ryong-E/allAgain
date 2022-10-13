@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import CampaignItem from '../CampaignItems/CampaignItem';
+import CampaignItem, { DummyPropsType } from '../CampaignItems/CampaignItem';
 import { ConfirmButton, DelButton } from '../common/Buttons';
 import CampaignComment from '../Comment/Comments';
 import CampaignIsJoin from './CampaignIsJoin';
@@ -11,13 +11,15 @@ import chatIcon from '../../assets/images/icons/icon_chat.png';
 import CampaignContents from './CampaignContents';
 import CUDBtn from './CUDBtn';
 
-export default function CampaignDetail() {
+
+export default function CampaignDetail(props: DummyPropsType) {
+  
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false)
   return (
     <>
       <CUDBtn />
-      <CampaignItem />
+      <CampaignItem {...props} />
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}

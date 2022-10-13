@@ -46,6 +46,9 @@ const iconUrl: any = {
   name: nameIcon,
   nick: nicknameIcon
 }
+// 객체안에 객체 만들어서 사용할 컴포넌트에서 imoport해서 쓰기 or
+// iconUrl에서 key만 뽑아서 import해서 쓰기
+
 export const InputIcon = styled.span<{ iconStyle: string }>`
   position: absolute;
   top: 50%;

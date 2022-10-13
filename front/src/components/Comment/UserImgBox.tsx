@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import userIcon from '../../assets/images/icons/icon_user.png';
+import profileIcon from '../../assets/images/icons/icon_profile.png';
 
 const UserImgWrap = styled.div`
   margin: 0 20px;
   height: 30px;
   width: 30px;
-  padding: 3px;
   flex-shrink: 0;
   border-radius:50%;
   border : 1px solid #666;
@@ -15,7 +14,7 @@ const UserImgWrap = styled.div`
 export default function UserImgBox() {
   return (
     <UserImgWrap className='userImgBox'>
-      <img src={userIcon} alt="" />
+      <img src={profileIcon} alt="" />
     </UserImgWrap>
   )
 }

@@ -5,13 +5,14 @@ import CampaignUtilsBox from './CommentUtilsBox';
 import UserImgBox from './UserImgBox';
 import UserName from '../common/UserName';
 import { Link } from 'react-router-dom';
+import ReCommentBox from './ReCommentBox';
 
 const CommentBox = styled.div`
   display: flex;
   padding: 25px 0 0;
 
   .userImgBox {
-    margin: 10px 15px 0 30px !important;
+    margin: 10px 20px 0 !important;
   }
   
   .commentTextBox {
@@ -45,32 +46,44 @@ const CommentBox = styled.div`
   }
 `;
 
-export default function CommentItem() {
+export interface CommentItemType {
+  campaign_id : number;
+  userId: number;
+  root_comment_id: String;
+  content: String;
+  userName: String;
+  pathID ?: number;
+};
+
+export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID }: CommentItemType) {
   const [isReComment, setIsReComment] = useState(false);
-  const [ts, setTs] = useState(`시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관시켜줘 너의 명예소방관`);
+  const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
+
+
+
   return (
     <>
       <CommentBox>
         <UserImgBox />
         <div className="commentTextBox">
           <Link to={`/user/:id`}>
-            <UserName/>
+            <UserName userName={userName}/>
           </Link>
           <div className="comment">
-            {ts.length >= 100 ? 
+            {content.length >= 100 ? 
                 <>
-                <p>{isLong ? ts : ts.slice(0,50)+"..." }<br/></p>
+                <p>{isLong ? content : content.slice(0,50)+"..." }<br/></p>
                 <button onClick={()=>{setIsLong(!isLong)}}>
                   {isLong ? <>간략히 보기</> : <>자세히 보기</> }
                 </button>
                 </>:
-                ts}
+                content}
           </div>
-          <CampaignUtilsBox setIsReComment={setIsReComment} />
+          <CampaignUtilsBox setShowIsReComment={setShowIsReComment} isReComment={isReComment} setIsReComment={setIsReComment} root_comment_id={root_comment_id} userId={userId} />
         </div>
       </CommentBox>
-      {isReComment && <CampaignCommentWrite isReCommentWrite={true} />}
+      {isReComment && <ReCommentBox isShowReComment={isShowReComment} pathID={pathID!} userId={userId}  />}
     </>
   );
 }

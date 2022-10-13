@@ -3,6 +3,9 @@ import { useState } from 'react';
 import CampaignUtilsBox from './CommentUtilsBox';
 import CampaignCommentWrite from './CommentWrite';
 import CampaignCommentItem from './CommentItem';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { campaignDumData, commentDumData } from '../../atoms/atoms';
+import { useParams } from 'react-router-dom';
 
 const CommentContainer = styled.div`
   padding: 30px 70px;
@@ -14,17 +17,20 @@ const CommentContainer = styled.div`
 
 const CommentListBox = styled.div``;
 
+
+
 export default function Comments() {
-  // disabled
-  // 삭제
-  // deps
+  const {id : pathID} = useParams();
+  const [dumComment, setDumComment] = useRecoilState(commentDumData)
+  const filteredDumComment = dumComment.filter(ele => ele.campaign_id === Number(pathID) && ele.root_comment_id === "");
 
   return (
     <CommentContainer>
-      <CampaignCommentWrite />
+      <CampaignCommentWrite pathID={Number(pathID)} />
       <CommentListBox>
-        <CampaignCommentItem />
-        <CampaignCommentItem />
+        {filteredDumComment?.map((props, idx)=>(
+          <CampaignCommentItem {...props} key={props.campaign_id + props.userId + props.content} pathID={Number(pathID)} />
+        ))}
       </CommentListBox>
     </CommentContainer>
   );

@@ -1,4 +1,4 @@
-import LoginBox from "../../components/LoginBox/LoginBox";
+import LoginBox from "../../components/Login/LoginBox";
 
 export default function LoginPage() {
   return (
