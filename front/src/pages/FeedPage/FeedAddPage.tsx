@@ -92,7 +92,10 @@ function FeedAddPage() {
               <DetailSection contentEditable></DetailSection>
             </DetailContainer>
             <DetailTagContainer>
-              <DetailTag></DetailTag>
+              <DetailTag
+                type='text'
+                placeholder='#으로 구분하여 태그를 입력해 주세요..'
+              />
             </DetailTagContainer>
           </TextContainer>
           <ButtonContainer>
@@ -200,15 +203,21 @@ const DetailTagContainer = styled.div`
   margin-bottom: 43px;
 `;
 
-const DetailTag = styled.div`
+const DetailTag = styled.input`
   color: #ffffff;
   font-size: 14px;
   line-height: 19px;
   font-weight: 600;
-  text-align: center;
+  width: 100%;
+  text-align: left;
   margin-right: 15px;
   &:last-child {
     margin-right: 0px;
+  }
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  &:focus {
+    outline: none;
   }
 `;
 
