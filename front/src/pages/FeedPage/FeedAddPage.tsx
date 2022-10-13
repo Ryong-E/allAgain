@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import {
   AddImageButton,
@@ -7,15 +8,16 @@ import {
 } from '../../components/common/Buttons';
 import { Container, Container1200 } from '../../components/common/Containers';
 import AuthorInfo from '../../components/feed/AuthorInfo';
-import FeedDetail from '../../components/feed/FeedDetail';
 
-type testType = {
-  [key: number]: string;
-};
+interface FormValues {
+  detail: string;
+  tags: string;
+}
 
 function FeedAddPage() {
   const [imgPreview, setImgPreview] = useState<string[]>([]);
   const [uploadImages, setUploadImages] = useState<Blob[]>([]);
+  const { register, handleSubmit } = useForm<FormValues>();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -33,7 +35,6 @@ function FeedAddPage() {
         reader.onloadend = () => {
           fileURLs.push(reader.result as string);
           filesArr.push(files[parseInt(key)]);
-          console.log(fileURLs);
           setImgPreview([...imgPreview, ...fileURLs]);
           setUploadImages([...uploadImages, ...filesArr]);
         };
@@ -46,19 +47,21 @@ function FeedAddPage() {
     e.preventDefault();
     const index = parseInt((e.target as HTMLButtonElement).value);
     imgPreview.splice(index, 1);
-    setImgPreview([...imgPreview]);
     uploadImages.splice(index, 1);
+    setImgPreview([...imgPreview]);
     setUploadImages([...uploadImages]);
   };
 
-  useEffect(() => {
-    console.log(uploadImages);
-  }, [uploadImages]);
+  const handleFormSubmit = handleSubmit(async (data) => {
+    console.log(JSON.stringify(data));
+  });
 
   return (
     <Container>
       <Container1200>
-        <FormContainer encType='multipart/form-data'>
+        <FormContainer
+          encType='multipart/form-data'
+          onSubmit={handleFormSubmit}>
           <ImageFormContainer>
             <AddImageButton as='label' htmlFor='multi-upload'>
               사진 추가
@@ -89,18 +92,21 @@ function FeedAddPage() {
               <DetailHeader>
                 <AuthorInfo size='detail' user_id={132132} />
               </DetailHeader>
-              <DetailSection contentEditable></DetailSection>
+              <DetailSection
+                placeholder='내용 작성..'
+                {...register('detail')}></DetailSection>
             </DetailContainer>
             <DetailTagContainer>
               <DetailTag
                 type='text'
                 placeholder='#으로 구분하여 태그를 입력해 주세요..'
+                {...register('tags')}
               />
             </DetailTagContainer>
           </TextContainer>
           <ButtonContainer>
             <ClsButton>취소</ClsButton>
-            <ConfirmButton>완료</ConfirmButton>
+            <ConfirmButton type='submit'>완료</ConfirmButton>
           </ButtonContainer>
         </FormContainer>
       </Container1200>
@@ -179,7 +185,7 @@ const DetailHeader = styled.div`
   justify-content: space-between;
 `;
 
-const DetailSection = styled.div`
+const DetailSection = styled.textarea`
   margin-top: 25px;
   width: 100%;
   min-height: 131px;
@@ -192,6 +198,7 @@ const DetailSection = styled.div`
   &:focus {
     outline: none;
   }
+  border: 0;
 `;
 
 const DetailTagContainer = styled.div`
