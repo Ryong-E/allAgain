@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useEffect, useMemo, useRef, useState } from "react"
+import React, { PropsWithChildren, ReactChild, ReactElement, ReactEventHandler, useEffect, useMemo, useRef, useState } from "react"
 import styled, { css } from "styled-components";
 
 const InputWrap = styled.div`
@@ -13,27 +13,28 @@ const InputWrap = styled.div`
 `
 const InputLabel = styled.label`
     position:absolute;
+    z-index:3;
     top:0px;
     left:0px;
     transform:translateY(12px) translateX(15px) scale(1);
+    transition:all 0.3s;
     &.on{
         transform:translateY(0px) translateX(10px) scale(0.7);
         color:purple;
     }
-    transition:all 0.3s;
 
 `
 const DateInput = styled.input`
+    position:relative;
+    z-index:1;
     height:100%;
-    width:80%;
+    width:100%;
     padding-top:20px;
     border:none;
-    transition:all 0.3s;
     outline:none;
-
 `
 
-export default function RecruitDate({children} :any){
+export default function RecruitDate({children}:PropsWithChildren){
     const dateRef = useRef<HTMLInputElement>(null);
     const dateLabelRef = useRef<HTMLLabelElement>(null);
     const [isClick,setIsClick] = useState(false);
@@ -75,7 +76,7 @@ export default function RecruitDate({children} :any){
     return (
         <>
             <InputWrap className={isClick ? 'on' : 'off'}>
-                <InputLabel htmlFor="date-pick" className={isClick ? 'on' : 'off'}>기간</InputLabel>
+                <InputLabel htmlFor="date-pick" className={(isClick || isWrite) ? 'on' : 'off'}>{children}</InputLabel>
                 <DateInput type="date" id="date-pick" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
             </InputWrap>
         </>
