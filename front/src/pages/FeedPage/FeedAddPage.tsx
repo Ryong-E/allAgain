@@ -11,13 +11,17 @@ import AuthorInfo from '../../components/feed/AuthorInfo';
 
 interface FormValues {
   detail: string;
-  tags: string;
+  tags: string | string[];
 }
 
 function FeedAddPage() {
   const [imgPreview, setImgPreview] = useState<string[]>([]);
   const [uploadImages, setUploadImages] = useState<Blob[]>([]);
-  const { register, handleSubmit } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -53,6 +57,7 @@ function FeedAddPage() {
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    data.tags = (data.tags as string).split('#').slice(1);
     console.log(JSON.stringify(data));
   });
 
@@ -78,6 +83,9 @@ function FeedAddPage() {
             최대 업로드 파일 : 8개 / 각 파일 당 파일 크기 제한 : 5MB
           </ImageFormDescription>
           <ImageAlbum>
+            {imgPreview.length === 0 && (
+              <ImageWarning>1개 이상의 사진을 추가해주세요</ImageWarning>
+            )}
             {imgPreview.map((imageSrc, index) => (
               <ImageContainer key={index}>
                 <ImageTest src={imageSrc} alt={imageSrc} key={index} />
@@ -94,13 +102,26 @@ function FeedAddPage() {
               </DetailHeader>
               <DetailSection
                 placeholder='내용 작성..'
-                {...register('detail')}></DetailSection>
+                {...register('detail', {
+                  required: '내용을 작성해 주세요.',
+                  minLength: {
+                    value: 4,
+                    message: '내용은 최소 4글자 이상이여야 합니다.',
+                  },
+                })}></DetailSection>
             </DetailContainer>
             <DetailTagContainer>
               <DetailTag
                 type='text'
                 placeholder='#으로 구분하여 태그를 입력해 주세요..'
-                {...register('tags')}
+                {...register('tags', {
+                  required: '최소 1개 이상의 태그가 필요합니다.',
+                  validate: {
+                    tagRule: (value) =>
+                      value.toString().startsWith('#') ||
+                      '태그는 반드시 #으로 시작하여야합니다.',
+                  },
+                })}
               />
             </DetailTagContainer>
           </TextContainer>
@@ -113,6 +134,8 @@ function FeedAddPage() {
     </Container>
   );
 }
+//검증조건 => 이미지는 최소 1개 이상, detail은 최소 4자 이상,
+//tags는 무조건 #으로 시작하는 문자열이여야한다.
 
 const FormContainer = styled.form`
   margin-top: 180px;
@@ -165,6 +188,15 @@ const ImageDelete = styled.button`
   border: 0;
   background-color: white;
   font-size: 20px;
+`;
+
+const ImageWarning = styled.div`
+  margin: auto;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 36px;
+  text-align: center;
+  color: #a9a9a9;
 `;
 
 const TextContainer = styled.div`
