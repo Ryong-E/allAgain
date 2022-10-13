@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
-export const loginUserState = atom({
-  key: "loginUserState",
-  default: "",
+export const authUserState = atom({
+  key: "authUserState",
+  default: {},
 });
 
 export const campaignDumData = atom({

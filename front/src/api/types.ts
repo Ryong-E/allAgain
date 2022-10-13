@@ -15,9 +15,7 @@ export interface ILoginRequiredParams {
 
 export interface ILoginResponse {
   status: string;
-  data: {
-    user: IUser;
-  }
+  access_token: string;
 }
 
 export interface IUserResponse {
@@ -25,6 +23,11 @@ export interface IUserResponse {
   data: {
     user: IUser;
   };
+}
+
+export interface GenericResponse {
+  status: string;
+  message: string;
 }
 
 // export interface ILoginResponse {

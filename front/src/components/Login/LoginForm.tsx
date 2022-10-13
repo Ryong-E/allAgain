@@ -7,8 +7,10 @@ import { ROUTE } from "../../constant/route";
 import { useRecoilState } from "recoil";
 
 import { IUser, ILoginResponse, ILoginRequiredParams } from "../../api/types";
-import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
+import { useMutation, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
+import { authUserState } from "../../atoms/atoms";
+import { loginUserFn } from "../../api/authApi";
 
 type Inputs = {
   email: string,
@@ -52,21 +54,46 @@ export default function LoginForm() {
   // console.log(errors.password);
 
 
+  // recoil
+  const [authUser, setAuthUser] = useRecoilState(authUserState);
+
   // react query
-  const loginMutation: UseMutationResult<ILoginResponse, Error, ILoginRequiredParams> = useMutation<
-    ILoginResponse,
-    Error,
-    ILoginRequiredParams
-    >(async ({ email, password }) => loginUser({email, password}), {
-      onError: (error, variable, context) => {
-        console.log("error: ", error, variable, context);
-        setError("loginError", {message: error.message});
-      },
-      onSuccess: (data, variables, context) => {
-        console.log("success: ", data, variables, context);
-        navigate(ROUTE.MY_PROFILE.link);
-      },
-    });
+  // const loginMutation: UseMutationResult<ILoginResponse, Error, ILoginRequiredParams> = useMutation<
+  //   ILoginResponse,
+  //   Error,
+  //   ILoginRequiredParams
+  //   >(async ({ email, password }) => loginUser({email, password}), {
+  //     onError: (error, variable, context) => {
+  //       setError("loginError", {message: error.message});
+  //     },
+  //     onSuccess: (result, variables, context) => {
+  //       setAuthUser(result);
+  //       console.log(result);
+  //       console.log(authUser);
+  //       // navigate(ROUTE.MY_PROFILE.link);
+  //     },
+  //   });
+
+
+
+  const loginMutation = useMutation(loginUser, {
+    onMutate: variable => {
+      console.log("onMutate", variable);
+      // variable : {loginId: 'xxx', password; 'xxx'}
+    },
+    onError: (error:any, variable, context) => {
+      setError("loginError", {message: error.message});
+    },
+    onSuccess: (data, variables, context) => {
+      console.log("success", data, variables, context);
+      // localStorage.setItem('jwtToken', data.token);
+      console.log(authUser);
+    },
+    onSettled: () => {
+      console.log("end");
+    },
+    retry: true,
+  });
 
   const handleLoginVaildate = ({ email, password }: ILoginRequiredParams) => {
     loginMutation.mutate({ email, password });

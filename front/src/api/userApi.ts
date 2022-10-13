@@ -26,7 +26,7 @@ export const loginUser = async ({ email, password }: IUser) => {
 
 export const getUserProfile = async ({ nickname }: IUser) => {
   try {
-    const response = await userApi.get<IUserResponse>(`${nickname}`);
+    const response = await userApi.get<IUserResponse>(`${nickname}`,);
     return response.data;
   } catch (err: any) {
     throw new Error("유저정보 조회 실패");
