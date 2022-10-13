@@ -33,11 +33,13 @@ function FeedAddPage() {
         reader.onloadend = () => {
           fileURLs.push(reader.result as string);
           filesArr.push(files[parseInt(key)]);
+          console.log(fileURLs);
           setImgPreview([...imgPreview, ...fileURLs]);
           setUploadImages([...uploadImages, ...filesArr]);
         };
       });
     }
+    e.target.value = '';
   };
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
