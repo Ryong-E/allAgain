@@ -17,7 +17,37 @@ const feedService = {
   },
   getFeedById: async ({ feedId }) => {
     const feed = await Feed.getFeedById({ feedId });
+    console.log(feed);
     return feed;
+  },
+  updateFeed: async ({
+    userId,
+    currentUserId,
+    feedId,
+    category,
+    tags,
+    imageUrls,
+    description,
+  }) => {
+    if (userId !== currentUserId) {
+      throw new Error("수정 권한이 없습니다.");
+    }
+    const updatedFeed = await Feed.updateFeed({
+      feedId,
+      category,
+      tags,
+      imageUrls,
+      description,
+    });
+    return updatedFeed;
+  },
+  deleteFeed: async ({ currentUserId, feedId }) => {
+    const feed = await Feed.getFeedById({ feedId });
+    if (feed.userId !== currentUserId) {
+      throw new Error("삭제 권한이 없습니다.");
+    }
+    const deletedFeed = await Feed.deleteFeed({ feedId });
+    return deletedFeed;
   },
 };
 
