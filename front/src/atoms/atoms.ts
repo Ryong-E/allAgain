@@ -5,6 +5,7 @@ export const campaignDumData = atom({
   default:[
     {
       id: 0,
+      campaign_id:0,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -15,10 +16,11 @@ export const campaignDumData = atom({
       personnel:80,
       participating:76,
       userImg: "",
-      userName: "도다시",
+      userName: "리얼다시",
     },
     {
       id: 1,
+      campaign_id:1,
       thumbnailImg: "",
       isLike : false,
       title : "지금 진행 중 어서와 업사이클은 처음이지?",
@@ -29,10 +31,11 @@ export const campaignDumData = atom({
       personnel:90,
       participating:0,
       userImg: "",
-      userName: "도다시",
+      userName: "노다지",
     },
     {
       id: 2,
+      campaign_id:2,
       thumbnailImg: "",
       isLike : false,
       title : "더미더미더미~ 더미 데이터~!",
@@ -46,7 +49,68 @@ export const campaignDumData = atom({
       userName: "도다시",
     },
     {
+      id: 15,
+      campaign_id:15,
+      thumbnailImg: "",
+      isLike : false,
+      title : "더미더미더미~ 더미 데이터~!",
+      desc : "귀찮아서 쓰는 더미데이터 디스크립션~ 오션~",
+      status: "모집마감",
+      recruitment:["2022.09.28","2022.09.30"],
+      progress:["2022.11.02","2022.11.30"],
+      personnel:80,
+      participating:43,
+      userImg: "",
+      userName: "도다시",
+    },
+    {
+      id: 11,
+      campaign_id:11,
+      thumbnailImg: "",
+      isLike : false,
+      title : "더미더미더미~ 더미 데이터~!",
+      desc : "귀찮아서 쓰는 더미데이터 디스크립션~ 오션~",
+      status: "모집예정",
+      recruitment:["2022.09.28","2022.09.30"],
+      progress:["2022.11.02","2022.11.30"],
+      personnel:80,
+      participating:43,
+      userImg: "",
+      userName: "도다시",
+    },
+    {
+      id: 12,
+      campaign_id:12,
+      thumbnailImg: "",
+      isLike : false,
+      title : "더미더미더미~ 더미 데이터~!",
+      desc : "귀찮아서 쓰는 더미데이터 디스크립션~ 오션~",
+      status: "모집예정",
+      recruitment:["2022.09.28","2022.09.30"],
+      progress:["2022.11.02","2022.11.30"],
+      personnel:80,
+      participating:43,
+      userImg: "",
+      userName: "도다시",
+    },
+    {
+      id: 13,
+      campaign_id:13,
+      thumbnailImg: "",
+      isLike : false,
+      title : "더미더미더미~ 더미 데이터~!",
+      desc : "귀찮아서 쓰는 더미데이터 디스크립션~ 오션~",
+      status: "모집예정",
+      recruitment:["2022.09.28","2022.09.30"],
+      progress:["2022.11.02","2022.11.30"],
+      personnel:80,
+      participating:43,
+      userImg: "",
+      userName: "도다시",
+    },
+    {
       id: 3,
+      campaign_id:3,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -61,6 +125,7 @@ export const campaignDumData = atom({
     },
     {
       id: 4,
+      campaign_id:4,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -75,6 +140,7 @@ export const campaignDumData = atom({
     },
     {
       id: 5,
+      campaign_id:5,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -89,6 +155,7 @@ export const campaignDumData = atom({
     },
     {
       id: 6,
+      campaign_id:6,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -103,6 +170,7 @@ export const campaignDumData = atom({
     },
     {
       id: 7,
+      campaign_id:7,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -117,6 +185,7 @@ export const campaignDumData = atom({
     },
     {
       id: 8,
+      campaign_id:8,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -131,6 +200,7 @@ export const campaignDumData = atom({
     },
     {
       id: 9,
+      campaign_id:9,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -145,6 +215,7 @@ export const campaignDumData = atom({
     },
     {
       id: 10,
+      campaign_id:10,
       thumbnailImg: "",
       isLike : false,
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
@@ -157,5 +228,48 @@ export const campaignDumData = atom({
       userImg: "",
       userName: "도다시",
     },
+  ]
+})
+
+
+export const commentDumData = atom({
+  key:"dummyComment",
+  default: [
+    {
+      campaign_id:0,
+      id:0,
+      root_comment_id:"",
+      content:"안녕하세요댓1~",
+      userName: "도다시",
+    },
+    {
+      campaign_id:0,
+      id:1,
+      root_comment_id:"0",
+      content:"안녕하세요 대댓1~",
+      userName: "도다시",
+    },
+    {
+      campaign_id:1,
+      id:2,
+      root_comment_id:"",
+      content:"안녕하세요댓2~",
+      userName: "도다시",
+    },
+    {
+      campaign_id:1,
+      id:3,
+      root_comment_id:"2",
+      content:"안녕하세요 대댓2~",
+      userName: "도다시",
+    },
+    {
+      campaign_id:0,
+      id:4,
+      root_comment_id:"",
+      content:"안녕하세요댓3   ~",
+      userName: "도다시",
+    },
+    
   ]
 })
