@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, param } from "express-validator";
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -35,6 +35,8 @@ exports.userRegisterValidator = () => {
         }
         return true;
       }),
+    body("name").notEmpty().withMessage("이름 입력값이 없습니다."),
+    body("nickname").notEmpty().withMessage("닉네임 입력값이 없습니다."),
     validate,
   ];
 };
@@ -54,6 +56,25 @@ exports.userLoginValidator = () => {
       .bail()
       .isLength({ min: 6 })
       .withMessage("비밀번호의 길이가 양식에 맞지 않습니다."),
+    validate,
+  ];
+};
+
+exports.userProfileUpdateVaildator = () => {
+  return [
+    body("password").custom((value, { req }) => {
+      if (value !== req.body.passwordConfirm) {
+        throw new Error("변경할 비밀번호가 일치하지 않습니다.");
+      }
+      return true;
+    }),
+    validate,
+  ];
+};
+
+exports.getUserValidator = () => {
+  return [
+    param("nickname").notEmpty().withMessage("닉네임이 없습니다."),
     validate,
   ];
 };

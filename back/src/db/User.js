@@ -23,24 +23,61 @@ const User = {
 
     return user[0];
   },
-  register: async ({
-    email,
-    password,
-    name,
-    nickname,
-    birthday,
-    image_url,
-  }) => {
+  findByUserId: async ({ userId }) => {
+    const user = await connection
+      .promise()
+      .query("SELECT * FROM users WHERE id = ?", userId, (error) => {
+        if (error) throw error;
+      });
+
+    return user[0];
+  },
+  register: async ({ email, password, name, nickname }) => {
     await connection
       .promise()
       .query(
-        "INSERT INTO users(email, password, name, nickname, birthday, image_url) VALUES(?, ?, ?, ?, ?, ?)",
-        [email, password, name, nickname, birthday, image_url],
+        "INSERT INTO users(email, password, name, nickname) VALUES(?, ?, ?, ?)",
+        [email, password, name, nickname],
         (error) => {
           if (error) throw error;
         }
       );
     return "회원가입 성공";
+  },
+  update: async ({ userId, nickname, password }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE users SET nickname = ?, password = ? WHERE id=?",
+        [nickname, password, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
+  },
+  updateImageUrl: async ({ userId, image_url }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE users SET image_url = ? WHERE id = ?",
+        [image_url, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
+  },
+  delete: async ({ userId }) => {
+    await connection
+      .promise()
+      .query("DELETE FROM users WHERE id = ?", userId, (error) => {
+        if (error) throw error;
+      });
+
+    return null;
   },
 };
 

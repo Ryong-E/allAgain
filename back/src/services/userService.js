@@ -1,6 +1,8 @@
 import { User } from "../db/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+const fs = require("fs");
+const path = require("path");
 
 const userService = {
   login: async ({ email, password }) => {
@@ -18,27 +20,19 @@ const userService = {
     }
     // jwt토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-    const token = jwt.sign({ user_id: user[0].id }, secretKey);
+    const token = jwt.sign({ userId: user[0].id }, secretKey);
 
-    const { name, nickname, birthday, image_url } = user[0];
+    const { name, nickname, image_url } = user[0];
     const loginUser = {
       token,
       name,
       nickname,
-      birthday: birthday.toString(),
       image_url,
     };
 
     return loginUser;
   },
-  register: async ({
-    email,
-    password,
-    name,
-    nickname,
-    birthday,
-    image_url,
-  }) => {
+  register: async ({ email, password, name, nickname }) => {
     password = await bcrypt.hash(password, 10);
 
     // 이메일 중복 체크
@@ -49,20 +43,90 @@ const userService = {
     user = await User.findByNickname({ nickname });
     if (user.length > 0) throw new Error("이미 존재하는 닉네임입니다.");
 
-    if (!name) name = null;
-    if (!nickname) nickname = null;
-    if (!birthday) birthday = null;
-    if (!image_url) image_url = null;
-
     const registeredUser = await User.register({
       email,
       password,
       name,
       nickname,
-      birthday,
-      image_url,
     });
+
     return registeredUser;
+  },
+  updateProfile: async ({ userId, currentPassword, nickname, password }) => {
+    const userById = await User.findByUserId({ userId });
+    if (userById.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const correctPassword = userById[0].password;
+    const isPasswordCorrect = await bcrypt.compare(
+      currentPassword ? currentPassword : "default",
+      correctPassword
+    );
+    if (!isPasswordCorrect) {
+      throw new Error("현재 비밀번호가 일치하지 않습니다.");
+    }
+
+    const updatedNickname = nickname ? nickname : userById[0].nickname;
+    const updatedPassword = password
+      ? await bcrypt.hash(password, 10)
+      : userById[0].password;
+
+    const userByNickname = await User.findByNickname({
+      nickname: updatedNickname,
+    });
+    if (
+      userByNickname.length > 0 &&
+      userById[0].nickname !== userByNickname[0].nickname
+    ) {
+      throw new Error("이미 존재하는 닉네임입니다.");
+    }
+
+    await User.update({
+      userId,
+      nickname: updatedNickname,
+      password: updatedPassword,
+    });
+    const updatedUser = await User.findByUserId({ userId });
+
+    const filterdUserData = {
+      nickname: updatedUser[0].nickname,
+    };
+
+    return filterdUserData;
+  },
+  updateProfileImage: async ({ imagePath, userId }) => {
+    const re = new RegExp(`profiles.*`, "g");
+    const serverUrl = process.env.SERVER_URL || "localhost";
+    const serverPort = process.env.SERVER_PORT || 5000;
+    const imageUrl = path.join(
+      serverUrl + ":" + serverPort,
+      "/",
+      imagePath.match(re)[0]
+    );
+
+    await User.updateImageUrl({ userId, image_url: imageUrl });
+
+    return { image_url: imageUrl };
+  },
+  withdrawal: async ({ userId }) => {
+    await User.delete({ userId });
+
+    return null;
+  },
+  getUserInfo: async ({ nickname }) => {
+    const user = await User.findByNickname({ nickname });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 닉네임입니다.");
+    }
+
+    const targetUser = {
+      name: user[0].name,
+      nickname,
+      image_url: user[0].image_url,
+    };
+
+    return targetUser;
   },
 };
 
