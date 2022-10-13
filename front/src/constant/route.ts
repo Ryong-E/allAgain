@@ -42,8 +42,8 @@ export const ROUTE = {
     element: CampaignPage,
   },
   CAMPAGIN_DETAIL: {
-    path: "/campaign/123",
-    link: "/campaign/123",
+    path: "/campaign/:id",
+    link: `/campaign/`,
     element: CampaignDetailPage,
   },
 };
