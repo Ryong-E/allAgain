@@ -9,13 +9,15 @@ export interface IUser {
 }
 
 export interface ILoginRequiredParams {
-  email?: string,
-  password?: string
+  email: string,
+  password: string
 }
 
 export interface ILoginResponse {
   status: string;
-  access_token: string;
+  data: {
+    user: IUser;
+  }
 }
 
 export interface IUserResponse {
@@ -24,4 +26,18 @@ export interface IUserResponse {
     user: IUser;
   };
 }
+
+// export interface ILoginResponse {
+//   status: string;
+//   access_token: string;
+// }
+
+// export interface IUserResponse {
+//   status: string;
+//   data: {
+//     user: IUser;
+//   };
+// }
+
+
 

@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { ButtonBlock, LargeButton } from "../common/Buttons";
 import { InputBlock, InputIconText, InputIcon, InputIconBlock, InputErrorMsg } from "../common/Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTE } from "../../constant/route";
 import { useRecoilState } from "recoil";
 
 import { IUser, ILoginResponse, ILoginRequiredParams } from "../../api/types";
@@ -34,11 +35,13 @@ const FindPassword = styled.div`
 
 export default function LoginForm() {
 
+  const navigate = useNavigate();
+
   // React Hook Form
   const { 
     register, 
     handleSubmit, 
-    watch,
+    watch,  // 아이콘 투명도조절할 때 사용할거
     setError,
     formState: { errors },
   } = useForm<Inputs>({
@@ -50,31 +53,22 @@ export default function LoginForm() {
 
 
   // react query
-  const queryClient = useQueryClient();
-  const loginCount = 0;
-
   const loginMutation: UseMutationResult<ILoginResponse, Error, ILoginRequiredParams> = useMutation<
     ILoginResponse,
     Error,
     ILoginRequiredParams
     >(async ({ email, password }) => loginUser({email, password}), {
-      onMutate: (variables) => {
-        console.log("loginCount", loginCount);
-      },
       onError: (error, variable, context) => {
         console.log("error: ", error, variable, context);
         setError("loginError", {message: error.message});
       },
       onSuccess: (data, variables, context) => {
         console.log("success: ", data, variables, context);
-        // queryClient.invalidateQueries("loginUser");
+        navigate(ROUTE.MY_PROFILE.link);
       },
-      onSettled: () => {
-        console.log("end");
-      }
     });
 
-  const handleLoginVaildate = ({ email, password }: IUser) => {
+  const handleLoginVaildate = ({ email, password }: ILoginRequiredParams) => {
     loginMutation.mutate({ email, password });
   }
 
