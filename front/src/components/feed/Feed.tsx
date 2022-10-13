@@ -11,9 +11,10 @@ interface feedProps {
   image_urls?: string[];
   description?: string;
   feed_id?: number;
+  isSimple: boolean;
 }
 
-function Feed({ user_id, image_urls, feed_id }: feedProps) {
+function Feed({ user_id, image_urls, feed_id, isSimple }: feedProps) {
   return (
     <FeedContainer>
       <Album image_urls={image_urls} size='simple' />
@@ -24,10 +25,12 @@ function Feed({ user_id, image_urls, feed_id }: feedProps) {
           <ShareButton />
         </SocialButtonContainer>
       </MenuContainer>
-      <PostContainer>
-        <AuthorInfo size='simple' user_id={12321} />
-        <PostTime>3시간</PostTime>
-      </PostContainer>
+      {isSimple || (
+        <PostContainer>
+          <AuthorInfo size='simple' user_id={12321} />
+          <PostTime>3시간</PostTime>
+        </PostContainer>
+      )}
     </FeedContainer>
   );
 }

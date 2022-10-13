@@ -104,7 +104,7 @@ function FeedListPage() {
           <FeedTagFilter />
           <FeedAddButton />
         </FeedListOptionsContainer>
-        <FeedList feeds={test} />
+        <FeedList feeds={test} isSimple={true} />
       </Container1300>
     </Container>
   );
