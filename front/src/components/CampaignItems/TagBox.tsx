@@ -5,7 +5,6 @@ const TagListBox = styled.div`
   width: 650px;
   height: 70px;
   background: #f2eee3;
-  margin-bottom: 50px;
   display: inline-flex;
   align-items: center;
   padding: 0 30px;

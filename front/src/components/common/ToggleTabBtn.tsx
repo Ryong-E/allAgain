@@ -6,7 +6,7 @@ const ToggleBtnBox = styled.div`
   justify-content:center;
   align-items:center;
   margin: 60px 0 20px;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid ${({theme})=> theme.colors.lightBeige};
   button{
     display:flex;
     align-items:center;

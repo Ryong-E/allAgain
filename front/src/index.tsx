@@ -24,6 +24,7 @@ root.render(
           <App />
         </ThemeProvider>
       </RecoilRoot>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );

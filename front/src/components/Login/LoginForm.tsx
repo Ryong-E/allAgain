@@ -5,14 +5,14 @@ import { InputBlock, InputIconText, InputIcon, InputIconBlock, InputErrorMsg } f
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
-import { IUser } from "../../api/types";
-import { useMutation } from "@tanstack/react-query";
+import { IUser, ILoginResponse, ILoginRequiredParams } from "../../api/types";
+import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
 
 type Inputs = {
   email: string,
   password: string,
-  loginSuccess: string,
+  loginError: string,
 };
 
 const FormContainer = styled.form`
@@ -50,39 +50,37 @@ export default function LoginForm() {
 
 
   // react query
-  // const { isLoading, error, isError, mutate, data } = useMutation<any>(
-  //   loginUser,
-    
-  // );
-  // console.log(error);
-  // console.log(data);
+  const queryClient = useQueryClient();
+  const loginCount = 0;
 
-  // const handleLoginVaildate = async (values: IUser) => {
-  //   await mutate({
-  //     email: values.email,
-  //     password: values.password,
-  //   });
+  const loginMutation: UseMutationResult<ILoginResponse, Error, ILoginRequiredParams> = useMutation<
+    ILoginResponse,
+    Error,
+    ILoginRequiredParams
+    >(async ({ email, password }) => loginUser({email, password}), {
+      onMutate: (variables) => {
+        console.log("loginCount", loginCount);
+      },
+      onError: (error, variable, context) => {
+        console.log("error: ", error, variable, context);
+        setError("loginError", {message: error.message});
+      },
+      onSuccess: (data, variables, context) => {
+        console.log("success: ", data, variables, context);
+        // queryClient.invalidateQueries("loginUser");
+      },
+      onSettled: () => {
+        console.log("end");
+      }
+    });
 
-  //   // try {
-  //   //   const serverData = UserLogin(data);
-  //   //   console.log(serverData);
-  //   // } catch(err) {
-  //   //   console.log(err);
-  //   //   setError("loginSuccess", {message: "아이디 또는 비밀번호를 확인해주세요."});
-  //   // }
-  // }
-
-
+  const handleLoginVaildate = ({ email, password }: IUser) => {
+    loginMutation.mutate({ email, password });
+  }
 
 
   return(
-    // <FormContainer onSubmit={ handleSubmit(handleLoginVaildate) }>
-    <FormContainer onSubmit={handleSubmit((data) => {
-        console.log("data: " + data.email + data.password);
-        const result = loginUser(data);
-        console.log("result: " + result);
-      })}
-    >
+    <FormContainer onSubmit={ handleSubmit(handleLoginVaildate) }>
       <InputBlock>
         <InputIconBlock>
           <InputIconText 
@@ -112,7 +110,7 @@ export default function LoginForm() {
           </Link>
         </FindPassword>
       </InputBlock>
-      <InputErrorMsg>{errors.email?.message || errors.password?.message || errors.loginSuccess?.message }</InputErrorMsg>
+      <InputErrorMsg>{errors.email?.message || errors.password?.message || errors.loginError?.message }</InputErrorMsg>
       <ButtonBlock>
         <LargeButton>로그인</LargeButton>
       </ButtonBlock>

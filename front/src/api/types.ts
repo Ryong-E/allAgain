@@ -1,16 +1,16 @@
 export interface IUser {
   id?: string,
-  email: string,
-  password: string,
+  email?: string,
+  password?: string,
   name?: string,
   nickname?: string,
   image_url?: string,
   token?: string
 }
 
-export interface GenericResponse {
-  status: string;
-  message: string;
+export interface ILoginRequiredParams {
+  email?: string,
+  password?: string
 }
 
 export interface ILoginResponse {
@@ -24,3 +24,4 @@ export interface IUserResponse {
     user: IUser;
   };
 }
+

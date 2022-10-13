@@ -5,7 +5,7 @@ import {
   ILoginResponse
 } from "./types";
 
-const BASE_URL = "https://dummyjson.com/";
+const BASE_URL = "http://localhost:5001/users/";
 
 const userApi  = axios.create({
   baseURL: BASE_URL,
@@ -17,28 +17,10 @@ const userApi  = axios.create({
 
 export const loginUser = async ({ email, password }: IUser) => {
   try {
-    const response = await userApi.post<ILoginResponse>('auth/login', { email, password });
+    const response = await userApi.post<ILoginResponse>('login', { email, password });
+    console.log(response);
     return response.data;
   } catch (err: any) {
-    throw Error(err.response.data.message);
+    throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
   }
 };
-
-
-
-
-export async function UserLogin({ email, password }: IUser) {
-
-  // React Query
-  // const { isLoading, error, data, isFetching } = useQuery(["repoData"], () =>
-  //   axios.post("https://dummyjson.com/auth/login", {
-  //       email,
-  //       password
-  //     }
-  // ));
-
-  // console.log(data);
-
-  // return data;
-  
-}
