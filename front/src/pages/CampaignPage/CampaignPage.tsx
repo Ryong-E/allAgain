@@ -46,7 +46,7 @@ export default function CampaignPage() {
         </AdditionalBox>
         <CampaignList >
           {filteredStatus.map(props =>(
-            <CampaignItem {...props} />
+            <CampaignItem {...props} key={props.id+ props.campaign_id + props.userName} />
           ))}
         </CampaignList>
       </Container1300Ver2>
