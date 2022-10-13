@@ -8,6 +8,18 @@ export interface IUser {
   token?: string
 }
 
+export interface IRegisterRequiredParams {
+  email: string,
+  password: string,
+  passwordConfirm: string,
+  name: string,
+  nickname: string,
+}
+
+export interface IRegisterResponse {
+  status: string;
+}
+
 export interface ILoginRequiredParams {
   email: string,
   password: string
