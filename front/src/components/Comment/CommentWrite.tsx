@@ -3,6 +3,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import sendHoverIcon from '../../assets/images/icons/icon_send_hover.png';
 import sendIcon from '../../assets/images/icons/icon_send.png';
 import UserImgBox from './UserImgBox';
+import { SetterOrUpdater, useRecoilState } from 'recoil';
+import { CommentItemType } from './CommentItem';
+import { commentDumData } from '../../atoms/atoms';
+import { useEffect } from 'react';
 
 const CommentWriteBox = styled.div`
   display: flex;
@@ -10,9 +14,7 @@ const CommentWriteBox = styled.div`
   align-items: center;
   height: 70px;
   border-bottom: 1px solid rgba(231, 225, 210, 1);
-  &.ReComment {
-    margin-left: 50px;
-  }
+
 `;
 
 const CommentFrom = styled.form`
@@ -42,30 +44,48 @@ const SubmitIconBtn = styled.button`
   }
 `;
 
-interface ReCommentType {
-  isReCommentWrite?: Boolean;
-}
+
 
 interface WriteInputType {
   commentWrite?: string;
 }
 
-export default function CampaignCommentWrite({ isReCommentWrite }: ReCommentType) {
+export interface CommentDataType{
+  pathID : number;
+  id ?: number;
+}
+
+
+
+
+export default function CampaignCommentWrite({pathID,id}: CommentDataType) {
+  const [dumComment, setDumComment] = useRecoilState(commentDumData)
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors }
   } = useForm<WriteInputType>();
   const onSubmit: SubmitHandler<WriteInputType> = ({ commentWrite }) => {
-    console.log('commentWrite', commentWrite);
+    const lastId = Number(dumComment[dumComment.length-1].id) + 1
+    const newComment = {
+      campaign_id : pathID,
+      id :  lastId,
+      root_comment_id : id !== undefined ? `${id}` : "",
+      content : commentWrite!,
+      userName :"김다시"
+    }
+    setDumComment((prev) => [ ...prev, newComment ])
+    reset()
   };
+  
   return (
-    <CommentWriteBox className={isReCommentWrite ? 'ReComment' : ''}>
+    <CommentWriteBox>
       <UserImgBox />
       <CommentFrom onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" placeholder="댓글 달기..." {...register('commentWrite')} />
-        <SubmitIconBtn type="submit"></SubmitIconBtn>
+        <input type="text" placeholder="댓글 달기..." required {...register('commentWrite')} />
+        <SubmitIconBtn type="submit"/>
       </CommentFrom>
     </CommentWriteBox>
   );
