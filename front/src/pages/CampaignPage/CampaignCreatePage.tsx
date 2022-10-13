@@ -63,6 +63,10 @@ export default function CampaignCreatePage(){
                                 </InputBlock>
                             </InputBox>
                         </CampaignDescription>
+                        <div style={{marginBottom:"50px"}}>
+                            <RecruitDate>시작기간</RecruitDate>
+                        </div>
+                        <RecruitDate>베모</RecruitDate>
                         <Editor handleEditorChange={setEditorContent} value={editorContent}/>
                         <div>
                             <pre>{editorContent}</pre>
@@ -71,7 +75,6 @@ export default function CampaignCreatePage(){
                             <button type="submit">제출하기</button>
                         </div>
                     </form>
-                    <RecruitDate/>
                 </Container1300>
             </Container>
         </>
