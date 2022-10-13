@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 import FollowToggleSmall from '../common/FollowToggleSmall';
+import DefaultProfileBanner from '../../assets/images/icons/icon_profile.png';
+import CertifiedBadge from '../../assets/images/icons/icon_certified.png';
 
 interface authorInfoProps {
   size: 'simple' | 'detail';
@@ -9,9 +11,9 @@ interface authorInfoProps {
 function AuthorInfo({ size, user_id }: authorInfoProps) {
   return (
     <Container>
-      <AuthorProfile size={size} />
+      <AuthorProfile size={size} src={DefaultProfileBanner} />
       <AuthorName>{user_id}</AuthorName>
-      {size === 'simple' && <AuthorBadge />}
+      {size === 'simple' && <AuthorBadge src={CertifiedBadge} />}
       {size === 'simple' && <FollowToggleSmall />}
     </Container>
   );
@@ -40,7 +42,6 @@ const AuthorProfile = styled.img<{ size: 'simple' | 'detail' }>`
         `}
   object-fit: cover;
   overflow: hidden;
-  background-color: gray;
 `;
 
 const AuthorName = styled.div`
@@ -50,13 +51,14 @@ const AuthorName = styled.div`
   color: black;
 `;
 
-const AuthorBadge = styled.div`
+const AuthorBadge = styled.img`
   margin-left: 5px;
   margin-right: 14px;
   width: 16px;
   height: 16px;
   border-radius: 16px;
   background-color: #004d49;
+  object-fit: cover;
 `;
 
 export default AuthorInfo;
