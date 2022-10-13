@@ -27,7 +27,7 @@ const userService = {
       token,
       name,
       nickname,
-      image_url,
+      imageUrl: image_url,
     };
 
     return loginUser;
@@ -105,9 +105,9 @@ const userService = {
       imagePath.match(re)[0]
     );
 
-    await User.updateImageUrl({ userId, image_url: imageUrl });
+    await User.updateImageUrl({ userId, imageUrl });
 
-    return { image_url: imageUrl };
+    return { imageUrl };
   },
   withdrawal: async ({ userId }) => {
     await User.delete({ userId });
@@ -123,7 +123,7 @@ const userService = {
     const targetUser = {
       name: user[0].name,
       nickname,
-      image_url: user[0].image_url,
+      imageUrl: user[0].image_url,
     };
 
     return targetUser;
