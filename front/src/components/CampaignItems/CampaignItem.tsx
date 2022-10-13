@@ -178,7 +178,6 @@ export interface DummyPropsType
     id ?: number;
     campaign_id ?: number;
     thumbnailImg ?: string;
-    isLike ?: boolean;
     title ?: string;
     desc ?: string;
     status ?: string;
@@ -190,7 +189,7 @@ export interface DummyPropsType
     userName ?: string;
   }
 
-export default function CampaignItem({id, campaign_id,thumbnailImg,isLike,title,desc,status,recruitment,progress,personnel,participating,userImg,userName} : DummyPropsType) {
+export default function CampaignItem({id, campaign_id,thumbnailImg,title,desc,status,recruitment,progress,personnel,participating,userImg,userName} : DummyPropsType) {
   const person  = personnel!;
   let endEvent = participating!;
   let lengthRate = (endEvent/ person)*100; 
