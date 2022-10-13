@@ -2,52 +2,87 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import CampaignCommentWrite from './CommentWrite';
 import CampaignUtilsBox from './CommentUtilsBox';
-import UserImgBox from '../CampaignItems/UserImgBox';
+import UserImgBox from './UserImgBox';
+import UserName from '../common/UserName';
+import { Link } from 'react-router-dom';
+import ReCommentBox from './ReCommentBox';
 
 const CommentBox = styled.div`
   display: flex;
   padding: 25px 0 0;
-  > .userImgBox {
-    margin: 10px 15px 0 30px  !important;
-    
+
+  .userImgBox {
+    margin: 10px 20px 0 !important;
   }
+  
   .commentTextBox {
-    .userName {
+    > a{
       display:inline-block;
       margin-bottom: 5px;
-      font-weight: bold;
-      font-size: 15px;
+      .userNameBox{
+
+        .userName {
+          font-weight: bold;
+          font-size: 15px;
+        }
+      }
+      .isFamousUser{
+
+      }
     }
+    
+    
     .comment {
       font-size: 14px;
+
+      p{
+
+      }
+      button{
+        font-size: 13px;
+        color: ${({theme})=> theme.colors.darkBeige};
+      }
     }
   }
 `;
 
-export default function CommentItem() {
+export interface CommentItemType {
+  campaign_id : number;
+  id: number;
+  root_comment_id: String;
+  content: String;
+  userName: String;
+};
+
+export default function CommentItem({campaign_id, id, root_comment_id, content,userName }: CommentItemType) {
   const [isReComment, setIsReComment] = useState(false);
+  const [isShowReComment, setShowIsReComment] = useState(false);
+  const [isLong, setIsLong] = useState(false); 
+
+
 
   return (
     <>
       <CommentBox>
-        <UserImgBox/>
+        <UserImgBox />
         <div className="commentTextBox">
-          <div className="userName">금잔디 명예소방관</div>
+          <Link to={`/user/:id`}>
+            <UserName userName={userName}/>
+          </Link>
           <div className="comment">
-            {/* {xx.length >= 100 ? 
+            {content.length >= 100 ? 
                 <>
-                xx.slice(0,50)+"..." 
-                <button onClick={()=>{isTrue(!true)}}>
-                  {isTrue ? 간략히 보기 : 자세히 보기 }
+                <p>{isLong ? content : content.slice(0,50)+"..." }<br/></p>
+                <button onClick={()=>{setIsLong(!isLong)}}>
+                  {isLong ? <>간략히 보기</> : <>자세히 보기</> }
                 </button>
                 </>:
-                xx} */}
-            시켜줘 너의 명예소방관
+                content}
           </div>
-          <CampaignUtilsBox setIsReComment={setIsReComment} />
+          <CampaignUtilsBox setShowIsReComment={setShowIsReComment} isReComment={isReComment} setIsReComment={setIsReComment} root_comment_id={root_comment_id} id={id} />
         </div>
       </CommentBox>
-      {isReComment && <CampaignCommentWrite isReCommentWrite={true} />}
+      {isReComment && <ReCommentBox isShowReComment={isShowReComment} pathID={campaign_id} id={id}  />}
     </>
   );
 }
