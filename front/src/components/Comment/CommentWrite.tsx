@@ -78,7 +78,6 @@ export default function CampaignCommentWrite({pathID,userId}: CommentDataType) {
     setDumComment((prev) => [ ...prev, newComment ])
     reset()
   };
-  console.log(dumComment)
   return (
     <CommentWriteBox>
       <UserImgBox />

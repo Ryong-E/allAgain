@@ -8,9 +8,16 @@ import { Container, Container1300 } from '../../components/common/Containers';
 import { ROUTE } from "../../constant/route";
 import { useRecoilValue } from "recoil"
 import { campaignDumData } from "../../atoms/atoms"
+import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
+
+
+const NoPaddingContainer = styled(Container)`
+  padding : 70px 0;
+  max-width: 100%;
+`
 
 export const Container1300Ver2 = styled(Container1300)`
-  padding: 170px 0;
+  padding: 100px 0;
 `
 
 const AdditionalBox = styled.div`
@@ -35,7 +42,8 @@ export default function CampaignPage() {
   const filteredStatus = dum.filter(ele => ele.status === currentValue);
   
   return (
-    <Container>
+    <NoPaddingContainer>
+      <CampaignSlide/>
       <Container1300Ver2>
         <AdditionalBox>
           <TagBox values={values} currentValue={currentValue} setCurrentValue={setCurrentValue} />
@@ -49,6 +57,6 @@ export default function CampaignPage() {
           ))}
         </CampaignList>
       </Container1300Ver2>
-    </Container>
+    </NoPaddingContainer>
   );
 }

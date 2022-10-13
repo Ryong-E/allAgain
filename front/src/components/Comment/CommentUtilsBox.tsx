@@ -34,19 +34,23 @@ interface ReCommentType {
   isReComment: Boolean;
   setIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
+  idx ?: number;
+  setLastIdx : React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId }: ReCommentType) {
+export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId, idx, setLastIdx }: ReCommentType) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData);
   const filteredComment = dumComment.filter((ele) => ele.root_comment_id === String(userId));
   const reCommentLength = filteredComment.length;
   const handleToggleReComment = () => {
     setIsReComment(true);
   };
-  const handleToggleFirstReComment = () =>{
+  const handleToggleReCommentWrite = () =>{
     setIsReComment(true);
-    setShowIsReComment((prev) => !prev);
+    setLastIdx(idx!);
+    setShowIsReComment(true);
   }
+
 
   return (
     <UtilsBox>
@@ -56,8 +60,8 @@ export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setI
           {
           (reCommentLength > 0 && !isReComment) ? 
           <button onClick={handleToggleReComment}>답글 {reCommentLength}개 보기</button>:
-          <button onClick={handleToggleFirstReComment}>답글 달기</button>
-        }
+          <button onClick={handleToggleReCommentWrite}>답글 달기</button>
+          }
         </div>
       )}
       <div className="deleteBtnBox">

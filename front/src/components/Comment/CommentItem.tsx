@@ -53,14 +53,15 @@ export interface CommentItemType {
   content: String;
   userName: String;
   pathID ?: number;
+  idx ?: number;
+  lastIdx ?: number;
+  setLastIdx ?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID }: CommentItemType) {
+export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID, idx, setLastIdx, lastIdx }: CommentItemType) {
   const [isReComment, setIsReComment] = useState(false);
   const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
-
-
 
   return (
     <>
@@ -80,10 +81,23 @@ export default function CommentItem({campaign_id, userId, root_comment_id, conte
                 </>:
                 content}
           </div>
-          <CampaignUtilsBox setShowIsReComment={setShowIsReComment} isReComment={isReComment} setIsReComment={setIsReComment} root_comment_id={root_comment_id} userId={userId} />
+          <CampaignUtilsBox idx={idx!}
+              setShowIsReComment={setShowIsReComment}
+              isReComment={isReComment}
+              setIsReComment={setIsReComment}
+              root_comment_id={root_comment_id}
+              userId={userId}
+              setLastIdx={setLastIdx!}/>
         </div>
       </CommentBox>
-      {isReComment && <ReCommentBox isShowReComment={isShowReComment} pathID={pathID!} userId={userId}  />}
+      {isReComment && 
+        <ReCommentBox 
+          lastIdx={lastIdx!}
+          idx={idx!}  
+          isShowReComment={isShowReComment} 
+          pathID={pathID!} 
+          userId={userId}  />
+      }
     </>
   );
 }
