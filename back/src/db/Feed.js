@@ -6,16 +6,19 @@ const Feed = {
       .promise()
       .query(
         "INSERT INTO feeds(user_id, category, tags, image_urls, description) VALUES(?, ?, ?, ?, ?)",
-        [userId, category, tags, imageUrls, description],
-        (error) => {
-          if (error) throw error;
-        }
+        [userId, category, tags, imageUrls, description]
       );
     return "피드 업로드 성공";
   },
   getFeeds: async ({ userId }) => {
     const feedList = await connection.promise().query("SELECT * FROM feeds");
     return feedList[0];
+  },
+  getFeedById: async ({ feedId }) => {
+    const feed = await connection
+      .promise()
+      .query("SELECT * FROM feeds WHERE id = ?", feedId);
+    return feed[0];
   },
 };
 

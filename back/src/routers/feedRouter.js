@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { login_required } from "../middlewares/loginRequired";
+import { loginRequired } from "../middlewares/loginRequired";
 import { feedService } from "../services/feedService";
 
 const feedRouter = Router();
 
-feedRouter.post("/", login_required, async (req, res, next) => {
+feedRouter.post("/", loginRequired, async (req, res, next) => {
   try {
     const { category, tags, imageUrls, description } = req.body;
     const createdFeed = await feedService.createFeed({
+      // @ts-ignore
       userId: req.currentUserId,
       category,
       tags,
@@ -20,9 +21,10 @@ feedRouter.post("/", login_required, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/", login_required, async (req, res, next) => {
+feedRouter.get("/", loginRequired, async (req, res, next) => {
   try {
     const feedList = await feedService.getFeeds({
+      // @ts-ignore
       userId: req.currentUserId,
     });
     res.status(200).send(feedList);
@@ -31,14 +33,33 @@ feedRouter.get("/", login_required, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/:feedId", login_required, async (req, res, next) => {});
+feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
+  try {
+    const { feedId } = req.params;
+    const feed = await feedService.getFeedById({
+      feedId,
+    });
+    res.status(200).send(feed);
+  } catch (error) {
+    next(error);
+  }
+  try {
+    const feedList = await feedService.getFeeds({
+      // @ts-ignore
+      userId: req.currentUserId,
+    });
+    res.status(200).send(feedList);
+  } catch (error) {
+    next(error);
+  }
+});
 
-feedRouter.delete("/:feedId", login_required, async (req, res, next) => {});
+feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {});
 
-feedRouter.put("/", login_required, async (req, res, next) => {});
+feedRouter.put("/", loginRequired, async (req, res, next) => {});
 
-// feedRouter.post("/likes", login_required, (req, res, next) => {});
+// feedRouter.post("/likes", loginRequired, (req, res, next) => {});
 
-// feedRouter.delete("/likes", login_required, (req, res, next) => {});
+// feedRouter.delete("/likes", loginRequired, (req, res, next) => {});
 
 export { feedRouter };
