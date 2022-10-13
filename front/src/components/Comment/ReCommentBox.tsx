@@ -13,15 +13,16 @@ interface ReCommentType extends CommentDataType{
   isShowReComment :Boolean
 }
 
-export default function ReCommentBox({pathID, id, isShowReComment}: ReCommentType) {
+export default function ReCommentBox({pathID, userId, isShowReComment}: ReCommentType) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData)
-  const filteredReComment = dumComment.filter(ele => ele.root_comment_id === String(id!))
-  console.log(isShowReComment)
+  const filteredReComment = dumComment.filter(ele => ele.root_comment_id === String(userId!))
+
+  console.log(filteredReComment)
   return (
     <ReCommentItem>
-      {isShowReComment && <CampaignCommentWrite pathID={pathID} id={id!} />}
+      {isShowReComment && <CampaignCommentWrite pathID={pathID} userId={userId!} />}
       {filteredReComment.map((props)=>(
-        <CommentItem {...props} key={props.campaign_id + props.content + props.id}/>
+        <CommentItem {...props} key={props.campaign_id + props.content + props.userId}/>
       ))}
     </ReCommentItem>
   )

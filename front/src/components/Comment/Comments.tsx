@@ -29,7 +29,7 @@ export default function Comments() {
       <CampaignCommentWrite pathID={Number(pathID)} />
       <CommentListBox>
         {filteredDumComment?.map((props, idx)=>(
-          <CampaignCommentItem {...props} key={props.campaign_id + props.id + props.content} />
+          <CampaignCommentItem {...props} key={props.campaign_id + props.userId + props.content} pathID={Number(pathID)} />
         ))}
       </CommentListBox>
     </CommentContainer>

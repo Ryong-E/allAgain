@@ -30,15 +30,15 @@ const UtilsBox = styled.div`
 
 interface ReCommentType {
   root_comment_id: String;
-  id: number;
+  userId: number;
   isReComment: Boolean;
   setIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, id }: ReCommentType) {
+export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId }: ReCommentType) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData);
-  const filteredComment = dumComment.filter((ele) => ele.root_comment_id === String(id));
+  const filteredComment = dumComment.filter((ele) => ele.root_comment_id === String(userId));
   const reCommentLength = filteredComment.length;
   const handleToggleReComment = () => {
     setIsReComment(true);

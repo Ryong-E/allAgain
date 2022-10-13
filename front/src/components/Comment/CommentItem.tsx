@@ -48,13 +48,14 @@ const CommentBox = styled.div`
 
 export interface CommentItemType {
   campaign_id : number;
-  id: number;
+  userId: number;
   root_comment_id: String;
   content: String;
   userName: String;
+  pathID ?: number;
 };
 
-export default function CommentItem({campaign_id, id, root_comment_id, content,userName }: CommentItemType) {
+export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID }: CommentItemType) {
   const [isReComment, setIsReComment] = useState(false);
   const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
@@ -79,10 +80,10 @@ export default function CommentItem({campaign_id, id, root_comment_id, content,u
                 </>:
                 content}
           </div>
-          <CampaignUtilsBox setShowIsReComment={setShowIsReComment} isReComment={isReComment} setIsReComment={setIsReComment} root_comment_id={root_comment_id} id={id} />
+          <CampaignUtilsBox setShowIsReComment={setShowIsReComment} isReComment={isReComment} setIsReComment={setIsReComment} root_comment_id={root_comment_id} userId={userId} />
         </div>
       </CommentBox>
-      {isReComment && <ReCommentBox isShowReComment={isShowReComment} pathID={campaign_id} id={id}  />}
+      {isReComment && <ReCommentBox isShowReComment={isShowReComment} pathID={pathID!} userId={userId}  />}
     </>
   );
 }

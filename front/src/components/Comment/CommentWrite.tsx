@@ -52,13 +52,12 @@ interface WriteInputType {
 
 export interface CommentDataType{
   pathID : number;
-  id ?: number;
+  userId ?: number;
 }
 
 
 
-
-export default function CampaignCommentWrite({pathID,id}: CommentDataType) {
+export default function CampaignCommentWrite({pathID,userId}: CommentDataType) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData)
   const {
     register,
@@ -68,18 +67,18 @@ export default function CampaignCommentWrite({pathID,id}: CommentDataType) {
     formState: { errors }
   } = useForm<WriteInputType>();
   const onSubmit: SubmitHandler<WriteInputType> = ({ commentWrite }) => {
-    const lastId = Number(dumComment[dumComment.length-1].id) + 1
+    const lastId = Number(dumComment[dumComment.length-1].userId) + 1
     const newComment = {
       campaign_id : pathID,
-      id :  lastId,
-      root_comment_id : id !== undefined ? `${id}` : "",
+      userId :  lastId,
+      root_comment_id : userId !== undefined ? `${userId}` : "",
       content : commentWrite!,
       userName :"김다시"
     }
     setDumComment((prev) => [ ...prev, newComment ])
     reset()
   };
-  
+  console.log(dumComment)
   return (
     <CommentWriteBox>
       <UserImgBox />
