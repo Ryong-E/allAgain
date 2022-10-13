@@ -60,7 +60,6 @@ function FeedTagFilter() {
 }
 
 const TagButtonContainer = styled.div`
-  margin-top: 174px;
   width: 810px;
   height: 71px;
   background-color: #f2eee3;

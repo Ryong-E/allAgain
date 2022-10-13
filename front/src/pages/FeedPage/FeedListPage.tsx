@@ -1,4 +1,6 @@
+import styled from 'styled-components';
 import { Container, Container1300 } from '../../components/common/Containers';
+import FeedAddButton from '../../components/feed/FeedAddButton';
 import FeedList from '../../components/feed/FeedList';
 import FeedTagFilter from '../../components/feed/FeedTagFilter';
 
@@ -98,11 +100,22 @@ function FeedListPage() {
   return (
     <Container>
       <Container1300>
-        <FeedTagFilter />
+        <FeedListOptionsContainer>
+          <FeedTagFilter />
+          <FeedAddButton />
+        </FeedListOptionsContainer>
         <FeedList feeds={test} />
       </Container1300>
     </Container>
   );
 }
+
+const FeedListOptionsContainer = styled.div`
+  width: 100%;
+  margin-top: 174px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 export default FeedListPage;

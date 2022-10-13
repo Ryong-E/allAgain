@@ -26,7 +26,7 @@ function FeedList({ feeds }: FeedListProps) {
 
 const FeedsContainer = styled.div`
   margin-top: 80px;
-  width: 1350px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
