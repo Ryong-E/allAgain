@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import {
   AddImageButton,
+  CloseButton,
   ClsButton,
   ConfirmButton,
 } from '../../components/common/Buttons';
@@ -17,11 +18,7 @@ interface FormValues {
 function FeedAddPage() {
   const [imgPreview, setImgPreview] = useState<string[]>([]);
   const [uploadImages, setUploadImages] = useState<File[]>([]);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const { register, handleSubmit } = useForm<FormValues>();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -96,9 +93,8 @@ function FeedAddPage() {
             {imgPreview.map((imageSrc, index) => (
               <ImageContainer key={index}>
                 <ImageTest src={imageSrc} alt={imageSrc} key={index} />
-                <ImageDelete value={index} onClick={handleDeleteClick}>
-                  X
-                </ImageDelete>
+                <ImageDelete value={index} onClick={handleDeleteClick} />
+                {index === 0 && <ImageThumnailMark>썸네일</ImageThumnailMark>}
               </ImageContainer>
             ))}
           </ImageAlbum>
@@ -188,13 +184,27 @@ const ImageTest = styled.img`
   overflow: hidden;
 `;
 
-const ImageDelete = styled.button`
+const ImageDelete = styled(CloseButton)`
   position: absolute;
   right: 0%;
   top: 0%;
-  border: 0;
-  background-color: white;
-  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+`;
+
+const ImageThumnailMark = styled.div`
+  position: absolute;
+  color: #ffffff;
+  width: 74px;
+  height: 31px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 29px;
+  margin: 14px 0px 0px 14px;
+  top: 0%;
+  left: 0%;
+  background-color: #4279f5;
 `;
 
 const ImageWarning = styled.div`

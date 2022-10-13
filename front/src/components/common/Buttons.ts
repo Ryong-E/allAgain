@@ -4,6 +4,7 @@ import shareIcon from '../../assets/images/icons/icon_share.png';
 import warningIcon from '../../assets/images/icons/icon_warning.png';
 import prevIcon from '../../assets/images/icons/icon_btn_prev.png';
 import nextIcon from '../../assets/images/icons/icon_btn_next.png';
+import closeIcon from '../../assets/images/icons/icon_close.png';
 
 export const ButtonBlock = styled.div`
   display: flex;
@@ -130,4 +131,9 @@ export const PrevNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
 export const NextNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
   background-image: url(${nextIcon});
   visibility: ${(props) => (props.visibility ? 'visible' : 'hidden')};
+`;
+export const CloseButton = styled(UtilButton)`
+  background-image: url(${closeIcon});
+  width: 28px;
+  height: 28px;
 `;
