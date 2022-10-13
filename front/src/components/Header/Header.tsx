@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Container } from '../common/Containers';
 import NavBar from '../Nav/NavBar';
+import { ROUTE } from '../../constant/route';
 
 const HeaderWrap = styled.header`
   position: fixed;
@@ -42,7 +43,7 @@ export default function Header() {
     <HeaderWrap>
       <Container>
         <Logo>
-          <Link to='/' />
+          <Link to={ROUTE.HOME.link} />
         </Logo>
         <NavBar />
         <HeaderBtns></HeaderBtns>
