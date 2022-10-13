@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import UserImgBox from "../Comment/UserImgBox"
 import UserName from "../common/UserName"
 import CampaignDDay from "./CampaignDDay"
+import { ROUTE } from "../../constant/route"
 
 const ListItemBox = styled.div`
   display:flex;
@@ -173,7 +174,9 @@ const CampaignItemLinkBox = styled.div`
 `
 
 export interface DummyPropsType
-  { id ?: number;
+  { 
+    id ?: number;
+    campaign_id ?: number;
     thumbnailImg ?: string;
     isLike ?: boolean;
     title ?: string;
@@ -187,7 +190,7 @@ export interface DummyPropsType
     userName ?: string;
   }
 
-export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,recruitment,progress,personnel,participating,userImg,userName} : DummyPropsType) {
+export default function CampaignItem({id, campaign_id,thumbnailImg,isLike,title,desc,status,recruitment,progress,personnel,participating,userImg,userName} : DummyPropsType) {
   const person  = personnel!;
   let endEvent = participating!;
   let lengthRate = (endEvent/ person)*100; 
@@ -205,7 +208,7 @@ export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,r
   return (
     <ListItemBox className={status === "모집마감" ? "bright" : ""}>
       <CampaignItemLinkBox>
-        <Link to={`/campaigns/${id}`}>
+        <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaign_id}`}>
           <ThumbnailImgBox className="thumbnailBox">
             <img src={thumbnailImg} alt="썸네일이미지" />
           </ThumbnailImgBox>
@@ -224,7 +227,7 @@ export default function CampaignItem({id,thumbnailImg,isLike,title,desc,status,r
         </StatusBox>
         <ItemInfoBox>
           <CampaignItemLinkBox>
-            <Link to={`/campaigns/${id}`}>
+            <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaign_id}`}>
               <TextBox>
                 <h3 className="title">{title}</h3>
                 <div className="desc">{desc}</div>
