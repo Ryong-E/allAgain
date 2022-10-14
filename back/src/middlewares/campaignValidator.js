@@ -1,4 +1,4 @@
-import { body, validationResult, param } from "express-validator";
+import { body, check, validationResult, param } from "express-validator";
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -59,6 +59,7 @@ exports.campaignCreateValidator = () => {
         return true;
       }),
     body("introduce").notEmpty().withMessage("소개글이 없습니다."),
+    check("thumbnail").notEmpty().withMessage("썸네일이 없습니다."),
     validate,
   ];
 };
