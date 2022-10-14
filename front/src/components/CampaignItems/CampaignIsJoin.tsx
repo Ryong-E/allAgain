@@ -42,11 +42,11 @@ const JoinCampaignBox = styled.div`
   }
 `;
 
-interface PropsType {
+interface JoinProps {
   setIsJoin : React.Dispatch<React.SetStateAction<boolean>>;
   isJoin ?: Boolean;
 }
-export default function CampaignIsJoin({setIsJoin, isJoin}: PropsType) {
+export default function CampaignIsJoin({setIsJoin, isJoin}: JoinProps) {
   
   return (
     <JoinCampaignBox>

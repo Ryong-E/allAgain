@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import { Container } from "../common/Containers";
 import LoginForm from "./LoginForm";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
-
 
 const LoginWrap = styled.div`
   height: 100%;
@@ -34,7 +32,6 @@ const RegisterLinkButton = styled.button`
 
 export default function LoginBox() {
   return(
-    <Container>
       <LoginWrap>
         <LoginTitle>로그인</LoginTitle>
         <LoginForm />
@@ -44,7 +41,6 @@ export default function LoginBox() {
           </Link>
         </RegisterLinkWrap>
       </LoginWrap>
-    </Container>
   );
 
 }

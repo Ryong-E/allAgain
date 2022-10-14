@@ -1,4 +1,15 @@
 import { atom } from "recoil";
+import { MyProfile, User } from "../api/types";
+
+export const authUserState = atom<User>({
+  key: "authUserState",
+  default: {},
+});
+
+export const myProfileState = atom<MyProfile | null>({
+  key: "myProfileState",
+  default: null,
+});
 
 export const campaignDumData = atom({
   key:"dummy",
@@ -8,7 +19,7 @@ export const campaignDumData = atom({
       campaign_id:0,
       thumbnailImg: "",
       title : "구해줘 지구! 업사이클 - 재활용품 다시 써봅시다!",
-      desc : "누구나 함께 할 수 있습니다. 초보자 환영!, 남녀노소 캠페인 참여해주세요~",
+      desc : "누구나 함께 할 수 있습니다. 초보자 환영!, 남녀노소 캠페인 참여해주세요~\n누구나 함께 할 수 있습니다. 초보자 환영!, 남녀노소 캠페인 참여해주세요~\n누구나 함께 할 수 있습니다. 초보자 환영!, 남녀노소 캠페인 참여해주세요~",
       status: "모집 중",
       recruitment:["2022.09.28","2022.10.28"],
       progress:["2022.11.02","2022.11.30"],

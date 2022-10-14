@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { Container } from "../common/Containers";
-import { ROUTE } from "../../constant/route";
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Container } from '../common/Containers';
+import { ROUTE } from '../../constant/route';
 
 const FooterWrap = styled.footer`
   background: ${({ theme }) => theme.colors.lightBeige};
@@ -16,35 +16,33 @@ const FooterWrap = styled.footer`
     align-items: center;
     height: 100%;
   }
-  `;
+`;
 
-  const Copyright = styled.p`
-  `;
+const Copyright = styled.p``;
 
-  const FooterLinkWrap = styled.ul`
+const FooterLinkWrap = styled.ul`
   display: flex;
-  justify-contents: flex-end;
+  justify-content: flex-end;
 
   li + li {
     margin-left: 30px;
   }
-`
+`;
 
 export default function Footer() {
-  
   return (
     <FooterWrap>
       <Container>
         <Copyright>다시, 다 &copy; 2022</Copyright>
         <FooterLinkWrap>
           <li>
-            <Link to={ ROUTE.ABOUT.link }>서비스 소개</Link>
+            <Link to={ROUTE.ABOUT.link}>서비스 소개</Link>
           </li>
           <li>
-            <Link to={ ROUTE.ABOUT_TEAM.link }>팀 소개</Link>
+            <Link to={ROUTE.ABOUT_TEAM.link}>팀 소개</Link>
           </li>
         </FooterLinkWrap>
       </Container>
     </FooterWrap>
-  )
+  );
 }
