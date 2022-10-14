@@ -1,26 +1,28 @@
-import React, { PropsWithChildren, ReactChild, ReactElement, ReactEventHandler, useEffect, useMemo, useRef, useState } from "react"
-import styled, { css } from "styled-components";
+import React, { useEffect, useRef, useState } from "react"
+import styled from "styled-components";
 
 const InputWrap = styled.div`
     position:relative;
     width:150px;
     height:48px;
-    border:1px solid black;
+    background-color:#ffffff;
+    box-shadow: ${({ theme }) => theme.boxShadowDefault};
     &.on{
-        border:1px solid pink;
+        outline: 2px solid ${({ theme }) => theme.colors.dasidaGreen};
     }
     
 `
-const InputLabel = styled.label`
+const InputLabel = styled.span`
     position:absolute;
     z-index:3;
     top:0px;
     left:0px;
     transform:translateY(12px) translateX(15px) scale(1);
     transition:all 0.3s;
+    color: #666666;
     &.on{
         transform:translateY(0px) translateX(10px) scale(0.7);
-        color:purple;
+        color:${({theme}) => theme.colors.dasidaGreen};
     }
 
 `
@@ -33,14 +35,19 @@ const DateInput = styled.input`
     border:none;
     outline:none;
 `
+interface RecruitDateProp{
+    children : React.ReactNode;
+    register : any;
+    registername : string;
+    watch : any;
 
-export default function RecruitDate({children}:PropsWithChildren){
+}
+
+export default function RecruitDate({children,register,registername,watch,setValue,trigger}:any){
     const dateRef = useRef<HTMLInputElement>(null);
-    const dateLabelRef = useRef<HTMLLabelElement>(null);
     const [isClick,setIsClick] = useState(false);
     const [isWrite,setIsWrite] = useState(false);
 
-    
     // useEffect(()=>{
     //     if(dateLabelRef.current !== null){
     //         if(isWrite){
@@ -64,8 +71,11 @@ export default function RecruitDate({children}:PropsWithChildren){
         }
     },[isClick])
 
+
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         console.log(e.target.value)
+        setValue(registername,e.target.value)
+        trigger(registername)
         if(e.target.value !== ""){
             setIsWrite(true)
         }
@@ -73,11 +83,12 @@ export default function RecruitDate({children}:PropsWithChildren){
             setIsWrite(false)
         }
     }
+
     return (
         <>
             <InputWrap className={isClick ? 'on' : 'off'}>
-                <InputLabel htmlFor="date-pick" className={(isClick || isWrite) ? 'on' : 'off'}>{children}</InputLabel>
-                <DateInput type="date" id="date-pick" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
+                <InputLabel tabIndex={0} className={(isClick || isWrite) ? 'on' : 'off'} onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}}>{children}</InputLabel>
+                <DateInput {...register(`${registername}`)} type="date" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
             </InputWrap>
         </>
     )

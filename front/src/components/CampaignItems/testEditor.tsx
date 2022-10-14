@@ -55,11 +55,11 @@ export default function Editor({value,handleEditorChange}:EditorProps){
       }
     }
   }
-  useEffect(()=>{
-    if(quill){
-      quill?.getModule('toolbar').addHandler('image',handleImageUpload);
-    }
-  },[quill])
+  // useEffect(()=>{
+  //   if(quill){
+  //     quill?.getModule('toolbar').addHandler('image',handleImageUpload);
+  //   }
+  // },[quill])
 
   useEffect(()=>{
     if(quill){
