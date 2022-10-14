@@ -58,6 +58,7 @@ exports.campaignCreateValidator = () => {
         }
         return true;
       }),
+    body("introduce").notEmpty().withMessage("소개글이 없습니다."),
     validate,
   ];
 };

@@ -13,6 +13,7 @@ const campaignService = {
     campaignStartDate,
     campaignEndDate,
     recruitmentNumber,
+    introduce,
   }) => {
     const userById = await User.findByUserId({ userId });
     if (userById.length === 0) {
@@ -58,6 +59,7 @@ const campaignService = {
       campaignEndDate,
       recruitmentNumber,
       status,
+      introduce,
     });
 
     return "캠페인 생성 완료";

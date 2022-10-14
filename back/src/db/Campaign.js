@@ -12,11 +12,12 @@ const Campaign = {
     campaignEndDate,
     recruitmentNumber,
     status,
+    introduce,
   }) => {
     await connection
       .promise()
       .query(
-        "INSERT INTO campaigns(user_id, title, content, thumbnail, recruitment_start_date, recruitment_end_date, campaign_start_date, campaign_end_date, recruitment_number, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO campaigns(user_id, title, content, thumbnail, recruitment_start_date, recruitment_end_date, campaign_start_date, campaign_end_date, recruitment_number, status, introduce) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           userId,
           title,
@@ -28,6 +29,7 @@ const Campaign = {
           campaignEndDate,
           recruitmentNumber,
           status,
+          introduce,
         ],
         (error) => {
           if (error) throw error;
