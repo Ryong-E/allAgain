@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { Container } from "../common/Containers";
-import NavBar from "../Nav/NavBar";
-import { ROUTE } from "../../constant/route";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Container } from '../common/Containers';
+import NavBar from '../Nav/NavBar';
+import { ROUTE } from '../../constant/route';
 
 const HeaderWrap = styled.header`
   position: fixed;
@@ -25,8 +25,8 @@ const Logo = styled.div`
   transform: translate(0, -50%);
   width: 200px;
   height: 70px;
-  background: #E0D4B7;
-  cusor: pointer;
+  background: #e0d4b7;
+  cursor: pointer;
   z-index: 10;
 
   a {
@@ -36,24 +36,18 @@ const Logo = styled.div`
   }
 `;
 
-const HeaderBtns = styled.div`
-
-`;
+const HeaderBtns = styled.div``;
 
 export default function Header() {
-
   return (
     <HeaderWrap>
       <Container>
         <Logo>
-          <Link to={ ROUTE.HOME.link } />
+          <Link to={ROUTE.HOME.link} />
         </Logo>
         <NavBar />
-        <HeaderBtns>
-
-        </HeaderBtns>
+        <HeaderBtns></HeaderBtns>
       </Container>
     </HeaderWrap>
   );
-
 }

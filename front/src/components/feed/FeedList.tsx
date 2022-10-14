@@ -12,13 +12,14 @@ interface feed {
 
 type FeedListProps = {
   feeds: feed[];
+  isSimple: boolean;
 };
 
-function FeedList({ feeds }: FeedListProps) {
+function FeedList({ feeds, isSimple }: FeedListProps) {
   return (
     <FeedsContainer>
       {feeds.map((feed: feed) => (
-        <Feed {...feed} />
+        <Feed {...feed} isSimple={isSimple} />
       ))}
     </FeedsContainer>
   );
@@ -26,7 +27,7 @@ function FeedList({ feeds }: FeedListProps) {
 
 const FeedsContainer = styled.div`
   margin-top: 80px;
-  width: 1350px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
