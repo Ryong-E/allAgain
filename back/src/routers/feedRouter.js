@@ -27,12 +27,12 @@ feedRouter.post(
   loginRequired,
   uploadStrategy("feeds").array("image"),
   async (req, res, next) => {
-    const imageUrls = [];
+    const imagePaths = [];
     req.files.forEach((file) => {
-      imageUrls.push({ name: file.fieldname, url: file.path });
+      imagePaths.push({ name: file.fieldname, path: file.path });
     });
     try {
-      const savedImageUrls = await feedService.saveImageUrls({ imageUrls });
+      const savedImageUrls = await feedService.saveImageUrls({ imagePaths });
       res.status(200).send(savedImageUrls);
     } catch (error) {
       next(error);

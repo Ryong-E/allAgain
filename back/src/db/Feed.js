@@ -22,13 +22,10 @@ const Feed = {
     }
     return "피드 업로드 성공";
   },
-  saveImageUrl: async ({ imageUrl }) => {
+  saveImageUrl: async ({ name, url }) => {
     await connection
       .promise()
-      .query("INSERT INTO images(name, url) VALUES(?, ?)", [
-        imageUrl.name,
-        imageUrl.url,
-      ]);
+      .query("INSERT INTO images(name, url) VALUES(?, ?)", [name, url]);
     const imageId = await connection.promise().query("SELECT LAST_INSERT_ID()");
     return imageId[0][0]["LAST_INSERT_ID()"];
   },
