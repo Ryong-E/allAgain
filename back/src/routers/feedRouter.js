@@ -2,6 +2,7 @@
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
 import { feedService } from "../services/feedService";
+import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
 
 const feedRouter = Router();
 
@@ -20,6 +21,24 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
     next(error);
   }
 });
+
+feedRouter.post(
+  "/images",
+  loginRequired,
+  uploadStrategy("feeds").array("image"),
+  async (req, res, next) => {
+    const imageUrls = [];
+    req.files.forEach((file) => {
+      imageUrls.push({ name: file.fieldname, url: file.path });
+    });
+    try {
+      const savedImageUrls = await feedService.saveImageUrls({ imageUrls });
+      res.status(200).send(savedImageUrls);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 feedRouter.get("/", loginRequired, async (req, res, next) => {
   try {
