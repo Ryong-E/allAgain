@@ -1,15 +1,6 @@
 import styled from 'styled-components';
 import Feed from './Feed';
 
-interface feed {
-  user_id?: number;
-  category?: string[];
-  tags?: string[];
-  image_urls?: string[];
-  description?: string;
-  feed_id?: number;
-}
-
 type FeedListProps = {
   feeds: IFeed[];
   isSimple: boolean;
