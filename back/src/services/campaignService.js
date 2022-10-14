@@ -48,6 +48,8 @@ const campaignService = {
       status = "모집 마감";
     }
 
+    // content XSS 대응
+
     await Campaign.create({
       userId,
       title,
@@ -84,10 +86,13 @@ const campaignService = {
       } else if (currentDate >= campaigns[i].recruitment_end_date) {
         status = "모집 마감";
       }
-      await Campaign.updateStatus({ campaignId: campaigns[i].id, status });
+      await Campaign.updateStatus({
+        campaignId: campaigns[i].campaign_id,
+        status,
+      });
 
       filteredCampaigns.push({
-        campaignId: campaigns[i].id,
+        campaignId: campaigns[i].campaign_id,
         title: campaigns[i].title,
         thumbnail: campaigns[i].thumbnail,
         recruitmentStartDate: campaigns[i].recruitment_start_date,
@@ -124,10 +129,13 @@ const campaignService = {
     } else if (currentDate >= campaign[0].recruitment_end_date) {
       status = "모집 마감";
     }
-    await Campaign.updateStatus({ campaignId: campaign[0].id, status });
+    await Campaign.updateStatus({
+      campaignId: campaign[0].campaign_id,
+      status,
+    });
 
     const filteredCampaign = {
-      campaignId: campaign[0].id,
+      campaignId: campaign[0].campaign_id,
       title: campaign[0].title,
       content: campaign[0].content,
       thumbnail: campaign[0].thumbnail,
@@ -145,6 +153,75 @@ const campaignService = {
     };
 
     return filteredCampaign;
+  },
+  updateCampaign: async ({
+    userId,
+    campaignId,
+    title,
+    content,
+    thumbnail,
+    recruitmentStartDate,
+    recruitmentEndDate,
+    campaignStartDate,
+    campaignEndDate,
+    recruitmentNumber,
+    introduce,
+  }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+    if (userId !== campaign[0].user_id) {
+      throw new Error("수정권한이 없는 유저입니다.");
+    }
+
+    let thumbnailUrl = undefined;
+    if (thumbnail !== "null") {
+      const re = new RegExp(`campaignThumbnail.*`, "g");
+      const serverUrl = process.env.SERVER_URL || "localhost";
+      const serverPort = process.env.SERVER_PORT || 5000;
+      thumbnailUrl = path.join(
+        serverUrl + ":" + serverPort,
+        "/",
+        thumbnail.match(re)[0]
+      );
+    } else {
+      thumbnailUrl = campaign[0].thumbnail;
+    }
+
+    let status;
+    const currentDate = new Date();
+    // 현재 시간 >= recruitment_start_date = 모집중
+    // 현재 시간 < recruitment_start_date = 모집예정
+    // 현재 시간 > recruitment_end_date = 모집마감
+    if (
+      currentDate >= recruitmentStartDate &&
+      currentDate < recruitmentEndDate
+    ) {
+      status = "모집 중";
+    } else if (currentDate < recruitmentStartDate) {
+      status = "모집 예정";
+    } else if (currentDate >= recruitmentEndDate) {
+      status = "모집 마감";
+    }
+
+    // XSS 대응
+
+    await Campaign.update({
+      campaignId,
+      title,
+      content,
+      thumbnail: thumbnailUrl,
+      recruitmentStartDate,
+      recruitmentEndDate,
+      campaignStartDate,
+      campaignEndDate,
+      recruitmentNumber,
+      introduce,
+      status,
+    });
+
+    return "업데이트 완료";
   },
 };
 
