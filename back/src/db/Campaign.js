@@ -42,7 +42,7 @@ const Campaign = {
     const campaigns = await connection
       .promise()
       .query(
-        "SELECT * FROM campaigns JOIN users ON campaigns.user_id = users.id",
+        "SELECT *, campaigns.id FROM campaigns JOIN users ON campaigns.user_id = users.id",
         [],
         (error) => {
           if (error) throw error;
