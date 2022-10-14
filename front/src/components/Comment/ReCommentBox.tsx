@@ -3,19 +3,19 @@ import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { commentDumData } from '../../atoms/atoms'
 import CommentItem from './CommentItem'
-import CampaignCommentWrite, { CommentDataType } from './CommentWrite'
+import CampaignCommentWrite, { CommentData } from './CommentWrite'
 
 const ReCommentItem = styled.div`
   margin-left: 50px;
 `
 
-interface ReCommentType extends CommentDataType{
+interface ReComment extends CommentData{
   isShowReComment :Boolean;
   idx : number;
   lastIdx : number;
 }
 
-export default function ReCommentBox({pathID, userId, isShowReComment, idx, lastIdx}: ReCommentType) {
+export default function ReCommentBox({pathID, userId, isShowReComment, idx, lastIdx}: ReComment) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData)
   const filteredReComment = dumComment.filter(ele => ele.root_comment_id === String(userId!))
   

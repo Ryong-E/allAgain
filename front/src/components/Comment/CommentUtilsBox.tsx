@@ -28,7 +28,7 @@ const UtilsBox = styled.div`
   }
 `;
 
-interface ReCommentType {
+interface CommentUtils {
   root_comment_id: String;
   userId: number;
   isReComment: Boolean;
@@ -38,7 +38,7 @@ interface ReCommentType {
   setLastIdx : React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId, idx, setLastIdx }: ReCommentType) {
+export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId, idx, setLastIdx }: CommentUtils) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData);
   const filteredComment = dumComment.filter((ele) => ele.root_comment_id === String(userId));
   const reCommentLength = filteredComment.length;

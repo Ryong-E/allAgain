@@ -4,7 +4,6 @@ import sendHoverIcon from '../../assets/images/icons/icon_send_hover.png';
 import sendIcon from '../../assets/images/icons/icon_send.png';
 import UserImgBox from './UserImgBox';
 import { SetterOrUpdater, useRecoilState } from 'recoil';
-import { CommentItemType } from './CommentItem';
 import { commentDumData } from '../../atoms/atoms';
 import { useEffect } from 'react';
 
@@ -46,18 +45,18 @@ const SubmitIconBtn = styled.button`
 
 
 
-interface WriteInputType {
+interface WriteInput {
   commentWrite?: string;
 }
 
-export interface CommentDataType{
+export interface CommentData{
   pathID : number;
   userId ?: number;
 }
 
 
 
-export default function CampaignCommentWrite({pathID,userId}: CommentDataType) {
+export default function CampaignCommentWrite({pathID,userId}: CommentData) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData)
   const {
     register,
@@ -65,8 +64,8 @@ export default function CampaignCommentWrite({pathID,userId}: CommentDataType) {
     reset,
     watch,
     formState: { errors }
-  } = useForm<WriteInputType>();
-  const onSubmit: SubmitHandler<WriteInputType> = ({ commentWrite }) => {
+  } = useForm<WriteInput>();
+  const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
     const lastId = Number(dumComment[dumComment.length-1].userId) + 1
     const newComment = {
       campaign_id : pathID,

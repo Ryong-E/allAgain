@@ -46,7 +46,7 @@ const CommentBox = styled.div`
   }
 `;
 
-export interface CommentItemType {
+export interface CommentItem {
   campaign_id : number;
   userId: number;
   root_comment_id: String;
@@ -58,7 +58,7 @@ export interface CommentItemType {
   setLastIdx ?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID, idx, setLastIdx, lastIdx }: CommentItemType) {
+export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID, idx, setLastIdx, lastIdx }: CommentItem) {
   const [isReComment, setIsReComment] = useState(false);
   const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
