@@ -15,6 +15,7 @@ const FooterWrap = styled.footer`
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    padding: 0 80px;
   }
 `;
 
