@@ -4,6 +4,7 @@ const CampaignContentsBox = styled.div`
 border: 1px solid rgba(231,225,210,.8);
 box-shadow: ${({theme})=> theme.boxShadowDefault};
 background:${({theme})=> theme.colors.white};
+text-align:center;
 `
 
 interface Children {

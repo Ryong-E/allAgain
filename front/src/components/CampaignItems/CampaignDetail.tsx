@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import CampaignItem, { DummyPropsType } from '../CampaignItems/CampaignItem';
 import { ConfirmButton, DelButton } from '../common/Buttons';
@@ -11,10 +11,17 @@ import chatIcon from '../../assets/images/icons/icon_chat.png';
 import CampaignContents from './CampaignContents';
 import CUDBtn from './CUDBtn';
 import CampaignIntroDetail from './CampaignIntroDetail';
+import QuillEditor from './QuillEditor';
 
 
 export default function CampaignDetail(props: DummyPropsType) {
-  
+  const test = useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    if(test.current !== null){
+      test.current.innerHTML= `${props.title}`
+      console.log(test.current.innerHTML);
+    }
+  },[])
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false)
   return (
@@ -30,7 +37,7 @@ export default function CampaignDetail(props: DummyPropsType) {
       {!isActive ? (
         <>
           <CampaignContents>
-            <h3>hi</h3>
+            <div ref={test}></div>
           </CampaignContents>
           <CampaignIsJoin
             setIsJoin={setIsJoin}
