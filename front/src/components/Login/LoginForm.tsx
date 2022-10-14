@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { useRecoilState } from "recoil";
 
-import { IUser, ILoginResponse, ILoginRequiredParams } from "../../api/types";
+import { User, LoginResponse, LoginRequiredParams } from "../../api/types";
 import { useMutation, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
 import { authUserState } from "../../atoms/atoms";
@@ -94,7 +94,7 @@ export default function LoginForm() {
     },
   });
 
-  const handleLoginVaildate = ({ email, password }: ILoginRequiredParams) => {
+  const handleLoginVaildate = ({ email, password }: LoginRequiredParams) => {
     loginMutation.mutate({ email, password });
   }
 

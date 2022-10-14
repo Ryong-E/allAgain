@@ -1,13 +1,13 @@
 import axios from "axios";
 import {
-  IUser,
-  ILoginResponse,
-  IUserResponse,
-  IRegisterRequiredParams,
-  IRegisterResponse
+  User,
+  LoginResponse,
+  UserResponse,
+  RegisterRequiredParams,
+  RegisterResponse
 } from "./types";
 
-const BASE_URL = "http://localhost:5001/users/";
+const BASE_URL = "http://localhost:5001/users";
 
 const userApi = axios.create({
   baseURL: BASE_URL,
@@ -16,39 +16,40 @@ const userApi = axios.create({
   },
 });
 
-
-export const createUser = async ({ email, password, passwordConfirm, name, nickname }: IRegisterRequiredParams) => {
+// 회원가입
+export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
   try {
-    const response = await userApi.post<IRegisterResponse>('register', { email, password, passwordConfirm, name, nickname });
-    console.log(response);
-    return response.data;
+    const { data } = await userApi.post<RegisterResponse>('register', { email, password, passwordConfirm, name, nickname });
+    return data;
   } catch (err: any) {
     throw new Error(err.message);
   }
 };
 
-export const loginUser = async ({ email, password }: IUser) => {
+// 로그인
+export const loginUser = async ({ email, password }: User) => {
   try {
-    const response = await userApi.post<ILoginResponse>('login', { email, password });
-    return response.data;
+    const { data } = await userApi.post<LoginResponse>('/login', { email, password });
+    return data;
   } catch (err: any) {
     throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
   }
 };
 
-export const getUserProfile = async ({ nickname }: IUser) => {
+// 나의 계정프로필 조회하기
+export const getUserProfile = async () => {
   try {
     const token = localStorage.getItem('jwtToken');
-    const response = await axios({
+    const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}${nickname}`,
+      url: `${BASE_URL}/informations/me`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
       },
     });
-    return response.data;
+    return data;
   } catch (err: any) {
-    throw new Error(err.message);
+    throw new Error(err);
   }
 };

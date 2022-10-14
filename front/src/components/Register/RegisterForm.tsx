@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { ButtonBlock, LargeButton } from "../common/Buttons";
 import { InputBlock, InputIconText, InputIcon, InputIconBlock, InputErrorMsg, Label } from "../common/Form";
-import { IRegisterRequiredParams } from "../../api/types";
+import { RegisterRequiredParams } from "../../api/types";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ export default function RegisterForm() {
   } = useForm<Inputs>({
   });
 
-  const onRegisterSubmit = (data: IRegisterRequiredParams) => {
+  const onRegisterSubmit = (data: RegisterRequiredParams) => {
     RegisterMutation.mutate(data);
   }
 

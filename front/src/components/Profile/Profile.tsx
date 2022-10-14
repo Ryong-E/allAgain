@@ -1,66 +1,74 @@
 import * as ProfileStyle from "./Profile.style";
 import { getUserProfile } from '../../api/userApi';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
+import { MyProfile } from "../../api/types"
+import { useRecoilValue } from "recoil";
+import { myProfileState } from "../../atoms/atoms";
 
-interface ProfileProps {
-  bgUrl: string,
-  nickname: string,
-  email: string,
-  name: string,
-}
 
 export default function Profile() {
 
-  // const data = getUserProfile({ nickname: "소히" });
-  // console.log(data);
+  // const myProfileInfo = useRecoilState(myProfileState);
 
+  const { 
+    data, 
+    isLoading, 
+    isError, 
+    error,
+  } = useQuery<MyProfile, Error>(["myInfo"], getUserProfile, {
+    staleTime: 5 * 1000,  // 5초간 fresh상태 유지 후 stale됨
+    refetchOnMount: true,   // 
+    refetchOnWindowFocus: true, // window에 포커스되면 refetch됨 
+  });
 
-  const { isLoading, error, data, isFetching } = useQuery(["userInfo"], () =>
-    getUserProfile({ nickname: "소히" })
-  );
+  if(isError) {
+    return <div>{error.message}</div>
+  }
 
-  const userInfo = data && data;
-
+  // console.log(myProfileData);
   console.log(data && data);
-
-
-  // const imageUrl: string = data.image_url;
-  // console.log(imageUrl);
 
   return (
     <>
-      <ProfileStyle.FormContainer>
-        <ProfileStyle.Container400>
-          <ProfileStyle.ImageWrap>
-            <ProfileStyle.Image />
-            <ProfileStyle.EditImageButton />
-          </ProfileStyle.ImageWrap>
-          <ProfileStyle.NickNameInput value="소히히히히히히"/>
-        </ProfileStyle.Container400>
-        <ProfileStyle.InfoListWrap>
-          <ProfileStyle.InfoList>
-            <li>
-              <span>이메일</span>
-              <p>test@naver.com</p>
-            </li>
-            <li>
-              <span>이름</span>
-              <p>정소희</p>
-            </li>
-            <li>
-              <span>비밀번호</span>
-              <ProfileStyle.PwChangeBlock>
-                <ProfileStyle.PwChangeInput placeholder="현재 비밀번호"/>
-                <ProfileStyle.PwChangeInput placeholder="새 비밀번호"/>
-                <ProfileStyle.PwChangeInput placeholder="새 비밀번호 확인"/>
-              </ProfileStyle.PwChangeBlock>
-            </li>
-          </ProfileStyle.InfoList>
-        </ProfileStyle.InfoListWrap>
-        <ProfileStyle.SubmitButton>저장</ProfileStyle.SubmitButton>
-      </ProfileStyle.FormContainer>
-      <ProfileStyle.WithdrawalButton>회원탈퇴</ProfileStyle.WithdrawalButton>
+    {
+      !isLoading &&
+      (
+          <>
+          <ProfileStyle.FormContainer>
+            <ProfileStyle.Container400>
+              <ProfileStyle.ImageWrap>
+                <ProfileStyle.Image />
+                <ProfileStyle.EditImageButton />
+              </ProfileStyle.ImageWrap>
+              <ProfileStyle.NickNameInput value={data.nickname}/>
+            </ProfileStyle.Container400>
+            <ProfileStyle.InfoListWrap>
+              <ProfileStyle.InfoList>
+                <li>
+                  <span>이메일</span>
+                  <p>{data.email}</p>
+                </li>
+                <li>
+                  <span>이름</span>
+                  <p>{data.name}</p>
+                </li>
+                <li>
+                  <span>비밀번호</span>
+                  <ProfileStyle.PwChangeBlock>
+                    <ProfileStyle.PwChangeInput placeholder="현재 비밀번호"/>
+                    <ProfileStyle.PwChangeInput placeholder="새 비밀번호"/>
+                    <ProfileStyle.PwChangeInput placeholder="새 비밀번호 확인"/>
+                  </ProfileStyle.PwChangeBlock>
+                </li>
+              </ProfileStyle.InfoList>
+            </ProfileStyle.InfoListWrap>
+            <ProfileStyle.SubmitButton>저장</ProfileStyle.SubmitButton>
+          </ProfileStyle.FormContainer>
+          <ProfileStyle.WithdrawalButton>회원탈퇴</ProfileStyle.WithdrawalButton>
+        </>
+      )
+    }
     </>
   )
 };

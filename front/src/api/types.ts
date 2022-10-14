@@ -1,4 +1,4 @@
-export interface IUser {
+export interface User {
   id?: string,
   email?: string,
   password?: string,
@@ -8,7 +8,14 @@ export interface IUser {
   token?: string
 }
 
-export interface IRegisterRequiredParams {
+export interface MyProfile {
+  email: string,
+  name: string,
+  nickname: string,
+  image_url: string,
+}
+
+export interface RegisterRequiredParams {
   email: string,
   password: string,
   passwordConfirm: string,
@@ -16,27 +23,27 @@ export interface IRegisterRequiredParams {
   nickname: string,
 }
 
-export interface IRegisterResponse {
+export interface RegisterResponse {
   status: string;
 }
 
-export interface ILoginRequiredParams {
+export interface LoginRequiredParams {
   email: string,
   password: string
 }
 
-export interface ILoginResponse {
+export interface LoginResponse {
   status: string;
   access_token: string;
   data: {
-    user: IUser;
+    user: User;
   };
 }
 
-export interface IUserResponse {
+export interface UserResponse {
   status: string;
   data: {
-    user: IUser;
+    user: User;
   };
 }
 
