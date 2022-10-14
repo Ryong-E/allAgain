@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import CampaignItem from '../../components/CampaignItems/CampaignItem';
@@ -9,6 +9,8 @@ import { ROUTE } from "../../constant/route";
 import { useRecoilValue } from "recoil"
 import { campaignDumData } from "../../atoms/atoms"
 import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
+import { useQuery } from '@tanstack/react-query';
+import {  getCampaignList } from '../../api/campaignApi';
 
 
 const NoPaddingContainer = styled(Container)`
@@ -36,10 +38,16 @@ const CampaignList = styled.div`
 
 `
 export default function CampaignPage() {
+  const {status, data, error} = useQuery(['list'], getCampaignList);
+
   const dum = useRecoilValue(campaignDumData);
-  const [values, setValues] = useState(['모집 중', '모집예정', '모집마감']); 
+  const [values, setValues] = useState(['모집 중', '모집 예정', '모집 마감']); 
   const [currentValue, setCurrentValue] = useState('모집 중');
-  const filteredStatus = dum.filter(ele => ele.status === currentValue);
+  const filteredStatus = data && data!.filter(ele => ele.status === currentValue);
+
+  // const dataList = data && data.filter((x => x.status === currentValue));
+  
+  console.log(data);
   
   return (
     <NoPaddingContainer>
@@ -52,8 +60,8 @@ export default function CampaignPage() {
           </Link>
         </AdditionalBox>
         <CampaignList >
-          {filteredStatus.map(props =>(
-            <CampaignItem {...props} key={props.id+ props.campaign_id + props.userName} />
+          {data && filteredStatus!.map(props =>(
+            <CampaignItem {...props} key={`${props.id , props.campaignId ,props.title}`} />
           ))}
         </CampaignList>
       </Container1300Ver2>
