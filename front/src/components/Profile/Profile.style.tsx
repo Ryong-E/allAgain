@@ -5,7 +5,7 @@ import ProfileImage from "../../assets/images/icons/icon_profile.png";
 import EditIcon from "../../assets/images/icons/icon_image_edit.png"
 
 export const FormContainer = styled.form`
-  padding: 170px 0 60px;
+  padding: 0 0 60px;
   margin: 0 auto;
 `;
 
@@ -20,7 +20,7 @@ export const ImageWrap = styled.div`
   position: relative;
   width: 180px;
   height: 180px;
-  margin: 0 auto 40px;
+  margin: 170px auto 40px;
 `;
 
 export const Image = styled.div`

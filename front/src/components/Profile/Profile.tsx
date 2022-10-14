@@ -1,11 +1,21 @@
 import * as ProfileStyle from "./Profile.style";
-import { getUserProfile } from '../../api/userApi';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { getUserProfile, updateUserProfile } from '../../api/userApi';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
-import { MyProfile } from "../../api/types"
+import { MyProfile, MyProfileEditParams } from "../../api/types"
 import { useRecoilValue } from "recoil";
 import { myProfileState } from "../../atoms/atoms";
+import { useForm } from "react-hook-form";
+import { InputErrorMsg } from "../common/Form";
 
+
+type Inputs = {
+  nickname: string,
+  currentPassword: string,
+  password: string,
+  passwordConfirm: string,
+  UpdateError: string,
+};
 
 export default function Profile() {
 
@@ -13,35 +23,105 @@ export default function Profile() {
 
   const { 
     data, 
-    isLoading, 
+    isLoading,
+    isSuccess,
     isError, 
     error,
-  } = useQuery<MyProfile, Error>(["myInfo"], getUserProfile, {
-    staleTime: 5 * 1000,  // 5초간 fresh상태 유지 후 stale됨
-    refetchOnMount: true,   // 
-    refetchOnWindowFocus: true, // window에 포커스되면 refetch됨 
+  } = useQuery<MyProfile, Error>(["myprofile"], getUserProfile, {
+      // staleTime: 5 * 1000,  // 5초간 fresh상태 유지 후 stale됨
+      refetchOnWindowFocus: true, // window에 포커스되면 refetch됨,
+      onSuccess: (data) => {
+        setNickInput(data.nickname);
+        setValue("nickname", data.nickname);
+      }
   });
 
-  if(isError) {
-    return <div>{error.message}</div>
+
+  // 닉네임 state
+  const [nickInput, setNickInput] = useState<string | undefined>("");
+
+  const handleNickChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickInput(e.target.value);
   }
 
-  // console.log(myProfileData);
-  console.log(data && data);
+
+  // 프로필 수정 form 유효성 검사
+  const { 
+    register, 
+    handleSubmit, 
+    getValues,
+    setError,
+    clearErrors,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>({
+    reValidateMode: "onSubmit",
+    defaultValues: {
+      nickname: nickInput,
+      currentPassword: "",
+      password: "",
+      passwordConfirm: ""
+    },
+  });
+
+
+  // 프로필 수정 Mutation 정의
+  const queryClient = useQueryClient();
+
+  const updateProfileMutation = useMutation(["updateProfile"], updateUserProfile, {
+    onMutate: variable => {
+      console.log("onMutate", variable);
+    },
+    onError: (error: any, variable, context) => {
+      // console.log(error);
+      setError("UpdateError", {message: error.data.errorMessage});
+    },
+    onSuccess: (data: any, variables, context) => {
+      console.log("success", data, variables, context);
+      queryClient.invalidateQueries(["myprofile"]);
+      setValue("currentPassword", "");
+      setValue("password", "");
+      setValue("passwordConfirm", "");
+    },
+  });
+
+
+  // 프로필 수정 submit 시
+  const handleProfileSubmit = ({ nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
+    console.log("리액트훅폼", nickname, currentPassword, password, passwordConfirm);
+    clearErrors("UpdateError");
+
+    // 현재 비밀번호값을 입력했으면 새 비밀번호도 입력 필요
+    if((getValues("currentPassword") !== "") && (getValues("password") == "")) {
+      return setError("UpdateError", {message: "새 비밀번호를 입력하세요"});
+    }
+
+    // 비밀번호 변경 시 현재 비밀번호 필수로 입력
+    else if((getValues("password") !== "") && (getValues("currentPassword") === "")) {
+      return setError("UpdateError", {message: "현재 비밀번호를 입력하세요"});
+    }
+    updateProfileMutation.mutate({ nickname, currentPassword, password, passwordConfirm });
+  }
 
   return (
     <>
     {
-      !isLoading &&
+      isSuccess &&
       (
-          <>
-          <ProfileStyle.FormContainer>
+        <>
+          <ProfileStyle.ImageWrap>
+            <ProfileStyle.Image />
+            <ProfileStyle.EditImageButton />
+          </ProfileStyle.ImageWrap>
+          <ProfileStyle.FormContainer onSubmit={ handleSubmit(handleProfileSubmit) }>
             <ProfileStyle.Container400>
-              <ProfileStyle.ImageWrap>
-                <ProfileStyle.Image />
-                <ProfileStyle.EditImageButton />
-              </ProfileStyle.ImageWrap>
-              <ProfileStyle.NickNameInput value={data.nickname}/>
+              <ProfileStyle.NickNameInput 
+                {...register("nickname", { 
+                  required: "닉네임은 필수입니다.",
+                })}
+                onChange={handleNickChange}
+              />
+              {errors.nickname && <InputErrorMsg>{errors.nickname.message}</InputErrorMsg>}
             </ProfileStyle.Container400>
             <ProfileStyle.InfoListWrap>
               <ProfileStyle.InfoList>
@@ -56,9 +136,32 @@ export default function Profile() {
                 <li>
                   <span>비밀번호</span>
                   <ProfileStyle.PwChangeBlock>
-                    <ProfileStyle.PwChangeInput placeholder="현재 비밀번호"/>
-                    <ProfileStyle.PwChangeInput placeholder="새 비밀번호"/>
-                    <ProfileStyle.PwChangeInput placeholder="새 비밀번호 확인"/>
+                    <ProfileStyle.PwChangeInput 
+                      {...register("currentPassword", {
+                        minLength: { value: 6, message: "비밀번호를 6자 이상 입력하세요." }
+                      })}
+                      type="password"
+                      placeholder="현재 비밀번호
+                    "/>
+                    <ProfileStyle.PwChangeInput 
+                      {...register("password", {
+                        minLength: { value: 6, message: "비밀번호를 6자 이상 입력하세요." }
+                      })}
+                      type="password"
+                      placeholder="새 비밀번호"/>
+                    <ProfileStyle.PwChangeInput 
+                      {...register("passwordConfirm", {
+                        validate: (passwordConfirm?: string) => {
+                          const originPassword = getValues("password");
+                          return passwordConfirm === originPassword || "비밀번호가 일치하지 않습니다.";
+                        }
+                      })}
+                      type="password" 
+                      placeholder="새 비밀번호 확인"/>
+                    {errors.currentPassword && <InputErrorMsg>{errors.currentPassword.message}</InputErrorMsg>}
+                    {errors.password && <InputErrorMsg>{errors.password.message}</InputErrorMsg>}
+                    {!errors.password && errors.passwordConfirm && <InputErrorMsg>{errors.passwordConfirm.message}</InputErrorMsg>}
+                    {!errors.passwordConfirm && errors.UpdateError && <InputErrorMsg>{errors.UpdateError.message}</InputErrorMsg>}
                   </ProfileStyle.PwChangeBlock>
                 </li>
               </ProfileStyle.InfoList>

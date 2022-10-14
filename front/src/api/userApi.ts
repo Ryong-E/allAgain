@@ -4,7 +4,8 @@ import {
   LoginResponse,
   UserResponse,
   RegisterRequiredParams,
-  RegisterResponse
+  RegisterResponse,
+  MyProfileEditParams
 } from "./types";
 
 const BASE_URL = "http://localhost:5001/users";
@@ -51,5 +52,32 @@ export const getUserProfile = async () => {
     return data;
   } catch (err: any) {
     throw new Error(err);
+  }
+};
+
+
+// 나의 계정프로필 수정하기
+export const updateUserProfile = async ({ nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
+  try {
+    const token = localStorage.getItem('jwtToken');
+    const { data } = await axios({
+      method: 'put',
+      url: `${BASE_URL}/profile`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+      data: {
+        nickname,
+        currentPassword,
+        password,
+        passwordConfirm
+      }
+    });
+    console.log(data);
+    return data;
+  } catch (err: any) {
+    console.log(err.response.data.errorMessage);
+    throw err.response;
   }
 };
