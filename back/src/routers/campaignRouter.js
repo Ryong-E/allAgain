@@ -42,4 +42,19 @@ campaignRouter.get("/", loginRequired, async (req, res, next) => {
   }
 });
 
+campaignRouter.get(
+  "/campaign/:campaignId",
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { campaignId } = req.params;
+      const campaign = await campaignService.getCampaign({ campaignId });
+
+      res.status(200).json(campaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { campaignRouter };

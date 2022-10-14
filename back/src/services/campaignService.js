@@ -106,6 +106,46 @@ const campaignService = {
 
     return filteredCampaigns;
   },
+  getCampaign: async ({ campaignId }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 켐페인입니다.");
+    }
+
+    let status;
+    const currentDate = new Date();
+    if (
+      currentDate >= campaign[0].recruitment_start_date &&
+      currentDate < campaign[0].recruitment_end_date
+    ) {
+      status = "모집 중";
+    } else if (currentDate < campaign[0].recruitment_start_date) {
+      status = "모집 예정";
+    } else if (currentDate >= campaign[0].recruitment_end_date) {
+      status = "모집 마감";
+    }
+    await Campaign.updateStatus({ campaignId: campaign[0].id, status });
+
+    const filteredCampaign = {
+      campaignId: campaign[0].id,
+      title: campaign[0].title,
+      content: campaign[0].content,
+      thumbnail: campaign[0].thumbnail,
+      recruitmentStartDate: campaign[0].recruitment_start_date,
+      recruitmentEndDate: campaign[0].recruitment_end_date,
+      campaignStartDate: campaign[0].campaign_start_date,
+      campaignEndDate: campaign[0].campaign_end_date,
+      recruitmentNumber: campaign[0].recruitment_number,
+      introduce: campaign[0].introduce,
+      status,
+      writer: {
+        nickname: campaign[0].nickname,
+        imageUrl: campaign[0].image_url,
+      },
+    };
+
+    return filteredCampaign;
+  },
 };
 
 export { campaignService };

@@ -51,6 +51,19 @@ const Campaign = {
 
     return campaigns[0];
   },
+  findByCampaignId: async ({ campaignId }) => {
+    const campaign = await connection
+      .promise()
+      .query(
+        "SELECT *, campaigns.id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.id = ?",
+        [campaignId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return campaign[0];
+  },
   updateStatus: async ({ campaignId, status }) => {
     await connection
       .promise()
