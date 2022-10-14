@@ -27,7 +27,7 @@ const userService = {
       token,
       name,
       nickname,
-      image_url,
+      imageUrl: image_url,
     };
 
     return loginUser;
@@ -105,9 +105,9 @@ const userService = {
       imagePath.match(re)[0]
     );
 
-    await User.updateImageUrl({ userId, image_url: imageUrl });
+    await User.updateImageUrl({ userId, imageUrl });
 
-    return { image_url: imageUrl };
+    return { imageUrl };
   },
   withdrawal: async ({ userId }) => {
     await User.delete({ userId });
@@ -123,10 +123,25 @@ const userService = {
     const targetUser = {
       name: user[0].name,
       nickname,
-      image_url: user[0].image_url,
+      imageUrl: user[0].image_url,
     };
 
     return targetUser;
+  },
+  getMyInfo: async ({ userId }) => {
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 아이디입니다.");
+    }
+
+    const userInfo = {
+      email: user[0].email,
+      name: user[0].name,
+      nickname: user[0].nickname,
+      imageUrl: user[0].image_url,
+    };
+
+    return userInfo;
   },
 };
 

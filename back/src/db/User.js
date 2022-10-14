@@ -57,12 +57,12 @@ const User = {
 
     return null;
   },
-  updateImageUrl: async ({ userId, image_url }) => {
+  updateImageUrl: async ({ userId, imageUrl }) => {
     await connection
       .promise()
       .query(
         "UPDATE users SET image_url = ? WHERE id = ?",
-        [image_url, userId],
+        [imageUrl, userId],
         (error) => {
           if (error) throw error;
         }

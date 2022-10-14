@@ -76,6 +76,9 @@ export const Textarea = styled.textarea`
     font-size: ${({ theme }) => theme.fontSizes.placeholder};
     color:  ${({ theme }) => theme.colors.placeholder};
   }
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.dasidaGreen};
+  }
 `;
 
 export const Label = styled.label`

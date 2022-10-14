@@ -1,9 +1,11 @@
 import Template from '../pages/Template';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
+import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import FeedListPage from '../pages/FeedPage/FeedListPage';
 import CampaignPage from '../pages/CampaignPage/CampaignPage';
 import CampaignDetailPage from '../pages/CampaignPage/CampaignDetailPage';
+import CampaignCreatePage from '../pages/CampaignPage/CampaignCreatePage';
 
 export const ROUTE = {
   HOME: {
@@ -20,6 +22,11 @@ export const ROUTE = {
     path: '/register',
     link: '/register',
     element: RegisterPage,
+  },
+  MY_PROFILE: {
+    path: '/profile',
+    link: '/profile',
+    element: ProfilePage,
   },
   ABOUT: {
     path: '/about',
@@ -45,6 +52,11 @@ export const ROUTE = {
     path: '/campaign/:id',
     link: `/campaign/`,
     element: CampaignDetailPage,
+  },
+  CAMPAGIN_CREATE: {
+    path: '/campaign/add',
+    link: `/campaign`,
+    element: CampaignCreatePage,
   },
 };
 

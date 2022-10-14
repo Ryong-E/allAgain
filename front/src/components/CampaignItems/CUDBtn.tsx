@@ -13,14 +13,19 @@ const CUDBtnBox = styled(ButtonBlock)`
 `;
 
 
-type JCTCenterType = {
+
+interface JCTCenter  {
   JCTCenter ?: Boolean;
+  campaign_id : number;
 }
 
-export default function CUDBtn({JCTCenter}: JCTCenterType) {
+
+
+
+export default function CUDBtn({JCTCenter, campaign_id}: JCTCenter) {
   return (
     <CUDBtnBox className={JCTCenter ? "JCTCenter" :""}>
-        <DelButton>삭제</DelButton>
+        <DelButton onClick={()=>{}}>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
     </CUDBtnBox>
   )
