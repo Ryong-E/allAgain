@@ -72,6 +72,15 @@ exports.getCampaignValidator = () => {
   ];
 };
 
+exports.deleteCampaignValidator = () => {
+  return [
+    body("campaignId")
+      .notEmpty()
+      .withMessage("삭제하려는 캠페인 아이디가 없습니다."),
+    validate,
+  ];
+};
+
 exports.updateCampaignValidator = () => {
   return [
     body("title").notEmpty().withMessage("제목이 없습니다."),

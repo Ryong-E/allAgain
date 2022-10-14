@@ -6,6 +6,7 @@ import {
   campaignCreateValidator,
   getCampaignValidator,
   updateCampaignValidator,
+  deleteCampaignValidator,
 } from "../middlewares/campaignValidator";
 
 const campaignRouter = Router();
@@ -82,6 +83,26 @@ campaignRouter.put(
       });
 
       res.status(201).json(updatedCampaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/",
+  loginRequired,
+  deleteCampaignValidator(),
+  async (req, res, next) => {
+    try {
+      const currentUserId = req.currentUserId;
+      const { campaignId } = req.body;
+      const deletedCampaign = await campaignService.deleteCampaign({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      res.status(204).json(deletedCampaign);
     } catch (error) {
       next(error);
     }

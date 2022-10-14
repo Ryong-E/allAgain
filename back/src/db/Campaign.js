@@ -114,6 +114,15 @@ const Campaign = {
 
     return null;
   },
+  deleteByCampaignId: async ({ campaignId }) => {
+    await connection
+      .promise()
+      .query("DELETE FROM campaigns WHERE id = ?", [campaignId], (error) => {
+        if (error) throw error;
+      });
+
+    return null;
+  },
 };
 
 export { Campaign };

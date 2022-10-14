@@ -223,6 +223,19 @@ const campaignService = {
 
     return "업데이트 완료";
   },
+  deleteCampaign: async ({ userId, campaignId }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+    if (userId !== campaign[0].user_id) {
+      throw new Error("삭제권한이 없는 유저입니다.");
+    }
+
+    await Campaign.deleteByCampaignId({ campaignId });
+
+    return "삭제 완료";
+  },
 };
 
 export { campaignService };
