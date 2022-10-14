@@ -59,7 +59,12 @@ exports.campaignCreateValidator = () => {
         return true;
       }),
     body("introduce").notEmpty().withMessage("소개글이 없습니다."),
-    check("thumbnail").notEmpty().withMessage("썸네일이 없습니다."),
+    check().custom((value, { req }) => {
+      if (!req.files?.thumbnail) {
+        throw new Error("이미지파일이 없습니다.");
+      }
+      return true;
+    }),
     validate,
   ];
 };
