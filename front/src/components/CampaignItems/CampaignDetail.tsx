@@ -19,7 +19,7 @@ export default function CampaignDetail(props: DummyPropsType) {
   const [isJoin, setIsJoin] = useState(false)
   return (
     <>
-      <CUDBtn />
+      <CUDBtn campaign_id={props.campaign_id!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
           setIsJoin={setIsJoin}
@@ -36,7 +36,7 @@ export default function CampaignDetail(props: DummyPropsType) {
           <CampaignIsJoin
             setIsJoin={setIsJoin}
             isJoin={isJoin}/>
-          <CUDBtn JCTCenter={true} />
+          <CUDBtn campaign_id={props.campaign_id!} JCTCenter={true} />
         </>
       ) : (
         <CampaignComment />

@@ -51,6 +51,17 @@ export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setI
     setShowIsReComment(true);
   }
 
+  const handleDeleteComment = ()=>{
+    const foundDeledtComment = dumComment.find(ele => ele.userId === userId!)
+    const deletedComment = {...foundDeledtComment!,content:'작성자에 의해 삭제된 댓글입니다.'}
+    setDumComment(prev => {
+      const newList = [...prev];
+      newList.splice(userId, 1, deletedComment)
+      return newList
+    })
+    console.log(dumComment)
+  }
+
 
   return (
     <UtilsBox>
@@ -65,7 +76,7 @@ export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setI
         </div>
       )}
       <div className="deleteBtnBox">
-        <button>삭제</button>
+        <button onClick={handleDeleteComment}>삭제</button>
       </div>
     </UtilsBox>
   );

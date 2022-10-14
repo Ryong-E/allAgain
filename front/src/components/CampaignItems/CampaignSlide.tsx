@@ -113,7 +113,6 @@ export default function CampaignSlide() {
       modules={[EffectFade, Navigation, Autoplay]}
       className="mySwiper"
       onSlideChange={(e)=>{
-        console.log(e.activeIndex)
         const nowIdx = e.activeIndex === banners.length+1 ? 1 : e.activeIndex === 0 ? banners.length : e.activeIndex
         setCurrentIdx(nowIdx)
       }}
