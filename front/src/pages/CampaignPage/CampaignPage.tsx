@@ -12,7 +12,7 @@ import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 
 
 const NoPaddingContainer = styled(Container)`
-  padding : 70px 0;
+  padding : 70px 0 0;
   max-width: 100%;
 `
 

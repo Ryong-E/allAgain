@@ -18,6 +18,14 @@ const ListItemBox = styled.div`
   & + & {
     margin-top: 20px;
   }
+  &.lightGreen{
+    .statusBox{
+      
+      .status{
+        background:${({theme})=> theme.colors.dasidaGreen};
+      }
+    }
+  }
   &.bright{
     .thumbnailBox{
       filter: grayscale(100%);
@@ -53,8 +61,8 @@ const StatusBox = styled.div`
   .status{
     font-size:13px;
     padding: 5px 15px;
-    background: rgba(0, 77, 73, 1);
-    color: #fff;
+    background: ${({theme})=> theme.colors.lightGreen};
+    color: ${({theme})=> theme.colors.white};
     letter-spacing: -0.4px;
   }
   .shareAndLikeBox{
@@ -206,7 +214,7 @@ export default function CampaignItem({id, campaign_id,thumbnailImg,title,desc,st
   }, [status])
   
   return (
-    <ListItemBox className={status === "모집마감" ? "bright" : ""}>
+    <ListItemBox className={status === "모집마감" ? "bright" : status === "모집예정" ? "lightGreen" : ""}>
       <CampaignItemLinkBox>
         <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaign_id}`}>
           <ThumbnailImgBox className="thumbnailBox">
