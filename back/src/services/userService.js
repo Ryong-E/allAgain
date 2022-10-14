@@ -128,6 +128,21 @@ const userService = {
 
     return targetUser;
   },
+  getMyInfo: async ({ userId }) => {
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 아이디입니다.");
+    }
+
+    const userInfo = {
+      email: user[0].email,
+      name: user[0].name,
+      nickname: user[0].nickname,
+      imageUrl: user[0].image_url,
+    };
+
+    return userInfo;
+  },
 };
 
 export { userService };

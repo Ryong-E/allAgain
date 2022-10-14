@@ -99,7 +99,7 @@ userRouter.delete("/", loginRequired, async (req, res, next) => {
 });
 
 userRouter.get(
-  "/:nickname",
+  "/informations/others/:nickname",
   loginRequired,
   getUserValidator(),
   async (req, res, next) => {
@@ -113,5 +113,16 @@ userRouter.get(
     }
   }
 );
+
+userRouter.get("/informations/me", loginRequired, async (req, res, next) => {
+  try {
+    const currentUserId = req.currentUserId;
+    const userInfo = await userService.getMyInfo({ userId: currentUserId });
+
+    res.status(200).json(userInfo);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { userRouter };
