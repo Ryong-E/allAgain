@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import {
   IUser,
   ILoginResponse,
@@ -9,7 +8,8 @@ import {
 } from "./types";
 
 const BASE_URL = "http://localhost:5001/users/";
-const userApi  = axios.create({
+
+const userApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json"
@@ -38,9 +38,17 @@ export const loginUser = async ({ email, password }: IUser) => {
 
 export const getUserProfile = async ({ nickname }: IUser) => {
   try {
-    const response = await userApi.get<IUserResponse>(`${nickname}`,);
+    const token = localStorage.getItem('jwtToken');
+    const response = await axios({
+      method: 'get',
+      url: `${BASE_URL}${nickname}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+    });
     return response.data;
   } catch (err: any) {
-    throw new Error("유저정보 조회 실패");
+    throw new Error(err.message);
   }
 };

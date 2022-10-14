@@ -52,7 +52,8 @@ export default function RegisterForm() {
   // React query
   const RegisterMutation = useMutation(createUser, {
     onError: (error:any) => {
-      setError("RegisterError", {message: error.message});  // 실패 시 원인에 따른 에러메세지 출력 필요 - 백엔드에 에러구분 요청
+      console.log(error);
+      // setError("RegisterError", {message: error.message});  // 실패 시 원인에 따른 에러메세지 출력 필요 - 백엔드에 에러구분 요청
     },
     onSuccess: (data) => {
       console.log("success", data);
@@ -131,6 +132,7 @@ export default function RegisterForm() {
         </InputIconBlock>
         {errors.nickname && <InputErrorMsg>{errors.nickname.message}</InputErrorMsg>}
       </InputBlock>
+      {errors.RegisterError && <InputErrorMsg>{errors.RegisterError.message}</InputErrorMsg>}
       <ButtonBlock>
         <LargeButton>회원가입</LargeButton>
       </ButtonBlock>

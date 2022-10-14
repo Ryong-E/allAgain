@@ -102,6 +102,7 @@ export const AddImageButton = styled(RoundedButton)`
 
 export const SaveButton = styled(Button)`
   background: ${({ theme }) => theme.colors.lightBeige};
+  margin: 0 auto;
 
   &:hover {
     background: ${({ theme }) => theme.colors.dasidaGreen};

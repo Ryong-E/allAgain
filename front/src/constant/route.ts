@@ -1,8 +1,8 @@
 import Template from '../pages/Template';
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
-import MyProfilePage from "../pages/MyProfilePage/MyProfilePage";
-import FeedListPage from '../pages/FeedListPage/FeedListPage';
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import FeedListPage from '../pages/FeedPage/FeedListPage';
 import CampaignPage from "../pages/CampaignPage/CampaignPage";
 import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
 
@@ -25,7 +25,7 @@ export const ROUTE = {
   MY_PROFILE: {
     path: "/profile",
     link: "/profile",
-    element: MyProfilePage,
+    element: ProfilePage,
   },
   ABOUT: {
     path: "/about",

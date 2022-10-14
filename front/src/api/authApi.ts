@@ -1,39 +1,30 @@
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { GenericResponse, ILoginRequiredParams, ILoginResponse, IUserResponse } from "./types";
 
-const BASE_URL = "http://localhost:5001/users/";
+const BASE_URL = "http://localhost:5001/";
 
-export const authApi = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-});
-
-authApi.defaults.headers.common['Content-Type'] = 'application/json';
-
-
-export const refreshAccessTokenFn = async () => {
-  const response = await authApi.get<ILoginResponse>('auth/refresh');
-  return response.data;
+const axiosApi = (url: string, options: {} | undefined) => {
+  const defaultApi = axios.create({ 
+    baseURL: url, 
+    headers: {
+      "Content-Type": "application/json"
+    },
+    ...options 
+  });
+  return defaultApi;
 };
 
-authApi.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    const errMessage = error.response.data.message as string;
-    if (errMessage.includes('not logged in') && !originalRequest._retry) {
-      originalRequest._retry = true;
-      await refreshAccessTokenFn(); // 새 액세스 토큰을 검색하기 위해 GET 요청을 수행
-      return authApi(originalRequest);
-    }
-    return Promise.reject(error);
-  }
-);
-
-export const loginUserFn = async (user: ILoginRequiredParams) => {
-  const response = await authApi.post<ILoginResponse>('login', user);
-  return response.data;
+const axiosAuthApi = (url: string, options: {} | undefined) => {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO…3MTd9.LngRE15GDZ40eORAHdzh4cqVL58N_zXskfX--IjC1MU";
+  const authApi = axios.create({
+    baseURL: url,
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + token 
+    },
+    ...options,
+  });
+  return authApi;
 };
+
+export const defaultApi = axiosApi(BASE_URL, undefined);
+export const authApi = axiosAuthApi(BASE_URL, undefined);

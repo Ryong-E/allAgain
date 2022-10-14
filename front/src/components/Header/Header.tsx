@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Container } from '../common/Containers';
 import NavBar from '../Nav/NavBar';
 import { ROUTE } from '../../constant/route';
+import AlertIcon from "../../assets/images/icons/icon_alert.png";
+import ProfileIcon from "../../assets/images/icons/icon_profile.png";
 
 const HeaderWrap = styled.header`
   position: fixed;
@@ -10,6 +12,7 @@ const HeaderWrap = styled.header`
   left: 0;
   width: 100%;
   height: 70px;
+  border-bottom: 1px solid rgba(191, 177, 186, .5);
   z-index: 1000;
 
   ${Container} {
@@ -36,7 +39,45 @@ const Logo = styled.div`
   }
 `;
 
-const HeaderBtns = styled.div``;
+const HeaderUtils = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 80px;
+  transform: translate(0, -50%);
+  z-index: 10;
+
+  display: flex;
+  justify-content: flex-end;
+
+
+`;
+
+const HeaderUtilButton = styled.div`
+  width: 32px;
+  height: 32px;
+  background: no-repeat 50% 50%/contain;
+
+  & + & {
+    margin-left: 30px;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const NoticeButton = styled(HeaderUtilButton)`
+  background-image: url(${AlertIcon});
+`;
+
+const MeButton = styled(HeaderUtilButton)`
+  background-image: url(${ProfileIcon});
+`;
+
+
+
 
 export default function Header() {
   return (
@@ -46,7 +87,12 @@ export default function Header() {
           <Link to={ROUTE.HOME.link} />
         </Logo>
         <NavBar />
-        <HeaderBtns></HeaderBtns>
+        <HeaderUtils>
+          <NoticeButton></NoticeButton>
+          <MeButton>
+            <Link to={ROUTE.MY_PROFILE.link} />
+          </MeButton>
+        </HeaderUtils>
       </Container>
     </HeaderWrap>
   );

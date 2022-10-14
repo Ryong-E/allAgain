@@ -10,7 +10,6 @@ import { IUser, ILoginResponse, ILoginRequiredParams } from "../../api/types";
 import { useMutation, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
 import { authUserState } from "../../atoms/atoms";
-import { loginUserFn } from "../../api/authApi";
 
 
 const FormContainer = styled.form`
@@ -83,13 +82,12 @@ export default function LoginForm() {
       console.log("onMutate", variable);
       // variable : {loginId: 'xxx', password; 'xxx'}
     },
-    onError: (error:any, variable, context) => {
+    onError: (error: any, variable, context) => {
       setError("loginError", {message: error.message});
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
-      // localStorage.setItem('jwtToken', data.token);
-      console.log(authUser);
+      localStorage.setItem('jwtToken', data.token);
     },
     onSettled: () => {
       console.log("end");

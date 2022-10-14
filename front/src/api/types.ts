@@ -28,6 +28,9 @@ export interface ILoginRequiredParams {
 export interface ILoginResponse {
   status: string;
   access_token: string;
+  data: {
+    user: IUser;
+  };
 }
 
 export interface IUserResponse {
