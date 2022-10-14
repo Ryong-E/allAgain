@@ -4,20 +4,29 @@ import Album from './Album';
 import AuthorInfo from './AuthorInfo';
 import LikesCount from './LikesCount';
 
-interface feedProps {
-  user_id?: number;
-  category?: string[];
-  tags?: string[];
-  image_urls?: string[];
-  description?: string;
-  feed_id?: number;
+const TEST_IMAGE_URLS = [
+  'https://post-phinf.pstatic.net/MjAyMDAyMjlfMjY4/MDAxNTgyOTU0Nzg3MjQ4.PBMFV4WrSJmeSUJ56c4C7Vkz_SsQlJ1SByKU18kkJh0g.T7mQnadCWVtEZ448AGk_9kG1HFBAzdztXZcBjvSbduwg.JPEG/%EA%B3%A0%EC%96%91%EC%9D%B4_%EB%82%98%EC%9D%B41.jpg?type=w1200',
+  'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
+  'https://file.mk.co.kr/meet/neds/2021/06/image_readtop_2021_535745_16226846584668330.jpg',
+];
+
+interface IFeed {
+  feedId: number;
+  userId: number;
+  category: string;
+  tags: string;
+  imageUrls: string[];
+  description: string;
+}
+
+interface feedProps extends IFeed {
   isSimple: boolean;
 }
 
-function Feed({ user_id, image_urls, feed_id, isSimple }: feedProps) {
+function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
   return (
     <FeedContainer>
-      <Album image_urls={image_urls} size='simple' />
+      <Album imageUrls={TEST_IMAGE_URLS} size='simple' />
       <MenuContainer>
         <LikesCount likes={1122} />
         <SocialButtonContainer>
@@ -27,7 +36,7 @@ function Feed({ user_id, image_urls, feed_id, isSimple }: feedProps) {
       </MenuContainer>
       {isSimple || (
         <PostContainer>
-          <AuthorInfo size='simple' user_id={12321} />
+          <AuthorInfo size='simple' userId={userId} />
           <PostTime>3시간</PostTime>
         </PostContainer>
       )}
@@ -40,6 +49,10 @@ const FeedContainer = styled.div`
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   margin-bottom: 50px;
+  &:first-child {
+    margin-left: 0px;
+  }
+  margin-left: 50px;
 `;
 
 const MenuContainer = styled.div`

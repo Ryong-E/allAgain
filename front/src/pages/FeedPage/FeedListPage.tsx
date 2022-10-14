@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { getFeedList } from '../../api/feedApi';
 import { Container, Container1300 } from '../../components/common/Containers';
 import FeedAddButton from '../../components/feed/FeedAddButton';
 import FeedList from '../../components/feed/FeedList';
@@ -97,6 +99,10 @@ const test: feed[] = [
 ];
 
 function FeedListPage() {
+  const { isSuccess, data } = useQuery(['feeds'], getFeedList, {
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <Container>
       <Container1300>
@@ -104,7 +110,7 @@ function FeedListPage() {
           <FeedTagFilter />
           <FeedAddButton />
         </FeedListOptionsContainer>
-        <FeedList feeds={test} isSimple={false} />
+        {isSuccess && <FeedList feeds={data} isSimple={false} />}
       </Container1300>
     </Container>
   );

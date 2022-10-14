@@ -101,7 +101,7 @@ function FeedAddPage() {
           <TextContainer>
             <DetailContainer>
               <DetailHeader>
-                <AuthorInfo size='detail' user_id={132132} />
+                <AuthorInfo size='detail' userId={132132} />
               </DetailHeader>
               <DetailSection
                 placeholder='내용 작성..'

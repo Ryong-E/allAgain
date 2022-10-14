@@ -5,14 +5,14 @@ import CertifiedBadge from '../../assets/images/icons/icon_certified.png';
 
 interface authorInfoProps {
   size: 'simple' | 'detail';
-  user_id?: number;
+  userId?: number;
 }
 
-function AuthorInfo({ size, user_id }: authorInfoProps) {
+function AuthorInfo({ size, userId }: authorInfoProps) {
   return (
     <Container>
       <AuthorProfile size={size} src={DefaultProfileBanner} />
-      <AuthorName>{user_id}</AuthorName>
+      <AuthorName>{userId}</AuthorName>
       {size === 'simple' && <AuthorBadge src={CertifiedBadge} />}
       {size === 'simple' && <FollowToggleSmall />}
     </Container>

@@ -4,13 +4,13 @@ import { NextNavigationButton, PrevNavigationButton } from '../common/Buttons';
 
 interface albumProps {
   size: 'simple' | 'detail';
-  image_urls?: string[];
+  imageUrls?: string[];
 }
 
-function Album({ size, image_urls }: albumProps) {
+function Album({ size, imageUrls }: albumProps) {
   const [imageIndex, setImageIndex] = useState<number>(0);
 
-  const IMAGE_LAST_INDEX = image_urls!.length - 1;
+  const IMAGE_LAST_INDEX = imageUrls!.length - 1;
   const IMAGE_FIRST_INDEX = 0;
 
   const handleViewerClick = (isNext: boolean): void => {
@@ -23,7 +23,7 @@ function Album({ size, image_urls }: albumProps) {
     <AlbumContainer>
       <ImageContainer size={size}>
         <ImageList albumPage={imageIndex}>
-          {image_urls!.map((imageUrl: string) => (
+          {imageUrls!.map((imageUrl: string) => (
             <img
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               src={imageUrl}
@@ -46,7 +46,7 @@ function Album({ size, image_urls }: albumProps) {
       </ImageContainer>
       {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
         <ImageNavigator size={size}>
-          {image_urls!.map((value, index) => (
+          {imageUrls!.map((value, index) => (
             <Navigator observeIndex={index} currentIndex={imageIndex} />
           ))}
         </ImageNavigator>

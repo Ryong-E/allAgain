@@ -9,26 +9,26 @@ import Album from './Album';
 import AuthorInfo from './AuthorInfo';
 import LikesCount from './LikesCount';
 
-interface feedProps {
-  user_id?: number;
-  category?: string[];
-  tags?: string[];
-  image_urls?: string[];
-  description?: string;
-  feed_id?: number;
+interface IFeed {
+  feedId: number;
+  userId: number;
+  category: string;
+  tags: string;
+  imageUrls: string[];
+  description: string;
 }
 
-function FeedDetail({ image_urls, user_id, description, category }: feedProps) {
+function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
   return (
     <>
       <ButtonContainer>
         <DelButton>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
       </ButtonContainer>
-      <Album image_urls={image_urls} size='detail' />
+      <Album imageUrls={imageUrls} size='detail' />
       <DetailContainer>
         <DetailHeader>
-          <AuthorInfo size='detail' user_id={12321} />
+          <AuthorInfo size='detail' userId={12321} />
           <LikesCount likes={1122} />
           <SocialButtonContainer>
             <WarningButton />
