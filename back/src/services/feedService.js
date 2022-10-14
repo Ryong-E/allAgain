@@ -11,6 +11,17 @@ const feedService = {
     });
     return uploadedFeed;
   },
+  saveImageUrls: async ({ imageUrls }) => {
+    const imageIds = [];
+    for (const imageUrl of imageUrls) {
+      const imageId = await Feed.saveImageUrl({ imageUrl });
+      imageIds.push(imageId);
+    }
+    for (var i = 0; i < imageUrls.length; i++) {
+      imageUrls[i]["id"] = imageIds[i];
+    }
+    return imageUrls;
+  },
   getFeeds: async ({ userId }) => {
     const feedList = await Feed.getFeeds({ userId });
     return feedList;
