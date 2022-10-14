@@ -10,9 +10,10 @@ import axios from 'axios';
 interface EditorProps {
   value : string;
   handleEditorChange : (content : string) => void;
+  readStatus:boolean;
 }
 
-export default function Editor({value,handleEditorChange}:EditorProps){
+export default function Editor({value,handleEditorChange,readStatus}:EditorProps){
   const { quill, quillRef, Quill } = useQuill({
     modules: {
       blotFormatter: {},
@@ -25,7 +26,8 @@ export default function Editor({value,handleEditorChange}:EditorProps){
       ],
     },
     formats:['bold', 'italic', 'underline', 'strike','list','header','image','color', 'background','blockquote'],
-    theme:"snow"
+    theme:readStatus ? "bubble" : "snow",
+    readOnly:readStatus
   });
 
   if (Quill && !quill) {
@@ -67,20 +69,20 @@ export default function Editor({value,handleEditorChange}:EditorProps){
     return result
   }
 
-  useEffect(()=>{
-    if(quill){
-      quill.on('text-change',(delta,oldDelta,source)=>{
-        const content = quill.getContents();
-        const converter = new QuillDeltaToHtmlConverter(content?.ops!,{
-          inlineStyles: true
-        });
-        const html = converter.convert()
-        const reHtml = replaceHtml(html);
-        handleEditorChange(reHtml)
-      })
+  // useEffect(()=>{
+  //   if(quill){
+  //     quill.on('text-change',(delta,oldDelta,source)=>{
+  //       const content = quill.getContents();
+  //       const converter = new QuillDeltaToHtmlConverter(content?.ops!,{
+  //         inlineStyles: true
+  //       });
+  //       const html = converter.convert()
+  //       const reHtml = replaceHtml(html);
+  //       handleEditorChange(reHtml)
+  //     })
 
-    }
-  },[quill])
+  //   }
+  // },[quill])
   return (
     <>
       <div ref={quillRef} style={{height:"500px"}}></div>
