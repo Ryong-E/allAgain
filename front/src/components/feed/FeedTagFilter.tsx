@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { SaveButton } from '../common/Buttons';
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
+import { SaveButton } from "../common/Buttons";
 
 interface TagState {
   [key: string]: boolean;
 }
 
 const TagList = {
-  all: '전체',
-  plastic: '플라스틱',
-  fiber: '섬유',
-  wood: '나무',
-  paper: '종이류',
-  glass: '유리',
-  metal: '금속',
-  rubber: '고무',
-  etc: '그 외',
+  all: "전체",
+  plastic: "플라스틱",
+  fiber: "섬유",
+  wood: "나무",
+  paper: "종이류",
+  glass: "유리",
+  metal: "금속",
+  rubber: "고무",
+  etc: "그 외",
 };
 
 const initialState: TagState = {
@@ -35,7 +35,7 @@ function FeedTagFilter() {
 
   const handleTagButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const eventValue = (event.target as HTMLButtonElement).value;
-    if (eventValue !== 'all')
+    if (eventValue !== "all")
       setSelectedTag({
         ...selectedTag,
         [eventValue]: !selectedTag[eventValue],
