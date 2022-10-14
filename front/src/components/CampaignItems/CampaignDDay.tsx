@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 
-interface DdayType{
+interface CampaignDDay{
   status:String;
   endDate :String;
 }
 
-export default function CampaignDDay({status,  endDate}:DdayType) {
+export default function CampaignDDay({status,  endDate}:CampaignDDay) {
   const fixDate = endDate.split(".").join("-");
   let D_DAY = new Date(fixDate);
   const todayTime = new Date();

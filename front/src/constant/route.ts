@@ -4,6 +4,7 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import FeedListPage from '../pages/FeedListPage/FeedListPage';
 import CampaignPage from "../pages/CampaignPage/CampaignPage";
 import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
+import CampaignCreatePage from '../pages/CampaignPage/CampaignCreatePage';
 
 export const ROUTE = {
   HOME: {
@@ -46,6 +47,11 @@ export const ROUTE = {
     link: `/campaign/`,
     element: CampaignDetailPage,
   },
+  CAMPAGIN_CREATE: {
+    path: "/campaign/add",
+    link: `/campaign`,
+    element: CampaignCreatePage,
+  }
 };
 
 export const ROUTE_ARR = Object.values(ROUTE);

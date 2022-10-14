@@ -10,6 +10,7 @@ import contentIcon from '../../assets/images/icons/icon_content.png';
 import chatIcon from '../../assets/images/icons/icon_chat.png';
 import CampaignContents from './CampaignContents';
 import CUDBtn from './CUDBtn';
+import CampaignIntroDetail from './CampaignIntroDetail';
 
 
 export default function CampaignDetail(props: DummyPropsType) {
@@ -18,12 +19,13 @@ export default function CampaignDetail(props: DummyPropsType) {
   const [isJoin, setIsJoin] = useState(false)
   return (
     <>
-      <CUDBtn />
+      <CUDBtn campaign_id={props.campaign_id!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}
           />
+      <CampaignIntroDetail desc={props.desc!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
       {/*  */}
       {!isActive ? (
@@ -34,7 +36,7 @@ export default function CampaignDetail(props: DummyPropsType) {
           <CampaignIsJoin
             setIsJoin={setIsJoin}
             isJoin={isJoin}/>
-          <CUDBtn JCTCenter={true} />
+          <CUDBtn campaign_id={props.campaign_id!} JCTCenter={true} />
         </>
       ) : (
         <CampaignComment />

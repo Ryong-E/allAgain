@@ -86,9 +86,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   img {
-    width: 100%;
+    max-width: 100%;
   }
-
 
   ::-webkit-scrollbar {
     width: 10px;

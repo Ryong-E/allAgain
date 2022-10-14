@@ -6,11 +6,11 @@ box-shadow: ${({theme})=> theme.boxShadowDefault};
 background:${({theme})=> theme.colors.white};
 `
 
-type PropsType ={
+interface Children {
   children ?: JSX.Element[] | JSX.Element
 }
 
-export default function CampaignContents({children}:PropsType) {
+export default function CampaignContents({children}:Children) {
   return (
     <CampaignContentsBox>{children}</CampaignContentsBox>
   )

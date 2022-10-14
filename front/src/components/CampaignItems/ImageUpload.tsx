@@ -1,11 +1,13 @@
+import { hover } from "@testing-library/user-event/dist/hover";
 import { watch } from "fs";
 import { useEffect, useState } from "react";
 import { FieldValue, Resolver, UseFormProps } from "react-hook-form";
 import styled from "styled-components";
-import addImageIcon from '../assets/images/icons/icon_image_add.png';
+import addImageIcon from '../../assets/images/icons/icon_image_add.png';
+import ImageEdit from '../../assets/images/icons/icon_image_edit.png';
 
 const UploadImageBox = styled.div`
-    width:350px;
+    width:360px;
     height:100%;
     background-color:red;
     display:flex;
@@ -31,6 +33,7 @@ const UploadFileLabel = styled.label`
   background: ${({ theme }) => theme.colors.darkBeige};
   width: 160px;
   padding: 12px 30px 12px 60px;
+  transition: all 0.3s;
 
   &:after {
     content: '';
@@ -60,6 +63,30 @@ const Text = styled.p`
     position:relative;
     top:20px;
 `
+const ReImageUploadLabel = styled.label`
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:50px;
+  height:50px;
+  opacity:0;
+  cursor:pointer;
+  font-size:20px;
+  background: url(${ImageEdit}) no-repeat 50% 50% / contain;
+`
+const PreviewImageBox = styled.div`
+  width:100%;
+  height:100%;
+  position:relative;
+  &:hover div{
+    filter:blur(8px);
+  }
+  &:hover label{
+    opacity:1;
+  }
+`
+
 const PreviewImage = styled.div<{background : string}>`
     background-image: url(${(props:any) => props.background || ""});
     background-position:center center;
@@ -82,8 +109,8 @@ function ImageUpload({register,watch} : any){
     return (
         <>
             <UploadImageBox>
-                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('image')}></UploadFile>
-                {previewImage ? <PreviewImage background={previewImage}></PreviewImage> : <><UploadFileLabel htmlFor="upload-file">사진 추가</UploadFileLabel><Text>
+                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('image')} multiple></UploadFile>
+                {previewImage ? <PreviewImageBox><PreviewImage background={previewImage}></PreviewImage><ReImageUploadLabel htmlFor="upload-file"></ReImageUploadLabel></PreviewImageBox> : <><UploadFileLabel htmlFor="upload-file">사진 추가</UploadFileLabel><Text>
                 파일 크기 제한 :5MB
                 </Text></>}
             </UploadImageBox>

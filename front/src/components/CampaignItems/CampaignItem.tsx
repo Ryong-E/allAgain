@@ -13,7 +13,8 @@ const ListItemBox = styled.div`
   width:100%;
   height: 300px;
   background: ${({theme})=> theme.colors.white};
-  border: 1px solid #000;
+  border: 1px solid rgba(231,225,210,.8);
+  box-shadow: ${({theme})=> theme.boxShadowDefault};
   & + & {
     margin-top: 20px;
   }
