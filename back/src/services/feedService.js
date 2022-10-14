@@ -32,8 +32,8 @@ const feedService = {
 
     return imageUrls;
   },
-  getFeeds: async ({ userId }) => {
-    const feedList = await Feed.getFeeds({ userId });
+  getFeeds: async () => {
+    const feedList = await Feed.getFeeds();
     return feedList;
   },
   getFeedById: async ({ feedId }) => {
