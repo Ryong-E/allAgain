@@ -1,7 +1,10 @@
-import RegisterBox from "../../components/RegisterBox/RegisterBox";
+import { Container } from "../../components/common/Containers";
+import RegisterBox from "../../components/Register/RegisterBox";
 
 export default function RegisterPage() {
   return (
-    <RegisterBox />
+    <Container>
+      <RegisterBox />
+    </Container>
   )
 }

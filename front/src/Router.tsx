@@ -8,8 +8,8 @@ function Router() {
     <BrowserRouter>
       <Header />
       <Routes>
-        {ROUTE_ARR.map((route) => {
-          return <Route path={route.path} element={<route.element />} />;
+        {ROUTE_ARR.map(( route, index ) => {
+          return <Route path={ route.path } element={ <route.element /> } key={index}/>
         })}
       </Routes>
       <Footer />
