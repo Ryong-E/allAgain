@@ -55,11 +55,17 @@ export default function Editor({value,handleEditorChange}:EditorProps){
       }
     }
   }
-  useEffect(()=>{
-    if(quill){
-      quill?.getModule('toolbar').addHandler('image',handleImageUpload);
-    }
-  },[quill])
+  // useEffect(()=>{
+  //   if(quill){
+  //     quill?.getModule('toolbar').addHandler('image',handleImageUpload);
+  //   }
+  // },[quill])
+
+  function replaceHtml(html:string){
+    let result = html.replaceAll('<','&lt;');
+    result = result.replaceAll('>','&gt;');
+    return result
+  }
 
   useEffect(()=>{
     if(quill){
@@ -69,7 +75,8 @@ export default function Editor({value,handleEditorChange}:EditorProps){
           inlineStyles: true
         });
         const html = converter.convert()
-        handleEditorChange(html)
+        const reHtml = replaceHtml(html);
+        handleEditorChange(reHtml)
       })
 
     }
