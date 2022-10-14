@@ -64,6 +64,47 @@ const campaignService = {
 
     return "캠페인 생성 완료";
   },
+  getAllCampaigns: async () => {
+    const campaigns = await Campaign.findAll();
+    const filteredCampaigns = [];
+    let status;
+    const currentDate = new Date();
+    for (let i = 0; i < campaigns.length; i++) {
+      // status 설정
+      // 현재 시간 >= recruitment_start_date = 모집중
+      // 현재 시간 < recruitment_start_date = 모집예정
+      // 현재 시간 > recruitment_end_date = 모집마감
+      if (
+        currentDate >= campaigns[i].recruitment_start_date &&
+        currentDate < campaigns[i].recruitment_end_date
+      ) {
+        status = "모집 중";
+      } else if (currentDate < campaigns[i].recruitment_start_date) {
+        status = "모집 예정";
+      } else if (currentDate >= campaigns[i].recruitment_end_date) {
+        status = "모집 마감";
+      }
+      await Campaign.updateStatus({ campaignId: campaigns[i].id, status });
+
+      filteredCampaigns.push({
+        title: campaigns[i].title,
+        thumbnail: campaigns[i].thumbnail,
+        recruitmentStartDate: campaigns[i].recruitment_start_date,
+        recruitmentEndDate: campaigns[i].recruitment_end_date,
+        campaignStartDate: campaigns[i].campaign_start_date,
+        campaignEndDate: campaigns[i].campaign_end_date,
+        recruitmentNumber: campaigns[i].recruitment_number,
+        introduce: campaigns[i].introduce,
+        status,
+        writer: {
+          nickname: campaigns[i].nickname,
+          imageUrl: campaigns[i].image_url,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
 };
 
 export { campaignService };

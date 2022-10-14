@@ -32,4 +32,14 @@ campaignRouter.post(
   }
 );
 
+campaignRouter.get("/", loginRequired, async (req, res, next) => {
+  try {
+    const campaigns = await campaignService.getAllCampaigns();
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { campaignRouter };

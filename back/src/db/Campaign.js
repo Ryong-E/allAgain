@@ -38,6 +38,32 @@ const Campaign = {
 
     return null;
   },
+  findAll: async () => {
+    const campaigns = await connection
+      .promise()
+      .query(
+        "SELECT * FROM campaigns JOIN users ON campaigns.user_id = users.id",
+        [],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return campaigns[0];
+  },
+  updateStatus: async ({ campaignId, status }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE campaigns SET status = ? WHERE id = ?",
+        [status, campaignId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
+  },
 };
 
 export { Campaign };

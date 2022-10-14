@@ -53,7 +53,7 @@ exports.campaignCreateValidator = () => {
         if (value <= req.body.campaignStartDate) {
           throw new Error("캠페인 기간이 유효하지 않습니다.");
         }
-        if (req.body.campaignStartDate < req.body.recruitmentEndDate) {
+        if (req.body.campaignStartDate <= req.body.recruitmentEndDate) {
           throw new Error("캠페인 시작 날짜와 모집 마감 날짜를 확인하세요.");
         }
         return true;
