@@ -87,7 +87,7 @@ const campaignService = {
       await Campaign.updateStatus({ campaignId: campaigns[i].id, status });
 
       filteredCampaigns.push({
-        campaginId: campaigns[i].id,
+        campaignId: campaigns[i].id,
         title: campaigns[i].title,
         thumbnail: campaigns[i].thumbnail,
         recruitmentStartDate: campaigns[i].recruitment_start_date,
