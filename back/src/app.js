@@ -2,6 +2,7 @@ import express from "express";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { userRouter } from "./routers/userRouter";
 import { feedRouter } from "./routers/feedRouter";
+import { campaignRouter } from "./routers/campaignRouter";
 import cors from "cors";
 const mysql = require("mysql2");
 
@@ -30,6 +31,7 @@ app.get("/", function (req, res) {
 
 app.use("/users", userRouter);
 app.use("/feeds", feedRouter);
+app.use("/campaigns", campaignRouter);
 
 app.use(errorMiddleware);
 
