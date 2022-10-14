@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import {
   AddImageButton,
   CloseButton,
   ClsButton,
   ConfirmButton,
-} from '../../components/common/Buttons';
-import { Container, Container1200 } from '../../components/common/Containers';
-import AuthorInfo from '../../components/feed/AuthorInfo';
+} from "../../components/common/Buttons";
+import { Container, Container1200 } from "../../components/common/Containers";
+import AuthorInfo from "../../components/feed/AuthorInfo";
 
 interface FormValues {
   detail: string;
@@ -27,7 +27,7 @@ function FeedAddPage() {
 
     if (files) {
       if (files.length > 8) {
-        alert('8개를 이하의 이미지만 업로드 가능합니다.');
+        alert("8개를 이하의 이미지만 업로드 가능합니다.");
         return;
       }
       Object.keys(files).forEach((key) => {
@@ -41,7 +41,7 @@ function FeedAddPage() {
         setUploadImages([...uploadImages, ...filesArr]);
       });
     }
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,28 +56,25 @@ function FeedAddPage() {
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0) {
       const { detail, tags } = data;
-      const tagsArr: string[] = tags.split('#').slice(1);
+      const tagsArr: string[] = tags.split("#").slice(1);
       const formData = new FormData();
-      uploadImages.forEach((file) => formData.append('images', file));
-      tagsArr.forEach((tag) => formData.append('tags', tag));
-      formData.append('detail', detail);
-      Array.from(formData).forEach((v) => console.log(v));
-    } else alert('파일 개수 미달');
+      uploadImages.forEach((file) => formData.append("image", file));
+    } else alert("파일 개수 미달");
   });
 
   return (
     <Container>
       <Container1200>
         <FormContainer
-          encType='multipart/form-data'
+          encType="multipart/form-data"
           onSubmit={handleFormSubmit}>
           <ImageFormContainer>
-            <AddImageButton as='label' htmlFor='multi-upload'>
+            <AddImageButton as="label" htmlFor="multi-upload">
               사진 추가
             </AddImageButton>
             <input
-              id='multi-upload'
-              type='file'
+              id="multi-upload"
+              type="file"
               multiple
               hidden
               onChange={handleOnChange}
@@ -101,28 +98,28 @@ function FeedAddPage() {
           <TextContainer>
             <DetailContainer>
               <DetailHeader>
-                <AuthorInfo size='detail' userId={132132} />
+                <AuthorInfo size="detail" userId={132132} />
               </DetailHeader>
               <DetailSection
-                placeholder='내용 작성..'
-                {...register('detail', {
-                  required: '내용을 작성해 주세요.',
+                placeholder="내용 작성.."
+                {...register("detail", {
+                  required: "내용을 작성해 주세요.",
                   minLength: {
                     value: 4,
-                    message: '내용은 최소 4글자 이상이여야 합니다.',
+                    message: "내용은 최소 4글자 이상이여야 합니다.",
                   },
                 })}></DetailSection>
             </DetailContainer>
             <DetailTagContainer>
               <DetailTag
-                type='text'
-                placeholder='#으로 구분하여 태그를 입력해 주세요..'
-                {...register('tags', {
-                  required: '최소 1개 이상의 태그가 필요합니다.',
+                type="text"
+                placeholder="#으로 구분하여 태그를 입력해 주세요.."
+                {...register("tags", {
+                  required: "최소 1개 이상의 태그가 필요합니다.",
                   validate: {
                     tagRule: (value) =>
-                      value.toString().startsWith('#') ||
-                      '태그는 반드시 #으로 시작하여야합니다.',
+                      value.toString().startsWith("#") ||
+                      "태그는 반드시 #으로 시작하여야합니다.",
                   },
                 })}
               />
@@ -130,7 +127,7 @@ function FeedAddPage() {
           </TextContainer>
           <ButtonContainer>
             <ClsButton>취소</ClsButton>
-            <ConfirmButton type='submit'>완료</ConfirmButton>
+            <ConfirmButton type="submit">완료</ConfirmButton>
           </ButtonContainer>
         </FormContainer>
       </Container1200>
@@ -151,7 +148,7 @@ const ImageFormContainer = styled.div`
 
 const ImageFormDescription = styled.div`
   width: 100%;
-  font-family: 'Noto Sans';
+  font-family: "Noto Sans";
   font-weight: 400;
   font-size: 20px;
   line-height: 27px;
@@ -241,7 +238,7 @@ const DetailSection = styled.textarea`
   font-size: 15px;
   line-height: 36px;
   &:empty:before {
-    content: '내용 작성..';
+    content: "내용 작성..";
     color: #a9a9a9;
   }
   &:focus {

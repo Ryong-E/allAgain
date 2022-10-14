@@ -1,19 +1,11 @@
-import styled from 'styled-components';
-import Feed from './Feed';
+import styled from "styled-components";
+import { IFeed } from "../../types/feedTypes";
+import Feed from "./Feed";
 
 type FeedListProps = {
   feeds: IFeed[];
   isSimple: boolean;
 };
-
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
 
 function FeedList({ feeds, isSimple }: FeedListProps) {
   return (

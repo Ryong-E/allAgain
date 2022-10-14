@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { NextNavigationButton, PrevNavigationButton } from '../common/Buttons';
+import { useState } from "react";
+import styled, { css } from "styled-components";
+import { IImageUrl } from "../../types/feedTypes";
+import { NextNavigationButton, PrevNavigationButton } from "../common/Buttons";
 
 interface albumProps {
-  size: 'simple' | 'detail';
-  imageUrls?: string[];
+  size: "simple" | "detail";
+  imageUrls: IImageUrl[];
 }
 
 function Album({ size, imageUrls }: albumProps) {
@@ -23,11 +24,11 @@ function Album({ size, imageUrls }: albumProps) {
     <AlbumContainer>
       <ImageContainer size={size}>
         <ImageList albumPage={imageIndex}>
-          {imageUrls!.map((imageUrl: string) => (
+          {imageUrls!.map((imageUrl: IImageUrl) => (
             <img
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              src={imageUrl}
-              alt={imageUrl}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={imageUrl.url}
+              alt={imageUrl.name}
             />
           ))}
         </ImageList>
@@ -58,9 +59,9 @@ const AlbumContainer = styled.div`
   position: relative;
 `;
 
-const ImageContainer = styled.div<{ size: 'simple' | 'detail' }>`
+const ImageContainer = styled.div<{ size: "simple" | "detail" }>`
   ${(props) =>
-    props.size === 'simple'
+    props.size === "simple"
       ? css`
           width: 100%;
           aspect-ratio: 1/1;
@@ -93,9 +94,9 @@ const ImageSlideContainer = styled.div`
   padding: 0 13px 0 13px;
 `;
 
-const ImageNavigator = styled.div<{ size: 'simple' | 'detail' }>`
+const ImageNavigator = styled.div<{ size: "simple" | "detail" }>`
   ${(props) =>
-    props.size === 'simple' &&
+    props.size === "simple" &&
     css`
       position: absolute;
       left: 50%;
@@ -120,8 +121,8 @@ const Navigator = styled.div<{
   height: 6px;
   background-color: ${(props) =>
     props.observeIndex === props.currentIndex
-      ? '#E0D4B7'
-      : 'rgba(231, 225, 210, 0.5)'};
+      ? "#E0D4B7"
+      : "rgba(231, 225, 210, 0.5)"};
   &:last-child {
     margin-right: 0px;
   }

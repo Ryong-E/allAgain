@@ -1,23 +1,9 @@
-import styled from 'styled-components';
-import { ShareButton, WarningButton } from '../common/Buttons';
-import Album from './Album';
-import AuthorInfo from './AuthorInfo';
-import LikesCount from './LikesCount';
-
-const TEST_IMAGE_URLS = [
-  'https://post-phinf.pstatic.net/MjAyMDAyMjlfMjY4/MDAxNTgyOTU0Nzg3MjQ4.PBMFV4WrSJmeSUJ56c4C7Vkz_SsQlJ1SByKU18kkJh0g.T7mQnadCWVtEZ448AGk_9kG1HFBAzdztXZcBjvSbduwg.JPEG/%EA%B3%A0%EC%96%91%EC%9D%B4_%EB%82%98%EC%9D%B41.jpg?type=w1200',
-  'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-  'https://file.mk.co.kr/meet/neds/2021/06/image_readtop_2021_535745_16226846584668330.jpg',
-];
-
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
+import styled from "styled-components";
+import { IFeed } from "../../types/feedTypes";
+import { ShareButton, WarningButton } from "../common/Buttons";
+import Album from "./Album";
+import AuthorInfo from "./AuthorInfo";
+import LikesCount from "./LikesCount";
 
 interface feedProps extends IFeed {
   isSimple: boolean;
@@ -26,7 +12,7 @@ interface feedProps extends IFeed {
 function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
   return (
     <FeedContainer>
-      <Album imageUrls={TEST_IMAGE_URLS} size='simple' />
+      <Album imageUrls={imageUrls} size="simple" />
       <MenuContainer>
         <LikesCount likes={1122} />
         <SocialButtonContainer>
@@ -36,7 +22,7 @@ function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
       </MenuContainer>
       {isSimple || (
         <PostContainer>
-          <AuthorInfo size='simple' userId={userId} />
+          <AuthorInfo size="simple" userId={userId} />
           <PostTime>3시간</PostTime>
         </PostContainer>
       )}

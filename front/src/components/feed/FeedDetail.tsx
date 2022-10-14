@@ -1,22 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { IFeed } from "../../types/feedTypes";
 import {
   DelButton,
   ConfirmButton,
   ShareButton,
   WarningButton,
-} from '../common/Buttons';
-import Album from './Album';
-import AuthorInfo from './AuthorInfo';
-import LikesCount from './LikesCount';
-
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
+} from "../common/Buttons";
+import Album from "./Album";
+import AuthorInfo from "./AuthorInfo";
+import LikesCount from "./LikesCount";
 
 function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
   return (
@@ -25,10 +17,10 @@ function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
         <DelButton>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
       </ButtonContainer>
-      <Album imageUrls={imageUrls} size='detail' />
+      <Album imageUrls={imageUrls} size="detail" />
       <DetailContainer>
         <DetailHeader>
-          <AuthorInfo size='detail' userId={12321} />
+          <AuthorInfo size="detail" userId={12321} />
           <LikesCount likes={1122} />
           <SocialButtonContainer>
             <WarningButton />
