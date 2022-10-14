@@ -136,3 +136,15 @@ exports.updateCampaignValidator = () => {
     validate,
   ];
 };
+
+exports.campaignImageCreateValidator = () => {
+  return [
+    check().custom((value, { req }) => {
+      if (!req.file?.path) {
+        throw new Error("이미지파일이 없습니다.");
+      }
+      return true;
+    }),
+    validate,
+  ];
+};

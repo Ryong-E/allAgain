@@ -123,6 +123,19 @@ const Campaign = {
 
     return null;
   },
+  createImage: async ({ imageUrl }) => {
+    await connection
+      .promise()
+      .query(
+        "INSERT INTO images(url, name) VALUES (?, ?)",
+        [imageUrl, "campaign"],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return imageUrl;
+  },
 };
 
 export { Campaign };

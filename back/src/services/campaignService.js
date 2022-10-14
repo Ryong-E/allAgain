@@ -236,6 +236,20 @@ const campaignService = {
 
     return "삭제 완료";
   },
+  addCampaignImages: async ({ image }) => {
+    const re = new RegExp(`campaignImages.*`, "g");
+    const serverUrl = process.env.SERVER_URL || "localhost";
+    const serverPort = process.env.SERVER_PORT || 5000;
+    const imageUrl = path.join(
+      serverUrl + ":" + serverPort,
+      "/",
+      image.match(re)[0]
+    );
+
+    const createdImage = await Campaign.createImage({ imageUrl });
+
+    return { imageUrl: createdImage };
+  },
 };
 
 export { campaignService };

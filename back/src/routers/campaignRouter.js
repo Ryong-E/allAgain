@@ -7,6 +7,7 @@ import {
   getCampaignValidator,
   updateCampaignValidator,
   deleteCampaignValidator,
+  campaignImageCreateValidator,
 } from "../middlewares/campaignValidator";
 
 const campaignRouter = Router();
@@ -103,6 +104,23 @@ campaignRouter.delete(
       });
 
       res.status(204).json(deletedCampaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.post(
+  "/images",
+  loginRequired,
+  uploadStrategy("campaignImages").single("image"),
+  campaignImageCreateValidator(),
+  async (req, res, next) => {
+    try {
+      const image = req.file.path;
+      const createdImage = await campaignService.addCampaignImages({ image });
+
+      res.status(201).json(createdImage);
     } catch (error) {
       next(error);
     }
