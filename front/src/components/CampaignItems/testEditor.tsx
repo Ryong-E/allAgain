@@ -61,6 +61,12 @@ export default function Editor({value,handleEditorChange}:EditorProps){
   //   }
   // },[quill])
 
+  function replaceHtml(html:string){
+    let result = html.replaceAll('<','&lt;');
+    result = result.replaceAll('>','&gt;');
+    return result
+  }
+
   useEffect(()=>{
     if(quill){
       quill.on('text-change',(delta,oldDelta,source)=>{
@@ -69,7 +75,8 @@ export default function Editor({value,handleEditorChange}:EditorProps){
           inlineStyles: true
         });
         const html = converter.convert()
-        handleEditorChange(html)
+        const reHtml = replaceHtml(html);
+        handleEditorChange(reHtml)
       })
 
     }
