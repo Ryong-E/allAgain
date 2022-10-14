@@ -34,10 +34,8 @@ const CommentBox = styled.div`
     
     .comment {
       font-size: 14px;
-
-      p{
-
-      }
+      word-break: break-all;
+      
       button{
         font-size: 13px;
         color: ${({theme})=> theme.colors.darkBeige};
@@ -74,7 +72,7 @@ export default function CommentItem({campaign_id, userId, root_comment_id, conte
           <div className="comment">
             {content.length >= 100 ? 
                 <>
-                <p>{isLong ? content : content.slice(0,50)+"..." }<br/></p>
+                {isLong ? content : content.slice(0,70)+"..." }<br/>
                 <button onClick={()=>{setIsLong(!isLong)}}>
                   {isLong ? <>간략히 보기</> : <>자세히 보기</> }
                 </button>
