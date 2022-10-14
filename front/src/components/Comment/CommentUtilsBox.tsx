@@ -28,25 +28,40 @@ const UtilsBox = styled.div`
   }
 `;
 
-interface ReCommentType {
+interface CommentUtils {
   root_comment_id: String;
   userId: number;
   isReComment: Boolean;
   setIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsReComment: React.Dispatch<React.SetStateAction<boolean>>;
+  idx ?: number;
+  setLastIdx : React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId }: ReCommentType) {
+export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setIsReComment, root_comment_id, userId, idx, setLastIdx }: CommentUtils) {
   const [dumComment, setDumComment] = useRecoilState(commentDumData);
   const filteredComment = dumComment.filter((ele) => ele.root_comment_id === String(userId));
   const reCommentLength = filteredComment.length;
   const handleToggleReComment = () => {
     setIsReComment(true);
   };
-  const handleToggleFirstReComment = () =>{
+  const handleToggleReCommentWrite = () =>{
     setIsReComment(true);
-    setShowIsReComment((prev) => !prev);
+    setLastIdx(idx!);
+    setShowIsReComment(true);
   }
+
+  const handleDeleteComment = ()=>{
+    const foundDeledtComment = dumComment.find(ele => ele.userId === userId!)
+    const deletedComment = {...foundDeledtComment!,content:'작성자에 의해 삭제된 댓글입니다.'}
+    setDumComment(prev => {
+      const newList = [...prev];
+      newList.splice(userId, 1, deletedComment)
+      return newList
+    })
+    console.log(dumComment)
+  }
+
 
   return (
     <UtilsBox>
@@ -56,12 +71,12 @@ export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setI
           {
           (reCommentLength > 0 && !isReComment) ? 
           <button onClick={handleToggleReComment}>답글 {reCommentLength}개 보기</button>:
-          <button onClick={handleToggleFirstReComment}>답글 달기</button>
-        }
+          <button onClick={handleToggleReCommentWrite}>답글 달기</button>
+          }
         </div>
       )}
       <div className="deleteBtnBox">
-        <button>삭제</button>
+        <button onClick={handleDeleteComment}>삭제</button>
       </div>
     </UtilsBox>
   );
