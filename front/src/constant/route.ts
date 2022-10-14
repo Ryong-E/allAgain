@@ -1,4 +1,5 @@
 import Template from '../pages/Template';
+import MainPage from '../pages/MainPage/MainPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
@@ -11,7 +12,7 @@ export const ROUTE = {
   HOME: {
     path: '/',
     link: '/',
-    element: Template,
+    element: MainPage,
   },
   LOGIN: {
     path: '/login',
