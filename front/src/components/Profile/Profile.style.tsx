@@ -44,7 +44,6 @@ export const PreviewImage = styled.div<User>`
 `;
 
 export const FormContainer = styled.form`
-  padding: 0 0 60px;
   margin: 0 auto;
 `;
 

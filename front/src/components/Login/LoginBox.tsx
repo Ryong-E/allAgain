@@ -3,16 +3,12 @@ import LoginForm from "./LoginForm";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 
-const LoginWrap = styled.div`
-  height: 100%;
-  min-height: calc(100vh - 50px);
-  padding: 200px 0 100px;
-`;
+
 const LoginTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 700;
+  font-family: "RIDIBatang";
+  font-size: 32px;
   text-align: center;
-  margin: 0 0 60px;
+  margin: 0 0 80px;
 `;
 
 const RegisterLinkWrap = styled.div`
@@ -24,23 +20,26 @@ const RegisterLinkWrap = styled.div`
 
 const RegisterLinkButton = styled.button`
   color: ${({ theme }) => theme.colors.dasidaGreen};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
   font-weight: 700;
   margin: 0 10px;
+
+  &:hover { 
+    border-bottom: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
+  }
 `;
 
 
 export default function LoginBox() {
   return(
-      <LoginWrap>
-        <LoginTitle>로그인</LoginTitle>
-        <LoginForm />
-        <RegisterLinkWrap>아직 회원이 아니신가요?
-          <Link to={ ROUTE.REGISTER.link }>
-            <RegisterLinkButton>회원가입</RegisterLinkButton>
-          </Link>
-        </RegisterLinkWrap>
-      </LoginWrap>
+    <div>
+      <LoginTitle>다시, 다 사용해볼 준비가 되셨나요?</LoginTitle>
+      <LoginForm />
+      <RegisterLinkWrap>아직 회원이 아니신가요?
+        <Link to={ ROUTE.REGISTER.link }>
+          <RegisterLinkButton>회원가입</RegisterLinkButton>
+        </Link>
+      </RegisterLinkWrap>
+    </div>
   );
 
 }

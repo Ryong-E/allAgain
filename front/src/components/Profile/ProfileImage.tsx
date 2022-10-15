@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import * as ProfileStyle from "./Profile.style";
+import * as StyledProfile from "./Profile.style";
 import { useState, useEffect } from "react";
 import { User } from "../../api/types";
 import ProfileIcon from "../../assets/images/icons/icon_profile.png";
@@ -61,20 +61,20 @@ export default function ProfileImage() {
 
 
   return (
-    <ProfileStyle.ProfileImageWrap>
-      <ProfileStyle.ImageFormContainer onChange={handleSubmit(onSubmit)}>
-        <ProfileStyle.InputImage 
+    <StyledProfile.ProfileImageWrap>
+      <StyledProfile.ImageFormContainer onChange={handleSubmit(onSubmit)}>
+        <StyledProfile.InputImage 
           {...register("profileImage")}
           type="file"
           name="profileImage"
           accept="image/png, image/jpg"
           id="imageUpload"
         />
-        <ProfileStyle.PreviewImage 
+        <StyledProfile.PreviewImage 
           image_url={previewImage ? previewImage : ProfileIcon}
         />
-        <ProfileStyle.EditImageButton htmlFor="imageUpload"/>
-      </ProfileStyle.ImageFormContainer>
-    </ProfileStyle.ProfileImageWrap>
+        <StyledProfile.EditImageButton htmlFor="imageUpload"/>
+      </StyledProfile.ImageFormContainer>
+    </StyledProfile.ProfileImageWrap>
   )
 }

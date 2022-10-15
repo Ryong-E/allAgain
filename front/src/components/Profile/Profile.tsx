@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { deleteUser } from "../../api/userApi";
 import { DELETE_USER } from "../../constant/queryKeys";
-import * as ProfileStyle from "./Profile.style";
+import * as StyledProfile from "./Profile.style";
 import ProfileForm from "./ProfileForm";
 import ProfileImage from "./ProfileImage";
 import { useState } from "react";
@@ -35,22 +35,22 @@ export default function Profile() {
     <>
       <ProfileImage />
       <ProfileForm />
-      <ProfileStyle.WithdrawalWrap>
+      <StyledProfile.WithdrawalWrap>
         {
           confirmBox ? (
-            <ProfileStyle.WithdrawalConfirmBox>
+            <StyledProfile.WithdrawalConfirmBox>
               <p>회원탈퇴 시 모든 정보가 삭제되며, 복구되지 않습니다.</p>
               <p>탈퇴하시겠습니까?</p>
               <div>
-                <ProfileStyle.WithdrawalConfirmButton btnType={"cls"} onClick={handleCLick}>취소</ProfileStyle.WithdrawalConfirmButton>
-                <ProfileStyle.WithdrawalConfirmButton btnType={"ok"} onClick={(handleWithdrawal)}>탈퇴신청</ProfileStyle.WithdrawalConfirmButton>
+                <StyledProfile.WithdrawalConfirmButton btnType={"cls"} onClick={handleCLick}>취소</StyledProfile.WithdrawalConfirmButton>
+                <StyledProfile.WithdrawalConfirmButton btnType={"ok"} onClick={(handleWithdrawal)}>탈퇴신청</StyledProfile.WithdrawalConfirmButton>
               </div>
-              </ProfileStyle.WithdrawalConfirmBox>
+              </StyledProfile.WithdrawalConfirmBox>
           ) : (
-            <ProfileStyle.WithdrawalButton onClick={handleCLick}>회원탈퇴</ProfileStyle.WithdrawalButton>
+            <StyledProfile.WithdrawalButton onClick={handleCLick}>회원탈퇴</StyledProfile.WithdrawalButton>
           )
         }
-      </ProfileStyle.WithdrawalWrap>
+      </StyledProfile.WithdrawalWrap>
     </>
   )
 };

@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import CampaignItem from '../../components/CampaignItems/CampaignItem';
 import TagBox from '../../components/CampaignItems/TagBox';
 import { ConfirmButton } from '../../components/common/Buttons';
-import { Container, Container1300 } from '../../components/common/Containers';
+import { Container, Container1300, PageTitle } from '../../components/common/Containers';
 import { ROUTE } from "../../constant/route";
 import { useRecoilValue } from "recoil"
 import { campaignDumData } from "../../atoms/atoms"
 import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
-
 
 const NoPaddingContainer = styled(Container)`
   padding : 70px 0 0;
@@ -43,6 +42,7 @@ export default function CampaignPage() {
   
   return (
     <NoPaddingContainer>
+      <PageTitle>다시, 다 기부하다</PageTitle>
       <CampaignSlide/>
       <Container1300Ver2>
         <AdditionalBox>

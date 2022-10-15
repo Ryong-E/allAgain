@@ -24,6 +24,11 @@ export const ROUTE = {
     link: '/register',
     element: RegisterPage,
   },
+  MY_PAGE: {
+    path: '/mypage',
+    link: '/mypage',
+    element: Template,
+  },
   MY_PROFILE: {
     path: '/profile',
     link: '/profile',
