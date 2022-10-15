@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { deleteFeed } from "../../api/feedApi";
 import { IFeed } from "../../types/feedTypes";
 import {
   DelButton,
@@ -17,16 +19,23 @@ function FeedDetail({
   description,
   category,
 }: IFeed) {
+  const navigator = useNavigate();
+
+  const handleDeleteClick = async () => {
+    await deleteFeed(feedId);
+    navigator(-1);
+  };
+
   return (
     <>
       <ButtonContainer>
-        <DelButton>삭제</DelButton>
+        <DelButton onClick={handleDeleteClick}>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
       </ButtonContainer>
       <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>
         <DetailHeader>
-          <AuthorInfo size="detail" userId={12321} />
+          <AuthorInfo size="detail" userId={userId} />
           <LikesCount likes={1122} />
           <SocialButtonContainer>
             <WarningButton />
@@ -36,12 +45,7 @@ function FeedDetail({
         <DetailTime>
           <PostTime>3시간 전</PostTime>
         </DetailTime>
-        <DetailSection>
-          실제 우유팩을 인쇄하는 과정에서 발생하는 파지를 새활용한 소재로
-          카드지갑, 동전지갑 등 다양한 제품을 만들어보았습니다. 만드는 법이
-          어렵지 않고 알록달록 매력적인 디자인이라 아이들과 함께 만들기 좋아요!
-          우유팩이 재료인 만큼 탄탄하고 방수도 가능합니다.
-        </DetailSection>
+        <DetailSection>{description}</DetailSection>
       </DetailContainer>
       <DetailTagContainer>
         <DetailTag>테스트1</DetailTag>

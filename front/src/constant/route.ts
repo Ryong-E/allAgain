@@ -56,6 +56,11 @@ export const ROUTE = {
     link: "/feed",
     element: FeedAddPage,
   },
+  FEED_UPDATE: {
+    path: "/feed/update/:id",
+    link: "/feed/update/",
+    element: FeedAddPage,
+  },
   CAMPAGIN_LIST: {
     path: "/campaign",
     link: "/campaign",

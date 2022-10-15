@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IFeed } from "../../types/feedTypes";
 import { ShareButton, WarningButton } from "../common/Buttons";

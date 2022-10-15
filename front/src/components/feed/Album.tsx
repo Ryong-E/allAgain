@@ -24,7 +24,7 @@ function Album({ size, imageUrls, feedId }: albumProps) {
   };
 
   const handleAlbumClick = () => {
-    navigator(`/feed/${feedId}`);
+    if (size === "simple") navigator(`/feed/${feedId}`);
   };
 
   return (
