@@ -16,7 +16,7 @@ export default function CampaignDetailPage() {
   return (
     <Container>
       <Container1300Ver2>
-        {/* <CampaignDetail {...data!} /> */}
+        {data && <CampaignDetail {...data!} />}
       </Container1300Ver2>
     </Container>
   );
