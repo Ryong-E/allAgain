@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteFeed } from "../../api/feedApi";
-import { IFeed } from "../../types/feedTypes";
+import { FeedType } from "../../types/feedTypes";
 import {
   DelButton,
   ConfirmButton,
@@ -18,7 +18,7 @@ function FeedDetail({
   feedId,
   description,
   category,
-}: IFeed) {
+}: FeedType) {
   const navigator = useNavigate();
 
   const handleDeleteClick = async () => {

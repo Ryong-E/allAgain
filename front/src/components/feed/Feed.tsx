@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { IFeed } from "../../types/feedTypes";
+import { FeedType } from "../../types/feedTypes";
 import { ShareButton, WarningButton } from "../common/Buttons";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
 import LikesCount from "./LikesCount";
 
-interface feedProps extends IFeed {
+interface feedProps extends FeedType {
   isSimple: boolean;
 }
 

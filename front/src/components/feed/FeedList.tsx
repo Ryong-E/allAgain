@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import { IFeed } from "../../types/feedTypes";
+import { FeedType } from "../../types/feedTypes";
 import Feed from "./Feed";
 
 type FeedListProps = {
-  feeds: IFeed[];
+  feeds: FeedType[];
   isSimple: boolean;
 };
 
 function FeedList({ feeds, isSimple }: FeedListProps) {
   return (
     <FeedsContainer>
-      {feeds.map((feed: IFeed) => (
+      {feeds.map((feed: FeedType) => (
         <Feed {...feed} isSimple={isSimple} />
       ))}
     </FeedsContainer>

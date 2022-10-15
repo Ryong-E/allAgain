@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { IImageUrl } from "../../types/feedTypes";
+import { ImageUrlType } from "../../types/feedTypes";
 import { NextNavigationButton, PrevNavigationButton } from "../common/Buttons";
 
 interface albumProps {
   size: "simple" | "detail";
-  imageUrls: IImageUrl[];
+  imageUrls: ImageUrlType[];
   feedId: number;
 }
 
@@ -31,7 +31,7 @@ function Album({ size, imageUrls, feedId }: albumProps) {
     <AlbumContainer>
       <ImageContainer size={size}>
         <ImageList albumPage={imageIndex} onClick={handleAlbumClick}>
-          {imageUrls!.map((imageUrl: IImageUrl) => (
+          {imageUrls!.map((imageUrl: ImageUrlType) => (
             <img
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               src={"http://" + imageUrl.url}

@@ -1,21 +1,26 @@
-export interface IFeed {
+export interface FeedType {
   feedId: number;
   userId: number;
   category: string;
   tags: string;
-  imageUrls: IImageUrl[];
+  imageUrls: ImageUrlType[];
   description: string;
 }
 
-export interface ICreateFeed {
+export interface CreateFeedType {
   category: string;
   tags: string;
-  imageUrls: IImageUrl[];
+  imageUrls: ImageUrlType[];
   description: string;
 }
 
-export interface IImageUrl {
+export interface ImageUrlType {
   id: number;
   name: string;
   url: string;
+}
+
+export interface ImageType {
+  previewURL: string;
+  imageFile: File;
 }

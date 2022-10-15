@@ -1,13 +1,13 @@
 import axios from "axios";
-import { ICreateFeed, IFeed, IImageUrl } from "../types/feedTypes";
+import { CreateFeedType, FeedType, ImageUrlType } from "../types/feedTypes";
 
 const BASE_URL = "http://localhost:5001/feeds/";
-const APPLICATION_JSON = "application/json";
+const APPLCATION_JSON = "applCation/json";
 const MULTIPART_FORM_DATA = "multipart/form-data";
 const TEST_TOKEN =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8";
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwFbL9ov4lxvWOOf7QtU38wHf8";
 
-const feedApi = (contentType: string = APPLICATION_JSON) =>
+const feedApi = (contentType: string = APPLCATION_JSON) =>
   axios.create({
     baseURL: BASE_URL,
     headers: {
@@ -18,7 +18,7 @@ const feedApi = (contentType: string = APPLICATION_JSON) =>
 
 export const getFeedList = async () => {
   try {
-    const response = await feedApi().get<IFeed[]>("");
+    const response = await feedApi().get<FeedType[]>("");
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -27,7 +27,7 @@ export const getFeedList = async () => {
 
 export const getFeed = async (feedId: number) => {
   try {
-    const response = await feedApi().get<IFeed>(`${feedId}`);
+    const response = await feedApi().get<FeedType>(`${feedId}`);
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -48,7 +48,7 @@ export const createFeed = async ({
   tags,
   imageUrls,
   description,
-}: ICreateFeed) => {
+}: CreateFeedType) => {
   try {
     const response = await feedApi().post<string>("", {
       category,
@@ -69,7 +69,7 @@ export const updateFeed = async ({
   tags,
   imageUrls,
   description,
-}: IFeed) => {
+}: FeedType) => {
   try {
     const response = await feedApi().put("", {
       feedId,
@@ -87,7 +87,7 @@ export const updateFeed = async ({
 
 export const uploadFeedImages = async (formData: FormData) => {
   try {
-    const response = await feedApi(MULTIPART_FORM_DATA).post<IImageUrl[]>(
+    const response = await feedApi(MULTIPART_FORM_DATA).post<ImageUrlType[]>(
       "images",
       formData
     );
