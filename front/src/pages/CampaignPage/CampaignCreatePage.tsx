@@ -10,6 +10,8 @@ import RecruitDate from "../../components/CampaignItems/RecruitDate";
 import axios from "axios";
 import QuillEditor from "../../components/CampaignItems/QuillEditor";
 import { useParams } from "react-router-dom";
+import { createCampaign } from "../../api/campaignApi";
+import { idText } from "typescript";
 
 const CampaignDescription = styled.div`
     display:flex;
@@ -52,15 +54,16 @@ const DateFormBox = styled.div`
     width:350px;
 `
 
-interface FormType{
-    image:File[];
+export interface FormType{
+    thumbnail:File[];
+    title:string;
     content:string;
-    recruitStart:string;
-    recruitEnd:string;
-    progressStart:string;
-    progressEnd:string;
-    volume:number;
-    campaignDesc:string;
+    recruitmentStartDate:string;
+    recruitmentEndDate:string;
+    campaignStartDate:string;
+    campaignEndDate:string;
+    recruitmentNumber:string;
+    introduce:string;
 }
 export default function CampaignCreatePage(){
     const [editorContent,setEditorContent] = useState<string>("");
@@ -74,26 +77,51 @@ export default function CampaignCreatePage(){
         formState:{errors}
     } = useForm<FormType>();
     function validation(data : FieldValues){
-        if(data.recruitEnd < data.recruitStart){
-            setError('recruitEnd',{type:"custom",message:"마감날짜가 시작날짜보다 이전입니다"})
+        if(data.recruitmentEndDate < data.recruitmentStartDate){
+            setError('recruitmentEndDate',{type:"custom",message:"마감날짜가 시작날짜보다 이전입니다"})
             return false
         }
-        if(data.progressEnd < data.progressStart){
+        if(data.campaignEndDate < data.campaignStartDate){
+            setError('campaignEndDate',{type:"custom",message:"마감날짜가 시작날짜보다 이전입니다"})
+            return false
+        }
+        if(data.campaignStartDate < data.recruitmentStartDate){
+            setError('campaignEndDate',{type:"custom",message:"캠페인 시작 날짜가 모집 날짜보다 이전입니다"})
             return false
         }
         return true
     }
 
-    const onValid = (data : FieldValues) => {
+    const onValid = async (data : FormType) => {
         console.log(data)
         if(validation(data)){
-            console.log('에러없음')
+            const formData = new FormData()
+            // formData.append('title',data.title);
+            // formData.append('thumbnail',data.thumbnail[0]);
+            // formData.append('recruitmentStartDate',data.recruitmentStartDate);
+            // formData.append('recruitmentEndDate',data.recruitmentEndDate);
+            // formData.append('recruitmentNumber',data.recruitmentNumber);
+            // formData.append('introduce',data.introduce);
+            // formData.append('content',data.content);
+            // formData.append('campaignStartDate',data.campaignStartDate);
+            // formData.append('campaignEndDate',data.campaignEndDate);
+            for (let [key,value] of Object.entries(data)){
+                if(key == 'thumbnail'){
+                    formData.append('thumbnail',data.thumbnail[0]);
+                }
+                else{
+                    formData.append(key,value);
+                }
+            }
+            await createCampaign(formData)
+            alert('캠페인 생성이 완료 되었습니다.');
         };
 
     }
 
     useEffect(()=>{
-        setValue('content',editorContent);
+        const convertHtml = editorContent.replaceAll("<", "&lt;").replaceAll(">","&gt;");
+        setValue('content',convertHtml);
         trigger('content')
     },[editorContent])
 
@@ -110,11 +138,11 @@ export default function CampaignCreatePage(){
                             <InputBox>
                                 <InputBlock>
                                     <Label>캠페인 이름</Label>
-                                    <InputText/>
+                                    <InputText {...register('title',{required:"캠페인 이름을 입력해주세요"})}/>
                                 </InputBlock>
                                 <InputBlock>
                                     <Label>캠페인 소개</Label>
-                                    <Textarea style={{minHeight:"140px"}} {...register('campaignDesc')}/>
+                                    <Textarea style={{minHeight:"140px"}} {...register('introduce',{required:"캠페인 소개글을 작성해주세요"})}/>
                                 </InputBlock>
                             </InputBox>
                         </CampaignDescription>
@@ -122,23 +150,23 @@ export default function CampaignCreatePage(){
                                 <div>
                                     <Label>모집 기간</Label>
                                     <DateFormBox>
-                                        <RecruitDate register={register} watch={watch} registername="recruitStart" setValue={setValue} trigger={trigger}>시작날짜</RecruitDate>
-                                        <RecruitDate register={register} watch={watch} registername="recruitEnd" setValue={setValue} trigger={trigger}>마감날짜</RecruitDate>
-                                        {errors.recruitEnd && <span>{errors.recruitEnd.message}</span>}
+                                        <RecruitDate register={register} watch={watch} registername="recruitmentStartDate" setValue={setValue} trigger={trigger}>시작날짜</RecruitDate>
+                                        <RecruitDate register={register} watch={watch} registername="recruitmentEndDate" setValue={setValue} trigger={trigger}>마감날짜</RecruitDate>
+                                        {errors.recruitmentEndDate && <span>{errors.recruitmentEndDate.message}</span>}
                                     </DateFormBox>
                                 </div>
                                 <div>
                                     <Label>모집 인원</Label>
                                     <InputNumberBox>
-                                        <InputNumber type="number" {...register('volume')}></InputNumber>
+                                        <InputNumber type="number" {...register('recruitmentNumber')}></InputNumber>
                                         <span>명</span>
                                     </InputNumberBox>
                                 </div>
                                 <div>
                                     <Label>캠페인 기간</Label>
                                     <DateFormBox>
-                                        <RecruitDate register={register} watch={watch} registername="progressStart" setValue={setValue} trigger={trigger}>시작 날짜</RecruitDate>
-                                        <RecruitDate register={register} watch={watch} registername="progressEnd" setValue={setValue} trigger={trigger}>마감 날짜</RecruitDate>
+                                        <RecruitDate register={register} watch={watch} registername="campaignStartDate" setValue={setValue} trigger={trigger}>시작 날짜</RecruitDate>
+                                        <RecruitDate register={register} watch={watch} registername="campaignEndDate" setValue={setValue} trigger={trigger}>마감 날짜</RecruitDate>
                                     </DateFormBox>
                                 </div>
                             </InputBlock>

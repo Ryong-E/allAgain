@@ -1,5 +1,6 @@
 import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
+import { FormType } from "../pages/CampaignPage/CampaignCreatePage";
 export type CampaignItemType = {
   id : number;
   campaignId : number;
@@ -73,9 +74,9 @@ export const getCampaignItem = async (campaginId:number)=> {
     throw new Error("아이템 못가져옴..");
   }
 };
-export const insertImage = async (image : FormData)=>{
+export const insertImage = async (data : FormData)=>{
   try{
-    const response = await axios.post("http://localhost:5001/campaigns/images",image,{headers:{
+    const response = await axios.post("http://localhost:5001/campaigns/images",data,{headers:{
       "Content-Type":"multipart/form-data",
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
     }})
@@ -84,6 +85,18 @@ export const insertImage = async (image : FormData)=>{
     throw new Error('사진 업로드 실패')
   }
 }
+
+export const createCampaign = async (data : FormData)=>{
+  try{
+    const response = await axios.post("http://localhost:5001/campaigns",data,{headers:{
+      "Content-Type":"multipart/form-data",
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
+    }})
+  } catch(err:any){
+    throw new Error('사진 업로드 실패')
+  }
+}
+
 
 
 

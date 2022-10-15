@@ -28,26 +28,14 @@ export default function QuillEditor({
     input.setAttribute("accept", "image/png, image/jpg");
     input.click();
     input.addEventListener('change', async ()=>{
-        console.log('온체인지');
         const file = input.files![0];
-        console.log(file)
         const formData = new FormData();
         formData.append('image',file);
         try{
             const res = await insertImage(formData);
-            // const res = await axios.post("http://localhost:5001/campaigns/images",formData,{headers:{
-            //     "Content-Type":'multipart/form-data',
-            //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
-            // }})
-            console.log('성공데이터',res);
             const IMG_URL = res.data.imageUrl;
-            console.log(IMG_URL,'주소');
-            // const res = await insertImage()
-            // let url = res.data.url;/
-
             const editor = quillRef.current?.getEditor();
             const range = editor?.getSelection();
-            
             editor?.insertEmbed(range?.index!,'image',`http://${IMG_URL}`);
             editor?.setSelection(range?.index!+1,0);
 

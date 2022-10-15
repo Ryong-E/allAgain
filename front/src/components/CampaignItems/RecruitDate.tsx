@@ -88,7 +88,7 @@ export default function RecruitDate({children,register,registername,watch,setVal
         <>
             <InputWrap className={isClick ? 'on' : 'off'}>
                 <InputLabel tabIndex={0} className={(isClick || isWrite) ? 'on' : 'off'} onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}}>{children}</InputLabel>
-                <DateInput {...register(`${registername}`)} type="date" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
+                <DateInput {...register(`${registername}`,{required:`${children}을 입력해주세요`})} type="date" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
             </InputWrap>
         </>
     )
