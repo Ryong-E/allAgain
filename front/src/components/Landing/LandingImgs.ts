@@ -8,6 +8,7 @@ import landingTxt07 from "../../assets/images/landingTxt07.png";
 import landingTxt08 from "../../assets/images/landingTxt08.png";
 import landingTxt09 from "../../assets/images/landingTxt09.png";
 import landingTxt10 from "../../assets/images/landingTxt10.png";
+import landing03Title from "../../assets/images/landing03Title.png";
 
 const LandingImgs = {
   landing03Text:[
@@ -21,7 +22,7 @@ const LandingImgs = {
     landingTxt08,
     landingTxt09,
     landingTxt10
-  
-  ]
+  ],
+  landing03Title,
 }
 export default LandingImgs;
