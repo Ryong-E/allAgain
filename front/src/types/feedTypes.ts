@@ -7,6 +7,13 @@ export interface IFeed {
   description: string;
 }
 
+export interface ICreateFeed {
+  category: string;
+  tags: string;
+  imageUrls: IImageUrl[];
+  description: string;
+}
+
 export interface IImageUrl {
   id: number;
   name: string;

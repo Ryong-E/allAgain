@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { SaveButton } from "../common/Buttons";
 
-interface TagState {
+interface CategoryState {
   [key: string]: boolean;
 }
 
-const TagList = {
+const CategoryList = {
   all: "전체",
   plastic: "플라스틱",
   fiber: "섬유",
@@ -18,7 +18,7 @@ const TagList = {
   etc: "그 외",
 };
 
-const initialState: TagState = {
+const initialState: CategoryState = {
   all: true,
   plastic: false,
   fiber: false,
@@ -30,36 +30,39 @@ const initialState: TagState = {
   etc: false,
 };
 
-function FeedTagFilter() {
-  const [selectedTag, setSelectedTag] = useState<TagState>(initialState);
+function FeedCategoryFilter() {
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryState>(initialState);
 
-  const handleTagButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCategoryButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     const eventValue = (event.target as HTMLButtonElement).value;
     if (eventValue !== "all")
-      setSelectedTag({
-        ...selectedTag,
-        [eventValue]: !selectedTag[eventValue],
+      setSelectedCategory({
+        ...selectedCategory,
+        [eventValue]: !selectedCategory[eventValue],
         all: false,
       });
-    else setSelectedTag(initialState);
+    else setSelectedCategory(initialState);
   };
 
   return (
-    <TagButtonContainer>
-      {Object.entries(TagList).map(([key, value]) => (
-        <TagButton
+    <CategoryButtonContainer>
+      {Object.entries(CategoryList).map(([key, value]) => (
+        <CategoryButton
           key={key}
           value={key}
-          selectedTag={selectedTag}
-          onClick={handleTagButtonClick}>
+          selectedCategory={selectedCategory}
+          onClick={handleCategoryButtonClick}>
           {value}
-        </TagButton>
+        </CategoryButton>
       ))}
-    </TagButtonContainer>
+    </CategoryButtonContainer>
   );
 }
 
-const TagButtonContainer = styled.div`
+const CategoryButtonContainer = styled.div`
   width: 810px;
   height: 71px;
   background-color: #f2eee3;
@@ -69,7 +72,10 @@ const TagButtonContainer = styled.div`
   padding: 0 30px;
 `;
 
-const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagState }>`
+const CategoryButton = styled(SaveButton)<{
+  value: string;
+  selectedCategory: CategoryState;
+}>`
   width: auto;
   height: 35px;
   font-size: 16px;
@@ -77,7 +83,7 @@ const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagState }>`
   border-radius: 5px;
   box-shadow: none;
   ${(props) =>
-    props.selectedTag[props.value] === true
+    props.selectedCategory[props.value] === true
       ? css`
           background-color: #afa58d;
           color: #ffffff;
@@ -91,4 +97,4 @@ const TagButton = styled(SaveButton)<{ value: string; selectedTag: TagState }>`
   }
 `;
 
-export default FeedTagFilter;
+export default FeedCategoryFilter;

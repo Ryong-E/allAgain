@@ -10,14 +10,20 @@ import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
 import LikesCount from "./LikesCount";
 
-function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
+function FeedDetail({
+  imageUrls,
+  userId,
+  feedId,
+  description,
+  category,
+}: IFeed) {
   return (
     <>
       <ButtonContainer>
         <DelButton>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
       </ButtonContainer>
-      <Album imageUrls={imageUrls} size="detail" />
+      <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>
         <DetailHeader>
           <AuthorInfo size="detail" userId={12321} />

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IFeed } from "../../types/feedTypes";
 import { ShareButton, WarningButton } from "../common/Buttons";
@@ -12,7 +13,7 @@ interface feedProps extends IFeed {
 function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
   return (
     <FeedContainer>
-      <Album imageUrls={imageUrls} size="simple" />
+      <Album imageUrls={imageUrls} size="simple" feedId={feedId} />
       <MenuContainer>
         <LikesCount likes={1122} />
         <SocialButtonContainer>

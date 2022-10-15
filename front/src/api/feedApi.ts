@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IFeed, IImageUrl } from "../types/feedTypes";
+import { ICreateFeed, IFeed, IImageUrl } from "../types/feedTypes";
 
 const BASE_URL = "http://localhost:5001/feeds/";
 const APPLICATION_JSON = "application/json";
@@ -44,17 +44,13 @@ export const deleteFeed = async (feedId: number) => {
 };
 
 export const createFeed = async ({
-  feedId,
-  userId,
   category,
   tags,
   imageUrls,
   description,
-}: IFeed) => {
+}: ICreateFeed) => {
   try {
     const response = await feedApi().post<string>("", {
-      feedId,
-      userId,
       category,
       tags,
       imageUrls,
@@ -89,7 +85,7 @@ export const updateFeed = async ({
   }
 };
 
-export const uploadImages = async (formData: FormData) => {
+export const uploadFeedImages = async (formData: FormData) => {
   try {
     const response = await feedApi(MULTIPART_FORM_DATA).post<IImageUrl[]>(
       "images",

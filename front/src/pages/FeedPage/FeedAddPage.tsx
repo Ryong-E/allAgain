@@ -1,6 +1,9 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { createFeed, uploadFeedImages } from "../../api/feedApi";
 import {
   AddImageButton,
   CloseButton,
@@ -11,14 +14,22 @@ import { Container, Container1200 } from "../../components/common/Containers";
 import AuthorInfo from "../../components/feed/AuthorInfo";
 
 interface FormValues {
-  detail: string;
+  description: string;
   tags: string;
+  category: string;
 }
 
 function FeedAddPage() {
   const [imgPreview, setImgPreview] = useState<string[]>([]);
   const [uploadImages, setUploadImages] = useState<File[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
+  const navigator = useNavigate();
+
+  const submitMutation = useMutation(createFeed, {
+    onSuccess: () => {
+      navigator(-1);
+    },
+  });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -53,12 +64,17 @@ function FeedAddPage() {
     setUploadImages([...uploadImages]);
   };
 
+  const handleGoBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    navigator(-1);
+  };
+
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0) {
-      const { detail, tags } = data;
-      const tagsArr: string[] = tags.split("#").slice(1);
+      const { description, tags, category = "" } = data;
       const formData = new FormData();
       uploadImages.forEach((file) => formData.append("image", file));
+      const imageUrls = await uploadFeedImages(formData);
+      submitMutation.mutate({ description, tags, imageUrls, category });
     } else alert("파일 개수 미달");
   });
 
@@ -96,22 +112,22 @@ function FeedAddPage() {
             ))}
           </ImageAlbum>
           <TextContainer>
-            <DetailContainer>
-              <DetailHeader>
+            <DescriptionContainer>
+              <DescriptionHeader>
                 <AuthorInfo size="detail" userId={132132} />
-              </DetailHeader>
-              <DetailSection
+              </DescriptionHeader>
+              <DescriptionSection
                 placeholder="내용 작성.."
-                {...register("detail", {
+                {...register("description", {
                   required: "내용을 작성해 주세요.",
                   minLength: {
                     value: 4,
                     message: "내용은 최소 4글자 이상이여야 합니다.",
                   },
-                })}></DetailSection>
-            </DetailContainer>
-            <DetailTagContainer>
-              <DetailTag
+                })}></DescriptionSection>
+            </DescriptionContainer>
+            <DescriptionTagContainer>
+              <DescriptionTag
                 type="text"
                 placeholder="#으로 구분하여 태그를 입력해 주세요.."
                 {...register("tags", {
@@ -123,10 +139,19 @@ function FeedAddPage() {
                   },
                 })}
               />
-            </DetailTagContainer>
+            </DescriptionTagContainer>
+            <DescriptionTagContainer>
+              <DescriptionTag
+                type="text"
+                placeholder=",으로 구분하여 카테고리를 입력해 주세요.."
+                {...register("category", {
+                  required: "최소 1개 이상의 카테고리가 필요합니다.",
+                })}
+              />
+            </DescriptionTagContainer>
           </TextContainer>
           <ButtonContainer>
-            <ClsButton>취소</ClsButton>
+            <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
             <ConfirmButton type="submit">완료</ConfirmButton>
           </ButtonContainer>
         </FormContainer>
@@ -134,7 +159,7 @@ function FeedAddPage() {
     </Container>
   );
 }
-//검증조건 => 이미지는 최소 1개 이상, detail은 최소 4자 이상,
+//검증조건 => 이미지는 최소 1개 이상, Description은 최소 4자 이상,
 //tags는 무조건 #으로 시작하는 문자열이여야한다.
 
 const FormContainer = styled.form`
@@ -218,20 +243,20 @@ const TextContainer = styled.div`
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
 `;
 
-const DetailContainer = styled.div`
+const DescriptionContainer = styled.div`
   width: 1200px;
   padding: 40px 60px;
   background-color: #ffffff;
 `;
 
-const DetailHeader = styled.div`
+const DescriptionHeader = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
   justify-content: space-between;
 `;
 
-const DetailSection = styled.textarea`
+const DescriptionSection = styled.textarea`
   margin-top: 25px;
   width: 100%;
   min-height: 131px;
@@ -247,7 +272,7 @@ const DetailSection = styled.textarea`
   border: 0;
 `;
 
-const DetailTagContainer = styled.div`
+const DescriptionTagContainer = styled.div`
   width: 1200px;
   padding: 14px 45px 14px 45px;
   min-height: 49px;
@@ -256,7 +281,7 @@ const DetailTagContainer = styled.div`
   margin-bottom: 43px;
 `;
 
-const DetailTag = styled.input`
+const DescriptionTag = styled.input`
   color: #ffffff;
   font-size: 14px;
   line-height: 19px;
