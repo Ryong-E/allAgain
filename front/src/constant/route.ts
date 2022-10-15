@@ -7,6 +7,7 @@ import FeedListPage from '../pages/FeedPage/FeedListPage';
 import CampaignPage from '../pages/CampaignPage/CampaignPage';
 import CampaignDetailPage from '../pages/CampaignPage/CampaignDetailPage';
 import CampaignCreatePage from '../pages/CampaignPage/CampaignCreatePage';
+import LandingPage from '../pages/LandingPage/LandingPage';
 
 export const ROUTE = {
   HOME: {
@@ -58,6 +59,11 @@ export const ROUTE = {
     path: '/campaign/add',
     link: `/campaign`,
     element: CampaignCreatePage,
+  },
+  LANDING: {
+    path: '/landing',
+    link: `/landing`,
+    element: LandingPage,
   },
 };
 
