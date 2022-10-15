@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { FieldValues, useForm, UseFormResetField } from "react-hook-form";
+import { FieldValues, useForm, } from "react-hook-form";
 import { Container, Container1300 } from "../../components/common/Containers";
 import ImageUpload from "../../components/CampaignItems/ImageUpload";
-import parse from 'html-react-parser';
-import { InputBlock, InputText, Label, Textarea } from "../../components/common/Form";
+import { InputBlock, InputErrorMsg, InputText, Label, Textarea } from "../../components/common/Form";
 import styled from "styled-components";
-import Editor from "../../components/CampaignItems/testEditor";
 import RecruitDate from "../../components/CampaignItems/RecruitDate";
-import axios from "axios";
 import QuillEditor from "../../components/CampaignItems/QuillEditor";
-import { useParams } from "react-router-dom";
-import { createCampaign } from "../../api/campaignApi";
-import { idText } from "typescript";
+import { useNavigate, useParams } from "react-router-dom";
+import { CampaignItemType, createCampaign, getCampaignItem } from "../../api/campaignApi";
+import { ButtonBlock, ClsButton, ConfirmButton } from "../../components/common/Buttons";
+import { useQuery } from "@tanstack/react-query";
+import { ppid } from "process";
 
 const CampaignDescription = styled.div`
     display:flex;
@@ -53,6 +52,12 @@ const DateFormBox = styled.div`
     justify-content:space-between;
     width:350px;
 `
+const ButtonBox = styled(ButtonBlock)`
+    justify-content:center;
+    margin-top:100px;
+`
+
+
 
 export interface FormType{
     thumbnail:File[];
@@ -65,8 +70,18 @@ export interface FormType{
     recruitmentNumber:string;
     introduce:string;
 }
+
 export default function CampaignCreatePage(){
     const [editorContent,setEditorContent] = useState<string>("");
+    const [campaignUpdateData,setCampaignUpdateData] = useState<CampaignItemType>();
+    const navigate = useNavigate();
+    const {id} = useParams();
+    const {isLoading} = useQuery(["userCampaign"], () => getCampaignItem(Number(id!)),{
+        onSuccess(data){
+            setCampaignUpdateData(data);
+        }
+    });
+
     const {
         register,
         handleSubmit,
@@ -76,7 +91,7 @@ export default function CampaignCreatePage(){
         setError,
         formState:{errors}
     } = useForm<FormType>();
-    function validation(data : FieldValues){
+    function validation(data : FormType){
         if(data.recruitmentEndDate < data.recruitmentStartDate){
             setError('recruitmentEndDate',{type:"custom",message:"마감날짜가 시작날짜보다 이전입니다"})
             return false
@@ -96,15 +111,6 @@ export default function CampaignCreatePage(){
         console.log(data)
         if(validation(data)){
             const formData = new FormData()
-            // formData.append('title',data.title);
-            // formData.append('thumbnail',data.thumbnail[0]);
-            // formData.append('recruitmentStartDate',data.recruitmentStartDate);
-            // formData.append('recruitmentEndDate',data.recruitmentEndDate);
-            // formData.append('recruitmentNumber',data.recruitmentNumber);
-            // formData.append('introduce',data.introduce);
-            // formData.append('content',data.content);
-            // formData.append('campaignStartDate',data.campaignStartDate);
-            // formData.append('campaignEndDate',data.campaignEndDate);
             for (let [key,value] of Object.entries(data)){
                 if(key == 'thumbnail'){
                     formData.append('thumbnail',data.thumbnail[0]);
@@ -113,18 +119,19 @@ export default function CampaignCreatePage(){
                     formData.append(key,value);
                 }
             }
-            await createCampaign(formData)
+            await createCampaign(formData);
             alert('캠페인 생성이 완료 되었습니다.');
+            navigate('/campaign');
         };
 
     }
 
     useEffect(()=>{
         const convertHtml = editorContent.replaceAll("<", "&lt;").replaceAll(">","&gt;");
+        console.log(convertHtml)
         setValue('content',convertHtml);
         trigger('content')
     },[editorContent])
-
 
     return (
         <>
@@ -133,7 +140,7 @@ export default function CampaignCreatePage(){
                     <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)}>
                         <CampaignDescription>
                             <ThumbnailBox>
-                                <ImageUpload register={register} watch={watch}/>
+                                <ImageUpload register={register} watch={watch} defaultvalue={campaignUpdateData?.thumbnail!}/>
                             </ThumbnailBox>
                             <InputBox>
                                 <InputBlock>
@@ -150,9 +157,10 @@ export default function CampaignCreatePage(){
                                 <div>
                                     <Label>모집 기간</Label>
                                     <DateFormBox>
-                                        <RecruitDate register={register} watch={watch} registername="recruitmentStartDate" setValue={setValue} trigger={trigger}>시작날짜</RecruitDate>
+                                        <div>
+                                            <RecruitDate register={register} watch={watch} registername="recruitmentStartDate" setValue={setValue} trigger={trigger} errors={errors}>시작날짜</RecruitDate>
+                                        </div>
                                         <RecruitDate register={register} watch={watch} registername="recruitmentEndDate" setValue={setValue} trigger={trigger}>마감날짜</RecruitDate>
-                                        {errors.recruitmentEndDate && <span>{errors.recruitmentEndDate.message}</span>}
                                     </DateFormBox>
                                 </div>
                                 <div>
@@ -170,11 +178,11 @@ export default function CampaignCreatePage(){
                                     </DateFormBox>
                                 </div>
                             </InputBlock>
-                        {/* <Editor handleEditorChange={setEditorContent} value={editorContent} readStatus={false}/> */}
                         <QuillEditor handleEditorChange={setEditorContent} readStatus={false} editorContent={editorContent}/>
-                        <div>
-                            <button type="submit">제출하기</button>
-                        </div>
+                        <ButtonBox>
+                            <ClsButton onClick={(e)=>{e.preventDefault(); navigate('/campaign')}}>취소</ClsButton>
+                            <ConfirmButton>생성하기</ConfirmButton>
+                        </ButtonBox>
                     </form>
                 </Container1300>
             </Container>

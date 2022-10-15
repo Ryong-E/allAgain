@@ -95,8 +95,14 @@ const PreviewImage = styled.div<{background : string}>`
     height:100%;
 `
 
-function ImageUpload({register,watch} : any){
+function ImageUpload({register,watch,defaultvalue} : any){
     const [previewImage,setPreviewImage] = useState("")
+
+    useEffect(()=>{
+      if(defaultvalue !== undefined){
+        setPreviewImage(`http://${defaultvalue}`)
+      }
+    },[defaultvalue])
 
     const newPicture = watch("thumbnail");
 
@@ -109,7 +115,7 @@ function ImageUpload({register,watch} : any){
     return (
         <>
             <UploadImageBox>
-                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('thumbnail',{required:'썸네일 이미지를 업로드해주세요'})} multiple></UploadFile>
+                <UploadFile name="image-file" type="file" accept="image/png, image/jpg" id="upload-file"  {...register('thumbnail',{required:'썸네일 이미지를 업로드해주세요'})}></UploadFile>
                 {previewImage ? <PreviewImageBox><PreviewImage background={previewImage}></PreviewImage><ReImageUploadLabel htmlFor="upload-file"></ReImageUploadLabel></PreviewImageBox> : <><UploadFileLabel htmlFor="upload-file">사진 추가</UploadFileLabel><Text>
                 파일 크기 제한 :5MB
                 </Text></>}

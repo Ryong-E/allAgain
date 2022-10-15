@@ -204,7 +204,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       <CampaignItemLinkBox>
         <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`}>
           <ThumbnailImgBox className="thumbnailBox">
-            <img src={`${thumbnail!}`} alt="썸네일이미지" />
+            <img src={`http://${thumbnail!}`} alt="썸네일이미지" />
           </ThumbnailImgBox>
         </Link>
       </CampaignItemLinkBox>

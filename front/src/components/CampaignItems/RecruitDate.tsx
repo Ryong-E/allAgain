@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components";
+import { InputErrorMsg } from "../common/Form";
 
 const InputWrap = styled.div`
     position:relative;
@@ -40,7 +41,6 @@ interface RecruitDateProp{
     register : any;
     registername : string;
     watch : any;
-
 }
 
 export default function RecruitDate({children,register,registername,watch,setValue,trigger}:any){

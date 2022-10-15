@@ -83,6 +83,7 @@ export default function QuillEditor({
   return (
     <>
       <ReactQuill
+        style={{width:"100%",height:"500px"}}
         ref={(element)=>{if(element !== null){quillRef.current = element}}}
         modules={modules}
         formats={formats}
