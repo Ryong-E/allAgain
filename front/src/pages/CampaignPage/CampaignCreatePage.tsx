@@ -9,6 +9,7 @@ import Editor from "../../components/CampaignItems/testEditor";
 import RecruitDate from "../../components/CampaignItems/RecruitDate";
 import axios from "axios";
 import QuillEditor from "../../components/CampaignItems/QuillEditor";
+import { useParams } from "react-router-dom";
 
 const CampaignDescription = styled.div`
     display:flex;
@@ -61,7 +62,6 @@ interface FormType{
     volume:number;
     campaignDesc:string;
 }
-
 export default function CampaignCreatePage(){
     const [editorContent,setEditorContent] = useState<string>("");
     const {
@@ -142,7 +142,7 @@ export default function CampaignCreatePage(){
                                     </DateFormBox>
                                 </div>
                             </InputBlock>
-                        <Editor handleEditorChange={setEditorContent} value={editorContent} readStatus={false}/>
+                        {/* <Editor handleEditorChange={setEditorContent} value={editorContent} readStatus={false}/> */}
                         <QuillEditor handleEditorChange={setEditorContent} readStatus={false} editorContent={editorContent}/>
                         <div>
                             <button type="submit">제출하기</button>

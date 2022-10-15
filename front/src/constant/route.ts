@@ -58,6 +58,11 @@ export const ROUTE = {
     link: `/campaign`,
     element: CampaignCreatePage,
   },
+  CAMPAGIN_UPDATE: {
+    path: '/campaign/update/:id',
+    link: `/campaign`,
+    element: CampaignCreatePage,
+  },
 };
 
 export const ROUTE_ARR = Object.values(ROUTE);
