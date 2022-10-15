@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { InputText } from "../common/Form";
 import { SaveButton } from "../common/Buttons";
-// import ProfileImage from "../../assets/images/icons/icon_profile.png";
 import EditIcon from "../../assets/images/icons/icon_image_edit.png"
 import { User } from "../../api/types";
 
@@ -99,11 +98,47 @@ export const PwChangeInput = styled(InputText)`
   }
 `;
 
+export const WithdrawalWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 140px;
+  padding: 0 100px;
+  margin: 0 0 60px;
+`;
+
 export const WithdrawalButton = styled.div`
   color: ${({ theme }) => theme.colors.lightBeige};
-  text-align: right;
-  padding: 40px 100px 80px;
-`
+  cursor: pointer;
+`;
+
+export const WithdrawalConfirmBox = styled.div`
+  background: #${({ theme }) => theme.colors.bodyBg};
+  color: ${({ theme }) => theme.colors.brown};
+  border-radius: 5px;
+
+  & > div {
+    text-align: right;
+    margin-top: 10px;
+  }
+`;
+
+interface ButtonProps {
+  btnType: string
+}
+
+export const WithdrawalConfirmButton = styled.button<ButtonProps>`
+  background: ${(props) => props.btnType == "ok" ? "#ED5C48" : ""};
+  color: ${(props) => props.btnType == "ok" ? "#fff" : ""};
+  // font-weight: ${(props) => props.btnType == "ok" ? "700" : ""};
+  padding: 4px 6px;
+  cursor: pointer;
+
+  & + & {
+    margin-left: 10px;
+  }
+`;
 
 export const SubmitButton = styled(SaveButton)`
   margin-top: 40px;
