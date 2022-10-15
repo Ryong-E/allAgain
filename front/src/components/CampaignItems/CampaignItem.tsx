@@ -184,23 +184,8 @@ const CampaignItemLinkBox = styled.div`
   }
 `
 
-export interface DummyPropsType
-  { 
-    id ?: number;
-    campaign_id ?: number;
-    thumbnailImg ?: string;
-    title ?: string;
-    desc ?: string;
-    status ?: string;
-    recruitment ?: string[];
-    progress ?: string[];
-    personnel ?: number;
-    participating ?: number;
-    userImg ?: string;
-    userName ?: string;
-  }
 
-export default function CampaignItem({id, campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, introduce, status, writer } : CampaignItemType) {
+export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, introduce, status, writer } : CampaignItemType) {
   const person  = recruitmentNumber!;
   let endEvent = 1;
   let lengthRate = (endEvent/ person)*100; 
@@ -214,7 +199,6 @@ export default function CampaignItem({id, campaignId, title, content, thumbnail,
   useEffect(() => {
     rateAnimation()
   }, [status])
-  
   return (
     <ListItemBox className={status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : ""}>
       <CampaignItemLinkBox>
@@ -263,7 +247,7 @@ export default function CampaignItem({id, campaignId, title, content, thumbnail,
           <CreatedUser>
             <Link to={`/user/:id`}>
               <UserImgBox/>
-              <UserName userName={writer.nickname}/>
+              <UserName userName={writer!.nickname!}/>
             </Link>
           </CreatedUser>
         </ItemInfoBox>
@@ -277,7 +261,7 @@ export default function CampaignItem({id, campaignId, title, content, thumbnail,
             </div>
           </RateBox>
           <div className="endDate">
-            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집 예정" ? recruitmentStartDate! : recruitmentStartDate!} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
+            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집 예정" ? recruitmentStartDate! : ""} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
           </div>
         </LimitBox>
       </ContentsBox>

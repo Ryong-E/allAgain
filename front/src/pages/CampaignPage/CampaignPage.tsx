@@ -7,7 +7,6 @@ import { ConfirmButton } from '../../components/common/Buttons';
 import { Container, Container1300 } from '../../components/common/Containers';
 import { ROUTE } from "../../constant/route";
 import { useRecoilValue } from "recoil"
-import { campaignDumData } from "../../atoms/atoms"
 import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 import { useQuery } from '@tanstack/react-query';
 import {  getCampaignList } from '../../api/campaignApi';
@@ -40,14 +39,10 @@ const CampaignList = styled.div`
 export default function CampaignPage() {
   const {status, data, error} = useQuery(['list'], getCampaignList);
 
-  const dum = useRecoilValue(campaignDumData);
   const [values, setValues] = useState(['모집 중', '모집 예정', '모집 마감']); 
   const [currentValue, setCurrentValue] = useState('모집 중');
   const filteredStatus = data && data!.filter(ele => ele.status === currentValue);
 
-  // const dataList = data && data.filter((x => x.status === currentValue));
-
-  
   return (
     <NoPaddingContainer>
       <CampaignSlide/>
@@ -59,8 +54,8 @@ export default function CampaignPage() {
           </Link>
         </AdditionalBox>
         <CampaignList >
-          {data && filteredStatus!.map(props =>(
-            <CampaignItem {...props} key={`${props.id , props.campaignId ,props.title}`} />
+          {data && filteredStatus!.map((props,idx) =>(
+            <CampaignItem {...props} key={`${props.writer.nickname}`+ Date.now() + props.campaignId} />
           ))}
         </CampaignList>
       </Container1300Ver2>
