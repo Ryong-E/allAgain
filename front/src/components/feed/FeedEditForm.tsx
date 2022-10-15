@@ -12,16 +12,13 @@ import {
   ConfirmButton,
 } from "../../components/common/Buttons";
 import AuthorInfo from "../../components/feed/AuthorInfo";
+import { ImageType } from "../../types/feedTypes";
+import UploadImageAlbum from "./UploadImageAlbum";
 
 interface FormValues {
   description: string;
   tags: string;
   category: string;
-}
-
-interface ImageType {
-  previewURL: string;
-  imageFile: File;
 }
 
 function FeedEditForm() {
@@ -88,10 +85,6 @@ function FeedEditForm() {
     } else alert("파일 개수 미달");
   });
 
-  useEffect(() => {
-    // console.log(uploadImages);
-  }, [uploadImages]);
-
   return (
     <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
       <ImageFormContainer>
@@ -109,18 +102,10 @@ function FeedEditForm() {
       <ImageFormDescription>
         최대 업로드 파일 : 8개 / 각 파일 당 파일 크기 제한 : 5MB
       </ImageFormDescription>
-      <ImageAlbum>
-        {uploadImages.length === 0 && (
-          <ImageWarning>1개 이상의 사진을 추가해주세요</ImageWarning>
-        )}
-        {uploadImages.map(({ previewURL }, index) => (
-          <ImageContainer key={index}>
-            <ImageTest src={previewURL} alt={previewURL} key={index} />
-            <ImageDelete value={index} onClick={handleDeleteClick} />
-            {index === 0 && <ImageThumnailMark>썸네일</ImageThumnailMark>}
-          </ImageContainer>
-        ))}
-      </ImageAlbum>
+      <UploadImageAlbum
+        uploadImages={uploadImages}
+        onDeleteClick={handleDeleteClick}
+      />
       <TextContainer>
         <DescriptionContainer>
           <DescriptionHeader>
@@ -183,61 +168,6 @@ const ImageFormDescription = styled.div`
   text-align: right;
   color: #a9a9a9;
   margin: 30px 0;
-`;
-
-const ImageAlbum = styled.div`
-  width: 1200px;
-  height: 600px;
-  background-color: #f3efe5;
-  box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-`;
-
-const ImageContainer = styled.div`
-  width: 300px;
-  height: 300px;
-  position: relative;
-`;
-
-const ImageTest = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  overflow: hidden;
-`;
-
-const ImageDelete = styled(CloseButton)`
-  position: absolute;
-  right: 0%;
-  top: 0%;
-  margin-right: 10px;
-  margin-top: 10px;
-`;
-
-const ImageThumnailMark = styled.div`
-  position: absolute;
-  color: #ffffff;
-  width: 74px;
-  height: 31px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 29px;
-  margin: 14px 0px 0px 14px;
-  top: 0%;
-  left: 0%;
-  background-color: #4279f5;
-`;
-
-const ImageWarning = styled.div`
-  margin: auto;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 36px;
-  text-align: center;
-  color: #a9a9a9;
 `;
 
 const TextContainer = styled.div`
