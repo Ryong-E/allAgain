@@ -10,18 +10,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getCampaignItem } from '../../api/campaignApi';
 
 export default function CampaignDetailPage() {
-  const dum = useRecoilValue(campaignDumData);
-  
   const { id } = useParams();
-  // const {status, data, error} = useQuery(["detailCampaign"], getCampaignItem(Number(id!)));
-  // console.log(data)
-  const [currentData, setCurrentData] = useState(
-    dum.find((x) => x.id === Number(id)),
-  );
+  const {status, data, error} = useQuery(["detailCampaign"], () => getCampaignItem(Number(id!)));
+  console.log(data)
   return (
     <Container>
       <Container1300Ver2>
-        {/* <CampaignDetail {...currentData} /> */}
+        {/* <CampaignDetail {...data!} /> */}
       </Container1300Ver2>
     </Container>
   );

@@ -45,10 +45,6 @@ export default function CampaignPage() {
   const [currentValue, setCurrentValue] = useState('모집 중');
   const filteredStatus = data && data!.filter(ele => ele.status === currentValue);
 
-  // const dataList = data && data.filter((x => x.status === currentValue));
-  
-  console.log(data);
-  
   return (
     <NoPaddingContainer>
       <CampaignSlide/>
@@ -60,8 +56,8 @@ export default function CampaignPage() {
           </Link>
         </AdditionalBox>
         <CampaignList >
-          {data && filteredStatus!.map(props =>(
-            <CampaignItem {...props} key={`${props.id , props.campaignId ,props.title}`} />
+          {data && filteredStatus!.map((props,idx) =>(
+            <CampaignItem {...props} key={`${props.writer.nickname}`+ Date.now() + props.campaignId} />
           ))}
         </CampaignList>
       </Container1300Ver2>

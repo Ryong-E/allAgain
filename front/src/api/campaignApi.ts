@@ -1,7 +1,6 @@
 import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
 export type CampaignItemType = {
-  id : number;
   campaignId : number;
   title : String;
   content : String;

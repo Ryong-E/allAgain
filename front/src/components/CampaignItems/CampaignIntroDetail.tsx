@@ -27,9 +27,11 @@ export default function CampaignIntroDetail({desc} : IntroDetail) {
         캠페인 소개
       </div>
       <div className="introDescDetail">
-        {desc.split('\n').map((ele,idx) => (
-          <p key={ele + idx}>{ele}</p>
-        ))}
+        {desc.includes('\n') ? desc.split('\n').map((ele,idx) => (
+          <p key={ele + idx + Date.now()}>{ele}</p>
+        )):
+        <p>{desc} </p>
+      }
       </div>
     </IntroBox>
   )
