@@ -68,6 +68,15 @@ exports.userProfileUpdateVaildator = () => {
       }
       return true;
     }),
+    check().custom((value, { req }) => {
+      if (
+        (req.body.password || req.body.passwordConfirm) &&
+        !req.body.currentPassword
+      ) {
+        throw new Error("현재 비밀번호를 입력해주세요.");
+      }
+      return true;
+    }),
     validate,
   ];
 };
