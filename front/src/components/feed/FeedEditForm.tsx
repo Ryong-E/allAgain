@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -7,7 +7,6 @@ import { createFeed, uploadFeedImages } from "../../api/feedApi";
 import { getUserProfile } from "../../api/userApi";
 import {
   AddImageButton,
-  CloseButton,
   ClsButton,
   ConfirmButton,
 } from "../../components/common/Buttons";
@@ -22,7 +21,7 @@ interface FormValues {
 }
 
 function FeedEditForm() {
-  // const { data } = useQuery(["myProfile"], getUserProfile);
+  const { data } = useQuery(["myProfile"], getUserProfile);
 
   const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
@@ -48,11 +47,11 @@ function FeedEditForm() {
         const reader = new FileReader();
         reader.readAsDataURL(files[parseInt(key)]);
         const image: ImageType = {
-          previewURL: "",
-          imageFile: files[parseInt(key)],
+          url: "",
+          file: files[parseInt(key)],
         };
         reader.onload = () => {
-          image.previewURL = reader.result as string;
+          image.url = reader.result as string;
           imageList.push(image);
           if (FILES_LENGTH - 1 === parseInt(key))
             setUploadImages((prev) => [...prev, ...imageList]);
@@ -77,8 +76,8 @@ function FeedEditForm() {
     if (uploadImages.length !== 0) {
       const { description, tags, category = "" } = data;
       const formData = new FormData();
-      uploadImages.forEach(({ imageFile }) =>
-        formData.append("image", imageFile)
+      uploadImages.forEach(
+        ({ file }) => file && formData.append("image", file)
       );
       const imageUrls = await uploadFeedImages(formData);
       submitMutation.mutate({ description, tags, imageUrls, category });

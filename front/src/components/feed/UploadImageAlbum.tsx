@@ -16,9 +16,9 @@ function UploadImageAlbum({
       {uploadImages.length === 0 && (
         <ImageWarning>1개 이상의 사진을 추가해주세요</ImageWarning>
       )}
-      {uploadImages.map(({ previewURL }, index) => (
+      {uploadImages.map(({ url }, index) => (
         <ImageContainer key={index}>
-          <ImageTest src={previewURL} alt={previewURL} key={index} />
+          <ImageTest src={url} alt={url} key={index} />
           <ImageDelete value={index} onClick={onDeleteClick} />
           {index === 0 && <ImageThumnailMark>썸네일</ImageThumnailMark>}
         </ImageContainer>

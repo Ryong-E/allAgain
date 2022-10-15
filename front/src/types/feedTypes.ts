@@ -21,6 +21,8 @@ export interface ImageUrlType {
 }
 
 export interface ImageType {
-  previewURL: string;
-  imageFile: File;
+  id?: number;
+  name?: string;
+  url: string;
+  file?: File;
 }
