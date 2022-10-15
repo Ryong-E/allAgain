@@ -45,6 +45,7 @@ const campaignApi  = axios.create({
 });
 
 
+
 // export const createCampaignItem = async (data:CreateItem) => {
 //   try {
 //     const response = await userApi.post<CreateItem>(data);
@@ -72,6 +73,17 @@ export const getCampaignItem = async (campaginId:number)=> {
     throw new Error("아이템 못가져옴..");
   }
 };
+export const insertImage = async (image : FormData)=>{
+  try{
+    const response = await axios.post("http://localhost:5001/campaigns/images",image,{headers:{
+      "Content-Type":"multipart/form-data",
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
+    }})
+    return response
+  } catch(err:any){
+    throw new Error('사진 업로드 실패')
+  }
+}
 
 
 

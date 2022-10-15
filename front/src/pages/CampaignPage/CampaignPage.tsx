@@ -46,8 +46,7 @@ export default function CampaignPage() {
   const filteredStatus = data && data!.filter(ele => ele.status === currentValue);
 
   // const dataList = data && data.filter((x => x.status === currentValue));
-  
-  console.log(data);
+
   
   return (
     <NoPaddingContainer>

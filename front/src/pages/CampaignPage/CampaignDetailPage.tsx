@@ -13,8 +13,9 @@ export default function CampaignDetailPage() {
   const dum = useRecoilValue(campaignDumData);
   
   const { id } = useParams();
-  // const {status, data, error} = useQuery(["detailCampaign"], getCampaignItem(Number(id!)));
-  // console.log(data)
+  const {status,data,isLoading} = useQuery(["detailCampaign"], ()=>getCampaignItem(Number(id)))
+  console.log(data)
+
   const [currentData, setCurrentData] = useState(
     dum.find((x) => x.id === Number(id)),
   );

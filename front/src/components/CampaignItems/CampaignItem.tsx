@@ -277,7 +277,7 @@ export default function CampaignItem({id, campaignId, title, content, thumbnail,
             </div>
           </RateBox>
           <div className="endDate">
-            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집예정" ? recruitmentStartDate! : recruitmentStartDate!} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
+            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집 예정" ? recruitmentStartDate! : recruitmentStartDate!} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
           </div>
         </LimitBox>
       </ContentsBox>
