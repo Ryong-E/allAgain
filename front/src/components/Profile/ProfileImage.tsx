@@ -13,54 +13,51 @@ interface Inputs {
 
 export default function ProfileImage() {
 
-  const [previewImage,setPreviewImage] = useState("")
+  const [previewImage,setPreviewImage] = useState("");
 
-      const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        trigger,
-        setError,
-        formState:{errors}
-    } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState:{errors}
+  } = useForm<Inputs>();
 
 
-    // 업로드한 이미지 미리보기
-    const newPicture = watch("profileImage");
+  // 업로드한 이미지 미리보기
+  const newPicture = watch("profileImage");
 
-    useEffect(() => {
-        if (newPicture && newPicture.length > 0) {
-            const file = newPicture[0];
-            setPreviewImage(URL.createObjectURL(file));
-        }
-    }, [newPicture]);
-
-
-    // 프로필 이미지 업로드 Mutation 정의
-    const queryClient = useQueryClient();
-
-    const updateProfileImgMutation = useMutation([UPDATE_PROFILE_IMG], updateUserImage, {
-      onError: (error: any, variable, context) => {
-      },
-      onSuccess: (data: any, variables, context) => {
-        console.log("success", data, variables, context);
-      },
-    });
+  useEffect(() => {
+      if (newPicture && newPicture.length > 0) {
+          const file = newPicture[0];
+          setPreviewImage(URL.createObjectURL(file));
+      }
+  }, [newPicture]);
 
 
-    // 이미지 파일 업로드 시 바로바로 post요청보내서 프로필 이미지 수정
-    const onSubmit = (data: any) => {
- 
-      const formData = new FormData();
-      formData.append("image", data.profileImage[0]);
+  // 프로필 이미지 업로드 Mutation 정의
+  const queryClient = useQueryClient();
 
-      console.log(data.profileImage[0]);
-      console.log(formData);
+  const updateProfileImgMutation = useMutation([UPDATE_PROFILE_IMG], updateUserImage, {
+    onError: (error: any, variable, context) => {
+    },
+    onSuccess: (data: any, variables, context) => {
+      console.log("success", data, variables, context);
+    },
+  });
 
-      updateProfileImgMutation.mutate({ formData });
 
-    }
+  // 이미지 파일 업로드 시 바로바로 post요청보내서 프로필 이미지 수정
+  const onSubmit = (data: any) => {
+
+    const formData = new FormData();
+    formData.append("image", data.profileImage[0]);
+
+    console.log(data.profileImage[0]);
+    console.log(formData);
+
+    updateProfileImgMutation.mutate({ formData });
+
+  }
 
 
   return (

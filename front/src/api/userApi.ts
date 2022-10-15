@@ -20,7 +20,7 @@ const userApi = axios.create({
 // 회원가입
 export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>('register', { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("register", { email, password, passwordConfirm, name, nickname });
     return data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -30,7 +30,7 @@ export const createUser = async ({ email, password, passwordConfirm, name, nickn
 // 로그인
 export const loginUser = async ({ email, password }: User) => {
   try {
-    const { data } = await userApi.post<LoginResponse>('/login', { email, password });
+    const { data } = await userApi.post<LoginResponse>("/login", { email, password });
     return data;
   } catch (err: any) {
     throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -40,7 +40,7 @@ export const loginUser = async ({ email, password }: User) => {
 // 나의 계정프로필 조회하기
 export const getUserProfile = async () => {
   try {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'get',
       url: `${BASE_URL}/informations/me`,
@@ -59,7 +59,7 @@ export const getUserProfile = async () => {
 // 나의 계정프로필 수정하기
 export const updateUserProfile = async ({ nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
   try {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'put',
       url: `${BASE_URL}/profile`,
@@ -84,7 +84,7 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
 
 export const updateUserImage = async ({ formData }: any) => {
   try {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     await axios({
       method: 'post',
       url: `${BASE_URL}/profile/image`,
@@ -101,5 +101,25 @@ export const updateUserImage = async ({ formData }: any) => {
   } catch (err: any) {
     console.log(err);
     throw err;
+  }
+};
+
+
+export const deleteUser = async () => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    await axios({
+      method: 'delete',
+      url: `${BASE_URL}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + token
+      },
+    })
+    .then((res) => {
+      localStorage.removeItem("jwtToken");
+    });
+  } catch (err: any) {
+    throw new Error(err);
   }
 };
