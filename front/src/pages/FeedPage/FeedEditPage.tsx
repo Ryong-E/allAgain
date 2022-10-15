@@ -1,7 +1,7 @@
 import { Container, Container1200 } from "../../components/common/Containers";
 import FeedEditForm from "../../components/feed/FeedEditForm";
 
-function FeedAddPage() {
+function FeedEditPage() {
   return (
     <Container>
       <Container1200>
@@ -11,4 +11,4 @@ function FeedAddPage() {
   );
 }
 
-export default FeedAddPage;
+export default FeedEditPage;

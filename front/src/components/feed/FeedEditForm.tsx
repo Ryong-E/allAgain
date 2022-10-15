@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createFeed, uploadFeedImages } from "../../api/feedApi";
+import { getUserProfile } from "../../api/userApi";
 import {
   AddImageButton,
   CloseButton,
@@ -18,9 +19,15 @@ interface FormValues {
   category: string;
 }
 
+interface ImageType {
+  previewURL: string;
+  imageFile: File;
+}
+
 function FeedEditForm() {
-  const [imgPreview, setImgPreview] = useState<string[]>([]);
-  const [uploadImages, setUploadImages] = useState<File[]>([]);
+  // const { data } = useQuery(["myProfile"], getUserProfile);
+
+  const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
   const navigator = useNavigate();
 
@@ -32,23 +39,27 @@ function FeedEditForm() {
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    let fileURLs: string[] = [];
-    let filesArr: File[] = [];
+    const FILES_LENGTH = files ? files.length : 0;
 
     if (files) {
-      if (files.length > 8) {
+      if (FILES_LENGTH > 8) {
         alert("8개를 이하의 이미지만 업로드 가능합니다.");
         return;
       }
+      const imageList: ImageType[] = [];
       Object.keys(files).forEach((key) => {
         const reader = new FileReader();
         reader.readAsDataURL(files[parseInt(key)]);
-        reader.onloadend = () => {
-          fileURLs.push(reader.result as string);
-          setImgPreview([...imgPreview, ...fileURLs]);
+        const image: ImageType = {
+          previewURL: "",
+          imageFile: files[parseInt(key)],
         };
-        filesArr.push(files[parseInt(key)]);
-        setUploadImages([...uploadImages, ...filesArr]);
+        reader.onload = () => {
+          image.previewURL = reader.result as string;
+          imageList.push(image);
+          if (FILES_LENGTH - 1 === parseInt(key))
+            setUploadImages((prev) => [...prev, ...imageList]);
+        };
       });
     }
     e.target.value = "";
@@ -57,9 +68,7 @@ function FeedEditForm() {
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const index = parseInt((e.target as HTMLButtonElement).value);
-    imgPreview.splice(index, 1);
     uploadImages.splice(index, 1);
-    setImgPreview([...imgPreview]);
     setUploadImages([...uploadImages]);
   };
 
@@ -71,14 +80,20 @@ function FeedEditForm() {
     if (uploadImages.length !== 0) {
       const { description, tags, category = "" } = data;
       const formData = new FormData();
-      uploadImages.forEach((file) => formData.append("image", file));
+      uploadImages.forEach(({ imageFile }) =>
+        formData.append("image", imageFile)
+      );
       const imageUrls = await uploadFeedImages(formData);
       submitMutation.mutate({ description, tags, imageUrls, category });
     } else alert("파일 개수 미달");
   });
 
+  useEffect(() => {
+    // console.log(uploadImages);
+  }, [uploadImages]);
+
   return (
-    <FormContainer encType="multipart/form-data" onSubmit={handleFormSubmit}>
+    <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
       <ImageFormContainer>
         <AddImageButton as="label" htmlFor="multi-upload">
           사진 추가
@@ -95,12 +110,12 @@ function FeedEditForm() {
         최대 업로드 파일 : 8개 / 각 파일 당 파일 크기 제한 : 5MB
       </ImageFormDescription>
       <ImageAlbum>
-        {imgPreview.length === 0 && (
+        {uploadImages.length === 0 && (
           <ImageWarning>1개 이상의 사진을 추가해주세요</ImageWarning>
         )}
-        {imgPreview.map((imageSrc, index) => (
+        {uploadImages.map(({ previewURL }, index) => (
           <ImageContainer key={index}>
-            <ImageTest src={imageSrc} alt={imageSrc} key={index} />
+            <ImageTest src={previewURL} alt={previewURL} key={index} />
             <ImageDelete value={index} onClick={handleDeleteClick} />
             {index === 0 && <ImageThumnailMark>썸네일</ImageThumnailMark>}
           </ImageContainer>
@@ -149,13 +164,9 @@ function FeedEditForm() {
         <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
         <ConfirmButton type="submit">완료</ConfirmButton>
       </ButtonContainer>
-    </FormContainer>
+    </form>
   );
 }
-
-const FormContainer = styled.form`
-  margin-top: 180px;
-`;
 
 const ImageFormContainer = styled.div`
   display: flex;
