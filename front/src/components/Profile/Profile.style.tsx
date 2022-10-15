@@ -1,8 +1,48 @@
 import styled from "styled-components";
 import { InputText } from "../common/Form";
 import { SaveButton } from "../common/Buttons";
-import ProfileImage from "../../assets/images/icons/icon_profile.png";
+// import ProfileImage from "../../assets/images/icons/icon_profile.png";
 import EditIcon from "../../assets/images/icons/icon_image_edit.png"
+import { User } from "../../api/types";
+
+export const ProfileImageWrap = styled.div`
+  padding: 170px 80px 30px;
+`;
+
+export const ImageFormContainer = styled.div`
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+`;
+
+export const InputImage = styled.input`
+  display: none;
+  visibility: hidden;
+`;
+
+export const EditImageButton = styled.label`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: url(${EditIcon}) no-repeat 60% 50%/65%;
+  background-color: ${({ theme }) => theme.colors.dasidaGreen};
+  box-shadow: 3px 3px 8px rgb(39, 66, 64, .4);
+  cursor: pointer;
+`;
+
+export const PreviewImage = styled.div<User>`
+  width: 100%;
+  height: 100%;
+  background: no-repeat 50% 50%/contain;
+  background-image: url(${(props) => props.image_url});
+  border-radius: 50%;
+  border: 1px solid  #E7E5E0;
+  over-flow: hidden;
+`;
 
 export const FormContainer = styled.form`
   padding: 0 0 60px;
@@ -14,33 +54,6 @@ export const Container400 = styled.div`
   max-width: 400px;
   padding: 0 40px;
   margin: 0 auto;
-`;
-
-export const ImageWrap = styled.div`
-  position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 170px auto 40px;
-`;
-
-export const Image = styled.div`
-  width: 100%;
-  height: 100%;
-  background: no-repeat 50% 50%/contain;
-  background-image: url(${ProfileImage});
-`;
-
-export const EditImageButton = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: url(${EditIcon}) no-repeat 60% 50%/65%;
-  background-color: ${({ theme }) => theme.colors.dasidaGreen};
-  box-shadow: 5px 5px 10px rgb(231 225 210 / 100%);
-
 `;
 
 export const NickNameInput = styled(InputText)`

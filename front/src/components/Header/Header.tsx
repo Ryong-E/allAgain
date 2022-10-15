@@ -25,18 +25,22 @@ const HeaderWrap = styled.header`
 const Logo = styled.div`
   position: absolute;
   top: 50%;
-  left: 80px;
-  transform: translate(0, -50%);
-  width: 200px;
-  height: 70px;
-  background: #e0d4b7;
+  left: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
 
   a {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
+
+    font-family: 'SANGJUGyeongcheonIsland';
+    font-size: 28px;
+    color: ${({ theme }) => theme.colors.bodyText};
+
   }
 `;
 
@@ -85,7 +89,7 @@ export default function Header() {
     <HeaderWrap>
       <Container>
         <Logo>
-          <Link to={ROUTE.HOME.link} />
+          <Link to={ROUTE.HOME.link}>ㄷㅅ, ㄷ</Link>
         </Logo>
         <NavBar />
         <HeaderUtils>

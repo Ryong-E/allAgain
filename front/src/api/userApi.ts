@@ -5,7 +5,7 @@ import {
   UserResponse,
   RegisterRequiredParams,
   RegisterResponse,
-  MyProfileEditParams
+  MyProfileEditParams,
 } from "./types";
 
 const BASE_URL = "http://localhost:5001/users";
@@ -74,10 +74,32 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
         passwordConfirm
       }
     });
-    console.log(data);
     return data;
   } catch (err: any) {
     console.log(err.response.data.errorMessage);
     throw err.response;
+  }
+};
+
+
+export const updateUserImage = async ({ formData }: any) => {
+  try {
+    const token = localStorage.getItem('jwtToken');
+    await axios({
+      method: 'post',
+      url: `${BASE_URL}/profile/image`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: 'Bearer ' + token
+      },
+      data: {
+        formData
+      }
+    }).then(res => {
+      console.log(res);
+    });
+  } catch (err: any) {
+    console.log(err);
+    throw err;
   }
 };
