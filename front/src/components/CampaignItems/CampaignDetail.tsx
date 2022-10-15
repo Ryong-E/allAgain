@@ -27,7 +27,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const [isJoin, setIsJoin] = useState(false)
   return (
     <>
-      <CUDBtn campaign_id={props.campaignId!} />
+      <CUDBtn campaignId={props.campaignId!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
           setIsJoin={setIsJoin}
@@ -43,7 +43,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
           <CampaignIsJoin
             setIsJoin={setIsJoin}
             isJoin={isJoin}/>
-          <CUDBtn campaign_id={props.campaignId!} JCTCenter={true} />
+          <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
         </>
       ) : (
         <CampaignComment />

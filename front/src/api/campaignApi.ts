@@ -18,30 +18,22 @@ export type CampaignItemType = {
   };
 }
 
-
-export interface UpdateItem{
-
-}
-
-export interface DeleteItem{
-  campaignId : number;
-}
-
 // import {
 //   CampaignItem,
 //   UpdateItem,
 //   DeleteItem
 // } from "./types";
-const TEST_TOKEN =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8';
+
+const TOKEN = localStorage.getItem('jwtToken');
 const BASE_URL = "http://localhost:5001/campaigns";
 const campaignApi  = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: TEST_TOKEN,
+    Authorization: 'Bearer ' + TOKEN,
   },
 });
+
 
 
 // export const createCampaignItem = async (data:CreateItem) => {
@@ -83,11 +75,15 @@ export const getCampaignItem = async (campaginId:number)=> {
 //   }
 // };
 
-// export const deleteCampaignItem = async ({campaignId}:DeleteItem) => {
-//   try {
-//     const response = await userApi.delete<DeleteItem>(`:campaginId`,{campaignId});
-//     return response.data;
-//   } catch (err: any) {
-//     throw new Error("삭제 실패..");
-//   }
-// };
+export const deleteCampaignItem = async (campaginId:number) => {
+  try {
+    const response = await campaignApi.delete("",{
+      data :{
+        campaginId
+      }
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error("삭제 실패..");
+  }
+};

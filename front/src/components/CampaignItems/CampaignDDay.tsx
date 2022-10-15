@@ -15,7 +15,6 @@ export default function CampaignDDay({status,  endDate, recruitmentNumber, endEv
   const remainingDate = Number(D_DAY) - Number(todayTime);
   const resultDate = Math.floor(remainingDate / (1000*60*60*24)) + 1;
   const failCampaign = recruitmentNumber - endEvent === 0;
-  console.log(resultDate)
 
   if(status === "모집 중"){
     return (
