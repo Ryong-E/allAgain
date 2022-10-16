@@ -6,12 +6,14 @@ import FeedEditForm from "../../components/feed/FeedEditForm";
 
 function FeedEditPage() {
   const { id } = useParams();
-  const { data } = useQuery(["editFeed"], () => getFeed(parseInt(id!)));
+  const { data } = useQuery(["editFeed"], () => getFeed(parseInt(id!)), {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <Container>
       <Container1200>
-        <FeedEditForm {...data} isEditing={true} />
+        {data && <FeedEditForm {...data} isEditing={true} />}
       </Container1200>
     </Container>
   );
