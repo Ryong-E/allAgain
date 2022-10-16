@@ -14,6 +14,8 @@ import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 export const NoPaddingContainer = styled(Container)`
   padding : 70px 0 0;
   max-width: 100%;
+  overflow: hidden;
+
 `
 
 export const Container1300Ver2 = styled(Container1300)`

@@ -13,6 +13,9 @@ const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
   background-image: url(${({bgImage})=> bgImage});
   z-index : ${({zIndex})=> zIndex};
 
+  &.parallaxItem5{
+    background-position: 0 35%;
+  }
   &.parallaxItem2{
     width:101%;
     left: -10px;
@@ -33,7 +36,7 @@ interface ParallaxType {
 
 export default function MountainsParallaxItems({bgImage, zIndex, idx} : ParallaxType) {
   const currentRef = useRef<HTMLDivElement>(null);
-  const handleWindowScroll = () =>{
+  const handleWindowScrollMountainMove = () =>{
     const documentTop = window.scrollY;
     const currentItem = currentRef.current;
     if(currentItem){
@@ -41,8 +44,13 @@ export default function MountainsParallaxItems({bgImage, zIndex, idx} : Parallax
     }
   };
   useEffect(()=>{
-    window.addEventListener("scroll",handleWindowScroll)
+    window.addEventListener("scroll",handleWindowScrollMountainMove)
+    return ()=>{
+      window.removeEventListener("scroll",handleWindowScrollMountainMove)
+    }
   })
+  
+  
   return (
     <ParallaxItem className={`parallaxItem${idx+1} parallaxItem`} ref={currentRef} bgImage={bgImage} zIndex={zIndex}/>
   )

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { ServiceDetailBox } from "./Landing03"
 import LandingImgs from "./LandingImgs"
@@ -8,11 +8,10 @@ const Section = styled.section`
   position: relative;
   height: calc(100vh - 70px);
   text-align:center;
-  display:flex;
   background: #d0e2db;
   transform-origin:50% 0 ;
   transition : transform 2s;
-  transform: scale(10);
+  transform: scale(12);
   overflow: hidden;
   &.active{
     transform: scale(1);
@@ -24,14 +23,12 @@ const Section = styled.section`
 `
 const TitleBox = styled.div`
   opacity: 0;
-  position: absolute;
-  left: 50%;
-  top: 10%;
-  transform: translateX(-50%);
+  position: relative;
   z-index : 10;
+  padding-top:100px;
   transition : opacity 1.3s 1s;
   img{
-    max-width:80%;
+    max-width:22%;
   }
 `
 
@@ -40,7 +37,10 @@ const MainDescTextBox = styled.div`
   font-weight: 900;
   font-size:80px;
   margin: auto;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index : 10;
   transition : opacity 1s 2s;
   color:${({theme})=> theme.colors.lightGreen}90;
@@ -55,10 +55,16 @@ const MainDescTextBox = styled.div`
 
 export default function Landing01() {
   const zIndex = [5,4,3,2,1];
-  
+  const [isLoading, setIsLoading] = useState(false);
+  const handleWindowScrollTitleMove=()=>{
+
+  }
+  useEffect(()=>{
+    setIsLoading(true);
+  },[])
   
   return (
-    <Section id="section01" className="active">
+    <Section id="section01" className={isLoading ? 'active' : ""}>
       <TitleBox className="titleBox">
         <img src={LandingImgs.landingTitle} alt="다시, 다 프로젝트" />
       </TitleBox>
