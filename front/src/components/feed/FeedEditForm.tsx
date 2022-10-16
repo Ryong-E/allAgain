@@ -1,17 +1,16 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { createFeed, uploadFeedImages } from "../../api/feedApi";
-import { getUserProfile } from "../../api/userApi";
+import { createFeed, updateFeed, uploadFeedImages } from "../../api/feedApi";
 import {
   AddImageButton,
   ClsButton,
   ConfirmButton,
 } from "../../components/common/Buttons";
 import AuthorInfo from "../../components/feed/AuthorInfo";
-import { FeedType, ImageType } from "../../types/feedTypes";
+import { FeedType, ImageType, ImageUrlType } from "../../types/feedTypes";
 import UploadImageAlbum from "./UploadImageAlbum";
 
 interface FormValues {
@@ -34,12 +33,16 @@ function FeedEditForm({
   isEditing,
 }: FeedEditProps) {
   const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
-  const { register, handleSubmit } = useForm<FormValues>();
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<FormValues>();
   const navigator = useNavigate();
 
-  const submitMutation = useMutation(createFeed, {
+  const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
     onSuccess: () => {
-      navigator(-1);
+      isEditing ? navigator(-1) : navigator(`/feed/${feedId}`);
     },
   });
 
@@ -85,30 +88,33 @@ function FeedEditForm({
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0) {
       const { description, tags, category } = data;
-      console.log(data);
       const formData = new FormData();
       uploadImages.forEach(
         ({ file }) => file && formData.append("image", file)
       );
-      const imageUrls = await uploadFeedImages(formData);
-      // submitMutation.mutate({
-      //   description,
-      //   tags: tags.slice(1).replaceAll("#", ", "),
-      //   imageUrls,
-      //   category,
-      // });
-      await createFeed({
-        category,
-        tags: tags.slice(1).replaceAll("#", ", "),
-        imageUrls,
+      const newUploadImageUrls = await uploadFeedImages(formData);
+      const uploadImageUrls = uploadImages
+        .filter((image) => image.file === undefined)
+        .concat(newUploadImageUrls);
+      const submitData = {
+        feedId,
+        userId,
         description,
-      });
+        tags: tags.slice(1).replaceAll("#", ", "),
+        imageUrls: uploadImageUrls as unknown as ImageUrlType[],
+        category,
+      };
+      submitMutation.mutate(submitData);
     } else alert("파일 개수 미달");
   });
 
   useEffect(() => {
     setUploadImages(imageUrls);
   }, [imageUrls]);
+
+  useEffect(() => {
+    console.log(uploadImages);
+  }, [uploadImages]);
 
   return (
     <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
@@ -150,7 +156,7 @@ function FeedEditForm({
         <DescriptionTagContainer>
           <DescriptionTag
             type="text"
-            defaultValue={tags && tags}
+            defaultValue={tags && "#" + tags.replaceAll(",", "#")}
             placeholder="#으로 구분하여 태그를 입력해 주세요.."
             {...register("tags", {
               required: "최소 1개 이상의 태그가 필요합니다.",
@@ -188,6 +194,7 @@ FeedEditForm.defaultProps = {
   tags: "",
   imageUrls: [],
   description: "",
+  isEditing: false,
 };
 
 const ImageFormContainer = styled.div`

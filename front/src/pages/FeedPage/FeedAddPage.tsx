@@ -5,7 +5,7 @@ function FeedAddPage() {
   return (
     <Container>
       <Container1200>
-        <FeedEditForm isEditing={false} />
+        <FeedEditForm />
       </Container1200>
     </Container>
   );

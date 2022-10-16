@@ -9,6 +9,7 @@ import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
 import CampaignCreatePage from "../pages/CampaignPage/CampaignCreatePage";
 import FeedDetailPage from "../pages/FeedPage/FeedDetailPage";
 import FeedAddPage from "../pages/FeedPage/FeedAddPage";
+import FeedEditPage from "../pages/FeedPage/FeedEditPage";
 
 export const ROUTE = {
   HOME: {
@@ -42,8 +43,8 @@ export const ROUTE = {
     element: Template,
   },
   LANDING: {
-    path: '/landing',
-    link: '/landing',
+    path: "/landing",
+    link: "/landing",
     element: Template,
   },
   FEED_LIST: {
@@ -64,7 +65,7 @@ export const ROUTE = {
   FEED_UPDATE: {
     path: "/feed/update/:id",
     link: "/feed/update/",
-    element: FeedAddPage,
+    element: FeedEditPage,
   },
   CAMPAGIN_LIST: {
     path: "/campaign",
