@@ -6,6 +6,10 @@ import { ROUTE } from '../../constant/route';
 import AlertIcon from "../../assets/images/icons/icon_alert.png";
 import ProfileIcon from "../../assets/images/icons/icon_profile.png";
 import { useState, useRef, useEffect } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { MyProfile, User } from '../../api/types';
+import { GET_PROFILE } from '../../constant/queryKeys';
+import { getUserProfile } from '../../api/userApi';
 
 const HeaderWrap = styled.header`
   position: fixed;
@@ -55,8 +59,8 @@ const HeaderUtils = styled.div`
 `;
 
 const HeaderUtilButton = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: no-repeat 50% 50%/contain;
   cursor: pointer;
 
@@ -73,10 +77,14 @@ const HeaderUtilButton = styled.div`
 
 const NoticeButton = styled(HeaderUtilButton)`
   background-image: url(${AlertIcon});
+  background-size: 95%;
 `;
 
-const MeButton = styled(HeaderUtilButton)`
-  background-image: url(${ProfileIcon});
+const MeButton = styled(HeaderUtilButton)<User>`
+  border-radius: 50%;
+  border: 1px solid #E7E5E0;
+  overflow: hidden;
+  background-image: url(${(props) => props.imageUrl});%;
 `;
 
 const HeaderUtilBox = styled.div`
@@ -145,6 +153,20 @@ export default function Header() {
     navigate(ROUTE.LOGIN.link);
   }
 
+
+  const [previewImage,setPreviewImage] = useState("");
+
+  useQuery<MyProfile, Error>([GET_PROFILE], getUserProfile, {
+    refetchOnWindowFocus: true,
+    onSuccess: (data) => {
+      const replaceUrl = data.imageUrl.replaceAll("\\", "/");
+      setPreviewImage("http://" + replaceUrl);
+    }
+  });
+
+
+
+
   return (
     <HeaderWrap>
       <HeaderContainer>
@@ -154,7 +176,7 @@ export default function Header() {
         <NavBar />
         <HeaderUtils>
           <NoticeButton />
-          <MeButton ref={utilButtonRef} onClick={handleUtilBox} />
+          <MeButton ref={utilButtonRef} onClick={handleUtilBox} imageUrl={previewImage} />
           {
             utilBox && (
               <HeaderUtilBox ref={utilBoxRef}>

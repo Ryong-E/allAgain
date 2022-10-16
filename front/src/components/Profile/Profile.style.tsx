@@ -37,10 +37,10 @@ export const PreviewImage = styled.div<User>`
   width: 100%;
   height: 100%;
   background: no-repeat 50% 50%/contain;
-  background-image: url(${(props) => props.image_url});
+  background-image: url(${(props) => props.imageUrl});
   border-radius: 50%;
   border: 1px solid  #E7E5E0;
-  over-flow: hidden;
+  overflow: hidden;
 `;
 
 export const FormContainer = styled.form`
