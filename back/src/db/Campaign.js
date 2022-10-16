@@ -136,6 +136,43 @@ const Campaign = {
 
     return imageUrl;
   },
+  createParticipant: async ({ userId, campaignId }) => {
+    await connection
+      .promise()
+      .query(
+        "INSERT INTO campaign_participants(campaign_id, user_id) VALUES (?, ?)",
+        [campaignId, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+    return null;
+  },
+  deleteParticipant: async ({ userId, campaignId }) => {
+    await connection
+      .promise()
+      .query(
+        "DELETE FROM campaign_participants WHERE user_id = ? AND campaign_id = ?",
+        [userId, campaignId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+    return null;
+  },
+  findParticipantByUserId: async ({ userId }) => {
+    const participatedCampaigns = await connection
+      .promise()
+      .query(
+        "SELECT * FROM campaign_participants WHERE user_id = ?",
+        [userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return participatedCampaigns[0];
+  },
 };
 
 export { Campaign };
