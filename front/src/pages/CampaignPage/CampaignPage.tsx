@@ -11,7 +11,7 @@ import { campaignDumData } from "../../atoms/atoms"
 import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 
 
-const NoPaddingContainer = styled(Container)`
+export const NoPaddingContainer = styled(Container)`
   padding : 70px 0 0;
   max-width: 100%;
 `

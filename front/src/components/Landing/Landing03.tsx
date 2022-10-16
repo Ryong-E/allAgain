@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Container, Container1300 } from "../common/Containers";
 import LandingTextImgItem from "./LandingTextImgItem";
 import LandingImgs from "./LandingImgs";
 import upcycleIcon from "../../assets/images/icons/icon_upcycle_light.png";
@@ -8,6 +7,10 @@ import joinIcon from "../../assets/images/icons/icon_join.png";
 import teacherIcon from "../../assets/images/icons/icon_teacher.png";
 
 
+
+const Section = styled.section`
+
+`
 
 const TextImgBox = styled.div`
   padding-bottom: 30px;
@@ -40,7 +43,7 @@ const UpcycleIconBox =styled.div`
   }
 `
 
-const ServiceDetailBox = styled.div`
+export const ServiceDetailBox = styled.div`
   text-align:center; 
 `
 const TitleBox = styled.div`
@@ -96,9 +99,9 @@ export default function Landing03() {
   ]
   
   return (
-    <>
+    <Section id="section03">
       <TextImgBox>
-        {LandingImgs.landing03Text.map((ele, idx)=> (
+        {LandingImgs.section03Text.map((ele, idx)=> (
             <LandingTextImgItem imgSrc ={ele} transitionDelay={transitionDelay[idx]} idx={idx} key={idx + ele} />
           ))}
       </TextImgBox>
@@ -110,7 +113,7 @@ export default function Landing03() {
       </UpcycleIconBox>
       <ServiceDetailBox>
         <TitleBox>
-          <img src={LandingImgs.landing03Title} alt="" />
+          <img src={LandingImgs.landingTitle} alt="다시, 다 프로젝트" />
         </TitleBox>
         <DescBox>
           <p>다시, 다 프로젝트는 누구나 쉽게 업사이클링에 접근할 수 있게 도와주는 서비스입니다.</p>
@@ -131,7 +134,7 @@ export default function Landing03() {
           ))}
         </ContentBox>
       </ServiceDetailBox>
-    </>
+    </Section>
   )
 }
 
