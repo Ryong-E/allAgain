@@ -104,6 +104,7 @@ const campaignService = {
         campaignEndDate: campaigns[i].campaign_end_date,
         recruitmentNumber: campaigns[i].recruitment_number,
         introduce: campaigns[i].introduce,
+        participants_count: campaigns[i].participants_count,
         status,
         writer: {
           nickname: campaigns[i].nickname,
@@ -148,6 +149,7 @@ const campaignService = {
       campaignEndDate: campaign[0].campaign_end_date,
       recruitmentNumber: campaign[0].recruitment_number,
       introduce: campaign[0].introduce,
+      participants_count: campaign[0].participants_count,
       status,
       writer: {
         nickname: campaign[0].nickname,

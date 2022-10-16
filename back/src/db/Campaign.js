@@ -42,7 +42,7 @@ const Campaign = {
     const campaigns = await connection
       .promise()
       .query(
-        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id ",
         [],
         (error) => {
           if (error) throw error;
@@ -55,7 +55,7 @@ const Campaign = {
     const campaign = await connection
       .promise()
       .query(
-        "SELECT *, campaigns.id as campaign_id, users.id as user_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.id = ?",
+        "SELECT *, campaigns.id as campaign_id, users.id as user_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.id = ?",
         [campaignId],
         (error) => {
           if (error) throw error;
