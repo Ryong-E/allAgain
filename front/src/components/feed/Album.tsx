@@ -36,6 +36,7 @@ function Album({ size, imageUrls, feedId }: albumProps) {
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               src={"http://" + imageUrl.url}
               alt={imageUrl.name}
+              key={imageUrl.id}
             />
           ))}
         </ImageList>
@@ -43,19 +44,23 @@ function Album({ size, imageUrls, feedId }: albumProps) {
           <ImageSlideContainer>
             <PrevNavigationButton
               onClick={() => handleViewerClick(false)}
-              visibility={imageIndex !== IMAGE_FIRST_INDEX}
+              isVisible={imageIndex !== IMAGE_FIRST_INDEX}
             />
             <NextNavigationButton
               onClick={() => handleViewerClick(true)}
-              visibility={imageIndex !== IMAGE_LAST_INDEX}
+              isVisible={imageIndex !== IMAGE_LAST_INDEX}
             />
           </ImageSlideContainer>
         )}
       </ImageContainer>
       {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
         <ImageNavigator size={size}>
-          {imageUrls!.map((value, index) => (
-            <Navigator observeIndex={index} currentIndex={imageIndex} />
+          {imageUrls!.map((imageUrl, index) => (
+            <Navigator
+              observeIndex={index}
+              currentIndex={imageIndex}
+              key={imageUrl.id}
+            />
           ))}
         </ImageNavigator>
       )}

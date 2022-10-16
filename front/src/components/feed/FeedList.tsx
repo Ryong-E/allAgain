@@ -11,7 +11,7 @@ function FeedList({ feeds, isSimple }: FeedListProps) {
   return (
     <FeedsContainer>
       {feeds.map((feed: FeedType) => (
-        <Feed {...feed} isSimple={isSimple} />
+        <Feed {...feed} isSimple={isSimple} key={feed.feedId} />
       ))}
     </FeedsContainer>
   );
