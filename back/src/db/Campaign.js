@@ -64,6 +64,19 @@ const Campaign = {
 
     return campaign[0];
   },
+  findByUserId: async ({ userId }) => {
+    const campaigns = await connection
+      .promise()
+      .query(
+        "SELECT * FROM campaigns WHERE user_id = ? ORDER BY id DESC",
+        [userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return campaigns[0];
+  },
   updateStatus: async ({ campaignId, status }) => {
     await connection
       .promise()

@@ -64,6 +64,9 @@ const campaignService = {
       introduce,
     });
 
+    const campaigns = await Campaign.findByUserId({ userId });
+    await Campaign.createParticipant({ userId, campaignId: campaigns[0].id });
+
     return "캠페인 생성 완료";
   },
   getAllCampaigns: async () => {
