@@ -8,7 +8,7 @@ export const CampaignDescription = styled.div`
     height:300px;
     margin-bottom:20px;
     margin-top:200px;
-    justify-content:space-between;
+    justify-content:space-between ;
 `
 export const ThumbnailBox = styled.div`
 `
