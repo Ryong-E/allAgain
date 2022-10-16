@@ -5,23 +5,27 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import axios from "axios";
 import { insertImage } from "../../api/campaignApi";
+import styled from "styled-components";
+
+const QuillBlock = styled.div`
+  .ql-editor{
+    text-align:center
+  }
+`
 
 interface EditorProps {
-  value?: string;
   handleEditorChange?: (content: string) => void;
-  readStatus: boolean;
   editorContent?:string;
 }
+
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 export default function QuillEditor({
-  readStatus,
-  value,
   handleEditorChange,
   editorContent,
 }: EditorProps) {
   const quillRef = useRef<ReactQuill>()
-
+  console.log(editorContent)
   function handleImage() {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -67,6 +71,7 @@ export default function QuillEditor({
     }
     };
   }, []);
+
   // 위에서 설정한 모듈들 foramts을 설정한다
   const formats = [
     "bold",
@@ -82,16 +87,20 @@ export default function QuillEditor({
   ];
   return (
     <>
+    <QuillBlock>
       <ReactQuill
         style={{width:"100%",height:"500px"}}
         ref={(element)=>{if(element !== null){quillRef.current = element}}}
         modules={modules}
         formats={formats}
-        readOnly={readStatus ? true : false}
-        theme={readStatus ? 'bubble' : 'snow'}
-        value={readStatus ? value : editorContent}
+        theme={'snow'}
+        value={editorContent}
         onChange={handleEditorChange}
       />
+    </QuillBlock>
+    <div>
+      <pre>{editorContent}</pre>
+    </div>
     </>
   );
 }

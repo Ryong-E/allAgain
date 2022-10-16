@@ -41,9 +41,10 @@ interface RecruitDateProp{
     register : any;
     registername : string;
     watch : any;
+    defaultvalue:String;
 }
 
-export default function RecruitDate({children,register,registername,watch,setValue,trigger}:any){
+export default function RecruitDate({children,register,registername,watch,setValue,trigger,defaultvalue}:any){
     const dateRef = useRef<HTMLInputElement>(null);
     const [isClick,setIsClick] = useState(false);
     const [isWrite,setIsWrite] = useState(false);
@@ -58,6 +59,16 @@ export default function RecruitDate({children,register,registername,watch,setVal
     //         }
     //     }
     // },[isClick])
+    useEffect(()=>{
+        if(defaultvalue){
+            setIsWrite(true);
+            setValue(registername,defaultvalue)
+            // if(dateRef.current !== null){
+            //     dateRef.current.defaultValue= defaultvalue.substr(0,10);
+                
+            // };
+        }
+    },[defaultvalue])
 
     useEffect(()=>{
         if(dateRef.current !== null){
@@ -69,7 +80,7 @@ export default function RecruitDate({children,register,registername,watch,setVal
                 dateRef.current.style.opacity = isClick ? "1" : "0";
             }
         }
-    },[isClick])
+    },[isClick,isWrite])
 
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
@@ -88,7 +99,7 @@ export default function RecruitDate({children,register,registername,watch,setVal
         <>
             <InputWrap className={isClick ? 'on' : 'off'}>
                 <InputLabel tabIndex={0} className={(isClick || isWrite) ? 'on' : 'off'} onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}}>{children}</InputLabel>
-                <DateInput {...register(`${registername}`,{required:`${children}을 입력해주세요`})} type="date" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef}></DateInput>
+                <DateInput {...register(registername)} type="date" onBlur={()=>{setIsClick(false)}} onFocus={()=>{setIsClick(true)}} onChange={handleChange} ref={dateRef} defaultValue={defaultvalue.substr(0,10)}></DateInput>
             </InputWrap>
         </>
     )

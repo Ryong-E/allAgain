@@ -68,7 +68,7 @@ export const insertImage = async (data : FormData)=>{
   try{
     const response = await axios.post("http://localhost:5001/campaigns/images",data,{headers:{
       "Content-Type":"multipart/form-data",
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
+      Authorization: 'Bearer '+ TOKEN,
     }})
     return response
   } catch(err:any){
@@ -80,10 +80,21 @@ export const createCampaign = async (data : FormData)=>{
   try{
     const response = await axios.post("http://localhost:5001/campaigns",data,{headers:{
       "Content-Type":"multipart/form-data",
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8',
+      Authorization: 'Bearer '+ TOKEN,
     }})
   } catch(err:any){
-    throw new Error('사진 업로드 실패')
+    throw new Error('캠페인 생성 실패')
+  }
+}
+
+export const updateCampaign = async (data : FormData) =>{
+  try{
+    const response = await axios.put("http://localhost:5001/campaigns",data,{headers:{
+      "Content-Type":"multipart/form-data",
+      Authorization: 'Bearer '+ TOKEN,
+    }})
+  } catch(err:any){
+    throw new Error('캠페인 수정 실패')
   }
 }
 
