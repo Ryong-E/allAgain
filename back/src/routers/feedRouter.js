@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { Router } from "express";
-import { loginRequired } from "../middlewares/loginRequired";
-import { feedService } from "../services/feedService";
-import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
+import { Router } from 'express';
+import { loginRequired } from '../middlewares/loginRequired';
+import { feedService } from '../services/feedService';
+import { uploadStrategy } from '../middlewares/imageUploadMiddleware';
 
 const feedRouter = Router();
 
-feedRouter.post("/", loginRequired, async (req, res, next) => {
+feedRouter.post('/', loginRequired, async (req, res, next) => {
   try {
     const { category, tags, imageUrls, description } = req.body;
     const createdFeed = await feedService.createFeed({
@@ -23,9 +23,9 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
 });
 
 feedRouter.post(
-  "/images",
+  '/images',
   loginRequired,
-  uploadStrategy("feeds").array("image"),
+  uploadStrategy('feeds').array('image'),
   async (req, res, next) => {
     const imagePaths = [];
     req.files.forEach((file) => {
@@ -37,10 +37,10 @@ feedRouter.post(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
-feedRouter.get("/", loginRequired, async (req, res, next) => {
+feedRouter.get('/', loginRequired, async (req, res, next) => {
   try {
     const feedList = await feedService.getFeeds();
     res.status(200).send(feedList);
@@ -49,7 +49,7 @@ feedRouter.get("/", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
+feedRouter.get('/:feedId', loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const feed = await feedService.getFeedById({ feedId });
@@ -59,7 +59,7 @@ feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.put("/", loginRequired, async (req, res, next) => {
+feedRouter.put('/', loginRequired, async (req, res, next) => {
   try {
     const { feedId, userId, category, tags, imageUrls, description } = req.body;
     const currentUserId = req.currentUserId;
@@ -79,7 +79,7 @@ feedRouter.put("/", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {
+feedRouter.delete('/:feedId', loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const currentUserId = req.currentUserId;

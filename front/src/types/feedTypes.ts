@@ -26,3 +26,9 @@ export interface ImageType {
   url: string;
   file?: File;
 }
+
+export interface FeedFormValues {
+  description: string;
+  tags: string;
+  category: string;
+}
