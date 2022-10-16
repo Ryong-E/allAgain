@@ -7,39 +7,55 @@ const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-position: 0 50%;
+  background-position: 0 0%;
   background-repeat: no-repeat;
   background-size: 100%;
   background-image: url(${({bgImage})=> bgImage});
   z-index : ${({zIndex})=> zIndex};
-
-  &.parallaxItem5{
-    background-position: 0 35%;
-  }
   &.parallaxItem2{
     width:101%;
     left: -10px;
   }
-  &.parallaxItem1{
+  &.active{
+    background-position: 0 46%;
+  }
+  &.active.parallaxItem1{
     background-position: 0 55%;
   }
-  
-  transition: background-position 1.3s 1.${({zIndex}) => zIndex}s;
-
+  &.active.parallaxItem2{
+    background-position: 0 51%;
+  }
+  &.active.parallaxItem5{
+    background-position: 0 30%;
+  }
+  transition: background-position 1.3s 1.${({zIndex}) => zIndex+3}s;
+  @media (max-width:1920px){
+    &.parallaxItem2{
+      width:101%;
+      left: -0.5208vw;
+    }
+  }
 `
+/* 
+반응형 하려면 )
+max-width : 1200 부터 position 값 새로 줘야할듯
+max-width : 760 바닥 보임
+ */
+
 
 interface ParallaxType {
   bgImage : string;
+  isLoading : Boolean;
   zIndex : number;
   idx : number;
 }
 
-export default function MountainsParallaxItems({bgImage, zIndex, idx} : ParallaxType) {
+export default function MountainsParallaxItems({bgImage, zIndex, idx, isLoading} : ParallaxType) {
   const currentRef = useRef<HTMLDivElement>(null);
   const handleWindowScrollMountainMove = () =>{
     const documentTop = window.scrollY;
     const currentItem = currentRef.current;
-    if(currentItem){
+    if(currentItem && !currentItem.classList.contains("parallaxItem1")){
       currentItem.style.bottom = -(documentTop * ((idx+1)*0.15)) + "px";
     }
   };
@@ -52,6 +68,6 @@ export default function MountainsParallaxItems({bgImage, zIndex, idx} : Parallax
   
   
   return (
-    <ParallaxItem className={`parallaxItem${idx+1} parallaxItem`} ref={currentRef} bgImage={bgImage} zIndex={zIndex}/>
+    <ParallaxItem className={`parallaxItem${idx+1} parallaxItem ${isLoading ? "active" : ""}`} ref={currentRef} bgImage={bgImage} zIndex={zIndex}/>
   )
 }
