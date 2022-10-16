@@ -4,20 +4,17 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createFeed, updateFeed, uploadFeedImages } from "../../api/feedApi";
+import { ClsButton, ConfirmButton } from "../../components/common/Buttons";
 import {
-  AddImageButton,
-  ClsButton,
-  ConfirmButton,
-} from "../../components/common/Buttons";
-import AuthorInfo from "../../components/feed/AuthorInfo";
-import { FeedType, ImageType, ImageUrlType } from "../../types/feedTypes";
-import UploadImageAlbum from "./UploadImageAlbum";
-
-interface FormValues {
-  description: string;
-  tags: string;
-  category: string;
-}
+  FeedFormValues,
+  FeedType,
+  ImageType,
+  ImageUrlType,
+} from "../../types/feedTypes";
+import CategorySelectForm from "./CategorySelectForm";
+import DescriptionEditForm from "./DescriptionEditForm";
+import ImageEditForm from "./ImageEditForm";
+import TagEditForm from "./TagEditForm";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -37,7 +34,7 @@ function FeedEditForm({
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm<FormValues>();
+  } = useForm<FeedFormValues>();
   const navigator = useNavigate();
 
   const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
@@ -117,67 +114,16 @@ function FeedEditForm({
   }, [uploadImages]);
 
   return (
-    <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
-      <ImageFormContainer>
-        <AddImageButton as="label" htmlFor="multi-upload">
-          사진 추가
-        </AddImageButton>
-        <input
-          id="multi-upload"
-          type="file"
-          multiple
-          hidden
-          onChange={handleOnChange}
-        />
-      </ImageFormContainer>
-      <ImageFormDescription>
-        최대 업로드 파일 : 8개 / 각 파일 당 파일 크기 제한 : 5MB
-      </ImageFormDescription>
-      <UploadImageAlbum
-        uploadImages={uploadImages}
+    <form onSubmit={handleFormSubmit}>
+      <ImageEditForm
+        onChange={handleOnChange}
         onDeleteClick={handleDeleteClick}
+        uploadImages={uploadImages}
       />
       <TextContainer>
-        <DescriptionContainer>
-          <DescriptionHeader>
-            <AuthorInfo size="detail" userId={132132} />
-          </DescriptionHeader>
-          <DescriptionSection
-            defaultValue={description && description}
-            placeholder="내용 작성.."
-            {...register("description", {
-              required: "내용을 작성해 주세요.",
-              minLength: {
-                value: 4,
-                message: "내용은 최소 4글자 이상이여야 합니다.",
-              },
-            })}></DescriptionSection>
-        </DescriptionContainer>
-        <DescriptionTagContainer>
-          <DescriptionTag
-            type="text"
-            defaultValue={tags && "#" + tags.replaceAll(",", "#")}
-            placeholder="#으로 구분하여 태그를 입력해 주세요.."
-            {...register("tags", {
-              required: "최소 1개 이상의 태그가 필요합니다.",
-              validate: {
-                tagRule: (value) =>
-                  value.toString().startsWith("#") ||
-                  "태그는 반드시 #으로 시작하여야합니다.",
-              },
-            })}
-          />
-        </DescriptionTagContainer>
-        <DescriptionTagContainer>
-          <DescriptionTag
-            type="text"
-            defaultValue={category && category}
-            placeholder=",으로 구분하여 카테고리를 입력해 주세요.."
-            {...register("category", {
-              required: "최소 1개 이상의 카테고리가 필요합니다.",
-            })}
-          />
-        </DescriptionTagContainer>
+        <DescriptionEditForm register={register} description={description} />
+        <TagEditForm register={register} tags={tags} />
+        <CategorySelectForm register={register} category={category} />
       </TextContainer>
       <ButtonContainer>
         <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
@@ -197,82 +143,9 @@ FeedEditForm.defaultProps = {
   isEditing: false,
 };
 
-const ImageFormContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const ImageFormDescription = styled.div`
-  width: 100%;
-  font-family: "Noto Sans";
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 27px;
-  align-items: center;
-  text-align: right;
-  color: #a9a9a9;
-  margin: 30px 0;
-`;
-
 const TextContainer = styled.div`
   width: 1200px;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
-`;
-
-const DescriptionContainer = styled.div`
-  width: 1200px;
-  padding: 40px 60px;
-  background-color: #ffffff;
-`;
-
-const DescriptionHeader = styled.div`
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const DescriptionSection = styled.textarea`
-  margin-top: 25px;
-  width: 100%;
-  min-height: 131px;
-  font-size: 15px;
-  line-height: 36px;
-  &:empty:before {
-    content: "내용 작성..";
-    color: #a9a9a9;
-  }
-  &:focus {
-    outline: none;
-  }
-  border: 0;
-`;
-
-const DescriptionTagContainer = styled.div`
-  width: 1200px;
-  padding: 14px 45px 14px 45px;
-  min-height: 49px;
-  background-color: #004d49;
-  display: flex;
-  margin-bottom: 43px;
-`;
-
-const DescriptionTag = styled.input`
-  color: #ffffff;
-  font-size: 14px;
-  line-height: 19px;
-  font-weight: 600;
-  width: 100%;
-  text-align: left;
-  margin-right: 15px;
-  &:last-child {
-    margin-right: 0px;
-  }
-  background-color: rgba(0, 0, 0, 0);
-  border: 0;
-  &:focus {
-    outline: none;
-  }
 `;
 
 const ButtonContainer = styled.div`

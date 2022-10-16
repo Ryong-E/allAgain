@@ -18,6 +18,7 @@ function FeedDetail({
   feedId,
   description,
   category,
+  tags,
 }: FeedType) {
   const navigator = useNavigate();
 
@@ -52,10 +53,9 @@ function FeedDetail({
         <DetailSection>{description}</DetailSection>
       </DetailContainer>
       <DetailTagContainer>
-        <DetailTag>테스트1</DetailTag>
-        <DetailTag>테스트2</DetailTag>
-        <DetailTag>테스트3</DetailTag>
-        <DetailTag>테스트4</DetailTag>
+        {tags.split(",").map((tag) => (
+          <DetailTag>{tag}</DetailTag>
+        ))}
       </DetailTagContainer>
     </>
   );
