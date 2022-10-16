@@ -5,6 +5,7 @@ import {
   userLoginValidator,
   userProfileUpdateVaildator,
   getUserValidator,
+  userProfilePostVaildator,
 } from "../middlewares/userValidator";
 import { loginRequired } from "../middlewares/loginRequired";
 import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
@@ -70,6 +71,7 @@ userRouter.post(
   "/profile/image",
   loginRequired,
   uploadStrategy("profiles").single("image"),
+  userProfilePostVaildator(),
   async function (req, res, next) {
     try {
       const { path } = req.file;

@@ -58,13 +58,15 @@ const userService = {
       throw new Error("존재하지 않는 유저입니다.");
     }
 
-    const correctPassword = userById[0].password;
-    const isPasswordCorrect = await bcrypt.compare(
-      currentPassword ? currentPassword : "default",
-      correctPassword
-    );
-    if (!isPasswordCorrect) {
-      throw new Error("현재 비밀번호가 일치하지 않습니다.");
+    if (currentPassword) {
+      const correctPassword = userById[0].password;
+      const isPasswordCorrect = await bcrypt.compare(
+        currentPassword ? currentPassword : "default",
+        correctPassword
+      );
+      if (!isPasswordCorrect) {
+        throw new Error("현재 비밀번호가 일치하지 않습니다.");
+      }
     }
 
     const updatedNickname = nickname ? nickname : userById[0].nickname;

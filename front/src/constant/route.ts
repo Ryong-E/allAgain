@@ -41,6 +41,11 @@ export const ROUTE = {
     link: "/team2luda",
     element: Template,
   },
+  LANDING: {
+    path: '/landing',
+    link: '/landing',
+    element: Template,
+  },
   FEED_LIST: {
     path: "/feed",
     link: "/feed",

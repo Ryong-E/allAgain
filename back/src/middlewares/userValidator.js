@@ -1,4 +1,4 @@
-import { body, validationResult, param } from "express-validator";
+import { body, validationResult, param, check } from "express-validator";
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -65,6 +65,27 @@ exports.userProfileUpdateVaildator = () => {
     body("password").custom((value, { req }) => {
       if (value !== req.body.passwordConfirm) {
         throw new Error("변경할 비밀번호가 일치하지 않습니다.");
+      }
+      return true;
+    }),
+    check().custom((value, { req }) => {
+      if (
+        (req.body.password || req.body.passwordConfirm) &&
+        !req.body.currentPassword
+      ) {
+        throw new Error("현재 비밀번호를 입력해주세요.");
+      }
+      return true;
+    }),
+    validate,
+  ];
+};
+
+exports.userProfilePostVaildator = () => {
+  return [
+    check().custom((value, { req }) => {
+      if (!req.file?.path) {
+        throw new Error("이미지파일이 없습니다.");
       }
       return true;
     }),

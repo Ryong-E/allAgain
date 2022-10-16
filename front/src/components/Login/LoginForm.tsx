@@ -10,6 +10,7 @@ import { User, LoginResponse, LoginRequiredParams } from "../../api/types";
 import { useMutation, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
 import { authUserState } from "../../atoms/atoms";
+import { LOGIN } from "../../constant/queryKeys";
 
 
 const FormContainer = styled.form`
@@ -77,7 +78,7 @@ export default function LoginForm() {
 
 
 
-  const loginMutation = useMutation(loginUser, {
+  const loginMutation = useMutation([LOGIN], loginUser, {
     onMutate: variable => {
       console.log("onMutate", variable);
       // variable : {loginId: 'xxx', password; 'xxx'}

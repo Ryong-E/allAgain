@@ -15,6 +15,13 @@ export interface MyProfile {
   image_url: string,
 }
 
+export interface MyProfileEditParams {
+  nickname?: string,
+  currentPassword?: string,
+  password?: string,
+  passwordConfirm?: string,
+}
+
 export interface RegisterRequiredParams {
   email: string,
   password: string,
