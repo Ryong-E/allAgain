@@ -2,7 +2,7 @@ import axios from "axios";
 import { CreateFeedType, FeedType, ImageUrlType } from "../types/feedTypes";
 
 const BASE_URL = "http://localhost:5001/feeds/";
-const APPLCATION_JSON = "applCation/json";
+const APPLCATION_JSON = "application/json";
 const MULTIPART_FORM_DATA = "multipart/form-data";
 const TEST_TOKEN =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwFbL9ov4lxvWOOf7QtU38wHf8";
@@ -12,7 +12,7 @@ const feedApi = (contentType: string = APPLCATION_JSON) =>
     baseURL: BASE_URL,
     headers: {
       "Content-Type": contentType,
-      Authorization: TEST_TOKEN,
+      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
     },
   });
 

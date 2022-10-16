@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -84,13 +84,25 @@ function FeedEditForm({
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0) {
-      const { description, tags, category = "" } = data;
+      const { description, tags, category } = data;
+      console.log(data);
       const formData = new FormData();
       uploadImages.forEach(
         ({ file }) => file && formData.append("image", file)
       );
       const imageUrls = await uploadFeedImages(formData);
-      submitMutation.mutate({ description, tags, imageUrls, category });
+      // submitMutation.mutate({
+      //   description,
+      //   tags: tags.slice(1).replaceAll("#", ", "),
+      //   imageUrls,
+      //   category,
+      // });
+      await createFeed({
+        category,
+        tags: tags.slice(1).replaceAll("#", ", "),
+        imageUrls,
+        description,
+      });
     } else alert("파일 개수 미달");
   });
 
@@ -125,7 +137,7 @@ function FeedEditForm({
             <AuthorInfo size="detail" userId={132132} />
           </DescriptionHeader>
           <DescriptionSection
-            defaultValue={description}
+            defaultValue={description && description}
             placeholder="내용 작성.."
             {...register("description", {
               required: "내용을 작성해 주세요.",
@@ -138,7 +150,7 @@ function FeedEditForm({
         <DescriptionTagContainer>
           <DescriptionTag
             type="text"
-            defaultValue={tags}
+            defaultValue={tags && tags}
             placeholder="#으로 구분하여 태그를 입력해 주세요.."
             {...register("tags", {
               required: "최소 1개 이상의 태그가 필요합니다.",
@@ -153,7 +165,7 @@ function FeedEditForm({
         <DescriptionTagContainer>
           <DescriptionTag
             type="text"
-            defaultValue={category}
+            defaultValue={category && category}
             placeholder=",으로 구분하여 카테고리를 입력해 주세요.."
             {...register("category", {
               required: "최소 1개 이상의 카테고리가 필요합니다.",
