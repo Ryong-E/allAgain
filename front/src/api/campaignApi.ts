@@ -1,23 +1,23 @@
 import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
-import { FormType } from "../pages/CampaignPage/CampaignCreatePage";
+
 export type CampaignItemType = {
-  campaignId : number;
-  title : String;
-  content : String;
-  thumbnail ?: String | null;
-  recruitmentStartDate : Date;
-  recruitmentEndDate : Date;
-  campaignStartDate : Date;
-  campaignEndDate : Date;
-  recruitmentNumber : number;
-  introduce : String;
-  status : String;
-  writer : {
-    nickname : String;
-    imageUrl ?: String;
+  campaignId: number;
+  title: String;
+  content: String;
+  thumbnail?: String | null;
+  recruitmentStartDate: Date;
+  recruitmentEndDate: Date;
+  campaignStartDate: Date;
+  campaignEndDate: Date;
+  recruitmentNumber: number;
+  introduce: String;
+  status: String;
+  writer: {
+    nickname: String;
+    imageUrl?: String;
   };
-}
+};
 
 // import {
 //   CampaignItem,
@@ -25,17 +25,15 @@ export type CampaignItemType = {
 //   DeleteItem
 // } from "./types";
 
-const TOKEN = localStorage.getItem('jwtToken');
+const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
-const campaignApi  = axios.create({
+const campaignApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: 'Bearer ' + TOKEN,
+    Authorization: "Bearer " + TOKEN,
   },
 });
-
-
 
 // export const createCampaignItem = async (data:CreateItem) => {
 //   try {
@@ -56,50 +54,59 @@ export const getCampaignList = async () => {
   }
 };
 
-export const getCampaignItem = async (campaginId:number)=> {
+export const getCampaignItem = async (campaginId: number) => {
   try {
-    const response = await campaignApi.get<CampaignItemType> (`/campaign/${campaginId}`);
+    const response = await campaignApi.get<CampaignItemType>(
+      `/campaign/${campaginId}`
+    );
     return response.data;
   } catch (err: any) {
     throw new Error("아이템 못가져옴..");
   }
 };
-export const insertImage = async (data : FormData)=>{
-  try{
-    const response = await axios.post("http://localhost:5001/campaigns/images",data,{headers:{
-      "Content-Type":"multipart/form-data",
-      Authorization: 'Bearer '+ TOKEN,
-    }})
-    return response
-  } catch(err:any){
-    throw new Error('사진 업로드 실패')
+export const insertImage = async (data: FormData) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5001/campaigns/images",
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + TOKEN,
+        },
+      }
+    );
+    return response;
+  } catch (err: any) {
+    throw new Error("사진 업로드 실패");
   }
-}
+};
 
-export const createCampaign = async (data : FormData)=>{
-  try{
-    const response = await axios.post("http://localhost:5001/campaigns",data,{headers:{
-      "Content-Type":"multipart/form-data",
-      Authorization: 'Bearer '+ TOKEN,
-    }})
-  } catch(err:any){
-    throw new Error('캠페인 생성 실패')
+export const createCampaign = async (data: FormData) => {
+  try {
+    const response = await axios.post("http://localhost:5001/campaigns", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + TOKEN,
+      },
+    });
+  } catch (err: any) {
+    throw new Error("캠페인 생성 실패");
   }
-}
+};
 
-export const updateCampaign = async (data : FormData) =>{
-  try{
-    const response = await axios.put("http://localhost:5001/campaigns",data,{headers:{
-      "Content-Type":"multipart/form-data",
-      Authorization: 'Bearer '+ TOKEN,
-    }})
-  } catch(err:any){
-    throw new Error('캠페인 수정 실패')
+export const updateCampaign = async (data: FormData) => {
+  try {
+    const response = await axios.put("http://localhost:5001/campaigns", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + TOKEN,
+      },
+    });
+  } catch (err: any) {
+    throw new Error("캠페인 수정 실패");
   }
-}
-
-
-
+};
 
 // export const updateCampaignItem = async (data:UpdateItem) => {
 //   try {
@@ -110,12 +117,12 @@ export const updateCampaign = async (data : FormData) =>{
 //   }
 // };
 
-export const deleteCampaignItem = async (campaginId:number) => {
+export const deleteCampaignItem = async (campaginId: number) => {
   try {
-    const response = await campaignApi.delete("",{
-      data :{
-        campaginId
-      }
+    const response = await campaignApi.delete("", {
+      data: {
+        campaginId,
+      },
     });
     return response.data;
   } catch (err: any) {

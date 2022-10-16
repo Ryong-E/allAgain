@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
+import { Delta as TypeDelta } from "quill";
 import BlotFormatter from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -8,67 +9,60 @@ import { insertImage } from "../../api/campaignApi";
 import styled from "styled-components";
 
 const QuillBlock = styled.div`
-  .ql-editor{
-    text-align:center
+  .ql-editor {
+    text-align: center;
   }
-`
+`;
 
 interface EditorProps {
   handleEditorChange?: (content: string) => void;
-  editorContent?:string;
+  editorContent?: string;
 }
 
-Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register("modules/blotFormatter", BlotFormatter);
 
 export default function QuillEditor({
   handleEditorChange,
   editorContent,
 }: EditorProps) {
-  const quillRef = useRef<ReactQuill>()
-  console.log(editorContent)
+  const quillRef = useRef<ReactQuill>();
   function handleImage() {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/png, image/jpg");
     input.click();
-    input.addEventListener('change', async ()=>{
-        const file = input.files![0];
-        const formData = new FormData();
-        formData.append('image',file);
-        try{
-            const res = await insertImage(formData);
-            const IMG_URL = res.data.imageUrl;
-            const editor = quillRef.current?.getEditor();
-            const range = editor?.getSelection();
-            editor?.insertEmbed(range?.index!,'image',`http://${IMG_URL}`);
-            editor?.setSelection(range?.index!+1,0);
-
-        }
-        catch(err){
-            return('실패')
-        }
-    })
+    input.addEventListener("change", async () => {
+      const file = input.files![0];
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const res = await insertImage(formData);
+        const IMG_URL = res.data.imageUrl;
+        const editor = quillRef.current?.getEditor();
+        const range = editor?.getSelection();
+        editor?.insertEmbed(range?.index!, "image", `http://${IMG_URL}`);
+        editor?.setSelection(range?.index! + 1, 0);
+      } catch (err) {
+        return "실패";
+      }
+    });
   }
-  
+
   const modules = useMemo(() => {
     return {
-      blotFormatter: {
-      },
+      blotFormatter: {},
       toolbar: {
         container: [
-          [{header:[1,2,3,4,false]}],
+          [{ header: [1, 2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
-          [{ color: [] },{background:[]}],
-          [
-            { list: "ordered" },
-            { list: "bullet" },
-          ],
+          [{ color: [] }, { background: [] }],
+          [{ list: "ordered" }, { list: "bullet" }],
           ["image"],
         ],
-      handlers:{
-        image:handleImage
-      }
-    }
+        handlers: {
+          image: handleImage,
+        },
+      },
     };
   }, []);
 
@@ -84,23 +78,27 @@ export default function QuillEditor({
     "color",
     "background",
     "blockquote",
+    "calltoaction",
+    "size",
+    "width",
   ];
   return (
     <>
-    <QuillBlock>
-      <ReactQuill
-        style={{width:"100%",height:"500px"}}
-        ref={(element)=>{if(element !== null){quillRef.current = element}}}
-        modules={modules}
-        formats={formats}
-        theme={'snow'}
-        value={editorContent}
-        onChange={handleEditorChange}
-      />
-    </QuillBlock>
-    <div>
-      <pre>{editorContent}</pre>
-    </div>
+      <QuillBlock>
+        <ReactQuill
+          style={{ width: "100%", height: "500px" }}
+          ref={(element) => {
+            if (element !== null) {
+              quillRef.current = element;
+            }
+          }}
+          modules={modules}
+          formats={formats}
+          theme={"snow"}
+          value={editorContent}
+          onChange={handleEditorChange}
+        />
+      </QuillBlock>
     </>
   );
 }
