@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-const ParallaxItem = styled.div<{bgImage: string, zIndex: number, idx:number}>`
+const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -44,6 +44,6 @@ export default function MountainsParallaxItems({bgImage, zIndex, idx} : Parallax
     window.addEventListener("scroll",handleWindowScroll)
   })
   return (
-    <ParallaxItem className={`parallaxItem${idx+1} parallaxItem`} ref={currentRef} bgImage={bgImage} zIndex={zIndex} idx={idx}/>
+    <ParallaxItem className={`parallaxItem${idx+1} parallaxItem`} ref={currentRef} bgImage={bgImage} zIndex={zIndex}/>
   )
 }
