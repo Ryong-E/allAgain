@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import { Delta as TypeDelta } from "quill";
-import BlotFormatter ,{ResizeAction,ImageSpec,DeleteAction}from "quill-blot-formatter";
+import BlotFormatter, {
+  ResizeAction,
+  ImageSpec,
+  DeleteAction,
+} from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import axios from "axios";
@@ -49,16 +53,14 @@ export default function QuillEditor({
   }
   class CustomImageSpec extends ImageSpec {
     getActions() {
-        return [ResizeAction];
+      return [ResizeAction];
     }
   }
 
   const modules = useMemo(() => {
     return {
       blotFormatter: {
-        specs:[
-          CustomImageSpec
-        ]
+        specs: [CustomImageSpec],
       },
       toolbar: {
         container: [
