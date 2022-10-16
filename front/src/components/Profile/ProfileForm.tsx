@@ -1,4 +1,4 @@
-import * as ProfileStyle from "./Profile.style";
+import * as StyledProfile from "./Profile.style";
 import { getUserProfile, updateUserProfile } from '../../api/userApi';
 import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
@@ -108,18 +108,18 @@ export default function ProfileForm() {
   return (
       <>
         {isSuccess ? (
-          <ProfileStyle.FormContainer onSubmit={ handleSubmit(handleProfileSubmit) }>
-            <ProfileStyle.Container400>
-              <ProfileStyle.NickNameInput 
+          <StyledProfile.FormContainer onSubmit={ handleSubmit(handleProfileSubmit) }>
+            <StyledProfile.Container400>
+              <StyledProfile.NickNameInput 
                 {...register("nickname", { 
                   required: "닉네임은 필수입니다.",
                 })}
                 onChange={handleNickChange}
               />
               {errors.nickname && <InputErrorMsg>{errors.nickname.message}</InputErrorMsg>}
-            </ProfileStyle.Container400>
-            <ProfileStyle.InfoListWrap>
-              <ProfileStyle.InfoList>
+            </StyledProfile.Container400>
+            <StyledProfile.InfoListWrap>
+              <StyledProfile.InfoList>
                 <li>
                   <span>이메일</span>
                   <p>{data.email}</p>
@@ -130,21 +130,21 @@ export default function ProfileForm() {
                 </li>
                 <li>
                   <span>비밀번호</span>
-                  <ProfileStyle.PwChangeBlock>
-                    <ProfileStyle.PwChangeInput 
+                  <StyledProfile.PwChangeBlock>
+                    <StyledProfile.PwChangeInput 
                       {...register("currentPassword", {
                         minLength: { value: 6, message: "비밀번호를 6자 이상 입력하세요." }
                       })}
                       type="password"
                       placeholder="현재 비밀번호
                     "/>
-                    <ProfileStyle.PwChangeInput 
+                    <StyledProfile.PwChangeInput 
                       {...register("password", {
                         minLength: { value: 6, message: "비밀번호를 6자 이상 입력하세요." }
                       })}
                       type="password"
                       placeholder="새 비밀번호"/>
-                    <ProfileStyle.PwChangeInput 
+                    <StyledProfile.PwChangeInput 
                       {...register("passwordConfirm", {
                         validate: (passwordConfirm?: string) => {
                           const originPassword = getValues("password");
@@ -157,12 +157,12 @@ export default function ProfileForm() {
                     {errors.password && <InputErrorMsg>{errors.password.message}</InputErrorMsg>}
                     {!errors.password && errors.passwordConfirm && <InputErrorMsg>{errors.passwordConfirm.message}</InputErrorMsg>}
                     {!errors.passwordConfirm && errors.UpdateError && <InputErrorMsg>{errors.UpdateError.message}</InputErrorMsg>}
-                  </ProfileStyle.PwChangeBlock>
+                  </StyledProfile.PwChangeBlock>
                 </li>
-              </ProfileStyle.InfoList>
-            </ProfileStyle.InfoListWrap>
-            <ProfileStyle.SubmitButton>저장</ProfileStyle.SubmitButton>
-          </ProfileStyle.FormContainer>
+              </StyledProfile.InfoList>
+            </StyledProfile.InfoListWrap>
+            <StyledProfile.SubmitButton>저장</StyledProfile.SubmitButton>
+          </StyledProfile.FormContainer>
         ) : (
           <ProfileFormLoading />
         )}

@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import * as ProfileStyle from "./Profile.style";
+import * as StyledProfile from "./Profile.style";
 
-const InfoListWrap = styled(ProfileStyle.InfoListWrap)`
+const InfoListWrap = styled(StyledProfile.InfoListWrap)`
   height: 400px;
 `;
 
 export default function ProfileFormLoading() {
   return (
     <div>
-      <ProfileStyle.Container400>
-        <ProfileStyle.NickNameInput />
-      </ProfileStyle.Container400>
+      <StyledProfile.Container400>
+        <StyledProfile.NickNameInput />
+      </StyledProfile.Container400>
       <InfoListWrap />
     </div>
   )

@@ -85,19 +85,15 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
 export const updateUserImage = async ({ formData }: any) => {
   try {
     const token = localStorage.getItem("jwtToken");
-    await axios({
-      method: 'post',
-      url: `${BASE_URL}/profile/image`,
+
+    const { data } = await axios.post(`${BASE_URL}/profile/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: 'Bearer ' + token
       },
-      data: {
-        formData
-      }
-    }).then(res => {
-      console.log(res);
     });
+    return data;
+
   } catch (err: any) {
     console.log(err);
     throw err;
