@@ -52,7 +52,7 @@ export default function ProfileImage() {
     const formData = new FormData();
     formData.append("image", data.profileImage[0]);
 
-    console.log(data.profileImage[0]);
+    console.log("data: ", data.profileImage[0]);
     console.log(formData);
 
     updateProfileImgMutation.mutate({ formData });

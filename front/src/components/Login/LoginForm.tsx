@@ -94,6 +94,7 @@ export default function LoginForm() {
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
       localStorage.setItem('jwtToken', data.token);
+      navigate(ROUTE.HOME.link);
     },
     onSettled: () => {
       console.log("end");
