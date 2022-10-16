@@ -26,11 +26,15 @@ function FeedDetail({
     navigator(-1);
   };
 
+  const handleEditClick = () => {
+    navigator(`/feed/update/${feedId}`);
+  };
+
   return (
     <>
       <ButtonContainer>
         <DelButton onClick={handleDeleteClick}>삭제</DelButton>
-        <ConfirmButton>수정</ConfirmButton>
+        <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
       </ButtonContainer>
       <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>

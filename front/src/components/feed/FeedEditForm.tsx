@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ import {
   ConfirmButton,
 } from "../../components/common/Buttons";
 import AuthorInfo from "../../components/feed/AuthorInfo";
-import { ImageType } from "../../types/feedTypes";
+import { FeedType, ImageType } from "../../types/feedTypes";
 import UploadImageAlbum from "./UploadImageAlbum";
 
 interface FormValues {
@@ -20,9 +20,19 @@ interface FormValues {
   category: string;
 }
 
-function FeedEditForm() {
-  const { data } = useQuery(["myProfile"], getUserProfile);
+interface FeedEditProps extends FeedType {
+  isEditing: boolean;
+}
 
+function FeedEditForm({
+  feedId,
+  userId,
+  category,
+  tags,
+  imageUrls,
+  description,
+  isEditing,
+}: FeedEditProps) {
   const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
   const navigator = useNavigate();
@@ -84,6 +94,10 @@ function FeedEditForm() {
     } else alert("파일 개수 미달");
   });
 
+  useEffect(() => {
+    setUploadImages(imageUrls);
+  }, [imageUrls]);
+
   return (
     <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
       <ImageFormContainer>
@@ -111,6 +125,7 @@ function FeedEditForm() {
             <AuthorInfo size="detail" userId={132132} />
           </DescriptionHeader>
           <DescriptionSection
+            defaultValue={description}
             placeholder="내용 작성.."
             {...register("description", {
               required: "내용을 작성해 주세요.",
@@ -123,6 +138,7 @@ function FeedEditForm() {
         <DescriptionTagContainer>
           <DescriptionTag
             type="text"
+            defaultValue={tags}
             placeholder="#으로 구분하여 태그를 입력해 주세요.."
             {...register("tags", {
               required: "최소 1개 이상의 태그가 필요합니다.",
@@ -137,6 +153,7 @@ function FeedEditForm() {
         <DescriptionTagContainer>
           <DescriptionTag
             type="text"
+            defaultValue={category}
             placeholder=",으로 구분하여 카테고리를 입력해 주세요.."
             {...register("category", {
               required: "최소 1개 이상의 카테고리가 필요합니다.",
@@ -151,6 +168,15 @@ function FeedEditForm() {
     </form>
   );
 }
+
+FeedEditForm.defaultProps = {
+  feedId: 0,
+  userId: 0,
+  category: "",
+  tags: "",
+  imageUrls: [],
+  description: "",
+};
 
 const ImageFormContainer = styled.div`
   display: flex;
