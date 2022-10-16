@@ -32,7 +32,7 @@ const UpcycleIconBox =styled.div`
     display:block;
     width:100%;
     height: 2px;
-    background: ${({theme}) => theme.colors.darkBeige};
+    background: #E7DFCB;
   }
   > div{
     position:relative;
