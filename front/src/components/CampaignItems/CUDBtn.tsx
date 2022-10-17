@@ -29,10 +29,13 @@ interface JCTCenter  {
 
 export default function CUDBtn({JCTCenter, campaignId}: JCTCenter) {
   const navigate = useNavigate();
-  const deleteMutaion =  useMutation(deleteCampaignItem);
+  const deleteMutaion =  useMutation(deleteCampaignItem,{
+    onSuccess: (data: any, variables, context) => {
+      navigate(ROUTE.CAMPAGIN_LIST.link);
+    }
+  });
   const handleOnClickDelete = (campaignId : number)=>{
     deleteMutaion.mutate(campaignId);
-    navigate("/campaign");
   }
   return (
     <CUDBtnBox className={JCTCenter ? "JCTCenter" :""}>
