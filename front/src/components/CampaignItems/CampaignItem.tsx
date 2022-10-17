@@ -24,7 +24,7 @@ const ListItemBox = styled.div`
     .statusBox{
       
       .status{
-        background:${({theme})=> theme.colors.dasidaGreen};
+        background:${({theme})=> theme.colors.lightGreen};
       }
     }
   }
@@ -66,7 +66,7 @@ const StatusBox = styled.div`
   .status{
     font-size:13px;
     padding: 5px 15px;
-    background: ${({theme})=> theme.colors.lightGreen};
+    background: ${({theme})=> theme.colors.dasidaGreen};
     color: ${({theme})=> theme.colors.white};
     letter-spacing: -0.4px;
   }

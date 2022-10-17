@@ -13,18 +13,19 @@ import CUDBtn from './CUDBtn';
 import CampaignIntroDetail from './CampaignIntroDetail';
 import QuillEditor from './QuillEditor';
 import { CampaignItemType } from '../../api/campaignApi';
+import { fixDate } from '../../utils/dateFix';
 
 
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
-  const test = useRef<HTMLDivElement>(null);
+  const EditorRef = useRef<HTMLDivElement>(null);
   useEffect(()=>{
-    if(test.current !== null){
-      test.current.innerHTML= `${props.title}`
-      console.log(test.current.innerHTML);
+    if(EditorRef.current !== null){
+      EditorRef.current.innerHTML= `${props.title}`
     }
   },[])
   const [isActive, setIsActive] = useState(false);
-  const [isJoin, setIsJoin] = useState(false)
+  const [isJoin, setIsJoin] = useState(false);
+  const startDate = fixDate(String(props.recruitmentStartDate));
   return (
     <>
       <CUDBtn campaignId={props.campaignId!} />
@@ -32,19 +33,23 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}
-          campaignId={props.campaignId!}
+          campaignId={props.campaignId}
+          status={props.status}
+          startDate={startDate}
           />
       <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
       {!isActive ? (
         <>
           <CampaignContents>
-            <div ref={test}></div>
+            <div ref={EditorRef}></div>
           </CampaignContents>
           <CampaignIsJoin
             setIsJoin={setIsJoin}
             isJoin={isJoin}
-            campaignId={props.campaignId!}
+            campaignId={props.campaignId}
+            status={props.status}
+            startDate={startDate}
             />
           <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
         </>
