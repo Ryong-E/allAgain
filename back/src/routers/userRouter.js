@@ -110,7 +110,7 @@ userRouter.delete(
 userRouter.get("/me", loginRequired, async (req, res, next) => {
   try {
     const { currentUserId } = req;
-    const userInfo = await userService.getMyInfo({ userId: currentUserId });
+    const userInfo = await userService.getMyInfo({ currentUserId });
 
     res.status(200).json(userInfo);
   } catch (error) {

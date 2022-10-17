@@ -16,7 +16,7 @@ const campaignService = {
     recruitmentNumber,
     introduce,
   }) => {
-    const userById = await User.findByUserId({ currentUserId });
+    const userById = await User.findByUserId({ userId: currentUserId });
     if (userById.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
@@ -25,7 +25,7 @@ const campaignService = {
 
     const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.create({
-      currentUserId,
+      userId: currentUserId,
       title,
       content,
       thumbnail,
@@ -38,7 +38,7 @@ const campaignService = {
       introduce,
     });
 
-    const campaigns = await Campaign.findByUserId({ currentUserId });
+    const campaigns = await Campaign.findByUserId({ userId: currentUserId });
     await Campaign.createParticipant({
       userId: currentUserId,
       campaignId: campaigns[0].id,

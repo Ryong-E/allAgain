@@ -152,8 +152,8 @@ const userService = {
 
     return targetUser;
   },
-  getMyInfo: async ({ userId }) => {
-    const user = await User.findByUserId({ userId });
+  getMyInfo: async ({ currentUserId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
     if (user.length === 0) {
       throw new Error("존재하지 않는 아이디입니다.");
     }
