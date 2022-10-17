@@ -89,10 +89,14 @@ export default function CampaignForm({
   } = useForm<FormType>();
 
   function validation(data: FormType) {
-    console.log(/^\&lt\;([a-z])*\&gt\;$/.exec("&lt;p&gt;"))
-    console.log(data.content.replaceAll(/^&lt;[a-z]*&gt;$/g , ""))
-    if(data.content.length<32){
-        return false
+    const re = data.content.replaceAll(/&lt;[a-z]*[0-9]?&gt;/g , "").replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g , "");
+    console.log(re)
+    if(re.length < 1){
+        setError("content",{
+            type:"custom",
+            message:"캠페인 상세 설명을 입력해주세요"
+        })
+        return false;
     }
     if (data.recruitmentEndDate < data.recruitmentStartDate) {
       console.log('마감날짜 시작날짜보다 오류')
