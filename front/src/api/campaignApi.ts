@@ -34,6 +34,13 @@ const campaignApi = axios.create({
     Authorization: "Bearer " + TOKEN,
   },
 });
+const deleteApi = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: TOKEN,
+  },
+});
 
 // export const createCampaignItem = async (data:CreateItem) => {
 //   try {
@@ -117,15 +124,16 @@ export const updateCampaign = async (data: FormData) => {
 //   }
 // };
 
-export const deleteCampaignItem = async (campaginId: number) => {
+export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignApi.delete("", {
+    const response = await deleteApi.delete("", {
       data: {
-        campaginId,
+        campaignId,
       },
     });
     return response.data;
   } catch (err: any) {
-    throw new Error("삭제 실패..");
+    // throw new Error("삭제 실패..");
+    console.log(err);
   }
 };
