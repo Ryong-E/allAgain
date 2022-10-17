@@ -28,6 +28,7 @@ function CategorySelectForm({ register, category }: CategorySelectFormProps) {
           isSelected={category.split(",").includes(value)}
           checkboxValue={value}
           checkboxKey={key}
+          key={key}
         />
       ))}
     </CategoryFormContainer>

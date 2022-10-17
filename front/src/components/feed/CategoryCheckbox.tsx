@@ -64,6 +64,7 @@ const CategoryLabel = styled.label`
   cursor: pointer;
 
   & + input[type="checkbox"] {
+    pointer-events: none;
     display: none;
     visibility: hidden;
   }
