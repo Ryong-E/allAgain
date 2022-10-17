@@ -246,7 +246,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           </PeriodBox>
           <CreatedUser>
             <Link to={`/user/:id`}>
-              <UserImgBox/>
+              <UserImgBox userImg={writer!.imageUrl!}/>
               <UserName userName={writer!.nickname!}/>
             </Link>
           </CreatedUser>
