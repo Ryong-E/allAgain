@@ -214,7 +214,6 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       <ContentsBox>
         <StatusBox className="statusBox">
           <div className="status">
-            {/* 상태 확인 state 넣어주세요 */}
             {status}
           </div>
           <div className="shareAndLikeBox">
@@ -234,12 +233,10 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           <PeriodBox>
             <div className="recruitment">
               <strong>모집 기간</strong>
-              {/* array 오면 0번 1번 넣어주세요 */}
               <span>{`${fixDate(String(recruitmentStartDate))} ~ ${fixDate(String(recruitmentEndDate))}`}</span>
             </div>
             <div className="progress">
               <strong>진행 기간</strong>
-              {/* array 오면 0번 1번 넣어주세요 */}
               <span>{`${fixDate(String(campaignStartDate))} ~ ${fixDate(String(campaignEndDate))}`}</span>
             </div>
             <div className="personnel">
