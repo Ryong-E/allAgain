@@ -293,7 +293,7 @@ export default function CampaignForm({
             }}>
             취소
           </ClsButton>
-          <ConfirmButton type="submit">생성하기</ConfirmButton>
+          <ConfirmButton type="submit">{updateMod ? "수정하기" : "생성하기"}</ConfirmButton>
         </ButtonBox>
       </form>
     </>
