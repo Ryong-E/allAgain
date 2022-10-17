@@ -11,12 +11,15 @@ export type CampaignItemType = {
   campaignStartDate: Date;
   campaignEndDate: Date;
   recruitmentNumber: number;
+  participantsCount: number;
   introduce: String;
   status: String;
   writer: {
+    userId: number;
     nickname: String;
     imageUrl?: String;
   };
+  participated: Boolean;
 };
 
 

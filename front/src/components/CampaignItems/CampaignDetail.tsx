@@ -32,8 +32,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
       <CUDBtn campaignId={props.campaignId!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
-          setIsJoin={setIsJoin}
-          isJoin={isJoin}
+          isJoin={props.participated}
           campaignId={props.campaignId}
           status={props.status}
           startDate={startDate}
@@ -46,7 +45,6 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             <div ref={EditorRef}></div>
           </CampaignContents>
           <CampaignIsJoin
-            setIsJoin={setIsJoin}
             isJoin={isJoin}
             campaignId={props.campaignId}
             status={props.status}
