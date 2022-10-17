@@ -8,7 +8,7 @@ import {
   MyProfileEditParams,
 } from "./types";
 
-const BASE_URL = "http://localhost:5001/users";
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
 const userApi = axios.create({
   baseURL: BASE_URL,
@@ -20,20 +20,20 @@ const userApi = axios.create({
 // 회원가입
 export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>("register", { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("/users/register", { email, password, passwordConfirm, name, nickname });
     return data;
   } catch (err: any) {
-    throw new Error(err.message);
+    throw err.response;
   }
 };
 
 // 로그인
 export const loginUser = async ({ email, password }: User) => {
   try {
-    const { data } = await userApi.post<LoginResponse>("/login", { email, password });
+    const { data } = await userApi.post<LoginResponse>("/users/login", { email, password });
     return data;
   } catch (err: any) {
-    throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    throw err.response;
   }
 };
 
@@ -43,7 +43,7 @@ export const getUserProfile = async () => {
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}/informations/me`,
+      url: `${BASE_URL}/users/informations/me`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
@@ -51,7 +51,7 @@ export const getUserProfile = async () => {
     });
     return data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response;
   }
 };
 
@@ -62,7 +62,7 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'put',
-      url: `${BASE_URL}/profile`,
+      url: `${BASE_URL}/users/profile`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
@@ -86,7 +86,7 @@ export const updateUserImage = async ({ formData }: any) => {
   try {
     const token = localStorage.getItem("jwtToken");
 
-    const { data } = await axios.post(`${BASE_URL}/profile/image`, formData, {
+    const { data } = await axios.post(`${BASE_URL}/users/profile/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: 'Bearer ' + token
@@ -106,7 +106,7 @@ export const deleteUser = async () => {
     const token = localStorage.getItem("jwtToken");
     await axios({
       method: 'delete',
-      url: `${BASE_URL}`,
+      url: `${BASE_URL}/users`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
