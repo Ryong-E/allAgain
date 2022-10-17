@@ -10,7 +10,7 @@ import { getCampaignItem } from '../../api/campaignApi';
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
-  const {status, data, error} = useQuery(["detailCampaign"], () => getCampaignItem(Number(id!)));
+  const {status, data, error} = useQuery(["detailCampaign"], () => getCampaignItem(Number(id!)),{cacheTime:5});
   return (
     <Container>
       <Container1300Ver2>
