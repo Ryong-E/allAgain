@@ -226,7 +226,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
             <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`}>
               <TextBox>
                 <h3 className="title">{title}</h3>
-                <div className="desc">{content}</div>
+                <div className="desc">{introduce}</div>
               </TextBox>
             </Link>
           </CampaignItemLinkBox>
