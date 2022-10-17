@@ -68,7 +68,6 @@ export default function QuillEditor({
         specs: [CustomImageSpec],
         overlay:{
           style:{
-            border:'3px solid black'
           }
         },
         resize:{
