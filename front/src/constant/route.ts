@@ -86,12 +86,12 @@ export const ROUTE = {
   },
   CAMPAGIN_CREATE: {
     path: "/campaign/add",
-    link: `/campaign`,
+    link: `/campaign/add`,
     element: CampaignCreatePage,
   },
   CAMPAGIN_UPDATE: {
     path: "/campaign/update/:id",
-    link: `/campaign`,
+    link: `/campaign/update/`,
     element: CampaignUpdatePage,
   },
 };

@@ -16,11 +16,15 @@ const QuillBlock = styled.div`
   .ql-editor {
     text-align: center;
   }
+  .ql-container{
+    background-color:#ffffff;
+  }
 `;
 
 interface EditorProps {
   handleEditorChange?: (content: string) => void;
   editorContent?: string;
+  register:any;
 }
 
 Quill.register("modules/blotFormatter", BlotFormatter);
@@ -28,6 +32,7 @@ Quill.register("modules/blotFormatter", BlotFormatter);
 export default function QuillEditor({
   handleEditorChange,
   editorContent,
+  register
 }: EditorProps) {
   const quillRef = useRef<ReactQuill>();
   function handleImage() {
@@ -96,19 +101,22 @@ export default function QuillEditor({
   return (
     <>
       <QuillBlock>
-        <ReactQuill
-          style={{ width: "100%", height: "500px" }}
-          ref={(element) => {
-            if (element !== null) {
-              quillRef.current = element;
-            }
-          }}
-          modules={modules}
-          formats={formats}
-          theme={"snow"}
-          value={editorContent}
-          onChange={handleEditorChange}
-        />
+        <div className="text-editor" style={{height:"500px"}}>
+          <ReactQuill
+            {...register('content')}
+            style={{ width: "100%", height: "100%",backgroundColor:"#ffffff" }}
+            ref={(element) => {
+              if (element !== null) {
+                quillRef.current = element;
+              }
+            }}
+            modules={modules}
+            formats={formats}
+            theme={"snow"}
+            value={editorContent}
+            onChange={handleEditorChange}
+          />
+        </div>
       </QuillBlock>
     </>
   );

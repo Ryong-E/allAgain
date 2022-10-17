@@ -153,3 +153,10 @@ exports.campaignImageCreateValidator = () => {
     validate,
   ];
 };
+
+exports.campaignIdCheckValidator = () => {
+  return [
+    body("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
+    validate,
+  ];
+};

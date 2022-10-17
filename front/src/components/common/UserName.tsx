@@ -16,9 +16,9 @@ export default function UserName({userName}:userNameType) {
         {userName}
       </div>
       {/* 조건문 넣어주세요 */}
-      <div className="isFamousUser">
+      {/* <div className="isFamousUser">
         <img src="" alt="." />
-      </div>
+      </div> */}
     </UserNameBox>
   )
 }
