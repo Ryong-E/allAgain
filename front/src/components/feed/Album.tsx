@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { NextNavigationButton, PrevNavigationButton } from '../common/Buttons';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled, { css } from "styled-components";
+import { ImageUrlType } from "../../types/feedTypes";
+import { NextNavigationButton, PrevNavigationButton } from "../common/Buttons";
 
 interface albumProps {
-  size: 'simple' | 'detail';
-  imageUrls?: string[];
+  size: "simple" | "detail";
+  imageUrls: ImageUrlType[];
+  feedId: number;
 }
 
-function Album({ size, imageUrls }: albumProps) {
+function Album({ size, imageUrls, feedId }: albumProps) {
   const [imageIndex, setImageIndex] = useState<number>(0);
+  const navigator = useNavigate();
 
   const IMAGE_LAST_INDEX = imageUrls!.length - 1;
   const IMAGE_FIRST_INDEX = 0;
@@ -19,15 +23,20 @@ function Album({ size, imageUrls }: albumProps) {
     else imageIndex !== IMAGE_FIRST_INDEX && setImageIndex(imageIndex - 1);
   };
 
+  const handleAlbumClick = () => {
+    if (size === "simple") navigator(`/feed/${feedId}`);
+  };
+
   return (
     <AlbumContainer>
       <ImageContainer size={size}>
-        <ImageList albumPage={imageIndex}>
-          {imageUrls!.map((imageUrl: string) => (
+        <ImageList albumPage={imageIndex} onClick={handleAlbumClick}>
+          {imageUrls!.map((imageUrl: ImageUrlType) => (
             <img
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              src={imageUrl}
-              alt={imageUrl}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={"http://" + imageUrl.url}
+              alt={imageUrl.name}
+              key={imageUrl.id}
             />
           ))}
         </ImageList>
@@ -35,19 +44,23 @@ function Album({ size, imageUrls }: albumProps) {
           <ImageSlideContainer>
             <PrevNavigationButton
               onClick={() => handleViewerClick(false)}
-              visibility={imageIndex !== IMAGE_FIRST_INDEX}
+              isVisible={imageIndex !== IMAGE_FIRST_INDEX}
             />
             <NextNavigationButton
               onClick={() => handleViewerClick(true)}
-              visibility={imageIndex !== IMAGE_LAST_INDEX}
+              isVisible={imageIndex !== IMAGE_LAST_INDEX}
             />
           </ImageSlideContainer>
         )}
       </ImageContainer>
       {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
         <ImageNavigator size={size}>
-          {imageUrls!.map((value, index) => (
-            <Navigator observeIndex={index} currentIndex={imageIndex} />
+          {imageUrls!.map((imageUrl, index) => (
+            <Navigator
+              observeIndex={index}
+              currentIndex={imageIndex}
+              key={imageUrl.id}
+            />
           ))}
         </ImageNavigator>
       )}
@@ -58,9 +71,9 @@ const AlbumContainer = styled.div`
   position: relative;
 `;
 
-const ImageContainer = styled.div<{ size: 'simple' | 'detail' }>`
+const ImageContainer = styled.div<{ size: "simple" | "detail" }>`
   ${(props) =>
-    props.size === 'simple'
+    props.size === "simple"
       ? css`
           width: 100%;
           aspect-ratio: 1/1;
@@ -83,6 +96,7 @@ const ImageList = styled.div<{ albumPage: number }>`
 `;
 
 const ImageSlideContainer = styled.div`
+  pointer-events: none;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -91,11 +105,14 @@ const ImageSlideContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 13px 0 13px;
+  & > button {
+    pointer-events: auto;
+  }
 `;
 
-const ImageNavigator = styled.div<{ size: 'simple' | 'detail' }>`
+const ImageNavigator = styled.div<{ size: "simple" | "detail" }>`
   ${(props) =>
-    props.size === 'simple' &&
+    props.size === "simple" &&
     css`
       position: absolute;
       left: 50%;
@@ -120,8 +137,8 @@ const Navigator = styled.div<{
   height: 6px;
   background-color: ${(props) =>
     props.observeIndex === props.currentIndex
-      ? '#E0D4B7'
-      : 'rgba(231, 225, 210, 0.5)'};
+      ? "#E0D4B7"
+      : "rgba(231, 225, 210, 0.5)"};
   &:last-child {
     margin-right: 0px;
   }

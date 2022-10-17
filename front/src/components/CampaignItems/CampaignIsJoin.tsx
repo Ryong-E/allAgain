@@ -1,5 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
 import {useState, useEffect} from "react";
 import styled from "styled-components";
+import { cancelParticipateCampaign, joinParticipateCampaign } from "../../api/campaignApi";
 import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png"
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png"
 
@@ -45,12 +47,14 @@ const JoinCampaignBox = styled.div`
 interface JoinProps {
   setIsJoin : React.Dispatch<React.SetStateAction<boolean>>;
   isJoin ?: Boolean;
+  campaignId : number;
 }
-export default function CampaignIsJoin({setIsJoin, isJoin}: JoinProps) {
-  
+export default function CampaignIsJoin({setIsJoin, isJoin, campaignId}: JoinProps) {
+  const joinCampaign = useMutation(joinParticipateCampaign) 
+  // const cancleCampaign = useMutation(joinParticipateCampaign)
   return (
     <JoinCampaignBox>
-      <button className={isJoin ? "active" : ""} onClick={()=>{setIsJoin(prev => !prev)}}><i></i>캠페인 참여하기</button>
+      <button className={isJoin ? "active" : ""} onClick={()=>{setIsJoin(prev => !prev); joinCampaign.mutate(campaignId) ;}}><i></i>캠페인 참여하기</button>
     </JoinCampaignBox>
   )
 }

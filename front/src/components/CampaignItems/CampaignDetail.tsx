@@ -32,6 +32,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}
+          campaignId={props.campaignId!}
           />
       <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
@@ -42,7 +43,9 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
           </CampaignContents>
           <CampaignIsJoin
             setIsJoin={setIsJoin}
-            isJoin={isJoin}/>
+            isJoin={isJoin}
+            campaignId={props.campaignId!}
+            />
           <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
         </>
       ) : (

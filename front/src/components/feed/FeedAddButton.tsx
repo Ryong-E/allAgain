@@ -1,9 +1,16 @@
-import styled from 'styled-components';
-import AddIcon from '../../assets/images/icons/icon_plus.png';
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import AddIcon from "../../assets/images/icons/icon_plus.png";
 
 function FeedAddButton() {
+  const navigator = useNavigate();
+
+  const handleFeedAddClick = () => {
+    navigator("/feed/add");
+  };
+
   return (
-    <AddButton>
+    <AddButton onClick={handleFeedAddClick}>
       <AddButtonIcon src={AddIcon} />
     </AddButton>
   );
