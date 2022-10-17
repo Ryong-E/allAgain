@@ -35,10 +35,10 @@ const FeedContainer = styled.div`
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   margin-bottom: 50px;
-  &:first-child {
-    margin-left: 0px;
+  &:nth-child(3n) {
+    margin-right: 0px;
   }
-  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 const MenuContainer = styled.div`
