@@ -37,7 +37,7 @@ export const InputText = styled.input`
 `;
 
 export const InputIconText = styled(InputText)`
-  padding: 15px 20px 15px 60px;
+  padding: 20px 20px 20px 60px;
 `
 
 const iconUrl: any = {

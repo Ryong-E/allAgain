@@ -28,6 +28,11 @@ const FindPassword = styled.div`
   text-align: right;
   font-size: 14px;
   margin: 20px 0 0;
+
+  &:hover { 
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.bodyText};
+  }
 `;
 
 type Inputs = {
@@ -89,6 +94,7 @@ export default function LoginForm() {
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
       localStorage.setItem('jwtToken', data.token);
+      navigate(ROUTE.HOME.link);
     },
     onSettled: () => {
       console.log("end");

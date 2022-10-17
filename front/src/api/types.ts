@@ -4,7 +4,7 @@ export interface User {
   password?: string,
   name?: string,
   nickname?: string,
-  image_url?: string,
+  imageUrl?: string,
   token?: string
 }
 
@@ -12,7 +12,7 @@ export interface MyProfile {
   email: string,
   name: string,
   nickname: string,
-  image_url: string,
+  imageUrl: string,
 }
 
 export interface MyProfileEditParams {

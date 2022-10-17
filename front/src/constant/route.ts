@@ -4,12 +4,14 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import FeedListPage from "../pages/FeedPage/FeedListPage";
-import CampaignPage from "../pages/CampaignPage/CampaignPage";
-import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
-import CampaignCreatePage from "../pages/CampaignPage/CampaignCreatePage";
 import FeedDetailPage from "../pages/FeedPage/FeedDetailPage";
 import FeedAddPage from "../pages/FeedPage/FeedAddPage";
 import FeedEditPage from "../pages/FeedPage/FeedEditPage";
+import CampaignPage from "../pages/CampaignPage/CampaignPage";
+import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
+import CampaignCreatePage from "../pages/CampaignPage/CampaignCreatePage";
+import CampaignUpdatePage from "../pages/CampaignPage/CampaignUpdatePage";
+import LandingPage from "../pages/LandingPage/LandingPage";
 
 export const ROUTE = {
   HOME: {
@@ -26,6 +28,11 @@ export const ROUTE = {
     path: "/register",
     link: "/register",
     element: RegisterPage,
+  },
+  MY_PAGE: {
+    path: "/mypage",
+    link: "/mypage",
+    element: Template,
   },
   MY_PROFILE: {
     path: "/profile",
@@ -45,7 +52,7 @@ export const ROUTE = {
   LANDING: {
     path: "/landing",
     link: "/landing",
-    element: Template,
+    element: LandingPage,
   },
   FEED_LIST: {
     path: "/feed",
@@ -81,6 +88,11 @@ export const ROUTE = {
     path: "/campaign/add",
     link: `/campaign`,
     element: CampaignCreatePage,
+  },
+  CAMPAGIN_UPDATE: {
+    path: "/campaign/update/:id",
+    link: `/campaign`,
+    element: CampaignUpdatePage,
   },
 };
 
