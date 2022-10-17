@@ -62,15 +62,17 @@ export default function ChartFlexBox() {
   return (
     <ChartListBox>
       {ChartDescList.map((ele, idx) =>(
-        <ChartFlex className={ idx% 2 !== 0 ? "reverse" : ""}>
+        <ChartFlex className={ idx% 2 !== 0 ? "reverse" : ""} key={ele + idx}>
           <div className="chart">
             <div></div>
             <Sources>{sourcesList[idx]}</Sources>
           </div>
           <div className="chartDesc">
-            {ele.split("\n").map((obj,idx) =>(
-              <>{obj}{idx === 0 && <br/>}</>
-            ))}
+            <div>
+              {ele.split("\n").map((obj,idx) =>(
+                <p key={ele + idx}>{obj}</p>
+              ))}
+            </div>
           </div>
         </ChartFlex>
       ))}
