@@ -273,7 +273,6 @@ const campaignService = {
       if (campaignId == participatedCampaign.campaign_id) {
         throw new Error("이미 참여 신청한 캠페인 입니다.");
       }
-      console.log(participatedCampaign);
     });
 
     await Campaign.createParticipant({ userId, campaignId });

@@ -177,7 +177,7 @@ const Campaign = {
     const participatedCampaigns = await connection
       .promise()
       .query(
-        "SELECT * FROM campaign_participants WHERE user_id = ?",
+        "SELECT * FROM campaign_participants JOIN campaigns ON campaigns.id = campaign_participants.campaign_id WHERE campaign_participants.user_id = ?",
         [userId],
         (error) => {
           if (error) throw error;
