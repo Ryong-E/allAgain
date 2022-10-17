@@ -8,7 +8,6 @@ import GlobalStyle from './styles/globalStyles';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import ScrollToTop from './utils/ScrollToTop';
 
 const queryClient = new QueryClient();
 
@@ -22,7 +21,6 @@ root.render(
       <RecoilRoot>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <ScrollToTop />
           <App />
         </ThemeProvider>
       </RecoilRoot>
