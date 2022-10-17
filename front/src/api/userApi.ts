@@ -10,8 +10,6 @@ import {
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
-console.log(BASE_URL);
-
 const userApi = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -22,20 +20,20 @@ const userApi = axios.create({
 // 회원가입
 export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>("register", { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("/users/register", { email, password, passwordConfirm, name, nickname });
     return data;
   } catch (err: any) {
-    throw new Error(err.message);
+    throw err.response;
   }
 };
 
 // 로그인
 export const loginUser = async ({ email, password }: User) => {
   try {
-    const { data } = await userApi.post<LoginResponse>("/login", { email, password });
+    const { data } = await userApi.post<LoginResponse>("/users/login", { email, password });
     return data;
   } catch (err: any) {
-    throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    throw err.response;
   }
 };
 
@@ -53,7 +51,7 @@ export const getUserProfile = async () => {
     });
     return data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response;
   }
 };
 

@@ -53,7 +53,7 @@ export default function RegisterForm() {
   // React query
   const RegisterMutation = useMutation([REGISTER], createUser, {
     onError: (error:any) => {
-      console.log(error);
+      console.log(error.data.errorMessage);
       // setError("RegisterError", {message: error.message});  // 실패 시 원인에 따른 에러메세지 출력 필요 - 백엔드에 에러구분 요청
     },
     onSuccess: (data) => {
