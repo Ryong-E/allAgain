@@ -64,6 +64,9 @@ const campaignService = {
       introduce,
     });
 
+    const campaigns = await Campaign.findByUserId({ userId });
+    await Campaign.createParticipant({ userId, campaignId: campaigns[0].id });
+
     return "캠페인 생성 완료";
   },
   getAllCampaigns: async () => {
@@ -101,6 +104,7 @@ const campaignService = {
         campaignEndDate: campaigns[i].campaign_end_date,
         recruitmentNumber: campaigns[i].recruitment_number,
         introduce: campaigns[i].introduce,
+        participants_count: campaigns[i].participants_count,
         status,
         writer: {
           nickname: campaigns[i].nickname,
@@ -145,6 +149,7 @@ const campaignService = {
       campaignEndDate: campaign[0].campaign_end_date,
       recruitmentNumber: campaign[0].recruitment_number,
       introduce: campaign[0].introduce,
+      participants_count: campaign[0].participants_count,
       status,
       writer: {
         nickname: campaign[0].nickname,
@@ -249,6 +254,47 @@ const campaignService = {
     const createdImage = await Campaign.createImage({ imageUrl });
 
     return { imageUrl: createdImage };
+  },
+  addParticipant: async ({ userId, campaignId }) => {
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+
+    const participatedCampaigns = await Campaign.findParticipantByUserId({
+      userId,
+    });
+    participatedCampaigns.forEach((participatedCampaign) => {
+      if (campaignId == participatedCampaign.campaign_id) {
+        throw new Error("이미 참여 신청한 캠페인 입니다.");
+      }
+    });
+
+    await Campaign.createParticipant({ userId, campaignId });
+
+    return "참여신청 완료";
+  },
+  deleteParticipant: async ({ userId, campaignId }) => {
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+    if (campaign[0].user_id === userId) {
+      throw new Error("캠페인을 생성한 유저는 취소할 수 없습니다.");
+    }
+    await Campaign.deleteParticipant({ userId, campaignId });
+
+    return "참여신청 취소 완료";
   },
 };
 
