@@ -64,19 +64,24 @@ interface JoinProps {
 }
 export default function CampaignIsJoin({setIsJoin, isJoin, campaignId, status, startDate}: JoinProps) {
   const joinCampaign = useMutation(joinParticipateCampaign) 
-  // const cancleCampaign = useMutation(joinParticipateCampaign)
+  const cancleCampaign = useMutation(cancelParticipateCampaign)
 
   const [year, month, date] = startDate.split("-");
 
   const handleJoinCampaign = (campaignId : number)=>{
     setIsJoin(prev => !prev);
-    joinCampaign.mutate(campaignId) ;
+    if(!isJoin){
+      joinCampaign.mutate(campaignId);
+    }else{
+      cancleCampaign.mutate(campaignId);
+    }
+    
   }
 
 
   return (
     <JoinCampaignBox>
-      <button className={`${isJoin ? "active" : ""}${status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : "darkGreen"}`} onClick={()=>{(status === "모집 중" && handleJoinCampaign(campaignId))}}>
+      <button className={`${isJoin ? "active" : ""} ${status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : "darkGreen"}`} onClick={()=>{(status === "모집 중" && handleJoinCampaign(campaignId))}}>
         {status === "모집 중"?
           <>
           <i></i>캠페인 참여하기

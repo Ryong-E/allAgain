@@ -118,11 +118,7 @@ export const deleteCampaignItem = async (campaignId: number) => {
 export const joinParticipateCampaign = async (campaignId: number) => {
   try {
     const response = await campaignUrlencodedApi.post(
-      `/participants`,{
-        data :{
-          campaignId
-        }
-      }
+      `/participants`, {campaignId}
     );
     return response.data;
   } catch (err: any) {
