@@ -26,6 +26,7 @@ function ImageEditForm({
           multiple
           hidden
           onChange={onChange}
+          accept="image/png, image/jpg, image/jpeg"
         />
       </ImageFormContainer>
       <ImageFormDescription>
