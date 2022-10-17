@@ -9,7 +9,7 @@ import {
 } from "../../components/common/Containers";
 import FeedAddButton from "../../components/feed/FeedAddButton";
 import FeedList from "../../components/feed/FeedList";
-import FeedTagFilter from "../../components/feed/FeedTagFilter";
+import FeedCategoryFilter from "../../components/feed/FeedCategoryFilter";
 
 function FeedListPage() {
   const { isSuccess, data } = useQuery(["feeds"], getFeedList, {
@@ -22,7 +22,7 @@ function FeedListPage() {
       <Container>
         <Container1300>
           <FeedListOptionsContainer>
-            <FeedTagFilter />
+            <FeedCategoryFilter />
             <FeedAddButton />
           </FeedListOptionsContainer>
           {isSuccess && <FeedList feeds={data} isSimple={false} />}
