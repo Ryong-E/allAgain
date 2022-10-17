@@ -5,9 +5,10 @@ import { FeedFormValues } from "../../types/feedTypes";
 interface TagEditFormProps {
   tags: string;
   register: UseFormRegister<FeedFormValues>;
+  errors?: string;
 }
 
-function TagEditForm({ register, tags }: TagEditFormProps) {
+function TagEditForm({ register, tags, errors }: TagEditFormProps) {
   return (
     <DescriptionTagContainer>
       <DescriptionTag
@@ -23,6 +24,7 @@ function TagEditForm({ register, tags }: TagEditFormProps) {
           },
         })}
       />
+      <ValidateWarning>{errors}</ValidateWarning>
     </DescriptionTagContainer>
   );
 }
@@ -34,6 +36,7 @@ const DescriptionTagContainer = styled.div`
   background-color: #004d49;
   display: flex;
   margin-bottom: 43px;
+  position: relative;
 `;
 
 const DescriptionTag = styled.input`
@@ -52,6 +55,12 @@ const DescriptionTag = styled.input`
   &:focus {
     outline: none;
   }
+`;
+
+const ValidateWarning = styled.div`
+  margin-top: 40px;
+  position: absolute;
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 export default TagEditForm;

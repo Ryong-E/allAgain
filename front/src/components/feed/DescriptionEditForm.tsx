@@ -6,11 +6,13 @@ import AuthorInfo from "./AuthorInfo";
 interface DescriptionEditFormProps {
   description: string;
   register: UseFormRegister<FeedFormValues>;
+  errors?: string;
 }
 
 function DescriptionEditForm({
   register,
   description,
+  errors,
 }: DescriptionEditFormProps) {
   return (
     <DescriptionContainer>
@@ -28,6 +30,7 @@ function DescriptionEditForm({
           },
         })}
       />
+      <ValidateWarning>{errors}</ValidateWarning>
     </DescriptionContainer>
   );
 }
@@ -59,6 +62,10 @@ const DescriptionSection = styled.textarea`
     outline: none;
   }
   border: 0;
+`;
+
+const ValidateWarning = styled.div`
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 export default DescriptionEditForm;
