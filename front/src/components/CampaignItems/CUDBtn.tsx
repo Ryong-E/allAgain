@@ -1,4 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import styled from "styled-components";
+import { deleteCampaignItem } from "../../api/campaignApi";
 import { ButtonBlock, ConfirmButton, DelButton } from "../common/Buttons";
 const CUDBtnBox = styled(ButtonBlock)`
   justify-content: flex-end;
@@ -16,16 +18,18 @@ const CUDBtnBox = styled(ButtonBlock)`
 
 interface JCTCenter  {
   JCTCenter ?: Boolean;
-  campaign_id : number;
+  campaignId : number ;
 }
 
 
 
 
-export default function CUDBtn({JCTCenter, campaign_id}: JCTCenter) {
+
+export default function CUDBtn({JCTCenter, campaignId}: JCTCenter) {
+  const deleteMutaion =  useMutation(deleteCampaignItem);
   return (
     <CUDBtnBox className={JCTCenter ? "JCTCenter" :""}>
-        <DelButton onClick={()=>{}}>삭제</DelButton>
+        <DelButton onClick={()=>{deleteMutaion.mutate(campaignId)}}>삭제</DelButton>
         <ConfirmButton>수정</ConfirmButton>
     </CUDBtnBox>
   )

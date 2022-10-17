@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import CampaignItem, { DummyPropsType } from '../CampaignItems/CampaignItem';
+import CampaignItem from '../CampaignItems/CampaignItem';
 import { ConfirmButton, DelButton } from '../common/Buttons';
 import CampaignComment from '../Comment/Comments';
 import CampaignIsJoin from './CampaignIsJoin';
@@ -11,36 +11,43 @@ import chatIcon from '../../assets/images/icons/icon_chat.png';
 import CampaignContents from './CampaignContents';
 import CUDBtn from './CUDBtn';
 import CampaignIntroDetail from './CampaignIntroDetail';
+import QuillEditor from './QuillEditor';
+import { CampaignItemType } from '../../api/campaignApi';
 
 
-export default function CampaignDetail(props: DummyPropsType) {
-  
+export default function CampaignDetail(props: CampaignItemType): JSX.Element {
+  const test = useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    if(test.current !== null){
+      test.current.innerHTML= `${props.title}`
+      console.log(test.current.innerHTML);
+    }
+  },[])
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false)
   return (
     <>
-      <CUDBtn campaign_id={props.campaign_id!} />
+      <CUDBtn campaignId={props.campaignId!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}
           />
-      <CampaignIntroDetail desc={props.desc!}/>
+      <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
-      {/*  */}
       {!isActive ? (
         <>
           <CampaignContents>
-            <h3>hi</h3>
+            <div ref={test}></div>
           </CampaignContents>
           <CampaignIsJoin
             setIsJoin={setIsJoin}
             isJoin={isJoin}/>
-          <CUDBtn campaign_id={props.campaign_id!} JCTCenter={true} />
+          <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
         </>
       ) : (
         <CampaignComment />
       )}
-    </>
+    </> 
   );
 }
