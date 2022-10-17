@@ -4,7 +4,7 @@ import { userRouter } from "./routers/userRouter";
 import { feedRouter } from "./routers/feedRouter";
 import { campaignRouter } from "./routers/campaignRouter";
 import cors from "cors";
-const mysql = require("mysql2");
+import mysql from "mysql2";
 
 const connection = mysql.createConnection({
   host: "34.64.61.16",

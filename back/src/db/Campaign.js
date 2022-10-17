@@ -42,7 +42,7 @@ const Campaign = {
     const campaigns = await connection
       .promise()
       .query(
-        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id ",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id ORDER BY campaigns.id DESC",
         [],
         (error) => {
           if (error) throw error;
@@ -136,18 +136,18 @@ const Campaign = {
 
     return null;
   },
-  createImage: async ({ imageUrl }) => {
+  createImage: async ({ filename }) => {
     await connection
       .promise()
       .query(
         "INSERT INTO images(url, name) VALUES (?, ?)",
-        [imageUrl, "campaign"],
+        [filename, "campaign"],
         (error) => {
           if (error) throw error;
         }
       );
 
-    return imageUrl;
+    return null;
   },
   createParticipant: async ({ userId, campaignId }) => {
     await connection
@@ -185,6 +185,19 @@ const Campaign = {
       );
 
     return participatedCampaigns[0];
+  },
+  findExistence: async ({ userId, campaignId }) => {
+    const existence = await connection
+      .promise()
+      .query(
+        "SELECT EXISTS (SELECT * FROM campaign_participants WHERE campaign_id = ? AND user_id = ?) as existence",
+        [campaignId, userId],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return existence[0][0].existence;
   },
 };
 
