@@ -34,7 +34,9 @@ function FeedEditForm({
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm<FeedFormValues>();
+  } = useForm<FeedFormValues>({
+    reValidateMode: "onSubmit",
+  });
   const navigator = useNavigate();
 
   const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
@@ -46,14 +48,19 @@ function FeedEditForm({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const FILES_LENGTH = files ? files.length : 0;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
     if (files) {
       if (FILES_LENGTH > 8) {
-        alert("8개를 이하의 이미지만 업로드 가능합니다.");
+        alert("8개 이하의 이미지만 업로드 가능합니다.");
         return;
       }
       const imageList: ImageType[] = [];
       Object.keys(files).forEach((key) => {
+        if (files[parseInt(key)].size > MAX_FILE_SIZE) {
+          alert("파일 크기가 5MB 이하여야합니다");
+          throw new Error("파일 크기 초과");
+        }
         const reader = new FileReader();
         reader.readAsDataURL(files[parseInt(key)]);
         const image: ImageType = {
@@ -83,7 +90,7 @@ function FeedEditForm({
   };
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    if (uploadImages.length !== 0) {
+    if (uploadImages.length !== 0 || !uploadImages) {
       const { description, tags, category } = data;
       const formData = new FormData();
       uploadImages.forEach(
@@ -102,7 +109,7 @@ function FeedEditForm({
         category: typeof category !== "string" ? category.join() : category,
       };
       submitMutation.mutate(submitData);
-    } else alert("파일 개수 미달");
+    } else alert("이미지를 최소 1개 이상 업로드해주세요");
   });
 
   useEffect(() => {
@@ -117,9 +124,21 @@ function FeedEditForm({
         uploadImages={uploadImages}
       />
       <TextContainer>
-        <DescriptionEditForm register={register} description={description} />
-        <CategorySelectForm register={register} category={category} />
-        <TagEditForm register={register} tags={tags} />
+        <DescriptionEditForm
+          register={register}
+          description={description}
+          errors={errors.description?.message}
+        />
+        <CategorySelectForm
+          register={register}
+          category={category}
+          errors={errors.category?.message}
+        />
+        <TagEditForm
+          register={register}
+          tags={tags}
+          errors={errors.tags?.message}
+        />
       </TextContainer>
       <ButtonContainer>
         <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
