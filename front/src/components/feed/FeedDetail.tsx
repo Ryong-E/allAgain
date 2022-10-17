@@ -51,6 +51,11 @@ function FeedDetail({
           <PostTime>3시간 전</PostTime>
         </DetailTime>
         <DetailSection>{description}</DetailSection>
+        <CategoryContainer>
+          {category.split(",").map((cate) => (
+            <Category>{cate}</Category>
+          ))}
+        </CategoryContainer>
       </DetailContainer>
       <DetailTagContainer>
         {tags.split(",").map((tag) => (
@@ -70,7 +75,7 @@ const ButtonContainer = styled.div`
 
 const DetailContainer = styled.div`
   width: 1200px;
-  padding: 40px 60px;
+  padding: 40px 60px 20px;
   background-color: #ffffff;
 `;
 
@@ -99,6 +104,24 @@ const DetailSection = styled.div`
   width: 100%;
   font-size: 15px;
   line-height: 36px;
+`;
+
+const CategoryContainer = styled.div`
+  margin-top: 65px;
+  width: 100%;
+  display: flex;
+`;
+
+const Category = styled.div`
+  background: ${({ theme }) => theme.colors.dasidaGreen};
+  color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
+  width: 70px;
+  border-radius: 60px;
+  padding: 0px;
+  font-size: 12px;
+  text-align: center;
+  margin-right: 7px;
 `;
 
 const DetailTagContainer = styled.div`

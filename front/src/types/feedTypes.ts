@@ -30,5 +30,5 @@ export interface ImageType {
 export interface FeedFormValues {
   description: string;
   tags: string;
-  category: string;
+  category: string[];
 }

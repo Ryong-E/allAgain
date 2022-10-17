@@ -97,9 +97,9 @@ function FeedEditForm({
         feedId,
         userId,
         description,
-        tags: tags.slice(1).replaceAll("#", ", "),
+        tags: tags.slice(1).replaceAll("#", ","),
         imageUrls: uploadImageUrls as unknown as ImageUrlType[],
-        category,
+        category: typeof category !== "string" ? category.join() : category,
       };
       submitMutation.mutate(submitData);
     } else alert("파일 개수 미달");
@@ -108,10 +108,6 @@ function FeedEditForm({
   useEffect(() => {
     setUploadImages(imageUrls);
   }, [imageUrls]);
-
-  useEffect(() => {
-    console.log(uploadImages);
-  }, [uploadImages]);
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -122,8 +118,8 @@ function FeedEditForm({
       />
       <TextContainer>
         <DescriptionEditForm register={register} description={description} />
-        <TagEditForm register={register} tags={tags} />
         <CategorySelectForm register={register} category={category} />
+        <TagEditForm register={register} tags={tags} />
       </TextContainer>
       <ButtonContainer>
         <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
