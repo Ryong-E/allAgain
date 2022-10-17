@@ -1,17 +1,7 @@
-import { body, validationResult, param, check } from "express-validator";
+import { body, param, check } from "express-validator";
+import { validate } from "./commonValidator";
 
-const validate = (req, res, next) => {
-  const errors = validationResult(req);
-
-  if (errors.isEmpty()) {
-    return next();
-  }
-
-  const error = new Error(errors.errors[0].msg);
-  return next(error);
-};
-
-exports.userRegisterValidator = () => {
+const userRegisterValidator = () => {
   return [
     body("email")
       .notEmpty()
@@ -41,7 +31,7 @@ exports.userRegisterValidator = () => {
   ];
 };
 
-exports.userLoginValidator = () => {
+const userLoginValidator = () => {
   return [
     body("email")
       .notEmpty()
@@ -60,8 +50,9 @@ exports.userLoginValidator = () => {
   ];
 };
 
-exports.userProfileUpdateVaildator = () => {
+const userProfileUpdateVaildator = () => {
   return [
+    param("userId").notEmpty().withMessage("userId가 없습니다."),
     body("password").custom((value, { req }) => {
       if (value !== req.body.passwordConfirm) {
         throw new Error("변경할 비밀번호가 일치하지 않습니다.");
@@ -81,8 +72,9 @@ exports.userProfileUpdateVaildator = () => {
   ];
 };
 
-exports.userProfilePostVaildator = () => {
+const userProfilePostVaildator = () => {
   return [
+    param("userId").notEmpty().withMessage("userId가 없습니다."),
     check().custom((value, { req }) => {
       if (!req.file?.path) {
         throw new Error("이미지파일이 없습니다.");
@@ -93,9 +85,17 @@ exports.userProfilePostVaildator = () => {
   ];
 };
 
-exports.getUserValidator = () => {
+const userDeleteValidator = () => {
   return [
-    param("nickname").notEmpty().withMessage("닉네임이 없습니다."),
+    param("userId").notEmpty().withMessage("userId가 없습니다."),
     validate,
   ];
+};
+
+export {
+  userRegisterValidator,
+  userLoginValidator,
+  userProfileUpdateVaildator,
+  userProfilePostVaildator,
+  userDeleteValidator,
 };

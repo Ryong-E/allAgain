@@ -1,8 +1,9 @@
 import { User } from "../db/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import fs from "fs";
 import path from "path";
+import { makeImageUrl } from "../utils/util";
+import { SALT_ROUND } from "../utils/util";
 
 const userService = {
   login: async ({ email, password }) => {
@@ -19,56 +20,73 @@ const userService = {
       nickname,
       image,
     } = user[0];
-    // password 암호화 체크
 
+    // password 암호화 체크
     const isPasswordCorrect = await bcrypt.compare(password, correctPassword);
     if (!isPasswordCorrect) {
       throw new Error("비밀번호가 일치하지 않습니다.");
     }
+
     // jwt토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ userId }, secretKey);
 
+    const imageUrl = makeImageUrl("profiles", image);
     const loginUser = {
       userId,
       token,
       name,
       nickname,
-      image,
+      imageUrl,
     };
 
     return loginUser;
   },
   register: async ({ email, password, name, nickname }) => {
-    password = await bcrypt.hash(password, 10);
+    password = await bcrypt.hash(password, SALT_ROUND);
 
     // 이메일 중복 체크
     let user = await User.findByEmail({ email });
-    if (user.length > 0) throw new Error("이미 가입된 이메일입니다.");
+    if (user.length > 0) {
+      throw new Error("이미 가입된 이메일입니다.");
+    }
 
     // 닉네임 중복 체크
     user = await User.findByNickname({ nickname });
-    if (user.length > 0) throw new Error("이미 존재하는 닉네임입니다.");
+    if (user.length > 0) {
+      throw new Error("이미 존재하는 닉네임입니다.");
+    }
 
-    const registeredUser = await User.register({
+    await User.register({
       email,
       password,
       name,
       nickname,
     });
 
-    return registeredUser;
+    return "회원가입 성공";
   },
-  updateProfile: async ({ userId, currentPassword, nickname, password }) => {
-    const userById = await User.findByUserId({ userId });
-    if (userById.length === 0) {
+  updateProfile: async ({
+    userId,
+    currentUserId,
+    currentPassword,
+    nickname,
+    password,
+  }) => {
+    if (userId != currentUserId) {
+      throw new Error("수정권한이 없습니다.");
+    }
+
+    const user = await User.findByUserId({ userId });
+    if (user.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
 
+    const { password: correctPassword, nickname: currentNickname } = user[0];
+
     if (currentPassword) {
-      const correctPassword = userById[0].password;
       const isPasswordCorrect = await bcrypt.compare(
-        currentPassword ? currentPassword : "default",
+        currentPassword,
         correctPassword
       );
       if (!isPasswordCorrect) {
@@ -76,17 +94,17 @@ const userService = {
       }
     }
 
-    const updatedNickname = nickname ? nickname : userById[0].nickname;
+    const updatedNickname = nickname || currentNickname;
     const updatedPassword = password
-      ? await bcrypt.hash(password, 10)
-      : userById[0].password;
+      ? await bcrypt.hash(password, SALT_ROUND)
+      : correctPassword;
 
     const userByNickname = await User.findByNickname({
       nickname: updatedNickname,
     });
     if (
       userByNickname.length > 0 &&
-      userById[0].nickname !== userByNickname[0].nickname
+      currentNickname !== userByNickname[0].nickname
     ) {
       throw new Error("이미 존재하는 닉네임입니다.");
     }
@@ -104,35 +122,38 @@ const userService = {
 
     return filterdUserData;
   },
-  updateProfileImage: async ({ imagePath, userId }) => {
-    const re = new RegExp(`profiles.*`, "g");
-    const serverUrl = process.env.SERVER_URL || "localhost";
-    const serverPort = process.env.SERVER_PORT || 5000;
-    const imageUrl = path.join(
-      serverUrl + ":" + serverPort,
-      "/",
-      imagePath.match(re)[0]
-    );
+  updateProfileImage: async ({ filename, userId, currentUserId }) => {
+    if (userId != currentUserId) {
+      throw new Error("권한이 없습니다.");
+    }
 
-    await User.updateImageUrl({ userId, imageUrl });
+    await User.updateImage({ userId, filename });
+    const imageUrl = makeImageUrl("profiles", filename);
 
     return { imageUrl };
   },
-  withdrawal: async ({ userId }) => {
+  withdrawal: async ({ userId, currentUserId }) => {
+    if (userId != currentUserId) {
+      throw new Error("권한이 없습니다.");
+    }
+
     await User.delete({ userId });
 
     return null;
   },
-  getUserInfo: async ({ nickname }) => {
-    const user = await User.findByNickname({ nickname });
+  getUserInfo: async ({ userId }) => {
+    const user = await User.findByUserId({ userId });
     if (user.length === 0) {
-      throw new Error("존재하지 않는 닉네임입니다.");
+      throw new Error("존재하지 않는 유저입니다.");
     }
 
+    const { name, nickname, image } = user[0];
+    const imageUrl = makeImageUrl("profiles", image);
+
     const targetUser = {
-      name: user[0].name,
+      name,
       nickname,
-      imageUrl: user[0].image_url,
+      imageUrl,
     };
 
     return targetUser;
@@ -143,11 +164,14 @@ const userService = {
       throw new Error("존재하지 않는 아이디입니다.");
     }
 
+    const { email, name, nickname, image } = user[0];
+    const imageUrl = makeImageUrl("profiles", image);
+
     const userInfo = {
-      email: user[0].email,
-      name: user[0].name,
-      nickname: user[0].nickname,
-      imageUrl: user[0].image_url,
+      email,
+      name,
+      nickname,
+      imageUrl,
     };
 
     return userInfo;

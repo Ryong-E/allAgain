@@ -1,6 +1,6 @@
 import { Campaign } from "../db/Campaign";
 import { User } from "../db/user";
-const path = require("path");
+import path from "path";
 
 const campaignService = {
   addCampaign: async ({
