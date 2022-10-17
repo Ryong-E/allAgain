@@ -14,7 +14,7 @@ const userRegisterValidator = () => {
       .withMessage("비밀번호 입력값이 없습니다.")
       .bail()
       .isLength({ min: 6 })
-      .withMessage("비밀번호의 길이가 최소 8자, 최대 15자가 아닙니다."),
+      .withMessage("비밀번호는 최소 6자여야 합니다."),
     body("passwordConfirm")
       .notEmpty()
       .withMessage("비밀번호확인 입력값이 없습니다.")

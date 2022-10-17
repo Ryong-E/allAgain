@@ -2,7 +2,7 @@ import { User } from "../db/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import path from "path";
-import { makeImageUrl } from "../utils/util";
+import { compareUserId, makeImageUrl } from "../utils/util";
 import { SALT_ROUND } from "../utils/util";
 
 const userService = {
@@ -73,9 +73,7 @@ const userService = {
     nickname,
     password,
   }) => {
-    if (userId != currentUserId) {
-      throw new Error("수정권한이 없습니다.");
-    }
+    compareUserId(userId, currentUserId);
 
     const user = await User.findByUserId({ userId });
     if (user.length === 0) {
@@ -123,9 +121,7 @@ const userService = {
     return filterdUserData;
   },
   updateProfileImage: async ({ filename, userId, currentUserId }) => {
-    if (userId != currentUserId) {
-      throw new Error("권한이 없습니다.");
-    }
+    compareUserId(userId, currentUserId);
 
     await User.updateImage({ userId, filename });
     const imageUrl = makeImageUrl("profiles", filename);
@@ -133,9 +129,7 @@ const userService = {
     return { imageUrl };
   },
   withdrawal: async ({ userId, currentUserId }) => {
-    if (userId != currentUserId) {
-      throw new Error("권한이 없습니다.");
-    }
+    compareUserId(userId, currentUserId);
 
     await User.delete({ userId });
 
