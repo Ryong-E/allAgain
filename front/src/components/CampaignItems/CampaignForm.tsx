@@ -290,7 +290,7 @@ export default function CampaignForm({
           editorContent={editorContent}
           register={register}
         />
-        {errors.content?.message && <InputErrorBox><InputErrorText>{errors.content.message}</InputErrorText></InputErrorBox>}
+        {errors.content?.message && <InputErrorBox style={{bottom:"-50px"}}><InputErrorText>{errors.content.message}</InputErrorText></InputErrorBox>}
         </div>
         <ButtonBox>
           <ClsButton
