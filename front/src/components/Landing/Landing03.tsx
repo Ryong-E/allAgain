@@ -9,7 +9,7 @@ import teacherIcon from "../../assets/images/icons/icon_teacher.png";
 
 
 const Section = styled.section`
-
+  padding : 300px 0 0;
 `
 
 const TextImgBox = styled.div`
@@ -68,6 +68,9 @@ const ContentBox = styled.div`
 
     .imgBox{
       margin-bottom: 50px;
+      img{
+        max-width:80%;
+      }
     }
     .contentTextBox{
       

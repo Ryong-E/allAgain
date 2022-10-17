@@ -1,12 +1,11 @@
 import styled from "styled-components"
 
 const IsKnowBox = styled.div`
-  padding : 50px 0;
+  padding : 400px 0 0;
   text-align : center;
   .descTextBox{
     font-size: 24px;
     letter-spacing: 2px;
-    margin-bottom: 100px;
   }
 `
 
@@ -14,7 +13,7 @@ const ChartBox = styled.div`
   width:800px;
   height:500px;
   border: 1px solid #000;
-  margin : 0 auto;
+  margin : 200px auto 250px;
   display:flex;
   flex-direction : column;
   justify-content: space-between;
@@ -34,7 +33,6 @@ const Sources = styled.span`
 const SimpleEmissionsBox = styled.div`
   display:flex;
   justify-content: space-evenly;
-  margin: 250px 0 300px;
 `
 const EmissionsItem = styled.div`
   color: ${({theme}) => theme.colors.white};

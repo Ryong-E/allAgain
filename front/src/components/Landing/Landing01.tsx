@@ -6,7 +6,7 @@ import MountainsParallaxItems from "./MountainsParallaxItems"
 
 const Section = styled.section`
   position: relative;
-  height: calc(100vh - 70px);
+  height: 100vh;
   text-align:center;
   background: #d0e2db;
   overflow: hidden;
