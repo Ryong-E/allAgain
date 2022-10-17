@@ -8,6 +8,7 @@ import CampaignPage from '../pages/CampaignPage/CampaignPage';
 import CampaignDetailPage from '../pages/CampaignPage/CampaignDetailPage';
 import CampaignCreatePage from '../pages/CampaignPage/CampaignCreatePage';
 import CampaignUpdatePage from '../pages/CampaignPage/CampaignUpdatePage';
+import LandingPage from '../pages/LandingPage/LandingPage';
 
 export const ROUTE = {
   HOME: {
@@ -48,7 +49,7 @@ export const ROUTE = {
   LANDING: {
     path: '/landing',
     link: '/landing',
-    element: Template,
+    element: LandingPage,
   },
   FEED_LIST: {
     path: '/feed',

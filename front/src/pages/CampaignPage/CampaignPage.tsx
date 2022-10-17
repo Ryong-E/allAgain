@@ -11,9 +11,11 @@ import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 import { useQuery } from '@tanstack/react-query';
 import {  getCampaignList } from '../../api/campaignApi';
 
-const NoPaddingContainer = styled(Container)`
+export const NoPaddingContainer = styled(Container)`
   padding : 70px 0 0;
   max-width: 100%;
+  overflow: hidden;
+
 `
 
 export const Container1300Ver2 = styled(Container1300)`
