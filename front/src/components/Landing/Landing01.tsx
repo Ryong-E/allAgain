@@ -10,6 +10,7 @@ const Section = styled.section`
   text-align:center;
   background: #d0e2db;
   overflow: hidden;
+  user-select:none;
   &.active{
     > div{
       transform: scale(1);
