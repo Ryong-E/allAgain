@@ -8,6 +8,7 @@ import {
   updateCampaignValidator,
   deleteCampaignValidator,
   campaignImageCreateValidator,
+  campaignIdCheckValidator,
 } from "../middlewares/campaignValidator";
 
 const campaignRouter = Router();
@@ -127,4 +128,45 @@ campaignRouter.post(
   }
 );
 
+campaignRouter.post(
+  "/participants",
+  loginRequired,
+  campaignIdCheckValidator(),
+  async (req, res, next) => {
+    try {
+      const currentUserId = req.currentUserId;
+      const { campaignId } = req.body;
+
+      const participatedCampaign = await campaignService.addParticipant({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      res.status(201).json(participatedCampaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/participants",
+  loginRequired,
+  campaignIdCheckValidator(),
+  async (req, res, next) => {
+    try {
+      const currentUserId = req.currentUserId;
+      const { campaignId } = req.body;
+
+      const canceledParticipate = await campaignService.deleteParticipant({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      res.status(204).json(canceledParticipate);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 export { campaignRouter };
