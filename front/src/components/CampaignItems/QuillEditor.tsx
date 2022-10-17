@@ -16,6 +16,9 @@ const QuillBlock = styled.div`
   .ql-editor {
     text-align: center;
   }
+  .ql-container{
+    background-color:#ffffff;
+  }
 `;
 
 interface EditorProps {
@@ -98,20 +101,22 @@ export default function QuillEditor({
   return (
     <>
       <QuillBlock>
-        <ReactQuill
-          {...register('content')}
-          style={{ width: "100%", height: "500px" }}
-          ref={(element) => {
-            if (element !== null) {
-              quillRef.current = element;
-            }
-          }}
-          modules={modules}
-          formats={formats}
-          theme={"snow"}
-          value={editorContent}
-          onChange={handleEditorChange}
-        />
+        <div className="text-editor" style={{height:"500px"}}>
+          <ReactQuill
+            {...register('content')}
+            style={{ width: "100%", height: "100%",backgroundColor:"#ffffff" }}
+            ref={(element) => {
+              if (element !== null) {
+                quillRef.current = element;
+              }
+            }}
+            modules={modules}
+            formats={formats}
+            theme={"snow"}
+            value={editorContent}
+            onChange={handleEditorChange}
+          />
+        </div>
       </QuillBlock>
     </>
   );
