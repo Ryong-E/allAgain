@@ -2,7 +2,6 @@
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
 import { feedService } from "../services/feedService";
-import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
 
 const feedRouter = Router();
 
@@ -16,29 +15,11 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
       imageUrls,
       description,
     });
-    res.status(200).send(createdFeed);
+    res.status(200).send(createdFeed.toString());
   } catch (error) {
     next(error);
   }
 });
-
-feedRouter.post(
-  "/images",
-  loginRequired,
-  uploadStrategy("feeds").array("image"),
-  async (req, res, next) => {
-    const imagePaths = [];
-    req.files.forEach((file) => {
-      imagePaths.push({ name: file.fieldname, path: file.path });
-    });
-    try {
-      const savedImageUrls = await feedService.saveImageUrls({ imagePaths });
-      res.status(200).send(savedImageUrls);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 feedRouter.get("/", loginRequired, async (req, res, next) => {
   try {
@@ -52,16 +33,17 @@ feedRouter.get("/", loginRequired, async (req, res, next) => {
 feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
-    const feed = await feedService.getFeedById({ feedId });
+    const feed = await feedService.getFeedByFeedId({ feedId });
     res.status(200).send(feed);
   } catch (error) {
     next(error);
   }
 });
 
-feedRouter.put("/", loginRequired, async (req, res, next) => {
+feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
   try {
-    const { feedId, userId, category, tags, imageUrls, description } = req.body;
+    const { feedId } = req.params;
+    const { userId, category, tags, imageUrls, description } = req.body;
     const currentUserId = req.currentUserId;
 
     const updatedFeed = await feedService.updateFeed({
