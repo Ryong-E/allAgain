@@ -9,7 +9,8 @@ function Router() {
       <Header />
       <Routes>
         {ROUTE_ARR.map(( route, index ) => {
-          return <Route path={ route.path } element={ <route.element /> } key={index}/>
+          const Comp = route.element;
+          return <Route path={ route.path } element={ <Comp /> } key={index}/>
         })}
       </Routes>
       <Footer />

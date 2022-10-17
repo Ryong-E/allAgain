@@ -6,6 +6,7 @@ import CategoryCheckbox from "./CategoryCheckbox";
 interface CategorySelectFormProps {
   category: string;
   register: UseFormRegister<FeedFormValues>;
+  errors?: string;
 }
 
 const CategoryList = {
@@ -19,10 +20,18 @@ const CategoryList = {
   etc: "그 외",
 };
 
-function CategorySelectForm({ register, category }: CategorySelectFormProps) {
+function CategorySelectForm({
+  register,
+  category,
+  errors,
+}: CategorySelectFormProps) {
   return (
     <CategoryFormContainer>
-      카테고리를 선택해 주세요
+      {errors ? (
+        <ValidateWarning>{errors}</ValidateWarning>
+      ) : (
+        <div>카테고리를 선택해 주세요</div>
+      )}
       <CategoryLabel>
         {Object.entries(CategoryList).map(([key, value]) => (
           <CategoryCheckbox
@@ -48,6 +57,9 @@ const CategoryLabel = styled.div`
   margin-top: 8px;
   width: 100%;
   display: flex;
+`;
+const ValidateWarning = styled.div`
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 export default CategorySelectForm;

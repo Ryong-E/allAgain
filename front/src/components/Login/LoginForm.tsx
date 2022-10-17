@@ -89,7 +89,7 @@ export default function LoginForm() {
       // variable : {loginId: 'xxx', password; 'xxx'}
     },
     onError: (error: any, variable, context) => {
-      setError("loginError", {message: error.message});
+      setError("loginError", {message: error.message, type: "custom"});
     },
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
@@ -105,9 +105,13 @@ export default function LoginForm() {
     loginMutation.mutate({ email, password });
   }
 
+  const onVaildate = (error: any) => {
+    console.log(error);
+  }
+
 
   return(
-    <FormContainer onSubmit={ handleSubmit(handleLoginVaildate) }>
+    <FormContainer onSubmit={ handleSubmit(handleLoginVaildate, onVaildate) }>
       <InputBlock>
         <InputIconBlock>
           <InputIconText 
