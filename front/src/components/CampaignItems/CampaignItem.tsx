@@ -45,12 +45,8 @@ const ThumbnailImgBox = styled.div`
   height:100%;
   flex-shrink: 0;
   overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   img{
-    max-width:auto;
-    max-height:100%;
+    object-fit: cover;
   }
 `
 const ContentsBox = styled.div`
