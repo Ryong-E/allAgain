@@ -59,7 +59,6 @@ export default function CampaignUtilsBox({ setShowIsReComment, isReComment, setI
       newList.splice(userId, 1, deletedComment)
       return newList
     })
-    console.log(dumComment)
   }
 
 

@@ -70,7 +70,6 @@ export default function CampaignIsJoin({setIsJoin, isJoin, campaignId, status, s
 
   const handleJoinCampaign = (campaignId : number)=>{
     setIsJoin(prev => !prev);
-    console.log(campaignId)
     if(!isJoin){
       joinCampaign.mutate(campaignId);
     }else{
