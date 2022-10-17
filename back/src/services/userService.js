@@ -1,8 +1,8 @@
 import { User } from "../db/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const userService = {
   login: async ({ email, password }) => {
@@ -12,22 +12,29 @@ const userService = {
       throw new Error("가입되어있지 않은 이메일입니다.");
     }
 
+    const {
+      id: userId,
+      password: correctPassword,
+      name,
+      nickname,
+      image,
+    } = user[0];
     // password 암호화 체크
-    const correctPassword = user[0].password;
+
     const isPasswordCorrect = await bcrypt.compare(password, correctPassword);
     if (!isPasswordCorrect) {
       throw new Error("비밀번호가 일치하지 않습니다.");
     }
     // jwt토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-    const token = jwt.sign({ userId: user[0].id }, secretKey);
+    const token = jwt.sign({ userId }, secretKey);
 
-    const { name, nickname, image_url } = user[0];
     const loginUser = {
+      userId,
       token,
       name,
       nickname,
-      imageUrl: image_url,
+      image,
     };
 
     return loginUser;
@@ -36,7 +43,7 @@ const userService = {
     password = await bcrypt.hash(password, 10);
 
     // 이메일 중복 체크
-    var user = await User.findByEmail({ email });
+    let user = await User.findByEmail({ email });
     if (user.length > 0) throw new Error("이미 가입된 이메일입니다.");
 
     // 닉네임 중복 체크
