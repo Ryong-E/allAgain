@@ -38,7 +38,7 @@ const deleteApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: TOKEN,
+    Authorization: "Bearer " + TOKEN,
   },
 });
 
