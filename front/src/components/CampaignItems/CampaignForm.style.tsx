@@ -6,18 +6,19 @@ export const CampaignDescription = styled.div`
     display:flex;
     width:100%;
     height:300px;
-    margin-bottom:20px;
+    margin-bottom:100px;
     margin-top:200px;
     justify-content:space-between;
 `
 export const ThumbnailBox = styled.div`
+    position:relative;
 `
 export const InputBox = styled.div`
     width:880px;
     height:100%;
 `
 export const InputNumber = styled(InputText)`
-    width:150px;
+    width:180px;
     padding-right:30px;
     text-align:right;
     &::-webkit-outer-spin-button{
@@ -38,6 +39,7 @@ export const InputNumberBox = styled.div`
     }
 `
 export const DateFormBox = styled.div`
+    position:relative;
     display:flex;
     justify-content:space-between;
     width:350px;
@@ -45,4 +47,14 @@ export const DateFormBox = styled.div`
 export const ButtonBox = styled(ButtonBlock)`
     justify-content:center;
     margin-top:100px;
+`
+export const InputErrorText = styled(InputErrorMsg)`
+    position:absolute;
+
+`
+export const InputErrorBox = styled.div`
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:320px;
 `

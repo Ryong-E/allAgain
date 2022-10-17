@@ -21,6 +21,7 @@ const QuillBlock = styled.div`
 interface EditorProps {
   handleEditorChange?: (content: string) => void;
   editorContent?: string;
+  register:any;
 }
 
 Quill.register("modules/blotFormatter", BlotFormatter);
@@ -28,6 +29,7 @@ Quill.register("modules/blotFormatter", BlotFormatter);
 export default function QuillEditor({
   handleEditorChange,
   editorContent,
+  register
 }: EditorProps) {
   const quillRef = useRef<ReactQuill>();
   function handleImage() {
@@ -97,6 +99,7 @@ export default function QuillEditor({
     <>
       <QuillBlock>
         <ReactQuill
+          {...register('content')}
           style={{ width: "100%", height: "500px" }}
           ref={(element) => {
             if (element !== null) {
