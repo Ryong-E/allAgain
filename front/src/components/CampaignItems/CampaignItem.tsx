@@ -44,8 +44,11 @@ const ThumbnailImgBox = styled.div`
   width: 360px;
   height:100%;
   flex-shrink: 0;
+  overflow:hidden;
   img{
-    
+    width:100%;
+    height:100%;
+    object-fit: contain;
   }
 `
 const ContentsBox = styled.div`
