@@ -42,7 +42,7 @@ const Campaign = {
     const campaigns = await connection
       .promise()
       .query(
-        "SELECT *, campaigns.id FROM campaigns JOIN users ON campaigns.user_id = users.id",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id",
         [],
         (error) => {
           if (error) throw error;
@@ -55,7 +55,7 @@ const Campaign = {
     const campaign = await connection
       .promise()
       .query(
-        "SELECT *, campaigns.id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.id = ?",
+        "SELECT *, campaigns.id as campaign_id, users.id as user_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.id = ?",
         [campaignId],
         (error) => {
           if (error) throw error;
@@ -76,6 +76,65 @@ const Campaign = {
       );
 
     return null;
+  },
+  update: async ({
+    campaignId,
+    title,
+    content,
+    thumbnail,
+    recruitmentStartDate,
+    recruitmentEndDate,
+    campaignStartDate,
+    campaignEndDate,
+    recruitmentNumber,
+    introduce,
+    status,
+  }) => {
+    await connection
+      .promise()
+      .query(
+        "UPDATE campaigns SET title = ?, content = ?, thumbnail = ? , recruitment_start_date = ?, recruitment_end_date = ?, campaign_start_date = ?, campaign_end_date = ?, recruitment_number = ?, introduce = ?, status = ? WHERE id = ?",
+        [
+          title,
+          content,
+          thumbnail,
+          recruitmentStartDate,
+          recruitmentEndDate,
+          campaignStartDate,
+          campaignEndDate,
+          recruitmentNumber,
+          introduce,
+          status,
+          campaignId,
+        ],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return null;
+  },
+  deleteByCampaignId: async ({ campaignId }) => {
+    await connection
+      .promise()
+      .query("DELETE FROM campaigns WHERE id = ?", [campaignId], (error) => {
+        if (error) throw error;
+      });
+
+    return null;
+  },
+  createImage: async ({ imageUrl }) => {
+    await connection
+      .promise()
+      .query(
+        "INSERT INTO images(url, name) VALUES (?, ?)",
+        [imageUrl, "campaign"],
+        (error) => {
+          if (error) throw error;
+        }
+      );
+
+    return imageUrl;
   },
 };
 

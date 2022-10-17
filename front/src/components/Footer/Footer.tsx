@@ -4,18 +4,19 @@ import { Container } from '../common/Containers';
 import { ROUTE } from '../../constant/route';
 
 const FooterWrap = styled.footer`
-  background: ${({ theme }) => theme.colors.lightBeige};
+  background: #56544e;
   color: ${({ theme }) => theme.colors.white};
   font-size: 14px;
   font-weight: 300;
   height: 50px;
+`;
 
-  ${Container} {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
+const FooterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 80px;
 `;
 
 const Copyright = styled.p``;
@@ -32,7 +33,7 @@ const FooterLinkWrap = styled.ul`
 export default function Footer() {
   return (
     <FooterWrap>
-      <Container>
+      <FooterContainer>
         <Copyright>다시, 다 &copy; 2022</Copyright>
         <FooterLinkWrap>
           <li>
@@ -42,7 +43,7 @@ export default function Footer() {
             <Link to={ROUTE.ABOUT_TEAM.link}>팀 소개</Link>
           </li>
         </FooterLinkWrap>
-      </Container>
+      </FooterContainer>
     </FooterWrap>
   );
 }

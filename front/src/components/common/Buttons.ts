@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-import addImageIcon from '../../assets/images/icons/icon_image_add.png';
-import shareIcon from '../../assets/images/icons/icon_share.png';
-import warningIcon from '../../assets/images/icons/icon_warning.png';
-import prevIcon from '../../assets/images/icons/icon_btn_prev.png';
-import nextIcon from '../../assets/images/icons/icon_btn_next.png';
-import closeIcon from '../../assets/images/icons/icon_close.png';
+import styled from "styled-components";
+import addImageIcon from "../../assets/images/icons/icon_image_add.png";
+import shareIcon from "../../assets/images/icons/icon_share.png";
+import warningIcon from "../../assets/images/icons/icon_warning.png";
+import prevIcon from "../../assets/images/icons/icon_btn_prev.png";
+import nextIcon from "../../assets/images/icons/icon_btn_next.png";
+import closeIcon from "../../assets/images/icons/icon_close.png";
 
 export const ButtonBlock = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ export const AddImageButton = styled(RoundedButton)`
   padding: 12px 30px 12px 60px;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     left: 30px;
@@ -125,13 +125,13 @@ export const ShareButton = styled(UtilButton)`
 export const WarningButton = styled(UtilButton)`
   background-image: url(${warningIcon});
 `;
-export const PrevNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
+export const PrevNavigationButton = styled(UtilButton)<{ isVisible: boolean }>`
   background-image: url(${prevIcon});
-  visibility: ${(props) => (props.visibility ? 'visible' : 'hidden')};
+  visibility: ${(props) => (props.isVisible ? "visible" : "hidden")};
 `;
-export const NextNavigationButton = styled(UtilButton)<{ visibility: boolean }>`
+export const NextNavigationButton = styled(UtilButton)<{ isVisible: boolean }>`
   background-image: url(${nextIcon});
-  visibility: ${(props) => (props.visibility ? 'visible' : 'hidden')};
+  visibility: ${(props) => (props.isVisible ? "visible" : "hidden")};
 `;
 export const CloseButton = styled(UtilButton)`
   background-image: url(${closeIcon});

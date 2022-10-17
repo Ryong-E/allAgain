@@ -4,7 +4,7 @@ const loginRequired = (req, res, next) => {
   const userToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
 
   if (userToken === "null") {
-    res.status(400).send("로그인한 유저만 사용할 수 있는 서비스입니다.");
+    next(new Error("로그인한 유저만 사용할 수 있는 서비스입니다."));
     return;
   }
 
@@ -15,7 +15,7 @@ const loginRequired = (req, res, next) => {
     req.currentUserId = userId;
     next();
   } catch (error) {
-    res.status(400).send("정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.");
+    next(new Error("정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요."));
     return;
   }
 };

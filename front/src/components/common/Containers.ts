@@ -18,3 +18,15 @@ export const Container1200 = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 `;
+
+export const PageWrap = styled.div`
+  padding: 70px 0 0;
+`;
+
+export const PageTitle = styled.h2`
+  font-family: "RIDIBatang";
+  text-align: center;
+  background: #eae3d0;
+  padding: 15px 0;
+  color: ${({ theme }) => theme.colors.brown};
+`;
