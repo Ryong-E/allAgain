@@ -1,10 +1,11 @@
 import { Campaign } from "../db/Campaign";
 import { User } from "../db/user";
 import path from "path";
+import { makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
   addCampaign: async ({
-    userId,
+    currentUserId,
     title,
     content,
     thumbnail,
@@ -15,46 +16,19 @@ const campaignService = {
     recruitmentNumber,
     introduce,
   }) => {
-    const userById = await User.findByUserId({ userId });
+    const userById = await User.findByUserId({ currentUserId });
     if (userById.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
-    }
-    // thumbnail 없을 때 처리
-    let thumbnailUrl = undefined;
-    if (thumbnail !== "null") {
-      const re = new RegExp(`campaignThumbnail.*`, "g");
-      const serverUrl = process.env.SERVER_URL || "localhost";
-      const serverPort = process.env.SERVER_PORT || 5000;
-      thumbnailUrl = path.join(
-        serverUrl + ":" + serverPort,
-        "/",
-        thumbnail.match(re)[0]
-      );
-    }
-
-    let status;
-    const currentDate = new Date();
-    // 현재 시간 >= recruitment_start_date = 모집중
-    // 현재 시간 < recruitment_start_date = 모집예정
-    // 현재 시간 > recruitment_end_date = 모집마감
-    if (
-      currentDate >= recruitmentStartDate &&
-      currentDate < recruitmentEndDate
-    ) {
-      status = "모집 중";
-    } else if (currentDate < recruitmentStartDate) {
-      status = "모집 예정";
-    } else if (currentDate >= recruitmentEndDate) {
-      status = "모집 마감";
     }
 
     // content XSS 대응
 
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.create({
-      userId,
+      currentUserId,
       title,
       content,
-      thumbnail: thumbnailUrl,
+      thumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
       campaignStartDate,
@@ -64,8 +38,11 @@ const campaignService = {
       introduce,
     });
 
-    const campaigns = await Campaign.findByUserId({ userId });
-    await Campaign.createParticipant({ userId, campaignId: campaigns[0].id });
+    const campaigns = await Campaign.findByUserId({ currentUserId });
+    await Campaign.createParticipant({
+      userId: currentUserId,
+      campaignId: campaigns[0].id,
+    });
 
     return "캠페인 생성 완료";
   },
@@ -73,94 +50,109 @@ const campaignService = {
     const campaigns = await Campaign.findAll();
     const filteredCampaigns = [];
     let status;
-    const currentDate = new Date();
-    for (let i = 0; i < campaigns.length; i++) {
-      // status 설정
-      // 현재 시간 >= recruitment_start_date = 모집중
-      // 현재 시간 < recruitment_start_date = 모집예정
-      // 현재 시간 > recruitment_end_date = 모집마감
-      if (
-        currentDate >= campaigns[i].recruitment_start_date &&
-        currentDate < campaigns[i].recruitment_end_date
-      ) {
-        status = "모집 중";
-      } else if (currentDate < campaigns[i].recruitment_start_date) {
-        status = "모집 예정";
-      } else if (currentDate >= campaigns[i].recruitment_end_date) {
-        status = "모집 마감";
-      }
-      await Campaign.updateStatus({
-        campaignId: campaigns[i].campaign_id,
-        status,
-      });
 
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
       filteredCampaigns.push({
-        campaignId: campaigns[i].campaign_id,
-        title: campaigns[i].title,
-        thumbnail: campaigns[i].thumbnail,
-        recruitmentStartDate: campaigns[i].recruitment_start_date,
-        recruitmentEndDate: campaigns[i].recruitment_end_date,
-        campaignStartDate: campaigns[i].campaign_start_date,
-        campaignEndDate: campaigns[i].campaign_end_date,
-        recruitmentNumber: campaigns[i].recruitment_number,
-        introduce: campaigns[i].introduce,
-        participants_count: campaigns[i].participants_count,
-        status,
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
         writer: {
-          nickname: campaigns[i].nickname,
-          imageUrl: campaigns[i].image_url,
+          userId,
+          nickname,
+          imageUrl,
         },
       });
     }
 
     return filteredCampaigns;
   },
-  getCampaign: async ({ campaignId }) => {
+  getCampaign: async ({ campaignId, currentUserId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
     if (campaign.length === 0) {
       throw new Error("존재하지 않는 켐페인입니다.");
     }
 
-    let status;
-    const currentDate = new Date();
-    if (
-      currentDate >= campaign[0].recruitment_start_date &&
-      currentDate < campaign[0].recruitment_end_date
-    ) {
-      status = "모집 중";
-    } else if (currentDate < campaign[0].recruitment_start_date) {
-      status = "모집 예정";
-    } else if (currentDate >= campaign[0].recruitment_end_date) {
-      status = "모집 마감";
-    }
+    const {
+      title,
+      thumbnail,
+      introduce,
+      content,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
+      campaign_start_date: campaignStartDate,
+      campaign_end_date: campaignEndDate,
+      recruitment_number: recruitmentNumber,
+      participants_count: participantsCount,
+      user_id: userId,
+      nickname,
+      image,
+    } = campaign[0];
+
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.updateStatus({
-      campaignId: campaign[0].campaign_id,
+      campaignId,
       status,
     });
 
+    const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+    const imageUrl = makeImageUrl("profiles", image);
+    const participated = await Campaign.findExistence({
+      userId: currentUserId,
+      campaignId,
+    });
     const filteredCampaign = {
-      campaignId: campaign[0].campaign_id,
-      title: campaign[0].title,
-      content: campaign[0].content,
-      thumbnail: campaign[0].thumbnail,
-      recruitmentStartDate: campaign[0].recruitment_start_date,
-      recruitmentEndDate: campaign[0].recruitment_end_date,
-      campaignStartDate: campaign[0].campaign_start_date,
-      campaignEndDate: campaign[0].campaign_end_date,
-      recruitmentNumber: campaign[0].recruitment_number,
-      introduce: campaign[0].introduce,
-      participants_count: campaign[0].participants_count,
+      campaignId,
+      title,
+      introduce,
+      content,
+      thumbnail: thumbnailUrl,
+      recruitmentStartDate,
+      recruitmentEndDate,
+      campaignStartDate,
+      campaignEndDate,
+      recruitmentNumber,
+      participantsCount,
       status,
       writer: {
-        nickname: campaign[0].nickname,
-        imageUrl: campaign[0].image_url,
+        userId,
+        nickname,
+        imageUrl,
       },
+      participated: participated ? true : false,
     };
 
     return filteredCampaign;
   },
   updateCampaign: async ({
-    userId,
+    currentUserId,
     campaignId,
     title,
     content,
@@ -176,47 +168,21 @@ const campaignService = {
     if (campaign.length === 0) {
       throw new Error("존재하지 않는 캠페인입니다.");
     }
-    if (userId !== campaign[0].user_id) {
+
+    const { user_id: userId, thumbnail: originalThumbnail } = campaign[0];
+    if (currentUserId !== userId) {
       throw new Error("수정권한이 없는 유저입니다.");
     }
 
-    let thumbnailUrl = undefined;
-    if (thumbnail !== "null") {
-      const re = new RegExp(`campaignThumbnail.*`, "g");
-      const serverUrl = process.env.SERVER_URL || "localhost";
-      const serverPort = process.env.SERVER_PORT || 5000;
-      thumbnailUrl = path.join(
-        serverUrl + ":" + serverPort,
-        "/",
-        thumbnail.match(re)[0]
-      );
-    } else {
-      thumbnailUrl = campaign[0].thumbnail;
-    }
-
-    let status;
-    const currentDate = new Date();
-    // 현재 시간 >= recruitment_start_date = 모집중
-    // 현재 시간 < recruitment_start_date = 모집예정
-    // 현재 시간 > recruitment_end_date = 모집마감
-    if (
-      currentDate >= recruitmentStartDate &&
-      currentDate < recruitmentEndDate
-    ) {
-      status = "모집 중";
-    } else if (currentDate < recruitmentStartDate) {
-      status = "모집 예정";
-    } else if (currentDate >= recruitmentEndDate) {
-      status = "모집 마감";
-    }
-
+    const updatedThumbnail = thumbnail || originalThumbnail;
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     // XSS 대응
 
     await Campaign.update({
       campaignId,
       title,
       content,
-      thumbnail: thumbnailUrl,
+      thumbnail: updatedThumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
       campaignStartDate,
@@ -228,12 +194,12 @@ const campaignService = {
 
     return "업데이트 완료";
   },
-  deleteCampaign: async ({ userId, campaignId }) => {
+  deleteCampaign: async ({ currentUserId, campaignId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
     if (campaign.length === 0) {
       throw new Error("존재하지 않는 캠페인입니다.");
     }
-    if (userId !== campaign[0].user_id) {
+    if (currentUserId !== campaign[0].user_id) {
       throw new Error("삭제권한이 없는 유저입니다.");
     }
 
@@ -241,22 +207,14 @@ const campaignService = {
 
     return "삭제 완료";
   },
-  addCampaignImages: async ({ image }) => {
-    const re = new RegExp(`campaignImages.*`, "g");
-    const serverUrl = process.env.SERVER_URL || "localhost";
-    const serverPort = process.env.SERVER_PORT || 5000;
-    const imageUrl = path.join(
-      serverUrl + ":" + serverPort,
-      "/",
-      image.match(re)[0]
-    );
+  addCampaignImages: async ({ filename }) => {
+    const createdImage = await Campaign.createImage({ filename });
+    const imageUrl = makeImageUrl("campaignImages", filename);
 
-    const createdImage = await Campaign.createImage({ imageUrl });
-
-    return { imageUrl: createdImage };
+    return { imageUrl };
   },
-  addParticipant: async ({ userId, campaignId }) => {
-    const user = await User.findByUserId({ userId });
+  addParticipant: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
     if (user.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
@@ -266,21 +224,20 @@ const campaignService = {
       throw new Error("존재하지 않는 캠페인입니다.");
     }
 
-    const participatedCampaigns = await Campaign.findParticipantByUserId({
-      userId,
+    const participated = await Campaign.findExistence({
+      userId: currentUserId,
+      campaignId,
     });
-    participatedCampaigns.forEach((participatedCampaign) => {
-      if (campaignId == participatedCampaign.campaign_id) {
-        throw new Error("이미 참여 신청한 캠페인 입니다.");
-      }
-    });
+    if (participated) {
+      throw new Error("이미 참여 신청한 캠페인입니다.");
+    }
 
-    await Campaign.createParticipant({ userId, campaignId });
+    await Campaign.createParticipant({ userId: currentUserId, campaignId });
 
     return "참여신청 완료";
   },
-  deleteParticipant: async ({ userId, campaignId }) => {
-    const user = await User.findByUserId({ userId });
+  deleteParticipant: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
     if (user.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");
     }
@@ -289,10 +246,10 @@ const campaignService = {
     if (campaign.length === 0) {
       throw new Error("존재하지 않는 캠페인입니다.");
     }
-    if (campaign[0].user_id === userId) {
+    if (campaign[0].user_id === currentUserId) {
       throw new Error("캠페인을 생성한 유저는 취소할 수 없습니다.");
     }
-    await Campaign.deleteParticipant({ userId, campaignId });
+    await Campaign.deleteParticipant({ userId: currentUserId, campaignId });
 
     return "참여신청 취소 완료";
   },

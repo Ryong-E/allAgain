@@ -1,15 +1,5 @@
-import { body, check, validationResult, param } from "express-validator";
-
-const validate = (req, res, next) => {
-  const errors = validationResult(req);
-
-  if (errors.isEmpty()) {
-    return next();
-  }
-
-  const error = new Error(errors.errors[0].msg);
-  return next(error);
-};
+import { body, check, param } from "express-validator";
+import { validate } from "./commonValidator";
 
 exports.campaignCreateValidator = () => {
   return [
@@ -80,7 +70,7 @@ exports.getCampaignValidator = () => {
 
 exports.deleteCampaignValidator = () => {
   return [
-    body("campaignId")
+    param("campaignId")
       .notEmpty()
       .withMessage("삭제하려는 캠페인 아이디가 없습니다."),
     validate,
@@ -135,7 +125,7 @@ exports.updateCampaignValidator = () => {
         return true;
       }),
     body("introduce").notEmpty().withMessage("소개글이 없습니다."),
-    body("campaignId")
+    param("campaignId")
       .notEmpty()
       .withMessage("수정하려는 캠페인 아이디가 없습니다."),
     validate,
@@ -156,7 +146,7 @@ exports.campaignImageCreateValidator = () => {
 
 exports.campaignIdCheckValidator = () => {
   return [
-    body("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
+    param("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
     validate,
   ];
 };

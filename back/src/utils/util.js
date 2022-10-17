@@ -31,4 +31,22 @@ const compareUserId = (userId, currentUserId) => {
   return true;
 };
 
-export { SALT_ROUND, makeImageUrl, compareUserId };
+/**
+ * status 세팅
+ * @param {Date} startDate 모집 시작 날짜
+ * @param {Date} endDate 모집 마감 날짜
+ * @returns status
+ */
+const setStatus = (startDate, endDate) => {
+  const currentDate = new Date();
+
+  if (currentDate >= startDate && currentDate < endDate) {
+    return "모집 중";
+  } else if (currentDate < startDate) {
+    return "모집 예정";
+  } else if (currentDate >= endDate) {
+    return "모집 마감";
+  }
+};
+
+export { SALT_ROUND, makeImageUrl, compareUserId, setStatus };
