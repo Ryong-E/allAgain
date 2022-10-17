@@ -8,7 +8,9 @@ import {
   MyProfileEditParams,
 } from "./types";
 
-const BASE_URL = "http://localhost:5001/users";
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
+
+console.log(BASE_URL);
 
 const userApi = axios.create({
   baseURL: BASE_URL,
@@ -43,7 +45,7 @@ export const getUserProfile = async () => {
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}/informations/me`,
+      url: `${BASE_URL}/users/informations/me`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
@@ -62,7 +64,7 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'put',
-      url: `${BASE_URL}/profile`,
+      url: `${BASE_URL}/users/profile`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
@@ -86,7 +88,7 @@ export const updateUserImage = async ({ formData }: any) => {
   try {
     const token = localStorage.getItem("jwtToken");
 
-    const { data } = await axios.post(`${BASE_URL}/profile/image`, formData, {
+    const { data } = await axios.post(`${BASE_URL}/users/profile/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: 'Bearer ' + token
@@ -106,7 +108,7 @@ export const deleteUser = async () => {
     const token = localStorage.getItem("jwtToken");
     await axios({
       method: 'delete',
-      url: `${BASE_URL}`,
+      url: `${BASE_URL}/users`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token
