@@ -1,34 +1,46 @@
-import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { deleteFeed } from "../../api/feedApi";
+import { FeedType } from "../../types/feedTypes";
 import {
   DelButton,
   ConfirmButton,
   ShareButton,
   WarningButton,
-} from '../common/Buttons';
-import Album from './Album';
-import AuthorInfo from './AuthorInfo';
-import LikesCount from './LikesCount';
+} from "../common/Buttons";
+import Album from "./Album";
+import AuthorInfo from "./AuthorInfo";
+import LikesCount from "./LikesCount";
 
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
+function FeedDetail({
+  imageUrls,
+  userId,
+  feedId,
+  description,
+  category,
+  tags,
+}: FeedType) {
+  const navigator = useNavigate();
 
-function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
+  const handleDeleteClick = async () => {
+    await deleteFeed(feedId);
+    navigator(-1);
+  };
+
+  const handleEditClick = () => {
+    navigator(`/feed/update/${feedId}`);
+  };
+
   return (
     <>
       <ButtonContainer>
-        <DelButton>삭제</DelButton>
-        <ConfirmButton>수정</ConfirmButton>
+        <DelButton onClick={handleDeleteClick}>삭제</DelButton>
+        <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
       </ButtonContainer>
-      <Album imageUrls={imageUrls} size='detail' />
+      <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>
         <DetailHeader>
-          <AuthorInfo size='detail' userId={12321} />
+          <AuthorInfo size="detail" userId={userId} />
           <LikesCount likes={1122} />
           <SocialButtonContainer>
             <WarningButton />
@@ -38,18 +50,17 @@ function FeedDetail({ imageUrls, userId, description, category }: IFeed) {
         <DetailTime>
           <PostTime>3시간 전</PostTime>
         </DetailTime>
-        <DetailSection>
-          실제 우유팩을 인쇄하는 과정에서 발생하는 파지를 새활용한 소재로
-          카드지갑, 동전지갑 등 다양한 제품을 만들어보았습니다. 만드는 법이
-          어렵지 않고 알록달록 매력적인 디자인이라 아이들과 함께 만들기 좋아요!
-          우유팩이 재료인 만큼 탄탄하고 방수도 가능합니다.
-        </DetailSection>
+        <DetailSection>{description}</DetailSection>
+        <CategoryContainer>
+          {category.split(",").map((cate) => (
+            <Category>{cate}</Category>
+          ))}
+        </CategoryContainer>
       </DetailContainer>
       <DetailTagContainer>
-        <DetailTag>테스트1</DetailTag>
-        <DetailTag>테스트2</DetailTag>
-        <DetailTag>테스트3</DetailTag>
-        <DetailTag>테스트4</DetailTag>
+        {tags.split(",").map((tag) => (
+          <DetailTag>{tag}</DetailTag>
+        ))}
       </DetailTagContainer>
     </>
   );
@@ -64,7 +75,7 @@ const ButtonContainer = styled.div`
 
 const DetailContainer = styled.div`
   width: 1200px;
-  padding: 40px 60px;
+  padding: 40px 60px 20px;
   background-color: #ffffff;
 `;
 
@@ -93,6 +104,24 @@ const DetailSection = styled.div`
   width: 100%;
   font-size: 15px;
   line-height: 36px;
+`;
+
+const CategoryContainer = styled.div`
+  margin-top: 65px;
+  width: 100%;
+  display: flex;
+`;
+
+const Category = styled.div`
+  background: ${({ theme }) => theme.colors.dasidaGreen};
+  color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
+  width: 70px;
+  border-radius: 60px;
+  padding: 0px;
+  font-size: 12px;
+  text-align: center;
+  margin-right: 7px;
 `;
 
 const DetailTagContainer = styled.div`

@@ -1,32 +1,24 @@
-import axios from 'axios';
+import axios from "axios";
+import { CreateFeedType, FeedType, ImageUrlType } from "../types/feedTypes";
 
-const BASE_URL = 'http://localhost:5001/feeds/';
-const APPLICATION_JSON = 'application/json';
-const MULTIPART_FORM_DATA = 'multipart/form-data';
+const BASE_URL = "http://localhost:5001/feeds/";
+const APPLCATION_JSON = "application/json";
+const MULTIPART_FORM_DATA = "multipart/form-data";
 const TEST_TOKEN =
-  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwIfbL9ov4lxvWOOf7QtU38wHf8';
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwFbL9ov4lxvWOOf7QtU38wHf8";
 
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
-
-const feedApi = (contentType: string = APPLICATION_JSON) =>
+const feedApi = (contentType: string = APPLCATION_JSON) =>
   axios.create({
     baseURL: BASE_URL,
     headers: {
-      'Content-Type': contentType,
-      Authorization: TEST_TOKEN,
+      "Content-Type": contentType,
+      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
     },
   });
 
 export const getFeedList = async () => {
   try {
-    const response = await feedApi().get<IFeed[]>('');
+    const response = await feedApi().get<FeedType[]>("");
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -35,7 +27,7 @@ export const getFeedList = async () => {
 
 export const getFeed = async (feedId: number) => {
   try {
-    const response = await feedApi().get<IFeed>(`${feedId}`);
+    const response = await feedApi().get<FeedType>(`${feedId}`);
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -45,6 +37,60 @@ export const getFeed = async (feedId: number) => {
 export const deleteFeed = async (feedId: number) => {
   try {
     const response = await feedApi().delete(`${feedId}`);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const createFeed = async ({
+  category,
+  tags,
+  imageUrls,
+  description,
+}: CreateFeedType) => {
+  try {
+    const response = await feedApi().post<string>("", {
+      category,
+      tags,
+      imageUrls,
+      description,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const updateFeed = async ({
+  feedId,
+  userId,
+  category,
+  tags,
+  imageUrls,
+  description,
+}: FeedType) => {
+  try {
+    const response = await feedApi().put("", {
+      feedId,
+      userId,
+      category,
+      tags,
+      imageUrls,
+      description,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const uploadFeedImages = async (formData: FormData) => {
+  try {
+    const response = await feedApi(MULTIPART_FORM_DATA).post<ImageUrlType[]>(
+      "images",
+      formData
+    );
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);

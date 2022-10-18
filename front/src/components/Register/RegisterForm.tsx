@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import { REGISTER } from "../../constant/queryKeys";
 
 
 const FormContainer = styled.form`
@@ -50,9 +51,9 @@ export default function RegisterForm() {
 
 
   // React query
-  const RegisterMutation = useMutation(createUser, {
+  const RegisterMutation = useMutation([REGISTER], createUser, {
     onError: (error:any) => {
-      console.log(error);
+      console.log(error.data.errorMessage);
       // setError("RegisterError", {message: error.message});  // 실패 시 원인에 따른 에러메세지 출력 필요 - 백엔드에 에러구분 요청
     },
     onSuccess: (data) => {
