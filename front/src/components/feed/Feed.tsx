@@ -10,7 +10,14 @@ interface feedProps extends FeedType {
   isSimple: boolean;
 }
 
-function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
+function Feed({
+  userId,
+  imageUrls,
+  feedId,
+  isSimple,
+  nickname,
+  authorImageUrl,
+}: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   return (
@@ -27,7 +34,13 @@ function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
       {isAdmin && <FeedAdminBanner>Class</FeedAdminBanner>}
       {isSimple || (
         <PostContainer isAdmin={isAdmin}>
-          <AuthorInfo size="simple" userId={userId} isAdmin={isAdmin} />
+          <AuthorInfo
+            size="simple"
+            userId={userId}
+            isAdmin={isAdmin}
+            nickname={nickname}
+            authorImageUrl={authorImageUrl}
+          />
           {isAdmin || <PostTime>3시간</PostTime>}
         </PostContainer>
       )}

@@ -5,16 +5,27 @@ import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
 
 interface authorInfoProps {
   size: "simple" | "detail";
-  userId?: number;
+  nickname?: string;
+  authorImageUrl?: string;
+  userId: number;
   isAdmin?: boolean;
 }
 
-function AuthorInfo({ size, userId, isAdmin }: authorInfoProps) {
+function AuthorInfo({
+  size,
+  userId,
+  isAdmin,
+  nickname,
+  authorImageUrl,
+}: authorInfoProps) {
   return (
     <Container isAdmin={isAdmin}>
       <ProfileContainer>
-        <AuthorProfile size={size} src={DefaultProfileBanner} />
-        <AuthorName isAdmin={isAdmin}>{userId}</AuthorName>
+        <AuthorProfile
+          size={size}
+          src={authorImageUrl ? authorImageUrl : DefaultProfileBanner}
+        />
+        <AuthorName isAdmin={isAdmin}>{nickname}</AuthorName>
         {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
       </ProfileContainer>
       {size === "simple" && <FollowToggleSmall isAdmin={isAdmin} />}

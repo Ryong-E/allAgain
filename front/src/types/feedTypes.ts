@@ -5,6 +5,8 @@ export interface FeedType {
   tags: string;
   imageUrls: ImageUrlType[];
   description: string;
+  authorImageUrl?: string;
+  nickname?: string;
 }
 
 export interface CreateFeedType {
