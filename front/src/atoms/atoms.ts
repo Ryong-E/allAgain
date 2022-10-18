@@ -1,13 +1,8 @@
 import { atom } from "recoil";
-import { MyProfile, User } from "../api/types";
+import { User } from "../types/userTypes";
 
-export const authUserState = atom<User>({
-  key: "authUserState",
-  default: {},
-});
-
-export const myProfileState = atom<MyProfile | null>({
-  key: "myProfileState",
+export const loggedInUserId = atom<number | null>({
+  key: "loggedInUserId",
   default: null,
 });
 
