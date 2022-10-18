@@ -9,6 +9,7 @@ export default function CampaignUpdatePage() {
   const { isLoading, data } = useQuery(["userCampaign"], () =>
     getCampaignItem(Number(id!))
   ,{cacheTime:0});
+  console.log(data,'패칭')
   return (
     <>
       <Container>

@@ -158,7 +158,7 @@ export default function CampaignForm({
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
-        updateCampainMutaion.mutate({formData,campaignId});
+        await updateCampainMutaion.mutate({formData,campaignId});
         alert("캠페인 수정이 완료 되었습니다.");
         navigate(`/campaign/${campaignId}`);
       } else {
