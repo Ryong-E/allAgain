@@ -152,6 +152,60 @@ const campaignService = {
 
     return filteredCampaign;
   },
+  getCampaignForGuest: async ({ campaignId }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 켐페인입니다.");
+    }
+
+    const {
+      title,
+      thumbnail,
+      introduce,
+      content,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
+      campaign_start_date: campaignStartDate,
+      campaign_end_date: campaignEndDate,
+      recruitment_number: recruitmentNumber,
+      participants_count: participantsCount,
+      user_id: userId,
+      nickname,
+      image,
+    } = campaign[0];
+
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
+    await Campaign.updateStatus({
+      campaignId,
+      status,
+    });
+
+    const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+    const imageUrl = makeImageUrl("profiles", image);
+
+    const filteredCampaign = {
+      campaignId,
+      title,
+      introduce,
+      content,
+      thumbnail: thumbnailUrl,
+      recruitmentStartDate,
+      recruitmentEndDate,
+      campaignStartDate,
+      campaignEndDate,
+      recruitmentNumber,
+      participantsCount,
+      status,
+      writer: {
+        userId,
+        nickname,
+        imageUrl,
+      },
+      participated: false,
+    };
+
+    return filteredCampaign;
+  },
   updateCampaign: async ({
     currentUserId,
     campaignId,

@@ -37,7 +37,7 @@ campaignRouter.post(
   }
 );
 
-campaignRouter.get("/", loginRequired, async (req, res, next) => {
+campaignRouter.get("/", async (req, res, next) => {
   try {
     const campaigns = await campaignService.getAllCampaigns();
 
@@ -58,6 +58,23 @@ campaignRouter.get(
       const campaign = await campaignService.getCampaign({
         campaignId,
         currentUserId,
+      });
+
+      res.status(200).json(campaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.get(
+  "/campaign/guest/:campaignId",
+  getCampaignValidator(),
+  async (req, res, next) => {
+    try {
+      const { campaignId } = req.params;
+      const campaign = await campaignService.getCampaignForGuest({
+        campaignId,
       });
 
       res.status(200).json(campaign);
