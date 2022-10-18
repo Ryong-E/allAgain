@@ -1,6 +1,7 @@
 import { Feed } from "../db/model/Feed";
 const path = require("path");
 import { imageService } from "./imageService";
+import { Image } from "../db/model/Image";
 
 // httpMethod
 

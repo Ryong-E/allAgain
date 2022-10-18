@@ -21,7 +21,7 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/", loginRequired, async (req, res, next) => {
+feedRouter.get("/", async (req, res, next) => {
   try {
     const feedList = await feedService.getAllFeeds();
     res.status(200).send(feedList);
@@ -30,7 +30,7 @@ feedRouter.get("/", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
+feedRouter.get("/:feedId", async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const feed = await feedService.getFeedByFeedId({ feedId });
@@ -40,7 +40,7 @@ feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/user/:userId", loginRequired, async (req, res, next) => {
+feedRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const feeds = await feedService.getFeedByUserId({ userId });
