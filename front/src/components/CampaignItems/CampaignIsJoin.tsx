@@ -81,7 +81,6 @@ export default function CampaignIsJoin({isJoin, campaignId, status, startDate, i
   })
   const [year, month, date] = startDate.split("-");
   const fullOfCampaign = ((isSameRate === 0) && !isJoin);
-  console.log(isJoin)
   const handleJoinCampaign = (campaignId : number)=>{
     if(!isJoin){
       joinCampaign.mutate(campaignId);
@@ -89,7 +88,6 @@ export default function CampaignIsJoin({isJoin, campaignId, status, startDate, i
       cancleCampaign.mutate(campaignId);
     }
   }
-  console.log(isJoin) 
   const statusClass = status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : fullOfCampaign ? "" : "darkGreen";
 
   return (
