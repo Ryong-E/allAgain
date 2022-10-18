@@ -88,7 +88,13 @@ export default function MainContentsSlide() {
   const [resizePreView, serResizePreView] = useState(5);
   const handleWindowResize = ()=>{
     const width = window.innerWidth;
-    serResizePreView(width / 400);
+    if(width >= 1000){
+      serResizePreView(width / 380);
+    }else if(800 <= width && width < 1000){
+      serResizePreView(width / 440);
+    }else{
+      serResizePreView(width / 500);
+    }
   }
   useEffect(()=>{
     handleWindowResize();
