@@ -11,6 +11,7 @@ import FeedAddButton from "../../components/Feed/FeedAddButton";
 import FeedList from "../../components/Feed/FeedList";
 import FeedCategoryFilter from "../../components/Feed/FeedCategoryFilter";
 import { useEffect, useState } from "react";
+import { FEEDS } from "../../constant/queryKeys";
 
 interface CategoryState {
   [key: string]: boolean;
@@ -29,7 +30,7 @@ const initialState: CategoryState = {
 };
 
 function FeedListPage() {
-  const { isSuccess, data } = useQuery(["feeds"], getFeedList, {
+  const { isSuccess, data } = useQuery([FEEDS], getFeedList, {
     refetchOnWindowFocus: false,
   });
 
