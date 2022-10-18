@@ -41,7 +41,9 @@ function FeedEditForm({
 
   const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
     onSuccess: () => {
-      isEditing ? navigator(-1) : navigator(`/feed/${feedId}`);
+      isEditing
+        ? navigator(`/feed/${submitMutation.data}`)
+        : navigator(`/feed/${feedId}`);
     },
   });
 
