@@ -7,9 +7,9 @@ import {
   PageTitle,
   PageWrap,
 } from "../../components/common/Containers";
-import FeedAddButton from "../../components/feed/FeedAddButton";
-import FeedList from "../../components/feed/FeedList";
-import FeedCategoryFilter from "../../components/feed/FeedCategoryFilter";
+import FeedAddButton from "../../components/Feed/FeedAddButton";
+import FeedList from "../../components/Feed/FeedList";
+import FeedCategoryFilter from "../../components/Feed/FeedCategoryFilter";
 
 function FeedListPage() {
   const { isSuccess, data } = useQuery(["feeds"], getFeedList, {
