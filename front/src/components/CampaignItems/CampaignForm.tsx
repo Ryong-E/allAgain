@@ -103,13 +103,14 @@ export default function CampaignForm({
   });
 
   function validation(data: FormType) {
+    let isError = false
     const re = data.content.replaceAll(/&lt;[a-z]*[0-9]?&gt;/g , "").replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g , "");
     if(re.length < 1){
         setError("content",{
             type:"custom",
             message:"캠페인 상세 설명을 입력해주세요"
         })
-        return false;
+        isError = true;
     }
     if (data.recruitmentEndDate < data.recruitmentStartDate) {
       console.log('마감날짜 시작날짜보다 오류')
@@ -117,21 +118,21 @@ export default function CampaignForm({
         type: "custom",
         message: "마감날짜가 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
     if (data.campaignEndDate < data.campaignStartDate) {
       setError("campaignEndDate", {
         type: "custom",
         message: "캠페인마감날짜가 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
     if (data.campaignStartDate < data.recruitmentStartDate) {
       setError("campaignEndDate", {
         type: "custom",
         message: "캠페인 시작 날짜가 모집 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
     if(!updateMod){
         console.log(data)
@@ -143,7 +144,7 @@ export default function CampaignForm({
             return false
         }
     }
-    return true;
+    return isError ? false : true;
   }
   const onValid = async (data: FormType) => {
     console.log(data);
