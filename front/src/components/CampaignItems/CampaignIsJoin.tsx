@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import {  useMutation, useQueryClient } from "@tanstack/react-query";
 import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { cancelParticipateCampaign, joinParticipateCampaign } from "../../api/campaignApi";
@@ -52,40 +52,60 @@ const JoinCampaignBox = styled.div`
     &.lightGreen{
       background : ${({theme}) => theme.colors.lightGreen}
     }
+    &:disabled{
+      background: ${({theme}) => theme.colors.placeholder};
+    }
   }
 `;
 
 interface JoinProps {
-  setIsJoin : React.Dispatch<React.SetStateAction<boolean>>;
-  isJoin ?: Boolean;
+  isJoin : Boolean;
   campaignId : number;
   status : String;
   startDate : String;
+  isSameUser: Boolean;
+  isSameRate: number;
 }
-export default function CampaignIsJoin({setIsJoin, isJoin, campaignId, status, startDate}: JoinProps) {
-  const joinCampaign = useMutation(joinParticipateCampaign) 
-  const cancleCampaign = useMutation(cancelParticipateCampaign)
-
+export default function CampaignIsJoin({isJoin, campaignId, status, startDate, isSameUser, isSameRate}: JoinProps) {
+  const queryClient = useQueryClient();
+  const joinCampaign = useMutation(joinParticipateCampaign, {
+    onSuccess: (data: any, variables, context) => {
+      queryClient.invalidateQueries(["detailCampaign"]);;
+    }
+  }) 
+  const cancleCampaign = useMutation(cancelParticipateCampaign, {
+    onSuccess: (data: any, variables, context) => {
+      queryClient.invalidateQueries(["detailCampaign"]);;
+    }
+  })
   const [year, month, date] = startDate.split("-");
-
+  const fullOfCampaign = ((isSameRate === 0) && !isJoin);
+  console.log(isJoin)
   const handleJoinCampaign = (campaignId : number)=>{
-    setIsJoin(prev => !prev);
     if(!isJoin){
       joinCampaign.mutate(campaignId);
     }else{
       cancleCampaign.mutate(campaignId);
     }
-    
   }
-
+  console.log(isJoin) 
+  const statusClass = status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : fullOfCampaign ? "" : "darkGreen";
 
   return (
     <JoinCampaignBox>
-      <button className={`${isJoin ? "active" : ""} ${status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : "darkGreen"}`} onClick={()=>{(status === "모집 중" && handleJoinCampaign(campaignId))}}>
+      <button className={`${isJoin ? "active" : ""} ${statusClass}`} onClick={()=>{((status === "모집 중" && !isSameUser) && handleJoinCampaign(campaignId)); }} disabled={fullOfCampaign}>
         {status === "모집 중"?
           <>
-          <i></i>캠페인 참여하기
+          {fullOfCampaign ? 
+          <>
+          남은 자리가 없네요..
           </>:
+          <>
+            <i></i>캠페인 참여하기
+          </> 
+          }
+          </>
+          :
           status === "모집 예정"?
           <>
           {year}년 {month}월 {date}일 00시 00분에 모집을 시작합니다.

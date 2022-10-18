@@ -1,5 +1,5 @@
 export interface User {
-  id?: string,
+  userId?: any,
   email?: string,
   password?: string,
   name?: string,
@@ -16,6 +16,7 @@ export interface MyProfile {
 }
 
 export interface MyProfileEditParams {
+  userId?: number | null,
   nickname?: string,
   currentPassword?: string,
   password?: string,
@@ -40,11 +41,7 @@ export interface LoginRequiredParams {
 }
 
 export interface LoginResponse {
-  status: string;
-  access_token: string;
-  data: {
-    user: User;
-  };
+  data: User;
 }
 
 export interface UserResponse {
@@ -53,23 +50,5 @@ export interface UserResponse {
     user: User;
   };
 }
-
-export interface GenericResponse {
-  status: string;
-  message: string;
-}
-
-// export interface ILoginResponse {
-//   status: string;
-//   access_token: string;
-// }
-
-// export interface IUserResponse {
-//   status: string;
-//   data: {
-//     user: IUser;
-//   };
-// }
-
 
 

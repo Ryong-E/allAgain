@@ -1,4 +1,3 @@
-import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
 
 export type CampaignItemType = {
@@ -11,45 +10,47 @@ export type CampaignItemType = {
   campaignStartDate: Date;
   campaignEndDate: Date;
   recruitmentNumber: number;
+  participantsCount: number;
   introduce: String;
   status: String;
   writer: {
+    userId: number;
     nickname: String;
     imageUrl?: String;
   };
+  participated: Boolean;
 };
-
 
 const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
-const campaignApi = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + TOKEN,
-  },
-});
-const campaignUrlencodedApi = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: "Bearer " + TOKEN,
-  },
-});
+const APPLCATION_JSON = "application/json";
+const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
+
+
+const campaignApi = (contentType: string = APPLCATION_JSON) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": contentType,
+      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+    },
+  });
 
 export const getCampaignList = async () => {
   try {
-    const response = await campaignApi.get<CampaignItemType[]>("");
+    const response = await campaignApi().get<CampaignItemType[]>("");
     return response.data;
   } catch (err: any) {
-    throw new Error("리스트 못가져옴..");
+    // throw new Error("리스트 못가져옴..");
+    console.log(err);
+    
   }
 };
 
 export const getCampaignItem = async (campaginId: number) => {
   try {
-    const response = await campaignApi.get<CampaignItemType>(
+    const response = await campaignApi().get<CampaignItemType>(
       `/campaign/${campaginId}`
     );
     return response.data;
@@ -88,9 +89,13 @@ export const createCampaign = async (data: FormData) => {
   }
 };
 
-export const updateCampaign = async (data: FormData) => {
+interface TT{
+  formData:FormData,
+  campaignId:Number
+}
+export const updateCampaign = async ({formData,campaignId} : TT) => {
   try {
-    const response = await axios.put("http://localhost:5001/campaigns", data, {
+    const response = await axios.put(`http://localhost:5001/campaigns/${campaignId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + TOKEN,
@@ -103,7 +108,7 @@ export const updateCampaign = async (data: FormData) => {
 
 export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete("", {
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(`/${campaignId}`, {
       data: {
         campaignId,
       },
@@ -117,8 +122,8 @@ export const deleteCampaignItem = async (campaignId: number) => {
 
 export const joinParticipateCampaign = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.post(
-      `/participants`, {campaignId}
+    const response = await campaignApi(APPLCATION_URLENCODED).post(
+      `/${campaignId}/participants`, {campaignId}
     );
     return response.data;
   } catch (err: any) {
@@ -127,8 +132,8 @@ export const joinParticipateCampaign = async (campaignId: number) => {
 };
 export const cancelParticipateCampaign = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete(
-      `/participants`,{
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(
+      `/${campaignId}/participants`,{
         data :{
           campaignId
         }

@@ -1,14 +1,12 @@
 import { atom } from "recoil";
-import { MyProfile, User } from "../api/types";
+import { recoilPersist } from "recoil-persist";
 
-export const authUserState = atom<User>({
-  key: "authUserState",
-  default: {},
-});
+const { persistAtom } = recoilPersist();
 
-export const myProfileState = atom<MyProfile | null>({
-  key: "myProfileState",
+export const loggedInUserId = atom<number | null>({
+  key: "loggedInUserId",
   default: null,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const campaignDumData = atom({

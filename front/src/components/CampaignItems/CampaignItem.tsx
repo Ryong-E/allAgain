@@ -151,12 +151,6 @@ const LimitBox = styled.div`
   }
 `
 
-const rateAnimation = keyframes`
-  100%{
-    width:var(--lengthRate);
-  }
-`
-
 const RateBox = styled.div`
   display: flex;
   align-items: center;
@@ -168,7 +162,10 @@ const RateBox = styled.div`
       width:0;
       height:2px;
       background: rgba(0, 77, 73, 1);
-      animation: ${rateAnimation} 1.3s forwards;
+      transition: width 1.3s;
+      &.participantsCount{
+        width:var(--lengthRate);
+      }
     }
   }
   .participating{
@@ -188,10 +185,10 @@ const CampaignItemLinkBox = styled.div`
 `
 
 
-export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, introduce, status, writer } : CampaignItemType) {
-  const person  = recruitmentNumber!;
-  let endEvent = 1;
-  let lengthRate = (endEvent/ person)*100; 
+export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, participantsCount, introduce, status, writer, participated } : CampaignItemType) {
+  const recruitment  = recruitmentNumber!;
+  let participants = participantsCount-1;
+  let lengthRate = (participants/ recruitment)*100; 
   const length = useRef<HTMLDivElement>(null);
   const rateAnimation = ()=>{
     const len = length.current;
@@ -199,9 +196,14 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       len.style.setProperty("--lengthRate", lengthRate + "%");
     }
   }
+  console.log(recruitmentStartDate)
+  const recruitmentStart = fixDate(String(recruitmentStartDate))
+  const recruitmentEnd = fixDate(String(recruitmentEndDate))
+  const campaignStart = fixDate(String(campaignStartDate))
+  const campaignEnd = fixDate(String(campaignEndDate))
   useEffect(() => {
     rateAnimation()
-  }, [status])
+  }, [participants])
   return (
     <ListItemBox className={status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : ""}>
       <CampaignItemLinkBox>
@@ -233,11 +235,11 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           <PeriodBox>
             <div className="recruitment">
               <strong>모집 기간</strong>
-              <span>{`${fixDate(String(recruitmentStartDate))} ~ ${fixDate(String(recruitmentEndDate))}`}</span>
+              <span>{`${recruitmentStart} ~ ${recruitmentEnd}`}</span>
             </div>
             <div className="progress">
               <strong>진행 기간</strong>
-              <span>{`${fixDate(String(campaignStartDate))} ~ ${fixDate(String(campaignEndDate))}`}</span>
+              <span>{`${campaignStart} ~ ${campaignEnd}`}</span>
             </div>
             <div className="personnel">
               <strong>모집 인원</strong>
@@ -246,7 +248,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           </PeriodBox>
           <CreatedUser>
             <Link to={`/user/:id`}>
-              <UserImgBox/>
+              <UserImgBox userImg={writer!.imageUrl!}/>
               <UserName userName={writer!.nickname!}/>
             </Link>
           </CreatedUser>
@@ -254,14 +256,14 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
         <LimitBox>
           <RateBox>
             <div className="lengthBox">
-              <div className="length" ref={length}></div>
+              <div className={`length ${participants ? "participantsCount" : ""}`} ref={length}></div>
             </div>
             <div className="participating">
-              <span>{50}명</span> 참여 중
+              <span>{participants}명</span> 참여 중
             </div>
           </RateBox>
           <div className="endDate">
-            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집 예정" ? recruitmentStartDate! : ""} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
+            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEnd : status === "모집 예정" ? recruitmentStart : ""} recruitmentNumber={recruitmentNumber!} endEvent={participants}/>
           </div>
         </LimitBox>
       </ContentsBox>
