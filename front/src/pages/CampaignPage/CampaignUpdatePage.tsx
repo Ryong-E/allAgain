@@ -6,17 +6,22 @@ import { Container, Container1300 } from "../../components/common/Containers";
 
 export default function CampaignUpdatePage() {
   const { id } = useParams();
-  const { isLoading, data } = useQuery(["userCampaign"], () =>
-    getCampaignItem(Number(id!))
-  ,{cacheTime:0});
-  console.log(data,'패칭')
+  const { isLoading, data } = useQuery(
+    ["userCampaign"],
+    () => getCampaignItem(Number(id!)),
+    { cacheTime: 0 }
+  );
   return (
     <>
-      <Container>
-        <Container1300>
-          {data && <CampaignForm {...data} updateMod={true} />}
-        </Container1300>
-      </Container>
+      {isLoading ? (
+        <div style={{ height: "100vh" }}></div>
+      ) : (
+        <Container>
+          <Container1300>
+            {data && <CampaignForm {...data} updateMod={true} />}
+          </Container1300>
+        </Container>
+      )}
     </>
   );
 }

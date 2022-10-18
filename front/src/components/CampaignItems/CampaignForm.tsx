@@ -98,6 +98,7 @@ export default function CampaignForm({
     },
     onSuccess:(data:any)=>{
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
+      queryClient.invalidateQueries(['detailCampaign']);
   }
   });
 
