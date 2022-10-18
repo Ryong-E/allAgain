@@ -13,18 +13,20 @@ import CUDBtn from './CUDBtn';
 import CampaignIntroDetail from './CampaignIntroDetail';
 import QuillEditor from './QuillEditor';
 import { CampaignItemType } from '../../api/campaignApi';
+import { fixDate } from '../../utils/dateFix';
+
 
 
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
-  const test = useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    if(test.current !== null){
-      test.current.innerHTML= `${props.title}`
-      console.log(test.current.innerHTML);
-    }
-  },[])
+  const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const [isJoin, setIsJoin] = useState(false)
+  const [isJoin, setIsJoin] = useState(false);
+  const startDate = fixDate(String(props.recruitmentStartDate));
+  useEffect(()=>{
+    if(EditorRef.current !== null){
+      EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
+    }
+  },[isActive])
   return (
     <>
       <CUDBtn campaignId={props.campaignId!} />
@@ -32,17 +34,24 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
       <CampaignIsJoin
           setIsJoin={setIsJoin}
           isJoin={isJoin}
+          campaignId={props.campaignId}
+          status={props.status}
+          startDate={startDate}
           />
       <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
       {!isActive ? (
         <>
           <CampaignContents>
-            <div ref={test}></div>
+            <div ref={EditorRef}></div>
           </CampaignContents>
           <CampaignIsJoin
             setIsJoin={setIsJoin}
-            isJoin={isJoin}/>
+            isJoin={isJoin}
+            campaignId={props.campaignId}
+            status={props.status}
+            startDate={startDate}
+            />
           <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
         </>
       ) : (

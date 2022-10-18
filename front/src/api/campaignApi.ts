@@ -19,11 +19,6 @@ export type CampaignItemType = {
   };
 };
 
-// import {
-//   CampaignItem,
-//   UpdateItem,
-//   DeleteItem
-// } from "./types";
 
 const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
@@ -34,16 +29,14 @@ const campaignApi = axios.create({
     Authorization: "Bearer " + TOKEN,
   },
 });
+const campaignUrlencodedApi = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: "Bearer " + TOKEN,
+  },
+});
 
-// export const createCampaignItem = async (data:CreateItem) => {
-//   try {
-//     const response = await userApi.post<CreateItem>(data);
-//     console.log(response);
-//     return response.data;
-//   } catch (err: any) {
-//     throw new Error("생성 실패..");
-//   }
-// };
 
 export const getCampaignList = async () => {
   try {
@@ -108,24 +101,41 @@ export const updateCampaign = async (data: FormData) => {
   }
 };
 
-// export const updateCampaignItem = async (data:UpdateItem) => {
-//   try {
-//     const response = await userApi.put<UpdateItem>(data);
-//     return response.data;
-//   } catch (err: any) {
-//     throw new Error("업데이트 실패..");
-//   }
-// };
-
-export const deleteCampaignItem = async (campaginId: number) => {
+export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignApi.delete("", {
+    const response = await campaignUrlencodedApi.delete("", {
       data: {
-        campaginId,
+        campaignId,
       },
     });
     return response.data;
   } catch (err: any) {
     throw new Error("삭제 실패..");
+  }
+};
+
+
+export const joinParticipateCampaign = async (campaignId: number) => {
+  try {
+    const response = await campaignUrlencodedApi.post(
+      `/participants`, {campaignId}
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error("캠페인 참여 안됨...");
+  }
+};
+export const cancelParticipateCampaign = async (campaignId: number) => {
+  try {
+    const response = await campaignUrlencodedApi.delete(
+      `/participants`,{
+        data :{
+          campaignId
+        }
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error("캠페인 탈퇴 안됨...");
   }
 };

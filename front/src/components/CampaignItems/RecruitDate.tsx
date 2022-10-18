@@ -40,6 +40,8 @@ interface RecruitDateProp {
   registername: string;
   watch: any;
   defaultvalue: String;
+  setStartDate: () => void;
+  startDate : string
 }
 
 export default function RecruitDate({
@@ -50,11 +52,13 @@ export default function RecruitDate({
   setValue,
   trigger,
   defaultvalue,
+  setStartDate,
+  startDate,
 }: any) {
   const dateRef = useRef<HTMLInputElement>(null);
   const [isClick, setIsClick] = useState(false);
   const [isWrite, setIsWrite] = useState(false);
-
+  const TODAY_DATE = new Date().toISOString().slice(0,10);
   // useEffect(()=>{
   //     if(dateLabelRef.current !== null){
   //         if(isWrite){
@@ -93,6 +97,9 @@ export default function RecruitDate({
     trigger(registername);
     if (e.target.value !== "") {
       setIsWrite(true);
+      if(children === "시작날짜"){
+        setStartDate(e.target.value)
+      }
     } else {
       setIsWrite(false);
     }
@@ -113,8 +120,9 @@ export default function RecruitDate({
           {children}
         </InputLabel>
         <DateInput
-          {...register(registername)}
+          {...register(registername,{required:"기간을 입력하세요"})}
           type="date"
+          min={TODAY_DATE}
           onBlur={() => {
             setIsClick(false);
           }}

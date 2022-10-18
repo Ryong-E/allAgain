@@ -51,7 +51,7 @@ export default function CampaignPage() {
       <Container1300Ver2>
         <AdditionalBox>
           <TagBox values={values} currentValue={currentValue} setCurrentValue={setCurrentValue} />
-          <Link to={ROUTE.CAMPAGIN_DETAIL.link}>
+          <Link to={ROUTE.CAMPAGIN_CREATE.link}>
             <CreateCampaignBtn>새로운 캠페인 등록</CreateCampaignBtn>
           </Link>
         </AdditionalBox>

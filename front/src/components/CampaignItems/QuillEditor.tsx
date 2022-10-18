@@ -4,7 +4,6 @@ import { Delta as TypeDelta } from "quill";
 import BlotFormatter, {
   ResizeAction,
   ImageSpec,
-  DeleteAction,
 } from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -16,11 +15,16 @@ const QuillBlock = styled.div`
   .ql-editor {
     text-align: center;
   }
+  .ql-container{
+    overflow:hidden;
+    background-color:#ffffff;
+  }
 `;
 
 interface EditorProps {
   handleEditorChange?: (content: string) => void;
   editorContent?: string;
+  register:any;
 }
 
 Quill.register("modules/blotFormatter", BlotFormatter);
@@ -28,6 +32,7 @@ Quill.register("modules/blotFormatter", BlotFormatter);
 export default function QuillEditor({
   handleEditorChange,
   editorContent,
+  register
 }: EditorProps) {
   const quillRef = useRef<ReactQuill>();
   function handleImage() {
@@ -61,6 +66,14 @@ export default function QuillEditor({
     return {
       blotFormatter: {
         specs: [CustomImageSpec],
+        overlay:{
+          style:{
+          }
+        },
+        resize:{
+          handleStyle:{
+          }
+        }
       },
       toolbar: {
         container: [
@@ -96,19 +109,22 @@ export default function QuillEditor({
   return (
     <>
       <QuillBlock>
-        <ReactQuill
-          style={{ width: "100%", height: "500px" }}
-          ref={(element) => {
-            if (element !== null) {
-              quillRef.current = element;
-            }
-          }}
-          modules={modules}
-          formats={formats}
-          theme={"snow"}
-          value={editorContent}
-          onChange={handleEditorChange}
-        />
+        <div className="text-editor" style={{height:"800px"}}>
+          <ReactQuill
+            {...register('content')}
+            style={{ width: "100%", height: "100%",backgroundColor:"#ffffff" }}
+            ref={(element) => {
+              if (element !== null) {
+                quillRef.current = element;
+              }
+            }}
+            modules={modules}
+            formats={formats}
+            theme={"snow"}
+            value={editorContent}
+            onChange={handleEditorChange}
+          />
+        </div>
       </QuillBlock>
     </>
   );

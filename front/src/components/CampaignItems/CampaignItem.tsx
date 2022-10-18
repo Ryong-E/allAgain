@@ -24,7 +24,7 @@ const ListItemBox = styled.div`
     .statusBox{
       
       .status{
-        background:${({theme})=> theme.colors.dasidaGreen};
+        background:${({theme})=> theme.colors.lightGreen};
       }
     }
   }
@@ -44,8 +44,11 @@ const ThumbnailImgBox = styled.div`
   width: 360px;
   height:100%;
   flex-shrink: 0;
+  overflow:hidden;
   img{
-    
+    width:100%;
+    height:100%;
+    object-fit: contain;
   }
 `
 const ContentsBox = styled.div`
@@ -63,7 +66,7 @@ const StatusBox = styled.div`
   .status{
     font-size:13px;
     padding: 5px 15px;
-    background: ${({theme})=> theme.colors.lightGreen};
+    background: ${({theme})=> theme.colors.dasidaGreen};
     color: ${({theme})=> theme.colors.white};
     letter-spacing: -0.4px;
   }
@@ -211,7 +214,6 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       <ContentsBox>
         <StatusBox className="statusBox">
           <div className="status">
-            {/* 상태 확인 state 넣어주세요 */}
             {status}
           </div>
           <div className="shareAndLikeBox">
@@ -224,19 +226,17 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
             <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`}>
               <TextBox>
                 <h3 className="title">{title}</h3>
-                <div className="desc">{content}</div>
+                <div className="desc">{introduce}</div>
               </TextBox>
             </Link>
           </CampaignItemLinkBox>
           <PeriodBox>
             <div className="recruitment">
               <strong>모집 기간</strong>
-              {/* array 오면 0번 1번 넣어주세요 */}
               <span>{`${fixDate(String(recruitmentStartDate))} ~ ${fixDate(String(recruitmentEndDate))}`}</span>
             </div>
             <div className="progress">
               <strong>진행 기간</strong>
-              {/* array 오면 0번 1번 넣어주세요 */}
               <span>{`${fixDate(String(campaignStartDate))} ~ ${fixDate(String(campaignEndDate))}`}</span>
             </div>
             <div className="personnel">
