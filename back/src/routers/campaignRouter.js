@@ -22,12 +22,10 @@ campaignRouter.post(
   campaignCreateValidator(),
   async (req, res, next) => {
     try {
-      const thumbnail = req.files.thumbnail
-        ? req.files.thumbnail[0].path
-        : "null";
-      const currentUserId = req.currentUserId;
-      const createdCampaign = await campaignService.addCampaign({
-        userId: currentUserId,
+      const { filename: thumbnail } = req.files.thumbnail[0];
+      const { currentUserId } = req;
+      const createdCampaign = await campaignService.postCampaign({
+        currentUserId,
         ...req.body,
         thumbnail,
       });
@@ -55,8 +53,12 @@ campaignRouter.get(
   getCampaignValidator(),
   async (req, res, next) => {
     try {
+      const { currentUserId } = req;
       const { campaignId } = req.params;
-      const campaign = await campaignService.getCampaign({ campaignId });
+      const campaign = await campaignService.getCampaign({
+        campaignId,
+        currentUserId,
+      });
 
       res.status(200).json(campaign);
     } catch (error) {
@@ -66,7 +68,7 @@ campaignRouter.get(
 );
 
 campaignRouter.put(
-  "/",
+  "/:campaignId",
   loginRequired,
   uploadStrategy("campaignThumbnail").fields([
     { name: "thumbnail", maxCount: 1 },
@@ -75,13 +77,15 @@ campaignRouter.put(
   async (req, res, next) => {
     try {
       const thumbnail = req.files.thumbnail
-        ? req.files.thumbnail[0].path
-        : "null";
-      const currentUserId = req.currentUserId;
+        ? req.files.thumbnail[0].filename
+        : undefined;
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
       const updatedCampaign = await campaignService.updateCampaign({
-        userId: currentUserId,
+        currentUserId,
         ...req.body,
         thumbnail,
+        campaignId,
       });
 
       res.status(201).json(updatedCampaign);
@@ -92,15 +96,15 @@ campaignRouter.put(
 );
 
 campaignRouter.delete(
-  "/",
+  "/:campaignId",
   loginRequired,
   deleteCampaignValidator(),
   async (req, res, next) => {
     try {
-      const currentUserId = req.currentUserId;
-      const { campaignId } = req.body;
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
       const deletedCampaign = await campaignService.deleteCampaign({
-        userId: currentUserId,
+        currentUserId,
         campaignId,
       });
 
@@ -118,8 +122,10 @@ campaignRouter.post(
   campaignImageCreateValidator(),
   async (req, res, next) => {
     try {
-      const image = req.file.path;
-      const createdImage = await campaignService.addCampaignImages({ image });
+      const { filename } = req.file;
+      const createdImage = await campaignService.postCampaignImages({
+        filename,
+      });
 
       res.status(201).json(createdImage);
     } catch (error) {
@@ -129,16 +135,16 @@ campaignRouter.post(
 );
 
 campaignRouter.post(
-  "/participants",
+  "/:campaignId/participants",
   loginRequired,
   campaignIdCheckValidator(),
   async (req, res, next) => {
     try {
-      const currentUserId = req.currentUserId;
-      const { campaignId } = req.body;
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
 
-      const participatedCampaign = await campaignService.addParticipant({
-        userId: currentUserId,
+      const participatedCampaign = await campaignService.postParticipant({
+        currentUserId,
         campaignId,
       });
 
@@ -150,16 +156,16 @@ campaignRouter.post(
 );
 
 campaignRouter.delete(
-  "/participants",
+  "/:campaignId/participants",
   loginRequired,
   campaignIdCheckValidator(),
   async (req, res, next) => {
     try {
-      const currentUserId = req.currentUserId;
-      const { campaignId } = req.body;
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
 
       const canceledParticipate = await campaignService.deleteParticipant({
-        userId: currentUserId,
+        currentUserId,
         campaignId,
       });
 

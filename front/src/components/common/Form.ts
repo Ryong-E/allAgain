@@ -93,6 +93,7 @@ export const InputErrorMsg = styled.p`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.error};
   padding: 10px;
+  min-height: 40px;
 `;
 
 export const Checkbox = styled.input`

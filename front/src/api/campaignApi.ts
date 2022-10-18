@@ -1,4 +1,3 @@
-import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
 
 export type CampaignItemType = {
@@ -11,14 +10,16 @@ export type CampaignItemType = {
   campaignStartDate: Date;
   campaignEndDate: Date;
   recruitmentNumber: number;
+  participantsCount: number;
   introduce: String;
   status: String;
   writer: {
+    userId: number;
     nickname: String;
     imageUrl?: String;
   };
+  participated: Boolean;
 };
-
 
 const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
@@ -88,9 +89,13 @@ export const createCampaign = async (data: FormData) => {
   }
 };
 
-export const updateCampaign = async (data: FormData) => {
+interface TT{
+  formData:FormData,
+  campaignId:Number
+}
+export const updateCampaign = async ({formData,campaignId} : TT) => {
   try {
-    const response = await axios.put("http://localhost:5001/campaigns", data, {
+    const response = await axios.put(`http://localhost:5001/campaigns/${campaignId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + TOKEN,
@@ -103,7 +108,7 @@ export const updateCampaign = async (data: FormData) => {
 
 export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete("", {
+    const response = await campaignUrlencodedApi.delete(`/${campaignId}`, {
       data: {
         campaignId,
       },
@@ -118,7 +123,7 @@ export const deleteCampaignItem = async (campaignId: number) => {
 export const joinParticipateCampaign = async (campaignId: number) => {
   try {
     const response = await campaignUrlencodedApi.post(
-      `/participants`, {campaignId}
+      `/${campaignId}/participants`, {campaignId}
     );
     return response.data;
   } catch (err: any) {
@@ -128,7 +133,7 @@ export const joinParticipateCampaign = async (campaignId: number) => {
 export const cancelParticipateCampaign = async (campaignId: number) => {
   try {
     const response = await campaignUrlencodedApi.delete(
-      `/participants`,{
+      `/${campaignId}/participants`,{
         data :{
           campaignId
         }

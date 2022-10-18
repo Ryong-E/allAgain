@@ -1,71 +1,62 @@
 // @ts-nocheck
-import { Router } from 'express';
-import { loginRequired } from '../middlewares/loginRequired';
-import { feedService } from '../services/feedService';
-import { uploadStrategy } from '../middlewares/imageUploadMiddleware';
+import { Router } from "express";
+import { loginRequired } from "../middlewares/loginRequired";
+import { feedService } from "../services/feedService";
 
 const feedRouter = Router();
 
-feedRouter.post('/', loginRequired, async (req, res, next) => {
+feedRouter.post("/", loginRequired, async (req, res, next) => {
   try {
     const { category, tags, imageUrls, description } = req.body;
-    const createdFeed = await feedService.createFeed({
+    const createdFeed = await feedService.postFeed({
       userId: req.currentUserId,
       category,
       tags,
       imageUrls,
       description,
     });
-    res.status(200).send(createdFeed);
+    res.status(200).send(createdFeed.toString());
   } catch (error) {
     next(error);
   }
 });
 
-feedRouter.post(
-  '/images',
-  loginRequired,
-  uploadStrategy('feeds').array('image'),
-  async (req, res, next) => {
-    const imagePaths = [];
-    req.files.forEach((file) => {
-      imagePaths.push({ name: file.fieldname, path: file.path });
-    });
-    try {
-      const savedImageUrls = await feedService.saveImageUrls({ imagePaths });
-      res.status(200).send(savedImageUrls);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
-
-feedRouter.get('/', loginRequired, async (req, res, next) => {
+feedRouter.get("/", loginRequired, async (req, res, next) => {
   try {
-    const feedList = await feedService.getFeeds();
+    const feedList = await feedService.getAllFeeds();
     res.status(200).send(feedList);
   } catch (error) {
     next(error);
   }
 });
 
-feedRouter.get('/:feedId', loginRequired, async (req, res, next) => {
+feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
-    const feed = await feedService.getFeedById({ feedId });
+    const feed = await feedService.getFeedByFeedId({ feedId });
     res.status(200).send(feed);
   } catch (error) {
     next(error);
   }
 });
 
-feedRouter.put('/', loginRequired, async (req, res, next) => {
+feedRouter.get("/user/:userId", loginRequired, async (req, res, next) => {
   try {
-    const { feedId, userId, category, tags, imageUrls, description } = req.body;
+    const { userId } = req.params;
+    const feeds = await feedService.getFeedByUserId({ userId });
+    res.status(200).send(feeds);
+  } catch (error) {
+    next(error);
+  }
+});
+
+feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
+  try {
+    const { feedId } = req.params;
+    const { category, tags, imageUrls, description } = req.body;
     const currentUserId = req.currentUserId;
 
     const updatedFeed = await feedService.updateFeed({
-      userId,
       currentUserId,
       feedId,
       category,
@@ -79,7 +70,7 @@ feedRouter.put('/', loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.delete('/:feedId', loginRequired, async (req, res, next) => {
+feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const currentUserId = req.currentUserId;

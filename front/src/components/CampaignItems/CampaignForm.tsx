@@ -33,6 +33,9 @@ import {
   InputErrorText,
   InputErrorBox,
 } from "./CampaignForm.style";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
+
 
 export interface FormType {
   thumbnail: File[];
@@ -78,6 +81,7 @@ export default function CampaignForm({
 }: FormPropType): JSX.Element {
   const [editorContent, setEditorContent] = useState<string>("");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -87,6 +91,16 @@ export default function CampaignForm({
     setError,
     formState: { errors },
   } = useForm<FormType>();
+
+  const  updateCampainMutaion = useMutation(updateCampaign,{
+    onError:(error:any) => {
+      console.log(error)
+    },
+    onSuccess:(data:any)=>{
+      queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
+      queryClient.invalidateQueries(['detailCampaign']);
+  }
+  });
 
   function validation(data: FormType) {
     const re = data.content.replaceAll(/&lt;[a-z]*[0-9]?&gt;/g , "").replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g , "");
@@ -145,7 +159,7 @@ export default function CampaignForm({
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
-        await updateCampaign(formData);
+        await updateCampainMutaion.mutate({formData,campaignId});
         alert("캠페인 수정이 완료 되었습니다.");
         navigate(`/campaign/${campaignId}`);
       } else {
@@ -191,7 +205,7 @@ export default function CampaignForm({
                 {...register("title", {
                   required: "캠페인 이름을 입력해주세요",
                 })}
-                defaultValue={title ? (title as string) : ""}
+                defaultValue={title ? title as string : ""}
               />
               {errors.title && <InputErrorText>{errors.title.message}</InputErrorText>}
             </InputBlock>
@@ -202,7 +216,7 @@ export default function CampaignForm({
                 {...register("introduce", {
                   required: "캠페인 소개글을 작성해주세요",
                 })}
-                defaultValue={introduce ? (introduce as string) : ""}
+                defaultValue={introduce ? introduce as string : ""}
               />
               {errors.introduce && <InputErrorText>{errors.introduce.message}</InputErrorText>}
             </InputBlock>
@@ -293,7 +307,7 @@ export default function CampaignForm({
             }}>
             취소
           </ClsButton>
-          <ConfirmButton type="submit">생성하기</ConfirmButton>
+          <ConfirmButton type="submit">{updateMod ? "수정하기" : "생성하기"}</ConfirmButton>
         </ButtonBox>
       </form>
     </>

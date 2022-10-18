@@ -6,3 +6,4 @@ export const UPDATE_PROFILE_IMG = "updateProfileImg";
 export const DELETE_USER = "deleteUser";
 export const FEEDS = "feeds";
 export const FEED_DETAIL = "feedDetail";
+export const GET_CAMPAIGNLIST = "getCampaignList";

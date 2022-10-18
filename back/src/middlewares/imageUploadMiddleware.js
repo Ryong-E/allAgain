@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-const multer = require("multer");
-const path = require("path");
-const pathSep = path.sep;
+import fs from "fs";
+import multer from "multer";
+import path from "path";
 
 const uploadStrategy = (strategy) => {
+  const pathSep = path.sep;
   const uploadPath = path.join(
     __dirname,
     pathSep,
@@ -13,6 +14,10 @@ const uploadStrategy = (strategy) => {
     pathSep,
     strategy
   );
+
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath);
+  }
 
   // 프로필 사진 업로드 미들웨어
   const storage = multer.diskStorage({
