@@ -6,10 +6,11 @@ import MountainsParallaxItems from "./MountainsParallaxItems"
 
 const Section = styled.section`
   position: relative;
-  height: calc(100vh - 70px);
+  height: 100vh;
   text-align:center;
   background: #d0e2db;
   overflow: hidden;
+  user-select:none;
   &.active{
     > div{
       transform: scale(1);
@@ -32,19 +33,14 @@ const TitleBox = styled.div`
   opacity: 0;
   position: relative;
   z-index : 10;
-  padding-top: 100px;
+  padding-top: 80px;
   transition : opacity 1.3s 1s;
-  img{
-    max-width:22%;
-  }
+  font-size: 30px;
   @media (max-width: 1920px){
-    padding-top: 5.2083vw;
+    padding-top: 4.1666vw;
   }
   @media (max-width: 920px){
     padding-top: 48px;
-    img{
-      max-width: 200px;
-    }
   }
 `
 
@@ -85,14 +81,14 @@ export default function Landing01() {
     <Section id="section01" className={isLoading ? 'active' : ""}>
       <InnerBox>
         <TitleBox className="titleBox">
-          <img src={LandingImgs.landingTitle} alt="다시, 다 프로젝트" />
+          다시, 다 프로젝트
         </TitleBox>
         <MainDescTextBox className="mainDescTextBox">
           <p>당 신 은 지 구 를 위해</p>
           어떤 노력을 하고 있나요?
         </MainDescTextBox>
         {LandingImgs.section01Imgs.map((ele,idx) => (
-          <MountainsParallaxItems isLoading={isLoading} bgImage={ele} idx={idx} zIndex={zIndex[idx]}/>
+          <MountainsParallaxItems key={ele + idx} isLoading={isLoading} bgImage={ele} idx={idx} zIndex={zIndex[idx]}/>
         ))}
       </InnerBox>
     </Section>

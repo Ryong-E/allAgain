@@ -9,7 +9,7 @@ import teacherIcon from "../../assets/images/icons/icon_teacher.png";
 
 
 const Section = styled.section`
-
+  padding : 300px 0 0;
 `
 
 const TextImgBox = styled.div`
@@ -47,10 +47,10 @@ export const ServiceDetailBox = styled.div`
   text-align:center; 
 `
 const TitleBox = styled.div`
-
+  font-size: 40px;
 `
 const DescBox = styled.div`
-  margin: 120px 0 150px;
+  margin: 150px 0 200px;
   font-size: 18px;
   p{
     color: ${({theme}) => theme.colors.dasidaGreen};
@@ -68,6 +68,9 @@ const ContentBox = styled.div`
 
     .imgBox{
       margin-bottom: 50px;
+      img{
+        max-width:80%;
+      }
     }
     .contentTextBox{
       
@@ -113,7 +116,7 @@ export default function Landing03() {
       </UpcycleIconBox>
       <ServiceDetailBox>
         <TitleBox>
-          <img src={LandingImgs.landingTitle} alt="다시, 다 프로젝트" />
+            다시, 다 프로젝트
         </TitleBox>
         <DescBox>
           <p>다시, 다 프로젝트는 누구나 쉽게 업사이클링에 접근할 수 있게 도와주는 서비스입니다.</p>
@@ -121,13 +124,13 @@ export default function Landing03() {
         </DescBox>
         <ContentBox>
           {serviceInnerItem.map(({icon, descText}) =>(
-            <div className="innerBox">
+            <div className="innerBox" key={icon + descText}>
               <div className="imgBox">
                 <img src={icon} alt="serviceIcon" />
               </div>
               <div className="contentTextBox">
-                {descText.split("\n").map(ele => (
-                  <p>{ele}</p>
+                {descText.split("\n").map((ele,idx) => (
+                  <p key={idx + ele} >{ele}</p>
                 ))}
               </div>
             </div>
