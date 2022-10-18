@@ -1,6 +1,8 @@
 
 
 export const fixDate = ( realDate: string )=>{
-  const fixedDate = realDate.slice(0,10);
-  return  fixedDate
+  const fixedDate = new Date(realDate);
+  fixedDate.setHours(fixedDate.getHours() + 9);
+  const date_format = fixedDate.toISOString().slice(0,10);
+  return  date_format
 }

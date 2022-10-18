@@ -11,12 +11,15 @@ export type CampaignItemType = {
   campaignStartDate: Date;
   campaignEndDate: Date;
   recruitmentNumber: number;
+  participantsCount: number;
   introduce: String;
   status: String;
   writer: {
+    userId: number;
     nickname: String;
     imageUrl?: String;
   };
+  participated: Boolean;
 };
 
 
@@ -103,7 +106,7 @@ export const updateCampaign = async (data: FormData) => {
 
 export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete("", {
+    const response = await campaignUrlencodedApi.delete(`/${campaignId}`, {
       data: {
         campaignId,
       },

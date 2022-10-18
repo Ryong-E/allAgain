@@ -56,20 +56,18 @@ const JoinCampaignBox = styled.div`
 `;
 
 interface JoinProps {
-  setIsJoin : React.Dispatch<React.SetStateAction<boolean>>;
   isJoin ?: Boolean;
   campaignId : number;
   status : String;
   startDate : String;
 }
-export default function CampaignIsJoin({setIsJoin, isJoin, campaignId, status, startDate}: JoinProps) {
+export default function CampaignIsJoin({isJoin, campaignId, status, startDate}: JoinProps) {
   const joinCampaign = useMutation(joinParticipateCampaign) 
   const cancleCampaign = useMutation(cancelParticipateCampaign)
 
   const [year, month, date] = startDate.split("-");
 
   const handleJoinCampaign = (campaignId : number)=>{
-    setIsJoin(prev => !prev);
     if(!isJoin){
       joinCampaign.mutate(campaignId);
     }else{

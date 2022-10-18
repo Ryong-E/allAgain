@@ -10,11 +10,13 @@ const UserImgWrap = styled.div`
   border : 1px solid #666;
   overflow:hidden;
 `
-
-export default function UserImgBox() {
+interface UserImgType{
+  userImg ?: String;
+}
+export default function UserImgBox({userImg}: UserImgType) {
   return (
     <UserImgWrap className='userImgBox'>
-      <img src={profileIcon} alt="" />
+      <img src={`http://${userImg}`} alt="" />
     </UserImgWrap>
   )
 }

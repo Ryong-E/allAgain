@@ -21,7 +21,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false);
-  const startDate = fixDate(String(props.recruitmentStartDate));
+  const startDate = String(props.recruitmentStartDate).slice(0,10);
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
@@ -32,8 +32,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
       <CUDBtn campaignId={props.campaignId!} />
       <CampaignItem {...props} />
       <CampaignIsJoin
-          setIsJoin={setIsJoin}
-          isJoin={isJoin}
+          isJoin={props.participated}
           campaignId={props.campaignId}
           status={props.status}
           startDate={startDate}
@@ -46,8 +45,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             <div ref={EditorRef}></div>
           </CampaignContents>
           <CampaignIsJoin
-            setIsJoin={setIsJoin}
-            isJoin={isJoin}
+            isJoin={props.participated}
             campaignId={props.campaignId}
             status={props.status}
             startDate={startDate}
