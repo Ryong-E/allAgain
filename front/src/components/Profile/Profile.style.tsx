@@ -61,7 +61,7 @@ export const NickNameInput = styled(InputText)`
 
 export const InfoListWrap = styled.div`
   background: #f7f4ea;
-  padding: 60px 0;
+  padding: 40px 0;
   margin: 60px 0 0;
 `;
 
