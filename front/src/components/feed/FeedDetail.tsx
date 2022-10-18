@@ -21,6 +21,8 @@ function FeedDetail({
   description,
   category,
   tags,
+  nickname,
+  authorImageUrl,
 }: FeedType) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
@@ -45,7 +47,12 @@ function FeedDetail({
       <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>
         <DetailHeader>
-          <AuthorInfo size="detail" userId={userId} />
+          <AuthorInfo
+            size="detail"
+            userId={userId}
+            nickname={nickname}
+            authorImageUrl={authorImageUrl}
+          />
           <LikesCount likes={1122} />
           <SocialButtonContainer>
             <WarningButton />
