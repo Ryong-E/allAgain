@@ -106,7 +106,7 @@ export const updateCampaign = async (data: FormData) => {
 
 export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete("", {
+    const response = await campaignUrlencodedApi.delete(`/${campaignId}`, {
       data: {
         campaignId,
       },
