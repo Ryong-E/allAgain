@@ -8,10 +8,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCampaignItem } from '../../api/campaignApi';
 import { GET_DETAILCAMPAIGN } from '../../constant/queryKeys';
+import { loggedInUserId } from '../../atoms/atoms';
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
-  const {status, data, error} = useQuery([GET_DETAILCAMPAIGN], () => getCampaignItem(Number(id!)),{cacheTime:5});
+  const isLogin = useRecoilValue(loggedInUserId);
+  console.log("isLogin",isLogin)
+  const {status, data, error} = useQuery([GET_DETAILCAMPAIGN], () => getCampaignItem(Number(id!),isLogin) ,{cacheTime:5});
+
   return (
     <Container>
       <Container1300Ver2>

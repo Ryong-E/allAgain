@@ -34,16 +34,27 @@ export const getCampaignList = async () => {
   }
 };
 
-export const getCampaignItem = async (campaginId: number) => {
+
+
+export const getCampaignItem = async (campaginId: number,isLogin ?: number | null) => {
   try {
-    const response = await campaignApi().get<CampaignItemType>(
-      `/campaign/${campaginId}`
-    );
-    return response.data;
+    if(isLogin !== null){
+      const response = await campaignApi().get<CampaignItemType>(
+        `/campaign/${campaginId}`
+      );
+      return response.data;
+    }
+    else{
+      const response = await campaignNoTokenApi().get<CampaignItemType>(
+        `/campaign/guest/${campaginId}`
+      );
+      return response.data;
+    }
   } catch (err: any) {
     throw new Error("아이템 못가져옴..");
   }
 };
+
 export const insertImage = async (data: FormData) => {
   try {
     const response = await axios.post(
