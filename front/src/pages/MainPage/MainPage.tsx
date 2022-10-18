@@ -7,9 +7,10 @@ const Root = styled.div`
 `
 const Container = styled.div`
   width:100%;
-  padding : 0 100px;
 `
 export default function MainPage() {
+  
+
   return (
     <Root>
       <Container>
