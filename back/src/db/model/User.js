@@ -37,7 +37,7 @@ const User = {
       throw error;
     }
   },
-  register: async ({ email, password, name, nickname }) => {
+  create: async ({ email, password, name, nickname }) => {
     try {
       await promisePool.query(
         "INSERT INTO users(email, password, name, nickname) VALUES(?, ?, ?, ?)",

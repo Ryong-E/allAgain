@@ -41,7 +41,7 @@ const userService = {
 
     return loginUser;
   },
-  register: async ({ email, password, name, nickname }) => {
+  postUser: async ({ email, password, name, nickname }) => {
     password = await bcrypt.hash(password, SALT_ROUND);
 
     // 이메일 중복 체크
@@ -56,7 +56,7 @@ const userService = {
       throw new Error("이미 존재하는 닉네임입니다.");
     }
 
-    await User.register({
+    await User.create({
       email,
       password,
       name,
@@ -127,7 +127,7 @@ const userService = {
 
     return { imageUrl };
   },
-  withdrawal: async ({ userId, currentUserId }) => {
+  deleteUser: async ({ userId, currentUserId }) => {
     compareUserId(userId, currentUserId);
 
     await User.delete({ userId });

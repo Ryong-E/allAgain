@@ -16,7 +16,7 @@ userRouter.post("/", userRegisterValidator(), async (req, res, next) => {
   try {
     const { email, password, name, nickname } = req.body;
     // DB에 저장
-    const register = await userService.register({
+    const register = await userService.postUser({
       email,
       password,
       name,
@@ -98,7 +98,7 @@ userRouter.delete(
       const { currentUserId } = req;
       const { userId } = req.params;
 
-      await userService.withdrawal({ userId, currentUserId });
+      await userService.deleteUser({ userId, currentUserId });
 
       res.status(204).json("ok");
     } catch (error) {

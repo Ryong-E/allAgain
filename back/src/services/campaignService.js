@@ -3,7 +3,7 @@ import { User } from "../db/model/User";
 import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
-  addCampaign: async ({
+  postCampaign: async ({
     currentUserId,
     title,
     content,
@@ -209,13 +209,13 @@ const campaignService = {
 
     return "삭제 완료";
   },
-  addCampaignImages: async ({ filename }) => {
+  postCampaignImages: async ({ filename }) => {
     const createdImage = await Campaign.createImage({ filename });
     const imageUrl = makeImageUrl("campaignImages", filename);
 
     return { imageUrl };
   },
-  addParticipant: async ({ currentUserId, campaignId }) => {
+  postParticipant: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
     if (user.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");

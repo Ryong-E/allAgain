@@ -24,7 +24,7 @@ campaignRouter.post(
     try {
       const { filename: thumbnail } = req.files.thumbnail[0];
       const { currentUserId } = req;
-      const createdCampaign = await campaignService.addCampaign({
+      const createdCampaign = await campaignService.postCampaign({
         currentUserId,
         ...req.body,
         thumbnail,
@@ -123,7 +123,7 @@ campaignRouter.post(
   async (req, res, next) => {
     try {
       const { filename } = req.file;
-      const createdImage = await campaignService.addCampaignImages({
+      const createdImage = await campaignService.postCampaignImages({
         filename,
       });
 
@@ -143,7 +143,7 @@ campaignRouter.post(
       const { currentUserId } = req;
       const { campaignId } = req.params;
 
-      const participatedCampaign = await campaignService.addParticipant({
+      const participatedCampaign = await campaignService.postParticipant({
         currentUserId,
         campaignId,
       });
