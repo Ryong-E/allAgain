@@ -40,6 +40,16 @@ feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
+feedRouter.get("/user/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const feeds = await feedService.getFeedByUserId({ userId });
+    res.status(200).send(feeds);
+  } catch (error) {
+    next(error);
+  }
+});
+
 feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
