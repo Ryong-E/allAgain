@@ -1,6 +1,5 @@
-import { Campaign } from "../db/Campaign";
-import { User } from "../db/user";
-import path from "path";
+import { Campaign } from "../db/model/Campaign";
+import { User } from "../db/model/User";
 import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {

@@ -1,4 +1,4 @@
-import { promisePool } from "../app";
+import { promisePool } from "..";
 
 const User = {
   findByEmail: async ({ email }) => {

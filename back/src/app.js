@@ -4,18 +4,6 @@ import { userRouter } from "./routers/userRouter";
 import { feedRouter } from "./routers/feedRouter";
 import { campaignRouter } from "./routers/campaignRouter";
 import cors from "cors";
-import mysql from "mysql2";
-
-const pool = mysql.createPool({
-  host: "34.64.61.16",
-  user: "testuser",
-  password: "test",
-  database: "TESTDB",
-  waitForConnections: true,
-  connectionLimit: 10,
-  enableKeepAlive: true,
-});
-const promisePool = pool.promise();
 
 const app = express();
 
@@ -34,4 +22,4 @@ app.use("/campaigns", campaignRouter);
 
 app.use(errorMiddleware);
 
-export { app, promisePool, pool };
+export { app };

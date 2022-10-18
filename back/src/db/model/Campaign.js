@@ -1,4 +1,4 @@
-import { promisePool } from "../app";
+import { promisePool } from "..";
 
 const Campaign = {
   create: async ({
