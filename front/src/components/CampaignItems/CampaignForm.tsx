@@ -18,7 +18,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  CampaignItemType,
   createCampaign,
   updateCampaign,
 } from "../../api/campaignApi";
@@ -35,37 +34,8 @@ import {
 } from "./CampaignForm.style";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
+import { FormPropType,FormType } from "../../types/campaignTypes";
 
-
-export interface FormType {
-  thumbnail: File[];
-  title: string;
-  content: string;
-  recruitmentStartDate: string;
-  recruitmentEndDate: string;
-  campaignStartDate: string;
-  campaignEndDate: string;
-  recruitmentNumber: string;
-  introduce: string;
-}
-interface FormPropType {
-  campaignId: Number;
-  title: String;
-  content: String;
-  thumbnail?: String | null | undefined;
-  recruitmentStartDate: Date;
-  recruitmentEndDate: Date;
-  campaignStartDate: Date;
-  campaignEndDate: Date;
-  recruitmentNumber: number;
-  introduce: String;
-  status: String;
-  writer: {
-    nickname: String;
-    imageUrl?: String;
-  };
-  updateMod: Boolean;
-}
 export default function CampaignForm({
   thumbnail,
   title,

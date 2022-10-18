@@ -7,8 +7,8 @@ import UserImgBox from "../Comment/UserImgBox"
 import UserName from "../common/UserName"
 import CampaignDDay from "./CampaignDDay"
 import { ROUTE } from "../../constant/route"
-import { CampaignItemType } from "../../api/campaignApi"
 import { fixDate } from "../../utils/dateFix"
+import { CampaignItemType } from "../../types/campaignTypes"
 
 const ListItemBox = styled.div`
   display:flex;

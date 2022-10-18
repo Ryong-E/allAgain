@@ -12,10 +12,10 @@ import CampaignContents from './CampaignContents';
 import CUDBtn from './CUDBtn';
 import CampaignIntroDetail from './CampaignIntroDetail';
 import QuillEditor from './QuillEditor';
-import { CampaignItemType } from '../../api/campaignApi';
 import { fixDate } from '../../utils/dateFix';
 import { useRecoilValue } from 'recoil';
 import { loggedInUserId } from '../../atoms/atoms';
+import { CampaignItemType } from '../../types/campaignTypes';
 
 
 
