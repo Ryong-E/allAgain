@@ -69,41 +69,33 @@ const Feed = {
     }
   },
   updateFeed: async ({ feedId, category, tags, imageUrls, description }) => {
+    const connection = await promisePool.getConnection(async (conn) => conn);
     try {
-      await promisePool.query(
+      await connection.beginTransaction();
+      await connection.query(
         "UPDATE feeds SET category = ?, tags = ?, description = ? WHERE id = ?",
         [category, tags, description, feedId]
       );
-      return "업데이트 완료";
+      await connection.query(
+        "DELETE FROM feeds_images WHERE feed_id = ?",
+        feedId
+      );
+      for (const imageUrl of imageUrls) {
+        const imageId = imageUrl["id"];
+        await connection.query(
+          "INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)",
+          [feedId, imageId]
+        );
+      }
+      await connection.commit();
     } catch (error) {
+      await connection.rollback();
+      connection.release();
       throw error;
+    } finally {
+      connection.release();
+      return "업데이트 완료";
     }
-    // const connection = await promisePool.getConnection(async (conn) => conn);
-    // try {
-    //   await connection.beginTransaction();
-    //   await connection.query(
-    //     "UPDATE feeds SET category = ?, tags = ?, description = ? WHERE id = ?",
-    //     [category, tags, description, feedId]
-    //   );
-    //   await connection.query(
-    //     "DELETE FROM feeds_images WHERE feed_id = ?",
-    //     feedId
-    //   );
-    //   for (const imageUrl of imageUrls) {
-    //     const imageId = imageUrl["id"];
-    //     await connection.query(
-    //       "INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)",
-    //       [feedId, imageId]
-    //     );
-    //   }
-    // } catch (error) {
-    //   await connection.rollback();
-    //   connection.release();
-    //   throw error;
-    // } finally {
-    //   connection.release();
-    //   return "업데이트 완료";
-    // }
   },
   deleteFeed: async ({ feedId }) => {
     try {
