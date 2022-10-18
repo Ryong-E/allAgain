@@ -1,8 +1,10 @@
 import { Feed } from "../db/model/Feed";
 const path = require("path");
 
+// httpMethod
+
 const feedService = {
-  createFeed: async ({ userId, category, tags, imageUrls, description }) => {
+  postFeed: async ({ userId, category, tags, imageUrls, description }) => {
     const uploadedFeed = await Feed.createFeed({
       userId,
       category,
@@ -12,12 +14,15 @@ const feedService = {
     });
     return uploadedFeed;
   },
-  getFeeds: async () => {
-    const feedList = await Feed.getFeeds();
+  getAllFeeds: async () => {
+    const feedList = await Feed.findAllFeeds();
     return feedList;
   },
   getFeedByFeedId: async ({ feedId }) => {
-    const feed = await Feed.getFeedByFeedId({ feedId });
+    const feedData = await Feed.findFeedByFeedId({ feedId });
+    const { user_id: userId, category, tags, description } = feedData.feed[0];
+    const imageUrls = feedData.imageUrls;
+    const feed = { feedId, userId, imageUrls, category, tags, description };
     return feed;
   },
   updateFeed: async ({
@@ -28,8 +33,11 @@ const feedService = {
     imageUrls,
     description,
   }) => {
-    const feed = await Feed.getFeedByFeedId({ feedId });
-    const userId = feed.userId;
+    const feedData = await Feed.findFeedByFeedId({ feedId });
+    if (feedData.feed.length === 0) {
+      throw new Error("존재하지 않는 피드입니다.");
+    }
+    const { user_id: userId } = feedData.feed[0];
     if (userId !== currentUserId) {
       throw new Error("수정 권한이 없습니다.");
     }
@@ -43,8 +51,9 @@ const feedService = {
     return updatedFeed;
   },
   deleteFeed: async ({ currentUserId, feedId }) => {
-    const feed = await Feed.getFeedByFeedId({ feedId });
-    if (feed.userId !== currentUserId) {
+    const feedData = await Feed.findFeedByFeedId({ feedId });
+    const { user_id: userId } = feedData.feed[0];
+    if (userId !== currentUserId) {
       throw new Error("삭제 권한이 없습니다.");
     }
     const deletedFeed = await Feed.deleteFeed({ feedId });

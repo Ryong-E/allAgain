@@ -1,4 +1,4 @@
-import { Image } from "../db/Image";
+import { Image } from "../db/model/Image";
 import path from "path";
 
 const imageService = {

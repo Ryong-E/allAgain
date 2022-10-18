@@ -8,7 +8,7 @@ const feedRouter = Router();
 feedRouter.post("/", loginRequired, async (req, res, next) => {
   try {
     const { category, tags, imageUrls, description } = req.body;
-    const createdFeed = await feedService.createFeed({
+    const createdFeed = await feedService.postFeed({
       userId: req.currentUserId,
       category,
       tags,
@@ -23,7 +23,7 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
 
 feedRouter.get("/", loginRequired, async (req, res, next) => {
   try {
-    const feedList = await feedService.getFeeds();
+    const feedList = await feedService.getAllFeeds();
     res.status(200).send(feedList);
   } catch (error) {
     next(error);
@@ -43,11 +43,10 @@ feedRouter.get("/:feedId", loginRequired, async (req, res, next) => {
 feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
-    const { userId, category, tags, imageUrls, description } = req.body;
+    const { category, tags, imageUrls, description } = req.body;
     const currentUserId = req.currentUserId;
 
     const updatedFeed = await feedService.updateFeed({
-      userId,
       currentUserId,
       feedId,
       category,
