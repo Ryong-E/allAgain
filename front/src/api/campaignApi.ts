@@ -13,7 +13,15 @@ const campaignApi = (contentType: string = APPLCATION_JSON) =>
       "Content-Type": contentType,
       Authorization: "Bearer " + localStorage.getItem("jwtToken"),
     },
-  });
+});
+
+const campaignNoTokenApi = (contentType: string = APPLCATION_JSON) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": contentType,
+    },
+});
 
 export const getCampaignList = async () => {
   try {
