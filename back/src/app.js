@@ -6,17 +6,16 @@ import { campaignRouter } from "./routers/campaignRouter";
 import cors from "cors";
 import mysql from "mysql2";
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: "34.64.61.16",
   user: "testuser",
   password: "test",
   database: "TESTDB",
+  waitForConnections: true,
+  connectionLimit: 10,
+  enableKeepAlive: true,
 });
-
-connection.connect((error) => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
+const promisePool = pool.promise();
 
 const app = express();
 
@@ -35,4 +34,4 @@ app.use("/campaigns", campaignRouter);
 
 app.use(errorMiddleware);
 
-export { app, connection };
+export { app, promisePool, pool };

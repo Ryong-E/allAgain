@@ -1,7 +1,7 @@
 import { Campaign } from "../db/Campaign";
 import { User } from "../db/user";
 import path from "path";
-import { makeImageUrl, setStatus } from "../utils/util";
+import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
   addCampaign: async ({
@@ -22,12 +22,13 @@ const campaignService = {
     }
 
     // content XSS 대응
+    const filteredContent = checkXSS(content);
 
     const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.create({
       userId: currentUserId,
       title,
-      content,
+      content: filteredContent,
       thumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
@@ -84,6 +85,7 @@ const campaignService = {
         campaignEndDate,
         recruitmentNumber,
         participantsCount,
+        status,
         writer: {
           userId,
           nickname,
@@ -177,11 +179,12 @@ const campaignService = {
     const updatedThumbnail = thumbnail || originalThumbnail;
     const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     // XSS 대응
+    const filteredContent = checkXSS(content);
 
     await Campaign.update({
       campaignId,
       title,
-      content,
+      content: filteredContent,
       thumbnail: updatedThumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
