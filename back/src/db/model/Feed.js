@@ -1,48 +1,49 @@
-import { promisePool } from "..";
-import { Image } from "../Image";
+// @ts-nocheck
+import { connection } from "../app";
 
 const Feed = {
   createFeed: async ({ userId, category, tags, imageUrls, description }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    let feedId = "";
-    try {
-      await connection.beginTransaction();
-      await connection.query(
+    const insertFeed = await connection
+      .promise()
+      .query(
         "INSERT INTO feeds(user_id, category, tags, description) VALUES(?, ?, ?, ?)",
         [userId, category, tags, description]
       );
-      const insertedfeedIds = await connection.query(
-        "SELECT id FROM feeds WHERE user_id = ? and category = ? and tags = ? and description = ? ORDER BY id desc",
-        [userId, category, tags, description]
-      );
-      feedId = insertedfeedIds[0][0]["id"];
-      for (const imageUrl of imageUrls) {
-        const imageId = imageUrl["id"];
-        await connection.query(
-          "INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)",
-          [feedId, imageId]
-        );
-      }
-      await connection.commit();
-    } catch (error) {
-      console.log("error", error);
-      await connection.rollback();
-      connection.release();
-      throw new Error(error);
-    } finally {
-      connection.release();
-      return feedId;
+    const feed = await connection.promise().query("SELECT LAST_INSERT_ID()");
+    const feedId = feed[0][0]["LAST_INSERT_ID()"];
+    for (const imageUrl of imageUrls) {
+      const imageId = imageUrl["id"];
+      await connection
+        .promise()
+        .query("INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)", [
+          feedId,
+          imageId,
+        ]);
     }
+    return "피드 업로드 성공";
+  },
+  saveImageUrl: async ({ name, url }) => {
+    await connection
+      .promise()
+      .query("INSERT INTO images(name, url) VALUES(?, ?)", [name, url]);
+    const imageId = await connection.promise().query("SELECT LAST_INSERT_ID()");
+    return imageId[0][0]["LAST_INSERT_ID()"];
+  },
+  getImages: async ({ feedId }) => {
+    const imageUrls = connection
+      .promise()
+      .query(
+        "SELECT images.id, images.name, images.url FROM feeds_images JOIN images WHERE feeds_images.image_id = images.id and feeds_images.feed_id = ?",
+        feedId
+      );
+    return imageUrls;
   },
   getFeeds: async () => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    const getFeedList = await connection.query(
-      "SELECT * FROM feeds ORDER BY id desc"
-    );
+    const getFeedList = await connection.promise().query("SELECT * FROM feeds");
     const feedList = [];
     for (const item of getFeedList[0]) {
       const feedId = item.id;
-      const imageUrls = await Image.getImages({ feedId });
+      const imageUrls = await Feed.getImages({ feedId });
       const feed = {
         feedId,
         userId: item.user_id,
@@ -55,13 +56,11 @@ const Feed = {
     }
     return feedList;
   },
-  getFeedByFeedId: async ({ feedId }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    const feed = await connection.query(
-      "SELECT * FROM feeds WHERE id = ?",
-      feedId
-    );
-    const imageUrls = await Image.getImages({ feedId });
+  getFeedById: async ({ feedId }) => {
+    const feed = await connection
+      .promise()
+      .query("SELECT * FROM feeds WHERE id = ?", feedId);
+    const imageUrls = await Feed.getImages({ feedId });
     return {
       feedId,
       userId: feed[0][0].user_id,
@@ -71,75 +70,47 @@ const Feed = {
       description: feed[0][0].description,
     };
   },
-  getFeedByUserId: async ({ userId }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    const feeds = await connection.query(
-      "SELECT * FROM feeds WHERE user_id = ?",
-      userId
-    );
-    // const imageUrls = await Image.getImages({ feedId });
-    // return {
-    //   feedId,
-    //   userId: feed[0][0].user_id,
-    //   imageUrls: imageUrls[0],
-    //   category: feed[0][0].category,
-    //   tags: feed[0][0].tags,
-    //   description: feed[0][0].description,
-    // };
-  },
   updateFeed: async ({ feedId, category, tags, imageUrls, description }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    try {
-      await connection.beginTransaction();
-      await connection.query(
+    const updatedFeed = await connection
+      .promise()
+      .query(
         "UPDATE feeds SET category = ?, tags = ?, description = ? WHERE id = ?",
         [category, tags, description, feedId]
       );
-      await connection.query(
-        "DELETE FROM feeds_images WHERE feed_id = ?",
-        feedId
-      );
-      for (const imageUrl of imageUrls) {
-        const imageId = imageUrl["id"];
-        await connection.query(
-          "INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)",
-          [feedId, imageId]
-        );
-      }
-    } catch (error) {
-      await connection.rollback();
-      connection.release();
-      throw new Error(error);
-    } finally {
-      connection.release();
-      return "업데이트 완료";
+    await connection
+      .promise()
+      .query("DELETE FROM feeds_images WHERE feed_id = ?", feedId);
+    for (const imageUrl of imageUrls) {
+      const imageId = imageUrl["id"];
+      await connection
+        .promise()
+        .query("INSERT INTO feeds_images(feed_id, image_id) VALUES(?,?)", [
+          feedId,
+          imageId,
+        ]);
     }
+    return updatedFeed;
   },
   deleteFeed: async ({ feedId }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
-    let message = "";
-    try {
-      await connection.beginTransaction();
-      const imageIds = await connection.query(
+    const imageIds = await connection
+      .promise()
+      .query(
         "SELECT DISTINCT image_id FROM feeds_images WHERE feed_id = ?",
         feedId
       );
-      await connection.query(
-        "DELETE FROM feeds_images WHERE feed_id = ?",
-        feedId
-      );
-      await connection.query("DELETE FROM feeds WHERE id = ?", feedId);
-      message = "피드 삭제 완료";
-    } catch (error) {
-      console.log(error);
-      message = error;
-      await connection.rollback();
-      connection.release();
-      throw error;
-    } finally {
-      connection.release();
-      // return message;
+    await connection
+      .promise()
+      .query("DELETE FROM feeds_images WHERE feed_id = ?", feedId);
+    for (const imageId of imageIds) {
+      if (!imageId[0].image_id) break;
+      await connection
+        .promise()
+        .query("DELETE FROM images WHERE id = ?", imageId[0].image_id);
     }
+    const deletedFeed = await connection
+      .promise()
+      .query("DELETE FROM feeds WHERE id = ?", feedId);
+    return deletedFeed;
   },
 };
 
