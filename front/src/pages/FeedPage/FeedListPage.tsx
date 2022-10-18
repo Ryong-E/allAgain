@@ -50,7 +50,10 @@ function FeedListPage() {
   };
 
   useEffect(() => {
-    if (!Object.values(selectedCategory).includes(true))
+    if (
+      !Object.values(selectedCategory).includes(true) ||
+      Object.values(selectedCategory).filter((el) => el).length === 8
+    )
       setSelectedCategory(initialState);
   }, [selectedCategory, data]);
 
