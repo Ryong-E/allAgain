@@ -199,6 +199,10 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       len.style.setProperty("--lengthRate", lengthRate + "%");
     }
   }
+  const recruitmentStart = fixDate(String(recruitmentStartDate))
+  const recruitmentEnd = fixDate(String(recruitmentEndDate))
+  const campaignStart = fixDate(String(campaignStartDate))
+  const campaignEnd = fixDate(String(campaignEndDate))
   useEffect(() => {
     rateAnimation()
   }, [status])
@@ -233,11 +237,11 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           <PeriodBox>
             <div className="recruitment">
               <strong>모집 기간</strong>
-              <span>{`${fixDate(String(recruitmentStartDate))} ~ ${fixDate(String(recruitmentEndDate))}`}</span>
+              <span>{`${recruitmentStart} ~ ${recruitmentEnd}`}</span>
             </div>
             <div className="progress">
               <strong>진행 기간</strong>
-              <span>{`${fixDate(String(campaignStartDate))} ~ ${fixDate(String(campaignEndDate))}`}</span>
+              <span>{`${campaignStart} ~ ${campaignEnd}`}</span>
             </div>
             <div className="personnel">
               <strong>모집 인원</strong>
@@ -261,7 +265,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
             </div>
           </RateBox>
           <div className="endDate">
-            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEndDate! : status === "모집 예정" ? recruitmentStartDate! : ""} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
+            <CampaignDDay status={status!} endDate={status === "모집 중" ? recruitmentEnd : status === "모집 예정" ? recruitmentStart : ""} recruitmentNumber={recruitmentNumber!} endEvent={endEvent}/>
           </div>
         </LimitBox>
       </ContentsBox>

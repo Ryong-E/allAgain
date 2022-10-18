@@ -21,7 +21,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false);
-  const startDate = fixDate(String(props.recruitmentStartDate));
+  const startDate = String(props.recruitmentStartDate).slice(0,10);
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
