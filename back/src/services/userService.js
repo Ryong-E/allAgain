@@ -122,7 +122,7 @@ const userService = {
   updateProfileImage: async ({ filename, userId, currentUserId }) => {
     compareUserId(userId, currentUserId);
 
-    await User.updateImage({ userId, filename });
+    await User.updateImage({ userId, image: filename });
     const imageUrl = makeImageUrl("profiles", filename);
 
     return { imageUrl };

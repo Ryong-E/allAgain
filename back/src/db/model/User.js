@@ -61,10 +61,10 @@ const User = {
       throw error;
     }
   },
-  updateImage: async ({ userId, imageUrl }) => {
+  updateImage: async ({ userId, image }) => {
     try {
       await promisePool.query("UPDATE users SET image = ? WHERE id = ?", [
-        imageUrl,
+        image,
         userId,
       ]);
 
