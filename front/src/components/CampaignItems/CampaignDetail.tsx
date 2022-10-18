@@ -26,7 +26,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
     }
-  },[isActive])
+  },[isActive,[]])
   return (
     <>
       <CUDBtn campaignId={props.campaignId!} />
