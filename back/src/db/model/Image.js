@@ -1,4 +1,4 @@
-import { _dbConn } from "./_dbConn";
+import { _dbConn } from "./pool";
 
 const Image = {
   saveImageUrl: async ({ name, url }) => {

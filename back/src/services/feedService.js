@@ -1,4 +1,4 @@
-import { Feed } from "../db/Feed";
+import { Feed } from "../db/model/Feed";
 const path = require("path");
 
 const feedService = {

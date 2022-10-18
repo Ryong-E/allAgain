@@ -1,11 +1,9 @@
-// @ts-nocheck
-// import { connection } from "../app";
-import { _dbConn } from "./_dbConn";
-import { Image } from "./Image";
+import { promisePool } from "..";
+import { Image } from "../Image";
 
 const Feed = {
   createFeed: async ({ userId, category, tags, imageUrls, description }) => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     let feedId = "";
     try {
       await connection.beginTransaction();
@@ -37,7 +35,7 @@ const Feed = {
     }
   },
   getFeeds: async () => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     const getFeedList = await connection.query(
       "SELECT * FROM feeds ORDER BY id desc"
     );
@@ -58,7 +56,7 @@ const Feed = {
     return feedList;
   },
   getFeedByFeedId: async ({ feedId }) => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     const feed = await connection.query(
       "SELECT * FROM feeds WHERE id = ?",
       feedId
@@ -74,23 +72,23 @@ const Feed = {
     };
   },
   getFeedByUserId: async ({ userId }) => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     const feeds = await connection.query(
       "SELECT * FROM feeds WHERE user_id = ?",
       userId
     );
-    const imageUrls = await Image.getImages({ feedId });
-    return {
-      feedId,
-      userId: feed[0][0].user_id,
-      imageUrls: imageUrls[0],
-      category: feed[0][0].category,
-      tags: feed[0][0].tags,
-      description: feed[0][0].description,
-    };
+    // const imageUrls = await Image.getImages({ feedId });
+    // return {
+    //   feedId,
+    //   userId: feed[0][0].user_id,
+    //   imageUrls: imageUrls[0],
+    //   category: feed[0][0].category,
+    //   tags: feed[0][0].tags,
+    //   description: feed[0][0].description,
+    // };
   },
   updateFeed: async ({ feedId, category, tags, imageUrls, description }) => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     try {
       await connection.beginTransaction();
       await connection.query(
@@ -118,7 +116,7 @@ const Feed = {
     }
   },
   deleteFeed: async ({ feedId }) => {
-    const connection = await _dbConn.getConnection(async (conn) => conn);
+    const connection = await promisePool.getConnection(async (conn) => conn);
     let message = "";
     try {
       await connection.beginTransaction();
@@ -130,13 +128,6 @@ const Feed = {
         "DELETE FROM feeds_images WHERE feed_id = ?",
         feedId
       );
-      for (const imageId of imageIds) {
-        if (!imageId[0].image_id) break;
-        await connection.query(
-          "DELETE FROM images WHERE id = ?",
-          imageId[0].image_id
-        );
-      }
       await connection.query("DELETE FROM feeds WHERE id = ?", feedId);
       message = "피드 삭제 완료";
     } catch (error) {
@@ -144,9 +135,10 @@ const Feed = {
       message = error;
       await connection.rollback();
       connection.release();
+      throw error;
     } finally {
       connection.release();
-      return message;
+      // return message;
     }
   },
 };
