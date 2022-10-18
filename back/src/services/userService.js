@@ -1,7 +1,6 @@
-import { User } from "../db/user";
+import { User } from "../db/model/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import path from "path";
 import { compareUserId, makeImageUrl } from "../utils/util";
 import { SALT_ROUND } from "../utils/util";
 
@@ -123,7 +122,7 @@ const userService = {
   updateProfileImage: async ({ filename, userId, currentUserId }) => {
     compareUserId(userId, currentUserId);
 
-    await User.updateImage({ userId, filename });
+    await User.updateImage({ userId, image: filename });
     const imageUrl = makeImageUrl("profiles", filename);
 
     return { imageUrl };
