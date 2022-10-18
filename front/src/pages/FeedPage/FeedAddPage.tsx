@@ -1,5 +1,5 @@
 import { Container, Container1200 } from "../../components/common/Containers";
-import FeedEditForm from "../../components/feed/FeedEditForm";
+import FeedEditForm from "../../components/Feed/FeedEditForm";
 
 function FeedAddPage() {
   return (

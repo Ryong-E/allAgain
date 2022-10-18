@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getFeed } from "../../api/feedApi";
 import Comments from "../../components/Comment/Comments";
 import { Container, Container1200 } from "../../components/common/Containers";
-import FeedDetail from "../../components/feed/FeedDetail";
+import FeedDetail from "../../components/Feed/FeedDetail";
 
 function FeedDetailPage() {
   const { id } = useParams();
