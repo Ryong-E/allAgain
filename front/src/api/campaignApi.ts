@@ -1,31 +1,9 @@
 import axios from "axios";
+import { CampaignItemType } from "../types/campaignTypes";
 
-export type CampaignItemType = {
-  campaignId: number;
-  title: String;
-  content: String;
-  thumbnail?: String | null;
-  recruitmentStartDate: Date;
-  recruitmentEndDate: Date;
-  campaignStartDate: Date;
-  campaignEndDate: Date;
-  recruitmentNumber: number;
-  participantsCount: number;
-  introduce: String;
-  status: String;
-  writer: {
-    userId: number;
-    nickname: String;
-    imageUrl?: String;
-  };
-  participated: Boolean;
-};
-
-const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
 const APPLCATION_JSON = "application/json";
 const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
-
 
 
 const campaignApi = (contentType: string = APPLCATION_JSON) =>
@@ -66,7 +44,7 @@ export const insertImage = async (data: FormData) => {
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + TOKEN,
+          Authorization: "Bearer " + localStorage.getItem('jwtToken'),
         },
       }
     );
@@ -81,7 +59,7 @@ export const createCampaign = async (data: FormData) => {
     const response = await axios.post("http://localhost:5001/campaigns", data, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + TOKEN,
+        Authorization: "Bearer " + localStorage.getItem('jwtToken'),
       },
     });
   } catch (err: any) {
@@ -98,7 +76,7 @@ export const updateCampaign = async ({formData,campaignId} : TT) => {
     const response = await axios.put(`http://localhost:5001/campaigns/${campaignId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + TOKEN,
+        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
       },
     });
   } catch (err: any) {

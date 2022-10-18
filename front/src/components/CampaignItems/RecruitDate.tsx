@@ -129,7 +129,7 @@ export default function RecruitDate({
           }}
           onChange={handleChange}
           ref={dateRef}
-          defaultValue={new Date(new Date(defaultvalue).toString().split('GMT')[0]+' UTC').toISOString().slice(0,10)}></DateInput>
+          defaultValue={defaultvalue ? new Date(new Date(defaultvalue).toString().split('GMT')[0]+' UTC').toISOString().slice(0,10) : ""}></DateInput>
       </InputWrap>
     </>
   );

@@ -17,11 +17,7 @@ import QuillEditor from "./QuillEditor";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  CampaignItemType,
-  createCampaign,
-  updateCampaign,
-} from "../../api/campaignApi";
+import { createCampaign, updateCampaign } from "../../api/campaignApi";
 import {
   CampaignDescription,
   ThumbnailBox,
@@ -35,37 +31,8 @@ import {
 } from "./CampaignForm.style";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
+import { FormPropType, FormType } from "../../types/campaignTypes";
 
-
-export interface FormType {
-  thumbnail: File[];
-  title: string;
-  content: string;
-  recruitmentStartDate: string;
-  recruitmentEndDate: string;
-  campaignStartDate: string;
-  campaignEndDate: string;
-  recruitmentNumber: string;
-  introduce: string;
-}
-interface FormPropType {
-  campaignId: Number;
-  title: String;
-  content: String;
-  thumbnail?: String | null | undefined;
-  recruitmentStartDate: Date;
-  recruitmentEndDate: Date;
-  campaignStartDate: Date;
-  campaignEndDate: Date;
-  recruitmentNumber: number;
-  introduce: String;
-  status: String;
-  writer: {
-    nickname: String;
-    imageUrl?: String;
-  };
-  updateMod: Boolean;
-}
 export default function CampaignForm({
   thumbnail,
   title,
@@ -92,56 +59,59 @@ export default function CampaignForm({
     formState: { errors },
   } = useForm<FormType>();
 
-  const  updateCampainMutaion = useMutation(updateCampaign,{
-    onError:(error:any) => {
-      console.log(error)
+  const updateCampainMutaion = useMutation(updateCampaign, {
+    onError: (error: any) => {
+      console.log(error);
     },
-    onSuccess:(data:any)=>{
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
-      queryClient.invalidateQueries(['detailCampaign']);
-  }
+      queryClient.invalidateQueries(["detailCampaign"]);
+    },
   });
 
   function validation(data: FormType) {
-    const re = data.content.replaceAll(/&lt;[a-z]*[0-9]?&gt;/g , "").replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g , "");
-    if(re.length < 1){
-        setError("content",{
-            type:"custom",
-            message:"캠페인 상세 설명을 입력해주세요"
-        })
-        return false;
+    let isError = false;
+    const re = data.content
+      .replaceAll(/&lt;[a-z]*[0-9]?&gt;/g, "")
+      .replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g, "");
+    if (re.length < 1) {
+      setError("content", {
+        type: "custom",
+        message: "캠페인 상세 설명을 입력해주세요",
+      });
+      isError = true;
     }
     if (data.recruitmentEndDate < data.recruitmentStartDate) {
       setError("recruitmentEndDate", {
         type: "custom",
         message: "마감날짜가 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
     if (data.campaignEndDate < data.campaignStartDate) {
       setError("campaignEndDate", {
         type: "custom",
         message: "캠페인마감날짜가 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
     if (data.campaignStartDate < data.recruitmentStartDate) {
       setError("campaignEndDate", {
         type: "custom",
         message: "캠페인 시작 날짜가 모집 시작날짜보다 이전입니다",
       });
-      return false
+      isError = true;
     }
-    if(!updateMod){
-        if(data.thumbnail.length < 1){
-            setError('thumbnail',{
-                type:"required",
-                message:"썸네일 이미지를 삽입해주세요"
-            })
-            return false
-        }
+    if (!updateMod) {
+      if (data.thumbnail.length < 1) {
+        setError("thumbnail", {
+          type: "required",
+          message: "썸네일 이미지를 삽입해주세요",
+        });
+        return false;
+      }
     }
-    return true;
+    return isError ? false : true;
   }
   const onValid = async (data: FormType) => {
     if (validation(data)) {
@@ -155,7 +125,7 @@ export default function CampaignForm({
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
-        await updateCampainMutaion.mutate({formData,campaignId});
+        await updateCampainMutaion.mutate({ formData, campaignId });
         alert("캠페인 수정이 완료 되었습니다.");
         navigate(`/campaign/${campaignId}`);
       } else {
@@ -165,7 +135,6 @@ export default function CampaignForm({
       }
     }
   };
-
 
   useEffect(() => {
     const convert = content.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
@@ -182,9 +151,7 @@ export default function CampaignForm({
 
   return (
     <>
-      <form
-        encType="multipart/form-data"
-        onSubmit={handleSubmit(onValid)}>
+      <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)}>
         <CampaignDescription>
           <ThumbnailBox>
             <ImageUpload
@@ -192,7 +159,11 @@ export default function CampaignForm({
               watch={watch}
               defaultvalue={thumbnail}
             />
-            {errors.thumbnail && <InputErrorBox><InputErrorText>{errors.thumbnail.message}</InputErrorText></InputErrorBox>}
+            {errors.thumbnail && (
+              <InputErrorBox>
+                <InputErrorText>{errors.thumbnail.message}</InputErrorText>
+              </InputErrorBox>
+            )}
           </ThumbnailBox>
           <InputBox>
             <InputBlock>
@@ -201,9 +172,11 @@ export default function CampaignForm({
                 {...register("title", {
                   required: "캠페인 이름을 입력해주세요",
                 })}
-                defaultValue={title ? title as string : ""}
+                defaultValue={title ? (title as string) : ""}
               />
-              {errors.title && <InputErrorText>{errors.title.message}</InputErrorText>}
+              {errors.title && (
+                <InputErrorText>{errors.title.message}</InputErrorText>
+              )}
             </InputBlock>
             <InputBlock>
               <Label>캠페인 간단 소개</Label>
@@ -212,9 +185,11 @@ export default function CampaignForm({
                 {...register("introduce", {
                   required: "캠페인 소개글을 작성해주세요",
                 })}
-                defaultValue={introduce ? introduce as string : ""}
+                defaultValue={introduce ? (introduce as string) : ""}
               />
-              {errors.introduce && <InputErrorText>{errors.introduce.message}</InputErrorText>}
+              {errors.introduce && (
+                <InputErrorText>{errors.introduce.message}</InputErrorText>
+              )}
             </InputBlock>
           </InputBox>
         </CampaignDescription>
@@ -223,28 +198,36 @@ export default function CampaignForm({
           <div>
             <Label>모집 기간</Label>
             <DateFormBox>
-                <RecruitDate
-                  register={register}
-                  watch={watch}
-                  registername="recruitmentStartDate"
-                  setValue={setValue}
-                  trigger={trigger}
-                  errors={errors}
-                  defaultvalue={recruitmentStartDate}
-                  >
-                  시작 날짜
-                </RecruitDate>
+              <RecruitDate
+                register={register}
+                watch={watch}
+                registername="recruitmentStartDate"
+                setValue={setValue}
+                trigger={trigger}
+                errors={errors}
+                defaultvalue={recruitmentStartDate}>
+                시작 날짜
+              </RecruitDate>
               <RecruitDate
                 register={register}
                 watch={watch}
                 registername="recruitmentEndDate"
                 setValue={setValue}
                 trigger={trigger}
-                defaultvalue={recruitmentEndDate}
-                >
+                defaultvalue={recruitmentEndDate}>
                 마감 날짜
               </RecruitDate>
-              {errors.recruitmentStartDate?.message || errors.recruitmentEndDate?.message ? <InputErrorBox><InputErrorText>{errors.recruitmentStartDate?.message || errors.recruitmentEndDate?.message}</InputErrorText></InputErrorBox> : ""}
+              {errors.recruitmentStartDate?.message ||
+              errors.recruitmentEndDate?.message ? (
+                <InputErrorBox>
+                  <InputErrorText>
+                    {errors.recruitmentStartDate?.message ||
+                      errors.recruitmentEndDate?.message}
+                  </InputErrorText>
+                </InputErrorBox>
+              ) : (
+                ""
+              )}
             </DateFormBox>
           </div>
           <div>
@@ -252,14 +235,20 @@ export default function CampaignForm({
             <InputNumberBox>
               <InputNumber
                 type="number"
-                {...register("recruitmentNumber",{
-                    required:"모집 인원을 입력해주세요"
+                {...register("recruitmentNumber", {
+                  required: "모집 인원을 입력해주세요",
                 })}
                 defaultValue={
                   recruitmentNumber ? recruitmentNumber : ""
                 }></InputNumber>
               <span>명</span>
-              {errors.recruitmentNumber?.message && <div><InputErrorText>{errors.recruitmentNumber.message}</InputErrorText></div>}
+              {errors.recruitmentNumber?.message && (
+                <div>
+                  <InputErrorText>
+                    {errors.recruitmentNumber.message}
+                  </InputErrorText>
+                </div>
+              )}
             </InputNumberBox>
           </div>
           <div>
@@ -283,17 +272,31 @@ export default function CampaignForm({
                 defaultvalue={campaignEndDate}>
                 마감 날짜
               </RecruitDate>
-              {errors.campaignEndDate?.message || errors.campaignStartDate?.message ? <InputErrorBox><InputErrorText>{errors.campaignEndDate?.message || errors.campaignStartDate?.message}</InputErrorText></InputErrorBox> : ""}
+              {errors.campaignEndDate?.message ||
+              errors.campaignStartDate?.message ? (
+                <InputErrorBox>
+                  <InputErrorText>
+                    {errors.campaignEndDate?.message ||
+                      errors.campaignStartDate?.message}
+                  </InputErrorText>
+                </InputErrorBox>
+              ) : (
+                ""
+              )}
             </DateFormBox>
           </div>
         </InputBlock>
-        <div style={{position:"relative"}}>
-        <QuillEditor
-          handleEditorChange={setEditorContent}
-          editorContent={editorContent}
-          register={register}
-        />
-        {errors.content?.message && <InputErrorBox style={{bottom:"-50px"}}><InputErrorText>{errors.content.message}</InputErrorText></InputErrorBox>}
+        <div style={{ position: "relative" }}>
+          <QuillEditor
+            handleEditorChange={setEditorContent}
+            editorContent={editorContent}
+            register={register}
+          />
+          {errors.content?.message && (
+            <InputErrorBox style={{ bottom: "-50px" }}>
+              <InputErrorText>{errors.content.message}</InputErrorText>
+            </InputErrorBox>
+          )}
         </div>
         <ButtonBox>
           <ClsButton
@@ -303,7 +306,9 @@ export default function CampaignForm({
             }}>
             취소
           </ClsButton>
-          <ConfirmButton type="submit">{updateMod ? "수정하기" : "생성하기"}</ConfirmButton>
+          <ConfirmButton type="submit">
+            {updateMod ? "수정하기" : "생성하기"}
+          </ConfirmButton>
         </ButtonBox>
       </form>
     </>
