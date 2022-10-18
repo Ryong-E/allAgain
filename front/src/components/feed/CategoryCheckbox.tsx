@@ -39,7 +39,9 @@ function CategoryCheckbox({
         id={`category${checkboxKey}toggle`}
         type="checkbox"
         defaultChecked={isSelected}
-        {...register("category")}
+        {...register("category", {
+          required: "1개 이상의 카테고리를 선택해 주세요",
+        })}
         value={checkboxValue}
       />
     </>
