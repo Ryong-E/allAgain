@@ -10,6 +10,8 @@ import { useRecoilValue } from "recoil"
 import CampaignSlide from '../../components/CampaignItems/CampaignSlide';
 import { useQuery } from '@tanstack/react-query';
 import {  getCampaignList } from '../../api/campaignApi';
+import { GET_CAMPAIGNLIST } from '../../constant/queryKeys';
+
 
 export const NoPaddingContainer = styled(Container)`
   padding : 70px 0 0;
@@ -38,7 +40,7 @@ const CampaignList = styled.div`
 
 `
 export default function CampaignPage() {
-  const {status, data, error} = useQuery(['list'], getCampaignList);
+  const {status, data, error} = useQuery([GET_CAMPAIGNLIST], getCampaignList);
 
   const [values, setValues] = useState(['모집 중', '모집 예정', '모집 마감']); 
   const [currentValue, setCurrentValue] = useState('모집 중');

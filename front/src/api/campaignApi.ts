@@ -1,4 +1,3 @@
-import { QueryFunction } from "@tanstack/react-query";
 import axios from "axios";
 
 export type CampaignItemType = {
@@ -21,7 +20,6 @@ export type CampaignItemType = {
   };
   participated: Boolean;
 };
-
 
 const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
@@ -91,9 +89,13 @@ export const createCampaign = async (data: FormData) => {
   }
 };
 
-export const updateCampaign = async (data: FormData) => {
+interface TT{
+  formData:FormData,
+  campaignId:Number
+}
+export const updateCampaign = async ({formData,campaignId} : TT) => {
   try {
-    const response = await axios.put("http://localhost:5001/campaigns", data, {
+    const response = await axios.put(`http://localhost:5001/campaigns/${campaignId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + TOKEN,
