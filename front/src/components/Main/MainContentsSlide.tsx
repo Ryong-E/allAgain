@@ -11,7 +11,7 @@ import UserName from '../common/UserName';
 
 const ContentSlideRoot = styled.div`
   & + &{
-    margin-top : 100px;
+    margin-top : 50px;
   }
 `
 const ContentTitleBox = styled.div`
@@ -29,6 +29,7 @@ const Slide = styled(SwiperSlide)`
   height:100%;
   border: 1px solid #000;
   border-radius: 20px;
+  user-select:none;
   .imgBox{
     height:calc(100% - 99px);
     img{
@@ -93,6 +94,8 @@ export default function MainContentsSlide() {
         grabCursor={true}
         className="mySwiper"
       >
+        {[1,2,3,4,5,6,7,8,9,10].map(ele =>(
+
         <Slide>
           <div className="imgBox">
             <img src={upcy} alt="" />
@@ -115,6 +118,7 @@ export default function MainContentsSlide() {
             </InfoBox>
           </Content>
         </Slide>
+        ))}
       </SwiperWrap>
     </ContentSlideRoot>
   )
