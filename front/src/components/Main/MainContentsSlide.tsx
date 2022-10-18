@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import upcy from "../../assets/images/icons/icon_upcycle_light.png"
@@ -21,7 +21,11 @@ const ContentTitleBox = styled.div`
 `
 const SwiperWrap = styled(Swiper)`
   padding: 0 100px;
-  height:370px;
+  height: 370px;
+  @media (max-width: 1920px){
+    height: 19.2708vw;
+    min-height: 335px;
+  }
 `
 const Slide = styled(SwiperSlide)`
   display:flex;
@@ -81,6 +85,17 @@ const InfoBox = styled.div`
 `
 
 export default function MainContentsSlide() {
+  const [resizePreView, serResizePreView] = useState(5);
+  const handleWindowResize = ()=>{
+    const width = window.innerWidth;
+    serResizePreView(width / 400);
+  }
+  useEffect(()=>{
+    handleWindowResize();
+  },[])
+  useEffect(()=>{
+    window.addEventListener("resize",handleWindowResize);
+  })
   return (
     <ContentSlideRoot>
       <ContentTitleBox>
@@ -89,8 +104,8 @@ export default function MainContentsSlide() {
         </h2>
       </ContentTitleBox>
       <SwiperWrap
-        slidesPerView={4}
-        spaceBetween={80}
+        slidesPerView={resizePreView}
+        spaceBetween={30}
         grabCursor={true}
         className="mySwiper"
       >
@@ -102,7 +117,7 @@ export default function MainContentsSlide() {
           </div>
           <Content className="content">
             <div className="contentTitle">
-              타이틀
+              타이틀{ele}
             </div>
             <InfoBox className="infoBox">
               <div className="userBox">
