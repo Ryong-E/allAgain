@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { InputText } from "../common/Form";
 import { SaveButton } from "../common/Buttons";
-import EditIcon from "../../assets/images/icons/icon_image_edit.png"
+import EditIcon from "../../assets/images/icons/icon_image_edit.png";
 import { User } from "../../types/userTypes";
 
 export const ProfileImageWrap = styled.div`
@@ -29,18 +29,28 @@ export const EditImageButton = styled.label`
   border-radius: 50%;
   background: url(${EditIcon}) no-repeat 60% 50%/65%;
   background-color: ${({ theme }) => theme.colors.dasidaGreen};
-  box-shadow: 3px 3px 8px rgb(39, 66, 64, .4);
+  box-shadow: 3px 3px 8px rgb(39, 66, 64, 0.4);
   cursor: pointer;
 `;
 
 export const PreviewImage = styled.div<User>`
   width: 100%;
   height: 100%;
-  background: no-repeat 50% 50%/contain;
+  background: no-repeat 50% 50% / contain;
   background-image: url(${(props) => props.imageUrl});
   border-radius: 50%;
-  border: 1px solid  #E7E5E0;
+  border: 1px solid #e7e5e0;
   overflow: hidden;
+`;
+
+export const NicknameContainer = styled.div`
+  width: 100%;
+  height: 28px;
+  text-align: center;
+  color: #000000;
+  font-size: 28px;
+  line-height: 28px;
+  margin-top: 32px;
 `;
 
 export const FormContainer = styled.form`
@@ -86,7 +96,6 @@ export const InfoList = styled.ul`
 
 export const PwChangeBlock = styled.div`
   ${InputText} {
-
   }
 `;
 
@@ -124,13 +133,13 @@ export const WithdrawalConfirmBox = styled.div`
 `;
 
 interface ButtonProps {
-  btnType: string
+  btnType: string;
 }
 
 export const WithdrawalConfirmButton = styled.button<ButtonProps>`
-  background: ${(props) => props.btnType == "ok" ? "#ED5C48" : ""};
-  color: ${(props) => props.btnType == "ok" ? "#fff" : ""};
-  // font-weight: ${(props) => props.btnType == "ok" ? "700" : ""};
+  background: ${(props) => (props.btnType == "ok" ? "#ED5C48" : "")};
+  color: ${(props) => (props.btnType == "ok" ? "#fff" : "")};
+  // font-weight: ${(props) => (props.btnType == "ok" ? "700" : "")};
   padding: 4px 6px;
   cursor: pointer;
 

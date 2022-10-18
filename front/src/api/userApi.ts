@@ -13,14 +13,26 @@ const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 const userApi = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
 });
 
 // 회원가입
-export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
+export const createUser = async ({
+  email,
+  password,
+  passwordConfirm,
+  name,
+  nickname,
+}: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>("/users", { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("/users", {
+      email,
+      password,
+      passwordConfirm,
+      name,
+      nickname,
+    });
     return data;
   } catch (err: any) {
     throw err.response;
@@ -30,7 +42,10 @@ export const createUser = async ({ email, password, passwordConfirm, name, nickn
 // 로그인
 export const loginUser = async ({ email, password }: User) => {
   try {
-    const { data } = await userApi.post<LoginResponse>("/users/login", { email, password });
+    const { data } = await userApi.post<LoginResponse>("/users/login", {
+      email,
+      password,
+    });
     return data;
   } catch (err: any) {
     throw err.response;
@@ -42,11 +57,11 @@ export const getUserProfile = async () => {
   try {
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
-      method: 'get',
+      method: "get",
       url: `${BASE_URL}/users/me`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
     });
     return data;
@@ -55,25 +70,30 @@ export const getUserProfile = async () => {
   }
 };
 
-
 // 나의 계정프로필 수정
-export const updateUserProfile = async ({ userId, nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
+export const updateUserProfile = async ({
+  userId,
+  nickname,
+  currentPassword,
+  password,
+  passwordConfirm,
+}: MyProfileEditParams) => {
   console.log(userId);
   try {
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
-      method: 'put',
+      method: "put",
       url: `${BASE_URL}/users/${userId}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
       data: {
         nickname,
         currentPassword,
         password,
-        passwordConfirm
-      }
+        passwordConfirm,
+      },
     });
     return data;
   } catch (err: any) {
@@ -82,43 +102,60 @@ export const updateUserProfile = async ({ userId, nickname, currentPassword, pas
   }
 };
 
-
 // 프로필이미지 수정
 export const updateUserImage = async ({ userId, formData }: any) => {
   try {
     const token = localStorage.getItem("jwtToken");
 
-    const { data } = await axios.post(`${BASE_URL}/users/${userId}/profile/image`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: 'Bearer ' + token
-      },
-    });
+    const { data } = await axios.post(
+      `${BASE_URL}/users/${userId}/profile/image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
     return data;
-
   } catch (err: any) {
     console.log(err);
     throw err;
   }
 };
 
-
 // 회원 탈퇴
 export const deleteUser = async ({ userId }: User) => {
   try {
     const token = localStorage.getItem("jwtToken");
     await axios({
-      method: 'delete',
+      method: "delete",
       url: `${BASE_URL}/users/${userId}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
-    })
-    .then((res) => {
+    }).then((res) => {
       localStorage.removeItem("jwtToken");
     });
   } catch (err: any) {
     throw new Error(err);
+  }
+};
+
+export const getUserProfileById = async (userId: string) => {
+  try {
+    const token = localStorage.getItem("jwtToken");
+    const { data } = await axios({
+      method: "get",
+      url: `${BASE_URL}/users/${userId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (err: any) {
+    throw err.response;
   }
 };

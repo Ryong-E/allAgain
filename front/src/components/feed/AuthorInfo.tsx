@@ -9,6 +9,7 @@ interface authorInfoProps {
   authorImageUrl?: string;
   userId: number;
   isAdmin?: boolean;
+  isEditing?: boolean;
 }
 
 function AuthorInfo({
@@ -17,6 +18,7 @@ function AuthorInfo({
   isAdmin,
   nickname,
   authorImageUrl,
+  isEditing,
 }: authorInfoProps) {
   return (
     <Container isAdmin={isAdmin}>
