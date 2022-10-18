@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { deleteFeed } from "../../api/feedApi";
+import { loggedInUserId } from "../../atoms/atoms";
 import { FeedType } from "../../types/feedTypes";
 import {
   DelButton,
@@ -20,6 +22,7 @@ function FeedDetail({
   category,
   tags,
 }: FeedType) {
+  const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
 
   const handleDeleteClick = async () => {
@@ -33,10 +36,12 @@ function FeedDetail({
 
   return (
     <>
-      <ButtonContainer>
-        <DelButton onClick={handleDeleteClick}>삭제</DelButton>
-        <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
-      </ButtonContainer>
+      {currentUserId === userId && (
+        <ButtonContainer>
+          <DelButton onClick={handleDeleteClick}>삭제</DelButton>
+          <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
+        </ButtonContainer>
+      )}
       <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
       <DetailContainer>
         <DetailHeader>
