@@ -88,7 +88,6 @@ function FeedListPage() {
 
 const FeedListOptionsContainer = styled.div`
   width: 100%;
-  margin-top: 174px;
   display: flex;
   justify-content: space-between;
   align-items: center;
