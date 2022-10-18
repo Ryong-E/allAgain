@@ -97,8 +97,7 @@ export default function CampaignForm({
       console.log(error)
     },
     onSuccess:(data:any)=>{
-    queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
-    queryClient.invalidateQueries(["userCampaign"]);
+      queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
   }
   });
 

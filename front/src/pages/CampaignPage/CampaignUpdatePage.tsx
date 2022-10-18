@@ -8,8 +8,7 @@ export default function CampaignUpdatePage() {
   const { id } = useParams();
   const { isLoading, data } = useQuery(["userCampaign"], () =>
     getCampaignItem(Number(id!))
-    );
-  console.log(data,"패칭데이터")
+  ,{cacheTime:0});
   return (
     <>
       <Container>
