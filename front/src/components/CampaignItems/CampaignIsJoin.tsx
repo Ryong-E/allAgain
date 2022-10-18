@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { cancelParticipateCampaign, joinParticipateCampaign } from "../../api/campaignApi";
 import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png"
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png"
+import { GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 
 const JoinCampaignBox = styled.div`
   margin-top: 10px;
@@ -70,12 +71,12 @@ export default function CampaignIsJoin({isJoin, campaignId, status, startDate, i
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries(["detailCampaign"]);;
+      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);;
     }
   }) 
   const cancleCampaign = useMutation(cancelParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries(["detailCampaign"]);;
+      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);;
     }
   })
   const [year, month, date] = startDate.split("-");

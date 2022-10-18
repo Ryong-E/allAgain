@@ -7,11 +7,11 @@ import { useRecoilValue } from 'recoil';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCampaignItem } from '../../api/campaignApi';
+import { GET_DETAILCAMPAIGN } from '../../constant/queryKeys';
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
-  const queryClient = useQueryClient();
-  const {status, data, error} = useQuery(["detailCampaign"], () => getCampaignItem(Number(id!)),{cacheTime:5});
+  const {status, data, error} = useQuery([GET_DETAILCAMPAIGN], () => getCampaignItem(Number(id!)),{cacheTime:5});
   return (
     <Container>
       <Container1300Ver2>
