@@ -28,7 +28,6 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const recruitment  = props.recruitmentNumber;
   const participants = props.participantsCount-1;
   const isSameRate = recruitment - participants;
-  console.log(props.participated)
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
