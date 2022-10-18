@@ -1,5 +1,4 @@
-import { pool, promisePool } from "..";
-import { Image } from "./Image";
+import { promisePool } from "..";
 
 // crud -> r: find
 // 전체 조회시 -> All
@@ -29,7 +28,6 @@ const Feed = {
       }
       await connection.commit();
     } catch (error) {
-      console.log("error", error);
       await connection.rollback();
       connection.release();
       throw error;
@@ -40,24 +38,10 @@ const Feed = {
   },
   findAllFeeds: async () => {
     try {
-      const getFeedList = await promisePool.query(
+      const feeds = await promisePool.query(
         "SELECT * FROM feeds ORDER BY id desc"
       );
-      const feedList = [];
-      for (const item of getFeedList[0]) {
-        const feedId = item.id;
-        const imageUrls = await Image.getImages({ feedId });
-        const feed = {
-          feedId,
-          userId: item.user_id,
-          category: item.category,
-          tags: item.tags,
-          imageUrls: imageUrls[0],
-          description: item.description,
-        };
-        feedList.push(feed);
-      }
-      return feedList;
+      return feeds;
     } catch (error) {
       throw error;
     }
@@ -68,16 +52,7 @@ const Feed = {
         "SELECT * FROM feeds WHERE id = ?",
         feedId
       );
-      const imageUrls = await Image.getImages({ feedId });
-      // return {
-      //   feedId,
-      //   userId: feed[0][0].user_id,
-      //   imageUrls: imageUrls[0],
-      //   category: feed[0][0].category,
-      //   tags: feed[0][0].tags,
-      //   description: feed[0][0].description,
-      // };
-      return { feed: feed[0], imageUrls: imageUrls[0] };
+      return feed[0];
     } catch (error) {
       throw error;
     }
@@ -85,18 +60,10 @@ const Feed = {
   findFeedByUserId: async ({ userId }) => {
     try {
       const feeds = await promisePool.query(
-        "SELECT * FROM feeds WHERE user_id = ?",
+        "SELECT * FROM feeds WHERE user_id = ? ORDER BY id desc",
         userId
       );
-      // const imageUrls = await Image.getImages({ feedId });
-      // return {
-      //   feedId,
-      //   userId: feed[0][0].user_id,
-      //   imageUrls: imageUrls[0],
-      //   category: feed[0][0].category,
-      //   tags: feed[0][0].tags,
-      //   description: feed[0][0].description,
-      // };
+      return feeds;
     } catch (error) {
       throw error;
     }

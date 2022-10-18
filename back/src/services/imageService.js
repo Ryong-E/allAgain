@@ -23,6 +23,10 @@ const imageService = {
 
     return imageUrls;
   },
+  getImageUrls: async ({ feedId }) => {
+    const imageUrls = await Image.getImages({ feedId });
+    return imageUrls[0];
+  },
 };
 
 export { imageService };
