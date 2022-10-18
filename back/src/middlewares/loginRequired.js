@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 
 const loginRequired = (req, res, next) => {
-  const userToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
+  const userToken = req.headers["authorization"]?.split(" ")[1] ?? null;
 
-  if (userToken === "null") {
+  if (!userToken) {
     next(new Error("로그인한 유저만 사용할 수 있는 서비스입니다."));
     return;
   }

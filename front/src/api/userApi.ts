@@ -6,7 +6,7 @@ import {
   RegisterRequiredParams,
   RegisterResponse,
   MyProfileEditParams,
-} from "./types";
+} from "../types/userTypes";
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
@@ -20,7 +20,7 @@ const userApi = axios.create({
 // 회원가입
 export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>("/users/register", { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("/users", { email, password, passwordConfirm, name, nickname });
     return data;
   } catch (err: any) {
     throw err.response;
@@ -43,7 +43,7 @@ export const getUserProfile = async () => {
     const token = localStorage.getItem("jwtToken");
     const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}/users/informations/me`,
+      url: `${BASE_URL}/users/me`,
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + token

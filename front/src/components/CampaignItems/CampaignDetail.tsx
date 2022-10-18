@@ -14,14 +14,20 @@ import CampaignIntroDetail from './CampaignIntroDetail';
 import QuillEditor from './QuillEditor';
 import { CampaignItemType } from '../../api/campaignApi';
 import { fixDate } from '../../utils/dateFix';
+import { useRecoilValue } from 'recoil';
+import { loggedInUserId } from '../../atoms/atoms';
 
 
 
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const [isJoin, setIsJoin] = useState(false);
+  const loggedUser = useRecoilValue(loggedInUserId);
   const startDate = fixDate(String(props.recruitmentStartDate));
+  const isSameUser = props.writer.userId === loggedUser;
+  const recruitment  = props.recruitmentNumber;
+  const participants = props.participantsCount-1;
+  const isSameRate = recruitment - participants;
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
@@ -29,13 +35,15 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   },[isActive,[]])
   return (
     <>
-      <CUDBtn campaignId={props.campaignId!} />
+      {(isSameUser) && <CUDBtn campaignId={props.campaignId!} />}
       <CampaignItem {...props} />
       <CampaignIsJoin
           isJoin={props.participated}
           campaignId={props.campaignId}
           status={props.status}
           startDate={startDate}
+          isSameUser={isSameUser}
+          isSameRate={isSameRate}
           />
       <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
@@ -49,8 +57,10 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             campaignId={props.campaignId}
             status={props.status}
             startDate={startDate}
+            isSameUser={isSameUser}
+            isSameRate={isSameRate}
             />
-          <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
+          {(isSameUser) && <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />}
         </>
       ) : (
         <CampaignComment />

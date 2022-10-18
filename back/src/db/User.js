@@ -42,7 +42,7 @@ const User = {
           if (error) throw error;
         }
       );
-    return "회원가입 성공";
+    return null;
   },
   update: async ({ userId, nickname, password }) => {
     await connection
@@ -57,11 +57,11 @@ const User = {
 
     return null;
   },
-  updateImageUrl: async ({ userId, imageUrl }) => {
+  updateImage: async ({ userId, imageUrl }) => {
     await connection
       .promise()
       .query(
-        "UPDATE users SET image_url = ? WHERE id = ?",
+        "UPDATE users SET image = ? WHERE id = ?",
         [imageUrl, userId],
         (error) => {
           if (error) throw error;

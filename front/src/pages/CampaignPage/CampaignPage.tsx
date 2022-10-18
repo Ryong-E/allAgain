@@ -45,7 +45,7 @@ export default function CampaignPage() {
   const [values, setValues] = useState(['모집 중', '모집 예정', '모집 마감']); 
   const [currentValue, setCurrentValue] = useState('모집 중');
   const filteredStatus = data && data!.filter(ele => ele.status === currentValue);
-
+  
   return (
     <NoPaddingContainer>
       <PageTitle>다시, 다 기부하다</PageTitle>
