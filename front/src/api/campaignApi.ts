@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CampaignItemType } from "../types/campaignTypes";
+import { CampaignItemType, CreateCampaignType } from "../types/campaignTypes";
 
 const BASE_URL = "http://localhost:5001/campaigns";
 const APPLCATION_JSON = "application/json";
@@ -54,9 +54,9 @@ export const insertImage = async (data: FormData) => {
   }
 };
 
-export const createCampaign = async (data: FormData) => {
+export const createCampaign = async (formData: FormData) => {
   try {
-    const response = await axios.post("http://localhost:5001/campaigns", data, {
+    const response = await axios.post("http://localhost:5001/campaigns", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + localStorage.getItem('jwtToken'),
@@ -67,11 +67,7 @@ export const createCampaign = async (data: FormData) => {
   }
 };
 
-interface TT{
-  formData:FormData,
-  campaignId:Number
-}
-export const updateCampaign = async ({formData,campaignId} : TT) => {
+export const updateCampaign = async ({formData,campaignId}: CreateCampaignType) => {
   try {
     const response = await axios.put(`http://localhost:5001/campaigns/${campaignId}`, formData, {
       headers: {

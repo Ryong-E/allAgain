@@ -69,6 +69,15 @@ export default function CampaignForm({
     },
   });
 
+  const createCampainMutaion = useMutation(createCampaign, {
+    onError: (error: any) => {
+      console.log(error);
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
+    },
+  });
+
   function validation(data: FormType) {
     let isError = false;
     const re = data.content
@@ -125,11 +134,11 @@ export default function CampaignForm({
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
-        await updateCampainMutaion.mutate({ formData, campaignId });
+        updateCampainMutaion.mutate({formData, campaignId});
         alert("캠페인 수정이 완료 되었습니다.");
         navigate(`/campaign/${campaignId}`);
       } else {
-        await createCampaign(formData);
+        createCampainMutaion.mutate(formData)
         alert("캠페인 생성이 완료 되었습니다.");
         navigate(`/campaign/${campaignId}`);
       }

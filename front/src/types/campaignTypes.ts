@@ -49,3 +49,8 @@ export interface FormPropType {
     };
     participated: Boolean;
   };
+
+  export interface CreateCampaignType{
+    formData:FormData,
+    campaignId:Number
+  }
