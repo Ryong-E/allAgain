@@ -52,7 +52,7 @@ function FeedListPage() {
   useEffect(() => {
     if (!Object.values(selectedCategory).includes(true))
       setSelectedCategory(initialState);
-  }, [selectedCategory]);
+  }, [selectedCategory, data]);
 
   return (
     <PageWrap>
@@ -69,12 +69,15 @@ function FeedListPage() {
           {isSuccess && (
             <FeedList
               feeds={data.filter(({ category }) => {
-                const categoryList: string[] = [];
-                Object.keys(selectedCategory).forEach((key) => {
-                  if (selectedCategory[key]) categoryList.push(key);
-                });
-                for (const filterCategory in categoryList)
-                  if (category.includes(filterCategory)) return true;
+                const selectedList: string[] = [];
+                Object.keys(selectedCategory).forEach(
+                  (key) => selectedCategory[key] && selectedList.push(key)
+                );
+                if (selectedList.includes("전체")) return true;
+                const diff = category
+                  .split(",")
+                  .filter((toFind) => selectedList.includes(toFind));
+                if (diff.length) return true;
                 return false;
               })}
               isSimple={false}
