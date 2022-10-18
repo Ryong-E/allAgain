@@ -188,9 +188,9 @@ const CampaignItemLinkBox = styled.div`
 `
 
 
-export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, introduce, status, writer } : CampaignItemType) {
+export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, participantsCount, introduce, status, writer, participated } : CampaignItemType) {
   const person  = recruitmentNumber!;
-  let endEvent = 1;
+  let endEvent = participantsCount;
   let lengthRate = (endEvent/ person)*100; 
   const length = useRef<HTMLDivElement>(null);
   const rateAnimation = ()=>{
@@ -246,7 +246,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
           </PeriodBox>
           <CreatedUser>
             <Link to={`/user/:id`}>
-              <UserImgBox/>
+              <UserImgBox userImg={writer!.imageUrl!}/>
               <UserName userName={writer!.nickname!}/>
             </Link>
           </CreatedUser>
@@ -257,7 +257,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
               <div className="length" ref={length}></div>
             </div>
             <div className="participating">
-              <span>{50}명</span> 참여 중
+              <span>{participantsCount}명</span> 참여 중
             </div>
           </RateBox>
           <div className="endDate">
