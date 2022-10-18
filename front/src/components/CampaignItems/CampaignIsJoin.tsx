@@ -52,16 +52,21 @@ const JoinCampaignBox = styled.div`
     &.lightGreen{
       background : ${({theme}) => theme.colors.lightGreen}
     }
+    &:disabled{
+      background: ${({theme}) => theme.colors.placeholder};
+    }
   }
 `;
 
 interface JoinProps {
-  isJoin ?: Boolean;
+  isJoin : Boolean;
   campaignId : number;
   status : String;
   startDate : String;
+  isSameUser: Boolean;
+  isSameRate: number;
 }
-export default function CampaignIsJoin({isJoin, campaignId, status, startDate}: JoinProps) {
+export default function CampaignIsJoin({isJoin, campaignId, status, startDate, isSameUser, isSameRate}: JoinProps) {
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
@@ -74,23 +79,31 @@ export default function CampaignIsJoin({isJoin, campaignId, status, startDate}: 
     }
   })
   const [year, month, date] = startDate.split("-");
-
+  const fullOfCampaign = ((isSameRate === 0) && !isJoin);
+  console.log(isJoin)
   const handleJoinCampaign = (campaignId : number)=>{
-    if(!isJoin!){
+    if(!isJoin){
       joinCampaign.mutate(campaignId);
     }else{
       cancleCampaign.mutate(campaignId);
     }
   }
-    
-  const statusClass = status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : "darkGreen";
+  console.log(isJoin) 
+  const statusClass = status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : fullOfCampaign ? "" : "darkGreen";
 
   return (
     <JoinCampaignBox>
-      <button className={`${isJoin ? "active" : ""} ${statusClass}`} onClick={()=>{((status === "모집 중") && handleJoinCampaign(campaignId)); }}>
+      <button className={`${isJoin ? "active" : ""} ${statusClass}`} onClick={()=>{((status === "모집 중" && !isSameUser) && handleJoinCampaign(campaignId)); }} disabled={fullOfCampaign}>
         {status === "모집 중"?
           <>
-          <i></i>캠페인 참여하기
+          {fullOfCampaign ? 
+          <>
+          남은 자리가 없네요..
+          </>:
+          <>
+            <i></i>캠페인 참여하기
+          </> 
+          }
           </>
           :
           status === "모집 예정"?

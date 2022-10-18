@@ -22,9 +22,13 @@ import { loggedInUserId } from '../../atoms/atoms';
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const isSameUser = useRecoilValue(loggedInUserId);
+  const loggedUser = useRecoilValue(loggedInUserId);
   const startDate = fixDate(String(props.recruitmentStartDate));
-
+  const isSameUser = props.writer.userId === loggedUser;
+  const recruitment  = props.recruitmentNumber;
+  const participants = props.participantsCount-1;
+  const isSameRate = recruitment - participants;
+  console.log(props.participated)
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
@@ -32,13 +36,15 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   },[isActive])
   return (
     <>
-      {(props.writer.userId === isSameUser) && <CUDBtn campaignId={props.campaignId!} />}
+      {(isSameUser) && <CUDBtn campaignId={props.campaignId!} />}
       <CampaignItem {...props} />
       <CampaignIsJoin
           isJoin={props.participated}
           campaignId={props.campaignId}
           status={props.status}
           startDate={startDate}
+          isSameUser={isSameUser}
+          isSameRate={isSameRate}
           />
       <CampaignIntroDetail desc={props.introduce!}/>
       <ToggleBtn leftIconImg={contentIcon} leftText={'캠페인 내용'} rightIconImg={chatIcon} rightText={'댓글보기'} isActive={isActive} setIsActive={setIsActive} />
@@ -52,8 +58,10 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             campaignId={props.campaignId}
             status={props.status}
             startDate={startDate}
+            isSameUser={isSameUser}
+            isSameRate={isSameRate}
             />
-          {(props.writer.userId === isSameUser) && <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />}
+          {(isSameUser) && <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />}
         </>
       ) : (
         <CampaignComment />
