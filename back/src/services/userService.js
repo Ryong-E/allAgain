@@ -1,7 +1,6 @@
-import { User } from "../db/user";
+import { User } from "../db/model/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import path from "path";
 import { compareUserId, makeImageUrl } from "../utils/util";
 import { SALT_ROUND } from "../utils/util";
 
@@ -42,7 +41,7 @@ const userService = {
 
     return loginUser;
   },
-  register: async ({ email, password, name, nickname }) => {
+  postUser: async ({ email, password, name, nickname }) => {
     password = await bcrypt.hash(password, SALT_ROUND);
 
     // 이메일 중복 체크
@@ -57,7 +56,7 @@ const userService = {
       throw new Error("이미 존재하는 닉네임입니다.");
     }
 
-    await User.register({
+    await User.create({
       email,
       password,
       name,
@@ -123,12 +122,12 @@ const userService = {
   updateProfileImage: async ({ filename, userId, currentUserId }) => {
     compareUserId(userId, currentUserId);
 
-    await User.updateImage({ userId, filename });
+    await User.updateImage({ userId, image: filename });
     const imageUrl = makeImageUrl("profiles", filename);
 
     return { imageUrl };
   },
-  withdrawal: async ({ userId, currentUserId }) => {
+  deleteUser: async ({ userId, currentUserId }) => {
     compareUserId(userId, currentUserId);
 
     await User.delete({ userId });

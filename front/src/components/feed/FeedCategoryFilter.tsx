@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { SaveButton } from "../common/Buttons";
 
 interface CategoryState {
   [key: string]: boolean;
+}
+
+interface FeedCategoryFilterProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  selectedCategory: CategoryState;
 }
 
 const CategoryList = {
@@ -18,43 +23,18 @@ const CategoryList = {
   etc: "그 외",
 };
 
-const initialState: CategoryState = {
-  all: true,
-  plastic: false,
-  fiber: false,
-  wood: false,
-  paper: false,
-  glass: false,
-  metal: false,
-  rubber: false,
-  etc: false,
-};
-
-function FeedCategoryFilter() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryState>(initialState);
-
-  const handleCategoryButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const eventValue = (event.target as HTMLButtonElement).value;
-    if (eventValue !== "all")
-      setSelectedCategory({
-        ...selectedCategory,
-        [eventValue]: !selectedCategory[eventValue],
-        all: false,
-      });
-    else setSelectedCategory(initialState);
-  };
-
+function FeedCategoryFilter({
+  onClick,
+  selectedCategory,
+}: FeedCategoryFilterProps) {
   return (
     <CategoryButtonContainer>
       {Object.entries(CategoryList).map(([key, value]) => (
         <CategoryButton
           key={key}
-          value={key}
+          value={value}
           selectedCategory={selectedCategory}
-          onClick={handleCategoryButtonClick}>
+          onClick={onClick}>
           {value}
         </CategoryButton>
       ))}

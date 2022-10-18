@@ -49,4 +49,11 @@ const setStatus = (startDate, endDate) => {
   }
 };
 
-export { SALT_ROUND, makeImageUrl, compareUserId, setStatus };
+const checkXSS = (text) => {
+  text = text.replace(/\</g, "&lt;");
+  text = text.replace(/\>/g, "&gt;");
+
+  return text;
+};
+
+export { SALT_ROUND, makeImageUrl, compareUserId, setStatus, checkXSS };

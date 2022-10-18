@@ -1,4 +1,4 @@
-import { connection } from "../app";
+import { promisePool } from "..";
 
 const Campaign = {
   create: async ({
@@ -14,9 +14,8 @@ const Campaign = {
     status,
     introduce,
   }) => {
-    await connection
-      .promise()
-      .query(
+    try {
+      await promisePool.query(
         "INSERT INTO campaigns(user_id, title, content, thumbnail, recruitment_start_date, recruitment_end_date, campaign_start_date, campaign_end_date, recruitment_number, status, introduce) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           userId,
@@ -30,65 +29,61 @@ const Campaign = {
           recruitmentNumber,
           status,
           introduce,
-        ],
-        (error) => {
-          if (error) throw error;
-        }
+        ]
       );
 
-    return null;
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   findAll: async () => {
-    const campaigns = await connection
-      .promise()
-      .query(
+    try {
+      const campaigns = await promisePool.query(
         "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id ORDER BY campaigns.id DESC",
-        [],
-        (error) => {
-          if (error) throw error;
-        }
+        []
       );
 
-    return campaigns[0];
+      return campaigns[0];
+    } catch (error) {
+      throw error;
+    }
   },
   findByCampaignId: async ({ campaignId }) => {
-    const campaign = await connection
-      .promise()
-      .query(
+    try {
+      const campaign = await promisePool.query(
         "SELECT *, campaigns.id as campaign_id, users.id as user_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.id = ?",
-        [campaignId],
-        (error) => {
-          if (error) throw error;
-        }
+        [campaignId]
       );
 
-    return campaign[0];
+      return campaign[0];
+    } catch (error) {
+      throw error;
+    }
   },
   findByUserId: async ({ userId }) => {
-    const campaigns = await connection
-      .promise()
-      .query(
+    try {
+      const campaigns = await promisePool.query(
         "SELECT * FROM campaigns WHERE user_id = ? ORDER BY id DESC",
-        [userId],
-        (error) => {
-          if (error) throw error;
-        }
+        [userId]
       );
 
-    return campaigns[0];
+      return campaigns[0];
+    } catch (error) {
+      throw error;
+    }
   },
   updateStatus: async ({ campaignId, status }) => {
-    await connection
-      .promise()
-      .query(
-        "UPDATE campaigns SET status = ? WHERE id = ?",
-        [status, campaignId],
-        (error) => {
-          if (error) throw error;
-        }
-      );
+    try {
+      await promisePool.query("UPDATE campaigns SET status = ? WHERE id = ?", [
+        status,
+        campaignId,
+      ]);
 
-    return null;
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   update: async ({
     campaignId,
@@ -103,9 +98,8 @@ const Campaign = {
     introduce,
     status,
   }) => {
-    await connection
-      .promise()
-      .query(
+    try {
+      await promisePool.query(
         "UPDATE campaigns SET title = ?, content = ?, thumbnail = ? , recruitment_start_date = ?, recruitment_end_date = ?, campaign_start_date = ?, campaign_end_date = ?, recruitment_number = ?, introduce = ?, status = ? WHERE id = ?",
         [
           title,
@@ -119,85 +113,84 @@ const Campaign = {
           introduce,
           status,
           campaignId,
-        ],
-        (error) => {
-          if (error) throw error;
-        }
+        ]
       );
 
-    return null;
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   deleteByCampaignId: async ({ campaignId }) => {
-    await connection
-      .promise()
-      .query("DELETE FROM campaigns WHERE id = ?", [campaignId], (error) => {
-        if (error) throw error;
-      });
+    try {
+      await promisePool.query("DELETE FROM campaigns WHERE id = ?", [
+        campaignId,
+      ]);
 
-    return null;
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   createImage: async ({ filename }) => {
-    await connection
-      .promise()
-      .query(
-        "INSERT INTO images(url, name) VALUES (?, ?)",
-        [filename, "campaign"],
-        (error) => {
-          if (error) throw error;
-        }
-      );
+    try {
+      await promisePool.query("INSERT INTO images(url, name) VALUES (?, ?)", [
+        filename,
+        "campaign",
+      ]);
 
-    return null;
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   createParticipant: async ({ userId, campaignId }) => {
-    await connection
-      .promise()
-      .query(
+    try {
+      await promisePool.query(
         "INSERT INTO campaign_participants(campaign_id, user_id) VALUES (?, ?)",
-        [campaignId, userId],
-        (error) => {
-          if (error) throw error;
-        }
+        [campaignId, userId]
       );
-    return null;
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   deleteParticipant: async ({ userId, campaignId }) => {
-    await connection
-      .promise()
-      .query(
+    try {
+      await promisePool.query(
         "DELETE FROM campaign_participants WHERE user_id = ? AND campaign_id = ?",
-        [userId, campaignId],
-        (error) => {
-          if (error) throw error;
-        }
+        [userId, campaignId]
       );
-    return null;
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
   },
   findParticipantByUserId: async ({ userId }) => {
-    const participatedCampaigns = await connection
-      .promise()
-      .query(
+    try {
+      const participatedCampaigns = await promisePool.query(
         "SELECT * FROM campaign_participants JOIN campaigns ON campaigns.id = campaign_participants.campaign_id WHERE campaign_participants.user_id = ?",
-        [userId],
-        (error) => {
-          if (error) throw error;
-        }
+        [userId]
       );
 
-    return participatedCampaigns[0];
+      return participatedCampaigns[0];
+    } catch (error) {
+      throw error;
+    }
   },
   findExistence: async ({ userId, campaignId }) => {
-    const existence = await connection
-      .promise()
-      .query(
+    try {
+      const existence = await promisePool.query(
         "SELECT EXISTS (SELECT * FROM campaign_participants WHERE campaign_id = ? AND user_id = ?) as existence",
-        [campaignId, userId],
-        (error) => {
-          if (error) throw error;
-        }
+        [campaignId, userId]
       );
 
-    return existence[0][0].existence;
+      return existence[0][0].existence;
+    } catch (error) {
+      throw error;
+    }
   },
 };
 

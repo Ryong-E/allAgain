@@ -1,35 +1,50 @@
-import styled, { css } from 'styled-components';
-import FollowToggleSmall from '../common/FollowToggleSmall';
-import DefaultProfileBanner from '../../assets/images/icons/icon_profile.png';
-import CertifiedBadge from '../../assets/images/icons/icon_certified.png';
+import styled, { css } from "styled-components";
+import FollowToggleSmall from "../common/FollowToggleSmall";
+import DefaultProfileBanner from "../../assets/images/icons/icon_profile.png";
+import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
 
 interface authorInfoProps {
-  size: 'simple' | 'detail';
+  size: "simple" | "detail";
   userId?: number;
+  isAdmin?: boolean;
 }
 
-function AuthorInfo({ size, userId }: authorInfoProps) {
+function AuthorInfo({ size, userId, isAdmin }: authorInfoProps) {
   return (
-    <Container>
-      <AuthorProfile size={size} src={DefaultProfileBanner} />
-      <AuthorName>{userId}</AuthorName>
-      {size === 'simple' && <AuthorBadge src={CertifiedBadge} />}
-      {size === 'simple' && <FollowToggleSmall />}
+    <Container isAdmin={isAdmin}>
+      <ProfileContainer>
+        <AuthorProfile size={size} src={DefaultProfileBanner} />
+        <AuthorName isAdmin={isAdmin}>{userId}</AuthorName>
+        {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
+      </ProfileContainer>
+      {size === "simple" && <FollowToggleSmall isAdmin={isAdmin} />}
     </Container>
   );
 }
 
-const Container = styled.div`
+AuthorInfo.defaultProps = {
+  isAdmin: false,
+};
+
+const Container = styled.div<{ isAdmin?: boolean }>`
+  width: ${(props) => props.isAdmin && "100%"};
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: ${(props) => props.isAdmin && "space-between"};
+`;
+
+const ProfileContainer = styled.div`
   height: 36px;
   display: flex;
   align-items: center;
 `;
 
-const AuthorProfile = styled.img<{ size: 'simple' | 'detail' }>`
+const AuthorProfile = styled.img<{ size: "simple" | "detail" }>`
   width: 36px;
   height: 36px;
   ${(props) =>
-    props.size === 'simple'
+    props.size === "simple"
       ? css`
           width: 36px;
           height: 36px;
@@ -44,11 +59,11 @@ const AuthorProfile = styled.img<{ size: 'simple' | 'detail' }>`
   overflow: hidden;
 `;
 
-const AuthorName = styled.div`
+const AuthorName = styled.div<{ isAdmin?: boolean }>`
   margin: 0 0 0 14px;
   font-size: 16px;
   line-height: 19px;
-  color: black;
+  color: ${(props) => (props.isAdmin ? "#FFFFFF" : "#00000")};
 `;
 
 const AuthorBadge = styled.img`

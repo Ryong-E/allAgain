@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createFeed, updateFeed, uploadFeedImages } from "../../api/feedApi";
-import { ClsButton, ConfirmButton } from "../../components/common/Buttons";
+import { ClsButton, ConfirmButton } from "../common/Buttons";
 import {
   FeedFormValues,
   FeedType,

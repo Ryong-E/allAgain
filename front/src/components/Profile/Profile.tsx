@@ -4,13 +4,22 @@ import { DELETE_USER } from "../../constant/queryKeys";
 import * as StyledProfile from "./Profile.style";
 import ProfileForm from "./ProfileForm";
 import ProfileImage from "./ProfileImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import { useRecoilValue } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
 export default function Profile() {
 
   const navigate = useNavigate();
+
+  const loginUserId = useRecoilValue(loggedInUserId);
+  const [userId, setUserId] = useState(loginUserId);
+
+  useEffect(() => {
+    setUserId(userId);
+  }, [userId]);
 
   const deleteUserMutation = useMutation([DELETE_USER], deleteUser, {
     onError: (error: any, variable, context) => {
@@ -22,7 +31,7 @@ export default function Profile() {
   });
 
   const handleWithdrawal = () => {
-    deleteUserMutation.mutate();
+    deleteUserMutation.mutate({ userId });
   };
 
   const [confirmBox, setConfirmBox] = useState(false);

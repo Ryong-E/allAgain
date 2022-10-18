@@ -1,10 +1,9 @@
-import { Campaign } from "../db/Campaign";
-import { User } from "../db/user";
-import path from "path";
-import { makeImageUrl, setStatus } from "../utils/util";
+import { Campaign } from "../db/model/Campaign";
+import { User } from "../db/model/User";
+import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
-  addCampaign: async ({
+  postCampaign: async ({
     currentUserId,
     title,
     content,
@@ -22,12 +21,13 @@ const campaignService = {
     }
 
     // content XSS 대응
+    const filteredContent = checkXSS(content);
 
     const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.create({
       userId: currentUserId,
       title,
-      content,
+      content: filteredContent,
       thumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
@@ -84,6 +84,7 @@ const campaignService = {
         campaignEndDate,
         recruitmentNumber,
         participantsCount,
+        status,
         writer: {
           userId,
           nickname,
@@ -177,11 +178,12 @@ const campaignService = {
     const updatedThumbnail = thumbnail || originalThumbnail;
     const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     // XSS 대응
+    const filteredContent = checkXSS(content);
 
     await Campaign.update({
       campaignId,
       title,
-      content,
+      content: filteredContent,
       thumbnail: updatedThumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
@@ -207,13 +209,13 @@ const campaignService = {
 
     return "삭제 완료";
   },
-  addCampaignImages: async ({ filename }) => {
+  postCampaignImages: async ({ filename }) => {
     const createdImage = await Campaign.createImage({ filename });
     const imageUrl = makeImageUrl("campaignImages", filename);
 
     return { imageUrl };
   },
-  addParticipant: async ({ currentUserId, campaignId }) => {
+  postParticipant: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
     if (user.length === 0) {
       throw new Error("존재하지 않는 유저입니다.");

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { FeedType } from "../../types/feedTypes";
 import { ShareButton, WarningButton } from "../common/Buttons";
@@ -10,6 +11,8 @@ interface feedProps extends FeedType {
 }
 
 function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
+  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+
   return (
     <FeedContainer>
       <Album imageUrls={imageUrls} size="simple" feedId={feedId} />
@@ -20,10 +23,12 @@ function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
           <ShareButton />
         </SocialButtonContainer>
       </MenuContainer>
+      {isAdmin && <FeedAdminBorder />}
+      {isAdmin && <FeedAdminBanner>Class</FeedAdminBanner>}
       {isSimple || (
-        <PostContainer>
-          <AuthorInfo size="simple" userId={userId} />
-          <PostTime>3시간</PostTime>
+        <PostContainer isAdmin={isAdmin}>
+          <AuthorInfo size="simple" userId={userId} isAdmin={isAdmin} />
+          {isAdmin || <PostTime>3시간</PostTime>}
         </PostContainer>
       )}
     </FeedContainer>
@@ -32,13 +37,39 @@ function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
 
 const FeedContainer = styled.div`
   width: 400px;
+  position: relative;
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   margin-bottom: 50px;
-  &:first-child {
-    margin-left: 0px;
+  &:nth-child(3n) {
+    margin-right: 0px;
   }
-  margin-left: 50px;
+  margin-right: 50px;
+`;
+
+const FeedAdminBorder = styled.div`
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100%);
+  height: calc(100%);
+  border: ${({ theme }) => theme.colors.dasidaGreen} solid 2px;
+`;
+
+const FeedAdminBanner = styled.div`
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 14px;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.dasidaGreen};
+  width: 70px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: 700;
+  text-align: center;
 `;
 
 const MenuContainer = styled.div`
@@ -58,13 +89,15 @@ const SocialButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const PostContainer = styled.div`
+const PostContainer = styled.div<{ isAdmin: boolean }>`
   width: 100%;
   height: 60px;
   display: flex;
   padding: 0px 20px;
   align-items: center;
   justify-content: space-between;
+  background-color: ${(props) =>
+    props.isAdmin ? props.theme.colors.dasidaGreen : props.theme.colors.white};
 `;
 
 const PostTime = styled.div`

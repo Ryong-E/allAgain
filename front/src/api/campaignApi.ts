@@ -23,34 +23,34 @@ export type CampaignItemType = {
 
 const TOKEN = localStorage.getItem("jwtToken");
 const BASE_URL = "http://localhost:5001/campaigns";
-const campaignApi = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + TOKEN,
-  },
-});
-const campaignUrlencodedApi = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: "Bearer " + TOKEN,
-  },
-});
+const APPLCATION_JSON = "application/json";
+const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
+
+
+const campaignApi = (contentType: string = APPLCATION_JSON) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": contentType,
+      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+    },
+  });
 
 export const getCampaignList = async () => {
   try {
-    const response = await campaignApi.get<CampaignItemType[]>("");
+    const response = await campaignApi().get<CampaignItemType[]>("");
     return response.data;
   } catch (err: any) {
-    throw new Error("리스트 못가져옴..");
+    // throw new Error("리스트 못가져옴..");
+    console.log(err);
+    
   }
 };
 
 export const getCampaignItem = async (campaginId: number) => {
   try {
-    const response = await campaignApi.get<CampaignItemType>(
+    const response = await campaignApi().get<CampaignItemType>(
       `/campaign/${campaginId}`
     );
     return response.data;
@@ -108,7 +108,7 @@ export const updateCampaign = async ({formData,campaignId} : TT) => {
 
 export const deleteCampaignItem = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete(`/${campaignId}`, {
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(`/${campaignId}`, {
       data: {
         campaignId,
       },
@@ -122,7 +122,7 @@ export const deleteCampaignItem = async (campaignId: number) => {
 
 export const joinParticipateCampaign = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.post(
+    const response = await campaignApi(APPLCATION_URLENCODED).post(
       `/${campaignId}/participants`, {campaignId}
     );
     return response.data;
@@ -132,7 +132,7 @@ export const joinParticipateCampaign = async (campaignId: number) => {
 };
 export const cancelParticipateCampaign = async (campaignId: number) => {
   try {
-    const response = await campaignUrlencodedApi.delete(
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(
       `/${campaignId}/participants`,{
         data :{
           campaignId

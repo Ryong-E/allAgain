@@ -1,5 +1,5 @@
 export interface User {
-  userid?: any,
+  userId?: any,
   email?: string,
   password?: string,
   name?: string,
@@ -16,6 +16,7 @@ export interface MyProfile {
 }
 
 export interface MyProfileEditParams {
+  userId?: number | null,
   nickname?: string,
   currentPassword?: string,
   password?: string,
