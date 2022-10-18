@@ -82,7 +82,6 @@ export default function CampaignForm({
       isError = true;
     }
     if (data.recruitmentEndDate < data.recruitmentStartDate) {
-      console.log("마감날짜 시작날짜보다 오류");
       setError("recruitmentEndDate", {
         type: "custom",
         message: "마감날짜가 시작날짜보다 이전입니다",
@@ -104,7 +103,6 @@ export default function CampaignForm({
       isError = true;
     }
     if (!updateMod) {
-      console.log(data);
       if (data.thumbnail.length < 1) {
         setError("thumbnail", {
           type: "required",
@@ -116,8 +114,6 @@ export default function CampaignForm({
     return isError ? false : true;
   }
   const onValid = async (data: FormType) => {
-    console.log(data);
-    console.log("확인절차 시작");
     if (validation(data)) {
       const formData = new FormData();
       for (let [key, value] of Object.entries(data)) {

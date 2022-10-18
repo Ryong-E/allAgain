@@ -196,7 +196,6 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
       len.style.setProperty("--lengthRate", lengthRate + "%");
     }
   }
-  console.log(recruitmentStartDate)
   const recruitmentStart = fixDate(String(recruitmentStartDate))
   const recruitmentEnd = fixDate(String(recruitmentEndDate))
   const campaignStart = fixDate(String(campaignStartDate))
