@@ -16,7 +16,7 @@ interface UserImgType{
 export default function UserImgBox({userImg}: UserImgType) {
   return (
     <UserImgWrap className='userImgBox'>
-      <img src={`http://${userImg}`} alt="유저이미지" />
+      <img src={`http://${userImg}`} alt="" />
     </UserImgWrap>
   )
 }
