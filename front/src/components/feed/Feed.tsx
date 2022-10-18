@@ -11,7 +11,7 @@ interface feedProps extends FeedType {
 }
 
 function Feed({ userId, imageUrls, feedId, isSimple }: feedProps) {
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   return (
     <FeedContainer>

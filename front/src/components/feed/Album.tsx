@@ -30,26 +30,25 @@ function Album({ size, imageUrls, feedId }: albumProps) {
   return (
     <AlbumContainer>
       <ImageContainer size={size}>
-        {size === "detail" ? (
-          <iframe
-            onClick={handleAlbumClick}
-            width={"1200"}
-            height={"650"}
-            src="https://www.youtube.com/embed/ciR3sUdgma0"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-        ) : (
-          <ImageList albumPage={imageIndex} onClick={handleAlbumClick}>
-            {imageUrls!.map((imageUrl: ImageUrlType) => (
-              <img
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                src={"http://" + imageUrl.url}
-                alt={imageUrl.name}
-                key={imageUrl.id}
-              />
-            ))}
-          </ImageList>
-        )}
+        {/* <iframe
+          onClick={handleAlbumClick}
+          width={"1200"}
+          height={"650"}
+          src="https://www.youtube.com/embed/ciR3sUdgma0"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe> */}
+
+        <ImageList albumPage={imageIndex} onClick={handleAlbumClick}>
+          {imageUrls!.map((imageUrl: ImageUrlType) => (
+            <img
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={"http://" + imageUrl.url}
+              alt={imageUrl.name}
+              key={imageUrl.id}
+            />
+          ))}
+        </ImageList>
+
         {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
           <ImageSlideContainer>
             <PrevNavigationButton

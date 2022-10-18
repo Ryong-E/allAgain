@@ -9,6 +9,7 @@ function FeedEditPage() {
   const { id } = useParams();
   const { data } = useQuery([FEED_DETAIL], () => getFeed(parseInt(id!)), {
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 
   return (

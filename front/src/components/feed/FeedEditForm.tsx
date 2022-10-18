@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import CategorySelectForm from "./CategorySelectForm";
 import DescriptionEditForm from "./DescriptionEditForm";
 import ImageEditForm from "./ImageEditForm";
 import TagEditForm from "./TagEditForm";
+import { FEEDS } from "../../constant/queryKeys";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -38,12 +39,12 @@ function FeedEditForm({
     reValidateMode: "onSubmit",
   });
   const navigator = useNavigate();
+  const queryClient = new QueryClient();
 
   const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
-    onSuccess: () => {
-      isEditing
-        ? navigator(`/feed/${submitMutation.data}`)
-        : navigator(`/feed/${feedId}`);
+    onSuccess: (data) => {
+      queryClient.invalidateQueries([FEEDS]);
+      isEditing ? navigator(`/feed/${feedId}`) : navigator(`/feed/${data}`);
     },
   });
 

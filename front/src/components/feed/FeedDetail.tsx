@@ -24,7 +24,7 @@ function FeedDetail({
 
   const handleDeleteClick = async () => {
     await deleteFeed(feedId);
-    navigator(-1);
+    navigator("/feed/");
   };
 
   const handleEditClick = () => {
