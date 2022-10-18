@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import upcy from "../../assets/images/icons/icon_upcycle_light.png"
@@ -11,7 +11,7 @@ import UserName from '../common/UserName';
 
 const ContentSlideRoot = styled.div`
   & + &{
-    margin-top : 100px;
+    margin-top : 50px;
   }
 `
 const ContentTitleBox = styled.div`
@@ -21,7 +21,11 @@ const ContentTitleBox = styled.div`
 `
 const SwiperWrap = styled(Swiper)`
   padding: 0 100px;
-  height:370px;
+  height: 370px;
+  @media (max-width: 1920px){
+    height: 19.2708vw;
+    min-height: 335px;
+  }
 `
 const Slide = styled(SwiperSlide)`
   display:flex;
@@ -29,6 +33,7 @@ const Slide = styled(SwiperSlide)`
   height:100%;
   border: 1px solid #000;
   border-radius: 20px;
+  user-select:none;
   .imgBox{
     height:calc(100% - 99px);
     img{
@@ -80,6 +85,23 @@ const InfoBox = styled.div`
 `
 
 export default function MainContentsSlide() {
+  const [resizePreView, serResizePreView] = useState(5);
+  const handleWindowResize = ()=>{
+    const width = window.innerWidth;
+    if(width >= 1000){
+      serResizePreView(width / 380);
+    }else if(800 <= width && width < 1000){
+      serResizePreView(width / 440);
+    }else{
+      serResizePreView(width / 500);
+    }
+  }
+  useEffect(()=>{
+    handleWindowResize();
+  },[])
+  useEffect(()=>{
+    window.addEventListener("resize",handleWindowResize);
+  })
   return (
     <ContentSlideRoot>
       <ContentTitleBox>
@@ -88,18 +110,20 @@ export default function MainContentsSlide() {
         </h2>
       </ContentTitleBox>
       <SwiperWrap
-        slidesPerView={4}
-        spaceBetween={80}
+        slidesPerView={resizePreView}
+        spaceBetween={30}
         grabCursor={true}
         className="mySwiper"
       >
+        {[1,2,3,4,5,6,7,8,9,10].map(ele =>(
+
         <Slide>
           <div className="imgBox">
             <img src={upcy} alt="" />
           </div>
           <Content className="content">
             <div className="contentTitle">
-              타이틀
+              타이틀{ele}
             </div>
             <InfoBox className="infoBox">
               <div className="userBox">
@@ -115,6 +139,7 @@ export default function MainContentsSlide() {
             </InfoBox>
           </Content>
         </Slide>
+        ))}
       </SwiperWrap>
     </ContentSlideRoot>
   )

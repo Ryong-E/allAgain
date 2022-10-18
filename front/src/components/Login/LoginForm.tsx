@@ -6,11 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { useRecoilState } from "recoil";
 
-import { User, LoginResponse, LoginRequiredParams } from "../../api/types";
-import { useMutation, UseMutationResult, QueryClient } from "@tanstack/react-query";
+import { LoginRequiredParams } from "../../types/userTypes";
+import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
-import { authUserState } from "../../atoms/atoms";
 import { LOGIN } from "../../constant/queryKeys";
+import { loggedInUserId } from "../../atoms/atoms";
+import { useEffect } from "react";
 
 
 const FormContainer = styled.form`
@@ -38,7 +39,6 @@ const FindPassword = styled.div`
 type Inputs = {
   email: string,
   password: string,
-  loginError: string,
 };
 
 
@@ -46,7 +46,9 @@ export default function LoginForm() {
 
   const navigate = useNavigate();
 
-  // React Hook Form
+  const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
+
+  // 로그인 Form 유효성 검사
   const { 
     register, 
     handleSubmit, 
@@ -56,44 +58,26 @@ export default function LoginForm() {
   } = useForm<Inputs>({
     reValidateMode: "onSubmit"
   });
-  // console.log(watch());
-  // console.log(watch("email"));
-  // console.log(errors.password);
 
+  // useEffect(() => {
+  //   console.log("loggedInUser", loggedInUser);
+  // }, [loggedInUser]);
+  
 
-  // recoil
-  const [authUser, setAuthUser] = useRecoilState(authUserState);
-
-  // react query
-  // const loginMutation: UseMutationResult<ILoginResponse, Error, ILoginRequiredParams> = useMutation<
-  //   ILoginResponse,
-  //   Error,
-  //   ILoginRequiredParams
-  //   >(async ({ email, password }) => loginUser({email, password}), {
-  //     onError: (error, variable, context) => {
-  //       setError("loginError", {message: error.message});
-  //     },
-  //     onSuccess: (result, variables, context) => {
-  //       setAuthUser(result);
-  //       console.log(result);
-  //       console.log(authUser);
-  //       // navigate(ROUTE.MY_PROFILE.link);
-  //     },
-  //   });
-
-
-
+  // 로그인 Mutation 정의
   const loginMutation = useMutation([LOGIN], loginUser, {
     onMutate: variable => {
       console.log("onMutate", variable);
-      // variable : {loginId: 'xxx', password; 'xxx'}
     },
-    onError: (error: any, variable, context) => {
-      setError("loginError", {message: error.message, type: "custom"});
+    onError: (error: any) => {
+      console.log(error.data.errorMessage);
+      setError("email", {message: "아이디 또는 비밀번호를 확인해주세요."});
     },
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
       localStorage.setItem('jwtToken', data.token);
+      setLoggedInUser(data.userId);
+
       navigate(ROUTE.HOME.link);
     },
     onSettled: () => {
@@ -101,17 +85,14 @@ export default function LoginForm() {
     },
   });
 
+  // 로그인 Form 제출 시 로그인 요청
   const handleLoginVaildate = ({ email, password }: LoginRequiredParams) => {
     loginMutation.mutate({ email, password });
   }
 
-  const onVaildate = (error: any) => {
-    console.log(error);
-  }
-
 
   return(
-    <FormContainer onSubmit={ handleSubmit(handleLoginVaildate, onVaildate) }>
+    <FormContainer onSubmit={ handleSubmit(handleLoginVaildate) }>
       <InputBlock>
         <InputIconBlock>
           <InputIconText 
@@ -142,7 +123,7 @@ export default function LoginForm() {
           </Link>
         </FindPassword>
       </InputBlock>
-      <InputErrorMsg>{errors.email?.message || errors.password?.message || errors.loginError?.message }</InputErrorMsg>
+      <InputErrorMsg>{errors.email?.message || errors.password?.message}</InputErrorMsg>
       <ButtonBlock>
         <LargeButton>로그인</LargeButton>
       </ButtonBlock>

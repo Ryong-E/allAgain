@@ -4,7 +4,7 @@ import { ROUTE } from '../../constant/route';
 import AlertIcon from "../../assets/images/icons/icon_alert.png";
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from '@tanstack/react-query';
-import { MyProfile, User } from '../../api/types';
+import { MyProfile, User } from '../../types/userTypes';
 import { GET_PROFILE } from '../../constant/queryKeys';
 import { getUserProfile } from '../../api/userApi';
 

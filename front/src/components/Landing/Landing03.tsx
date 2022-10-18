@@ -48,6 +48,8 @@ export const ServiceDetailBox = styled.div`
 `
 const TitleBox = styled.div`
   font-size: 40px;
+  font-family: MapoFlowerIsland,sans-serif;
+
 `
 const DescBox = styled.div`
   margin: 150px 0 200px;

@@ -36,6 +36,7 @@ const TitleBox = styled.div`
   padding-top: 80px;
   transition : opacity 1.3s 1s;
   font-size: 30px;
+  font-family: MapoFlowerIsland,sans-serif;
   @media (max-width: 1920px){
     padding-top: 4.1666vw;
   }

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { InputText } from "../common/Form";
 import { SaveButton } from "../common/Buttons";
 import EditIcon from "../../assets/images/icons/icon_image_edit.png"
-import { User } from "../../api/types";
+import { User } from "../../types/userTypes";
 
 export const ProfileImageWrap = styled.div`
   padding: 170px 80px 30px;
@@ -61,7 +61,7 @@ export const NickNameInput = styled(InputText)`
 
 export const InfoListWrap = styled.div`
   background: #f7f4ea;
-  padding: 60px 0;
+  padding: 40px 0;
   margin: 60px 0 0;
 `;
 
