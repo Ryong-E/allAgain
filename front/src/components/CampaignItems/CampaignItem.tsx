@@ -151,12 +151,6 @@ const LimitBox = styled.div`
   }
 `
 
-const rateAnimation = keyframes`
-  100%{
-    width:var(--lengthRate);
-  }
-`
-
 const RateBox = styled.div`
   display: flex;
   align-items: center;
@@ -168,7 +162,10 @@ const RateBox = styled.div`
       width:0;
       height:2px;
       background: rgba(0, 77, 73, 1);
-      animation: ${rateAnimation} 1.3s forwards;
+      transition: width 1.3s;
+      &.participantsCount{
+        width:var(--lengthRate);
+      }
     }
   }
   .participating{
@@ -190,7 +187,7 @@ const CampaignItemLinkBox = styled.div`
 
 export default function CampaignItem({ campaignId, title, content, thumbnail, recruitmentStartDate, recruitmentEndDate, campaignStartDate, campaignEndDate, recruitmentNumber, participantsCount, introduce, status, writer, participated } : CampaignItemType) {
   const person  = recruitmentNumber!;
-  let endEvent = participantsCount;
+  let endEvent = participantsCount-1;
   let lengthRate = (endEvent/ person)*100; 
   const length = useRef<HTMLDivElement>(null);
   const rateAnimation = ()=>{
@@ -205,7 +202,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
   const campaignEnd = fixDate(String(campaignEndDate))
   useEffect(() => {
     rateAnimation()
-  }, [status])
+  }, [endEvent])
   return (
     <ListItemBox className={status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : ""}>
       <CampaignItemLinkBox>
@@ -258,10 +255,10 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
         <LimitBox>
           <RateBox>
             <div className="lengthBox">
-              <div className="length" ref={length}></div>
+              <div className={`length ${endEvent ? "participantsCount" : ""}`} ref={length}></div>
             </div>
             <div className="participating">
-              <span>{participantsCount}명</span> 참여 중
+              <span>{endEvent}명</span> 참여 중
             </div>
           </RateBox>
           <div className="endDate">

@@ -14,14 +14,17 @@ import CampaignIntroDetail from './CampaignIntroDetail';
 import QuillEditor from './QuillEditor';
 import { CampaignItemType } from '../../api/campaignApi';
 import { fixDate } from '../../utils/dateFix';
+import { useRecoilValue } from 'recoil';
+import { loggedInUserId } from '../../atoms/atoms';
 
 
 
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const [isJoin, setIsJoin] = useState(false);
+  const isSameUser = useRecoilValue(loggedInUserId);
   const startDate = fixDate(String(props.recruitmentStartDate));
+
   useEffect(()=>{
     if(EditorRef.current !== null){
       EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
@@ -29,7 +32,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   },[isActive])
   return (
     <>
-      <CUDBtn campaignId={props.campaignId!} />
+      {(props.writer.userId === isSameUser) && <CUDBtn campaignId={props.campaignId!} />}
       <CampaignItem {...props} />
       <CampaignIsJoin
           isJoin={props.participated}
@@ -50,7 +53,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             status={props.status}
             startDate={startDate}
             />
-          <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
+          {(props.writer.userId === isSameUser) && <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />}
         </>
       ) : (
         <CampaignComment />
