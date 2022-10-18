@@ -45,7 +45,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             <div ref={EditorRef}></div>
           </CampaignContents>
           <CampaignIsJoin
-            isJoin={isJoin}
+            isJoin={props.participated}
             campaignId={props.campaignId}
             status={props.status}
             startDate={startDate}
