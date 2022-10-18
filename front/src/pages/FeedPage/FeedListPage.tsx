@@ -12,6 +12,8 @@ import FeedList from "../../components/Feed/FeedList";
 import FeedCategoryFilter from "../../components/Feed/FeedCategoryFilter";
 import { useEffect, useState } from "react";
 import { FEEDS } from "../../constant/queryKeys";
+import { useRecoilValue } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
 interface CategoryState {
   [key: string]: boolean;
@@ -30,6 +32,7 @@ const initialState: CategoryState = {
 };
 
 function FeedListPage() {
+  const currentUserId = useRecoilValue(loggedInUserId);
   const { isSuccess, data } = useQuery([FEEDS], getFeedList, {
     refetchOnWindowFocus: false,
   });
@@ -68,7 +71,7 @@ function FeedListPage() {
               onClick={handleCategoryButtonClick}
               selectedCategory={selectedCategory}
             />
-            <FeedAddButton />
+            {currentUserId && <FeedAddButton />}
           </FeedListOptionsContainer>
           {isSuccess && (
             <FeedList
