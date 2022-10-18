@@ -90,7 +90,6 @@ export default function CampaignForm({
 
   function validation(data: FormType) {
     const re = data.content.replaceAll(/&lt;[a-z]*[0-9]?&gt;/g , "").replaceAll(/&lt;\/[a-z]*[0-9]?&gt;/g , "");
-    console.log(re)
     if(re.length < 1){
         setError("content",{
             type:"custom",
@@ -148,24 +147,18 @@ export default function CampaignForm({
         formData.append("campaignId", `${campaignId}`);
         await updateCampaign(formData);
         alert("캠페인 수정이 완료 되었습니다.");
-        navigate("/campaign");
+        navigate(`/campaign/${campaignId}`);
       } else {
         await createCampaign(formData);
         alert("캠페인 생성이 완료 되었습니다.");
-        navigate("/campaign");
+        navigate(`/campaign/${campaignId}`);
       }
     }
   };
 
-  function onInvalid(err: any) {
-    console.log('제출 오류 모음')
-    console.log(err);
-  }
-
 
   useEffect(() => {
     const convert = content.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
-    console.log(convert, "변환 데이터");
     setEditorContent(convert);
     setValue("content", convert);
   }, [content]);
@@ -181,7 +174,7 @@ export default function CampaignForm({
     <>
       <form
         encType="multipart/form-data"
-        onSubmit={handleSubmit(onValid, onInvalid)}>
+        onSubmit={handleSubmit(onValid)}>
         <CampaignDescription>
           <ThumbnailBox>
             <ImageUpload

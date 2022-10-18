@@ -4,7 +4,6 @@ import { Delta as TypeDelta } from "quill";
 import BlotFormatter, {
   ResizeAction,
   ImageSpec,
-  DeleteAction,
 } from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -17,6 +16,7 @@ const QuillBlock = styled.div`
     text-align: center;
   }
   .ql-container{
+    overflow:hidden;
     background-color:#ffffff;
   }
 `;
@@ -66,6 +66,14 @@ export default function QuillEditor({
     return {
       blotFormatter: {
         specs: [CustomImageSpec],
+        overlay:{
+          style:{
+          }
+        },
+        resize:{
+          handleStyle:{
+          }
+        }
       },
       toolbar: {
         container: [
@@ -101,7 +109,7 @@ export default function QuillEditor({
   return (
     <>
       <QuillBlock>
-        <div className="text-editor" style={{height:"500px"}}>
+        <div className="text-editor" style={{height:"800px"}}>
           <ReactQuill
             {...register('content')}
             style={{ width: "100%", height: "100%",backgroundColor:"#ffffff" }}

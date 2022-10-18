@@ -2,7 +2,7 @@ import * as StyledProfile from "./Profile.style";
 import { getUserProfile, updateUserProfile } from '../../api/userApi';
 import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
-import { MyProfile, MyProfileEditParams } from "../../api/types"
+import { MyProfile, MyProfileEditParams } from "../../types/userTypes"
 import { useForm } from "react-hook-form";
 import { InputErrorMsg } from "../common/Form";
 import ProfileFormLoading from "./ProfileFormLoading";

@@ -16,16 +16,17 @@ import { CampaignItemType } from '../../api/campaignApi';
 import { fixDate } from '../../utils/dateFix';
 
 
+
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
   const EditorRef = useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    if(EditorRef.current !== null){
-      EditorRef.current.innerHTML= `${props.title}`
-    }
-  },[])
   const [isActive, setIsActive] = useState(false);
   const [isJoin, setIsJoin] = useState(false);
   const startDate = fixDate(String(props.recruitmentStartDate));
+  useEffect(()=>{
+    if(EditorRef.current !== null){
+      EditorRef.current.innerHTML= `${props.content.replaceAll("&gt;", ">").replaceAll("&lt;", "<")}`
+    }
+  },[isActive])
   return (
     <>
       <CUDBtn campaignId={props.campaignId!} />

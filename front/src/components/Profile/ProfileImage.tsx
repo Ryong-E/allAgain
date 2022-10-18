@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as StyledProfile from "./Profile.style";
 import { useState, useEffect } from "react";
-import { MyProfile, User } from "../../api/types";
+import { MyProfile, User } from "../../types/userTypes";
 import ProfileIcon from "../../assets/images/icons/icon_profile.png";
 import { getUserProfile, updateUserImage } from "../../api/userApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
