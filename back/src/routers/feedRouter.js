@@ -7,13 +7,14 @@ const feedRouter = Router();
 
 feedRouter.post("/", loginRequired, async (req, res, next) => {
   try {
-    const { category, tags, imageUrls, description } = req.body;
+    const { category, tags, imageUrls, description, datetime } = req.body;
     const createdFeed = await feedService.postFeed({
       userId: req.currentUserId,
       category,
       tags,
       imageUrls,
       description,
+      datetime,
     });
     res.status(200).send(createdFeed.toString());
   } catch (error) {
@@ -81,8 +82,28 @@ feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
-// feedRouter.post("/likes", loginRequired, (req, res, next) => {});
+feedRouter.post("/likes", loginRequired, async (req, res, next) => {
+  try {
+    const { feedId, userId } = req.body;
+    const likeId = await feedService.postLike({
+      feedId,
+      userId,
+    });
+    res.status(200).send(likeId.toString());
+  } catch (error) {
+    next(error);
+  }
+});
 
-// feedRouter.delete("/likes", loginRequired, (req, res, next) => {});
+feedRouter.delete("/likes/:likeId", loginRequired, async (req, res, next) => {
+  try {
+    const { likeId } = req.params;
+    const currentUserId = req.currentUserId;
+    const deleted = await feedService.deleteLike({ currentUserId, likeId });
+    res.status(200).send(deleted);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { feedRouter };
