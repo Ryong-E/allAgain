@@ -213,6 +213,34 @@ const campaignService = {
     const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
     const imageUrl = makeImageUrl("profiles", image);
 
+    const comments = await Campaign.findAllCommentsByCampaignId({ campaignId });
+    const filteredComments = [];
+
+    for (let comment of comments) {
+      const {
+        comment_id: commentId,
+        user_id: commentUserId,
+        content: commentContent,
+        root_comment_id: rootCommentId,
+        timestamp,
+        nickname: commentUserNickname,
+        image: commentUserIamge,
+      } = comment;
+
+      const commentUserImageUrl = makeImageUrl("profiles", commentUserIamge);
+      filteredComments.push({
+        commentId,
+        content: commentContent,
+        rootCommentId,
+        timestamp,
+        writer: {
+          userId: commentUserId,
+          nickname: commentUserNickname,
+          image: commentUserImageUrl,
+        },
+      });
+    }
+
     const filteredCampaign = {
       campaignId,
       title,
@@ -232,6 +260,7 @@ const campaignService = {
         imageUrl,
       },
       participated: false,
+      comments: filteredComments,
     };
 
     return filteredCampaign;
