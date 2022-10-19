@@ -12,7 +12,7 @@ imageRouter.post(
   async (req, res, next) => {
     const imagePaths = [];
     req.files.forEach((file) => {
-      imagePaths.push({ name: file.fieldname, path: file.path });
+      imagePaths.push({ name: file.fieldname, path: file.filename });
     });
     try {
       const savedImageUrls = await imageService.saveImageUrls({ imagePaths });
