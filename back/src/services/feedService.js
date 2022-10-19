@@ -30,6 +30,7 @@ const feedService = {
     for (const item of feedData[0]) {
       const feedId = item.id;
       const imageUrls = await imageService.getImageUrls({ feedId });
+      const likeList = await feedService.getLikes({ feedId });
       const feed = {
         feedId,
         userId: item.user_id,
@@ -38,6 +39,7 @@ const feedService = {
         imageUrls: imageUrls,
         description: item.description,
         datetime: item.datetime,
+        likes: likeList,
       };
       feedList.push(feed);
     }
@@ -53,6 +55,7 @@ const feedService = {
       datetime,
     } = feedData[0];
     const imageUrls = await imageService.getImageUrls({ feedId });
+    const likeList = await feedService.getLikes({ feedId });
     const feed = {
       feedId,
       userId,
@@ -61,6 +64,7 @@ const feedService = {
       tags,
       description,
       datetime,
+      likes: likeList,
     };
     return feed;
   },
@@ -70,6 +74,7 @@ const feedService = {
     for (const item of feedData[0]) {
       const feedId = item.id;
       const imageUrls = await imageService.getImageUrls({ feedId });
+      const likeList = await feedService.getLikes({ feedId });
       const feed = {
         feedId,
         userId: item.user_id,
@@ -78,6 +83,7 @@ const feedService = {
         imageUrls: imageUrls,
         description: item.description,
         datetime: item.datetime,
+        likes: likeList,
       };
       feedList.push(feed);
     }
@@ -123,12 +129,20 @@ const feedService = {
   },
   deleteLike: async ({ currentUserId, likeId }) => {
     const likeData = await Feed.findLikeByLikeId({ likeId });
-    const { user_id: userId } = likeData[0];
+    const { user_id: userId } = likeData[0][0];
     if (userId !== currentUserId) {
       throw new Error("삭제 권한이 없습니다.");
     }
     const deletedLike = await Feed.deleteLike({ likeId });
     return deletedLike;
+  },
+  getLikes: async ({ feedId }) => {
+    const likeData = await Feed.findAllLikesByFeedId({ feedId });
+    const likeList = [];
+    for (const like of likeData[0]) {
+      likeList.push({ likeId: like["id"], userId: like["user_id"] });
+    }
+    return likeList;
   },
 };
 

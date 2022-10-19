@@ -113,23 +113,42 @@ const Feed = {
     }
   },
   createLike: async ({ feedId, userId }) => {
-    const connection = await promisePool.getConnection(async (conn) => conn);
     try {
-      await connection.beginTransaction();
-      await connection.query("INSERT INTO ");
-      await connection.commit();
-    } catch (error) {
-      await connection.rollback();
-      connection.release();
-      throw error;
-    } finally {
-      connection.release();
+      await promisePool.query(
+        "INSERT INTO feed_likes(feed_id, user_id) VALUES(?, ?)",
+        [feedId, userId]
+      );
       return "좋아요 완료";
+    } catch (error) {
+      throw error;
+    }
+  },
+  findAllLikesByFeedId: async ({ feedId }) => {
+    try {
+      const likeList = await promisePool.query(
+        "SELECT id, user_id FROM feed_likes WHERE feed_id = ?",
+        feedId
+      );
+      return likeList;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findLikeByLikeId: async ({ likeId }) => {
+    try {
+      const like = await promisePool.query(
+        "SELECT * FROM feed_likes WHERE id = ?",
+        likeId
+      );
+      return like;
+    } catch (error) {
+      throw error;
     }
   },
   deleteLike: async ({ likeId }) => {
     try {
       await promisePool.query("DELETE FROM feed_likes WHERE id = ?", likeId);
+      return "좋아요 취소 완료";
     } catch (error) {
       throw error;
     }
