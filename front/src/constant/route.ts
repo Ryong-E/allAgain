@@ -46,8 +46,8 @@ export const ROUTE = {
     authenticated: true,
   },
   USER_DETAIL_PAGE: {
-    path: "/user-detail/:id",
-    link: "/user-detail/",
+    path: "/user/:id",
+    link: "/user/",
     element: UserDetailPage,
   },
   ABOUT: {

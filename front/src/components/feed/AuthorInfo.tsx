@@ -25,7 +25,7 @@ function AuthorInfo({
   const navigate = useNavigate();
 
   const handleOnClick = useCallback(() => {
-    isEditing || navigate(`/user-detail/${userId}`);
+    isEditing || navigate(`/user/${userId}`);
   }, [userId, isEditing, navigate]);
 
   return (
