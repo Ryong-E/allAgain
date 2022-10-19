@@ -76,10 +76,10 @@ export default function CampaignUtilsBox({
     }
   );
   const handleDeleteComment = (commentId: number) => {
-    deletedCommentMutate.mutate(commentId);
+    if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
+      deletedCommentMutate.mutate(commentId);
+    }
   };
-  console.log("isLogin", isLogin);
-  console.log("userId", userId);
 
   return (
     <UtilsBox>
