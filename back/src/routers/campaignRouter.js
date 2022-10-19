@@ -9,6 +9,9 @@ import {
   deleteCampaignValidator,
   campaignImageCreateValidator,
   campaignIdCheckValidator,
+  createCommentValidator,
+  putCommentValidator,
+  deleteCommentValidator,
 } from "../middlewares/campaignValidator";
 
 const campaignRouter = Router();
@@ -192,4 +195,73 @@ campaignRouter.delete(
     }
   }
 );
+
+campaignRouter.post(
+  "/campaign/comments",
+  createCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { currentUserId } = req;
+      const { campaignId, content, rootCommentId } = req.body;
+
+      const createdComment = await campaignService.postComment({
+        currentUserId,
+        campaignId,
+        content,
+        rootCommentId,
+      });
+
+      res.status(201).json(createdComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.put(
+  "/campaign/:commentId",
+  putCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { content } = req.body;
+      const { currentUserId } = req;
+
+      const updatedComment = await campaignService.updateComment({
+        commentId,
+        content,
+        currentUserId,
+      });
+
+      res.status(201).json(updatedComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/campaign/:commentId",
+  deleteCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { currentUserId } = req;
+
+      const deletedComment = await campaignService.deleteComment({
+        currentUserId,
+        commentId,
+      });
+
+      res.status(204).json(deletedComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete("/campaign/:commentId");
 export { campaignRouter };

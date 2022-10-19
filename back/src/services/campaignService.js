@@ -129,6 +129,35 @@ const campaignService = {
       userId: currentUserId,
       campaignId,
     });
+
+    const comments = await Campaign.findAllCommentsByCampaignId({ campaignId });
+    const filteredComments = [];
+
+    for (let comment of comments) {
+      const {
+        comment_id: commentId,
+        user_id: commentUserId,
+        content: commentContent,
+        root_comment_id: rootCommentId,
+        timestamp,
+        nickname: commentUserNickname,
+        image: commentUserIamge,
+      } = comment;
+
+      const commentUserImageUrl = makeImageUrl("profiles", commentUserIamge);
+      filteredComments.push({
+        commentId,
+        content: commentContent,
+        rootCommentId,
+        timestamp,
+        writer: {
+          userId: commentUserId,
+          nickname: commentUserNickname,
+          image: commentUserImageUrl,
+        },
+      });
+    }
+
     const filteredCampaign = {
       campaignId,
       title,
@@ -148,6 +177,7 @@ const campaignService = {
         imageUrl,
       },
       participated: participated ? true : false,
+      comments: filteredComments,
     };
 
     return filteredCampaign;
@@ -308,6 +338,68 @@ const campaignService = {
     await Campaign.deleteParticipant({ userId: currentUserId, campaignId });
 
     return "참여신청 취소 완료";
+  },
+  postComment: async ({
+    currentUserId,
+    campaignId,
+    content,
+    rootCommentId,
+  }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+
+    if (rootCommentId) {
+      const comment = await Campaign.findCommentByCommentId({
+        commentId: rootCommentId,
+      });
+      if (comment.length === 0) {
+        throw new Error("부모 댓글이 존재하지 않습니다.");
+      }
+    }
+
+    await Campaign.createComment({
+      campaignId,
+      userId: currentUserId,
+      content,
+      rootCommentId: rootCommentId || undefined,
+    });
+
+    return "댓글 생성 완료";
+  },
+  updateComment: async ({ currentUserId, commentId, content }) => {
+    const comment = await Campaign.findCommentByCommentId({ commentId });
+    if (comment.length === 0) {
+      throw new Error("존재하지 않는 댓글입니다.");
+    }
+
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error("수정권한이 없습니다.");
+    }
+
+    await Campaign.updateComment({ commentId, content });
+
+    return "댓글 수정 완료";
+  },
+  deleteComment: async ({ currentUserId, commentId }) => {
+    const comment = await Campaign.findCommentByCommentId({ commentId });
+    if (comment.length === 0) {
+      throw new Error("존재하지 않는 댓글입니다.");
+    }
+
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error("삭제권한이 없습니다.");
+    }
+
+    await Campaign.deleteComment({ commentId });
+
+    return "댓글 삭제 완료";
   },
 };
 
