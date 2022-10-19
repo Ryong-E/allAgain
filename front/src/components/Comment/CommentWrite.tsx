@@ -85,7 +85,7 @@ export default function CampaignCommentWrite({pathID,commentId}: CommentData) {
     <CommentWriteBox>
       <UserImgBox />
       <CommentFrom onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" placeholder="댓글 달기...(최대 80자)" required {...register('commentWrite',{
+        <input type="text" placeholder="댓글 달기...(최대 80자)" tabIndex={1} required {...register('commentWrite',{
           maxLength:80
         })} />
         <SubmitIconBtn className={commentLength! > 80 ? "toMuch" : ""} type="submit"/>
