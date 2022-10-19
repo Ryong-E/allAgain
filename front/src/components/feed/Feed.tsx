@@ -17,6 +17,7 @@ function Feed({
   isSimple,
   nickname,
   authorImageUrl,
+  likes,
 }: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -24,7 +25,7 @@ function Feed({
     <FeedContainer>
       <Album imageUrls={imageUrls} size="simple" feedId={feedId} />
       <MenuContainer>
-        <LikesCount likes={1122} />
+        <LikesCount likeList={likes ? likes : []} feedId={feedId} />
         <SocialButtonContainer>
           <WarningButton />
           <ShareButton />

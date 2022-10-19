@@ -1,15 +1,35 @@
-import styled from 'styled-components';
-import LikeToggle from '../common/LikeToggle';
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { loggedInUserId } from "../../atoms/atoms";
+import { FeedLikeType } from "../../types/feedTypes";
+import FeedLikeToggle from "./FeedLikeToggle";
 
 interface likesCountProps {
-  likes: number;
+  likeList: FeedLikeType[];
+  feedId: number;
 }
 
-function LikesCount({ likes }: likesCountProps) {
+function LikesCount({ likeList, feedId }: likesCountProps) {
+  const currentUserId = useRecoilValue(loggedInUserId);
+
   return (
     <Container>
-      <LikeToggle />
-      <Count>{likes}</Count>
+      <FeedLikeToggle
+        likeId={
+          likeList &&
+          likeList.find((like) => like.userId === currentUserId)?.likeId
+        }
+        isLiked={
+          likeList &&
+          typeof likeList.find((like) => like.userId === currentUserId) !==
+            "undefined"
+            ? true
+            : false
+        }
+        feedId={feedId}
+        userId={currentUserId}
+        count={likeList ? likeList.length : 0}
+      />
     </Container>
   );
 }
@@ -19,15 +39,6 @@ const Container = styled.div`
   height: 22px;
   display: flex;
   align-items: center;
-`;
-
-const Count = styled.div`
-  margin-left: 8px;
-  color: #000000;
-  height: 19px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
 `;
 
 export default LikesCount;

@@ -135,9 +135,13 @@ export const uploadFeedImages = async (formData: FormData) => {
   }
 };
 
+interface LikeId {
+  likeId: number;
+}
+
 export const createLike = async (feedId: number, userId: number) => {
   try {
-    const response = await feedApi().post<string>("likes", {
+    const response = await feedApi().post<LikeId>("likes", {
       feedId,
       userId,
     });
