@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState, ChangeEvent } from "react";
 import LikeIconOn from "../../assets/images/icons/icon_like_on.png";
 import LikeIconOff from "../../assets/images/icons/icon_like_off.png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

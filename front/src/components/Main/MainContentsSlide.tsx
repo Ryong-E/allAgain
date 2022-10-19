@@ -7,6 +7,8 @@ import like from "../../assets/images/icons/icon_like_on.png"
 import "swiper/css";
 import UserImgBox from '../Comment/UserImgBox';
 import UserName from '../common/UserName';
+import { useRecoilValue } from 'recoil'
+import { loggedInUserImgUrl } from '../../atoms/atoms'
 
 
 const ContentSlideRoot = styled.div`
@@ -86,6 +88,7 @@ const InfoBox = styled.div`
 
 export default function MainContentsSlide() {
   const [resizePreView, serResizePreView] = useState(5);
+  const userImg = useRecoilValue(loggedInUserImgUrl);
   const handleWindowResize = ()=>{
     const width = window.innerWidth;
     if(width >= 1000){
@@ -127,7 +130,7 @@ export default function MainContentsSlide() {
             </div>
             <InfoBox className="infoBox">
               <div className="userBox">
-                <UserImgBox/>
+                <UserImgBox userImg={userImg}/>
                 <UserName userName={"어드민"}/>
               </div>
               <div className="smallThings">
