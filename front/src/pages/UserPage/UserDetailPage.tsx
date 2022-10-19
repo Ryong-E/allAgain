@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { getUserProfileById } from "../../api/userApi";
 import { loggedInUserId } from "../../atoms/atoms";
+import { Container } from "../../components/common/Containers";
 import UserBanner from "../../components/UserDetail/UserBanner";
 import UserListSelectForm from "../../components/UserDetail/UserListSelectForm";
 
@@ -19,15 +20,19 @@ function UserPage() {
   );
 
   return (
-    <div>
-      {isSuccess && <UserBanner {...data} userId={id!} />}
+    <Container>
       {isSuccess && (
-        <UserListSelectForm
+        <UserBanner
+          {...data}
           userId={id!}
           isMyDetail={String(currentUserId) === id}
         />
       )}
-    </div>
+      <UserListSelectForm
+        userId={id!}
+        isMyDetail={String(currentUserId) === id}
+      />
+    </Container>
   );
 }
 
