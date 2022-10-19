@@ -61,6 +61,7 @@ export interface FormPropType {
         }
       }
     ];
+    liked : Boolean;
   };
 
 
