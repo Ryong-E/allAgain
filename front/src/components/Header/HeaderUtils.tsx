@@ -7,6 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import { MyProfile, User } from '../../types/userTypes';
 import { GET_PROFILE } from '../../constant/queryKeys';
 import { getUserProfile } from '../../api/userApi';
+import { useResetRecoilState } from 'recoil';
+import { loggedInUserId, loggedInUserImgUrl } from '../../atoms/atoms';
 
 
 const HeaderUtilWrap = styled.div`
@@ -91,6 +93,10 @@ export default function HeaderUtils() {
   const utilBoxRef = useRef<HTMLDivElement>(null);
   const utilButtonRef = useRef<HTMLDivElement>(null);
 
+  const resetloggedInUserId = useResetRecoilState(loggedInUserId);
+  const resetloggedInUserImgUrl = useResetRecoilState(loggedInUserImgUrl);
+
+
   // Utilbox 이외의 영역 클릭 시 Utilbox 닫힘
   useEffect(() => {
     function handleClickOutside(e: any) {
@@ -112,6 +118,8 @@ export default function HeaderUtils() {
 
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
+    resetloggedInUserId();
+    resetloggedInUserImgUrl();
     navigate(ROUTE.LOGIN.link);
   }
 

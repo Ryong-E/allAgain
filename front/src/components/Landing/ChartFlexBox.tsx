@@ -1,81 +1,124 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import CustomActivePieChart from './charts/PieChart';
+import CustomActivePieChart2 from './charts/PieChart2';
+import StackedBarChart from './charts/StackedBarChart';
+import StackedBarChart2 from './charts/StackedBarChart2';
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { animateFrom, hide } from '../../utils/animateFrom';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ChartListBox = styled.div`
-  
+`;
 
-`
 const ChartFlex = styled.div`
   display:flex;
-  & + &{
-    margin-top: 300px;
-  }
-  > div{
+  color: #69919B;
+
+  > div {
     width: 50%;
     display:flex;
 
-  }
+    &.chart{
+      flex-direction :column;
+      height: 480px;
 
-  .chart{
-    flex-direction :column;
-    div{
-      width:560px;
-      height:360px;
-      border:1px solid #fff;
+      svg {
+        overflow: visible;
+      }
     }
-  }
 
-  .chartDesc{
-    justify-content:center;
-    align-items:center;
-    font-size: 18px;
-    letter-spacing: 1px;
-    line-height : 1.8;
-    opacity: .8;
+    &.chartDesc{
+      justify-content:center;
+      align-items:center;
+      padding-bottom: 40px;
+      font-size: 20px;
+      letter-spacing: .06em;
+      line-height: 2.6;
+      font-weight: 300;
+
+      strong {
+        color: #ACD1CB;
+        font-weight: 400;
+      }
+    }
   }
 
   &.reverse{
     flex-direction: row-reverse;
-    .chart{
-      flex-direction :row;
-      span{
-        word-break: keep-all;
-        width: 200px;
-        margin: auto auto 0;
-        text-aling:right;
-      }
+    
+    div.chart{
+      align-items: flex-end;
     }
-    .chartDesc{
-      text-align:right;
+
+    div.chartDesc{
+      padding-left: 0px;
+      text-align: center;
     }
+  }
+
+  & + & {
+    margin-top: 300px;
   }
 `
 
 const Sources = styled.span`
   font-size: 12px;
-  opacity: .5;
-`
+  color: #405C63;
+  margin: 30px 50px 0;
+`;
+
+
 
 export default function ChartFlexBox() {
-  const sourcesList = ["자료출처 : KOSIS 국가통계포털 환경문제에 대한 인식 (2012 - 2022)", "자료출처 : KOSIS 국가통계포털 환경오염 방지 노력 (2020년 기준)"]
-  const ChartDescList = ["최근 우리나라 국민 중 ~~만큼의 사람들이\n환경문제에 대해 불안함을 느끼고 있습니다.","그만큼 많은 사람들이 환경문제에 관심을 가지고\n문제 해결을 위해 노력하고 있습니다."]
+
+  useEffect(() => {
+    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
+      ScrollTrigger.create({
+        trigger: elem,
+        start: "50% bottom",
+        scrub: 1,
+        onEnter: () => { animateFrom(elem); console.log("왜 두번"); }, 
+        onLeaveBack: () => { hide(elem); },
+      });
+    });
+  }, []);
+
+
+  const sourcesList = ["자료출처 : KOSIS 국가통계포털 환경문제에 대한 인식 (2022년 기준)", "자료출처 : KOSIS 국가통계포털 환경오염 방지 노력 (2010-2020)"];
+  
   return (
     <ChartListBox>
-      {ChartDescList.map((ele, idx) =>(
-        <ChartFlex className={ idx% 2 !== 0 ? "reverse" : ""} key={ele + idx}>
-          <div className="chart">
-            <div></div>
-            <Sources>{sourcesList[idx]}</Sources>
+      <ChartFlex className="reverse">
+        <div className="chart">
+          {/* <StackedBarChart /> */}
+          <CustomActivePieChart2 />
+          <Sources>{sourcesList[0]}</Sources>
+        </div>
+        <div className="chartDesc gs_reveal gs_reveal_fromLeft">
+          <div>
+            환경 문제에 대한 심각성이 나날이 높아지고 있습니다. <br />
+            최근 국민들을 대상으로 환경 문제에 대한 <strong>불안감</strong>을 조사한 결과 <br />
+            <strong>보통 이상이라는 응답이 약 79%</strong>로 높은 수치를 나타내고 있습니다.
           </div>
-          <div className="chartDesc">
-            <div>
-              {ele.split("\n").map((obj,idx) =>(
-                <p key={ele + idx}>{obj}</p>
-              ))}
-            </div>
+        </div>
+      </ChartFlex>
+      <ChartFlex>
+        <div className="chart">
+          {/* <CustomActivePieChart /> */}
+          <StackedBarChart2 />
+          <Sources>{sourcesList[1]}</Sources>
+        </div>
+        <div className="chartDesc gs_reveal gs_reveal_fromRight">
+          <div>
+            그만큼 <strong>많은 사람들</strong>이 환경 문제에 대해 <br />
+            단순히 심각성을 인지하는 것에서 그치지 않고 <br />
+            <strong>환경 오염 방지</strong>를 위해 다양한 <strong>노력</strong>하고 있습니다.
           </div>
-        </ChartFlex>
-      ))}
+        </div>
+      </ChartFlex >
     </ChartListBox>
   )
 }

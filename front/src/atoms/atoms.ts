@@ -9,6 +9,12 @@ export const loggedInUserId = atom<number | null>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const loggedInUserImgUrl = atom<string | null>({
+  key: "loggedInUserImgUrl",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const campaignDumData = atom({
   key:"dummy",
   default:[

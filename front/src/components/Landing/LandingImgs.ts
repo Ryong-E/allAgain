@@ -17,7 +17,7 @@ import mountains05 from "../../assets/images/landingImages/mountains05.svg";
 
 
 const LandingImgs = {
-  section03Text:[
+  upcyclingArticleText:[
     landingTxt01,
     landingTxt02,
     landingTxt03,

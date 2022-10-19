@@ -10,7 +10,7 @@ import { LoginRequiredParams } from "../../types/userTypes";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../api/userApi";
 import { LOGIN } from "../../constant/queryKeys";
-import { loggedInUserId } from "../../atoms/atoms";
+import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 import { useEffect } from "react";
 
 
@@ -47,6 +47,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
+  const [loggedInUserImg, setLoggedInUserImg] = useRecoilState(loggedInUserImgUrl);
 
   // 로그인 Form 유효성 검사
   const { 
@@ -60,8 +61,8 @@ export default function LoginForm() {
   });
 
   // useEffect(() => {
-  //   console.log("loggedInUser", loggedInUser);
-  // }, [loggedInUser]);
+  //   console.log("loggedInUserImg", loggedInUserImg);
+  // }, [loggedInUserImg]);
   
 
   // 로그인 Mutation 정의
@@ -77,6 +78,7 @@ export default function LoginForm() {
       console.log("success", data, variables, context);
       localStorage.setItem('jwtToken', data.token);
       setLoggedInUser(data.userId);
+      setLoggedInUserImg(data.imageUrl);
 
       navigate(ROUTE.HOME.link);
     },

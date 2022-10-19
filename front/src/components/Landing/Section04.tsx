@@ -5,16 +5,17 @@ import upcycleIcon from "../../assets/images/icons/icon_upcycle_light.png";
 import feedIcon from "../../assets/images/icons/icon_feed_bei.png";
 import joinIcon from "../../assets/images/icons/icon_join.png";
 import teacherIcon from "../../assets/images/icons/icon_teacher.png";
-
+import { Link } from "react-router-dom";
+import { ROUTE } from "../../constant/route";
 
 
 const Section = styled.section`
-  padding : 300px 0 0;
-`
+
+`;
 
 const TextImgBox = styled.div`
   padding-bottom: 30px;
-`
+`;
 
 const UpcycleIconBox =styled.div`
   width:100%;
@@ -23,7 +24,7 @@ const UpcycleIconBox =styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
-  margin : 200px 0;
+  margin : 150px 0;
   i{
     position: absolute;
     z-index: 1;
@@ -41,30 +42,35 @@ const UpcycleIconBox =styled.div`
     padding: 0 50px;
     background: ${({theme}) => theme.colors.bodyBg};
   }
-`
+`;
 
 export const ServiceDetailBox = styled.div`
   text-align:center; 
-`
+  margin-bottom: 200px;
+`;
+
 const TitleBox = styled.div`
   font-size: 40px;
-  font-family: MapoFlowerIsland,sans-serif;
+  font-family: 'RIDIBatang';
 
-`
+`;
+
 const DescBox = styled.div`
   margin: 150px 0 200px;
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 2;
+
   p{
-    color: ${({theme}) => theme.colors.dasidaGreen};
     + p{
       padding-top : 20px;
     }
   }
+`;
 
-`
 const ContentBox = styled.div`
   display:flex;
   font-size: 17px;
+  color: #6A6558;
   justify-content:space-around;
   .innerBox{
 
@@ -83,10 +89,57 @@ const ContentBox = styled.div`
       }
     }
   }
-`
+`;
+
+const GoToServiceButton = styled.div`
+  position: relative;
+  background: #004D49;
+  transition: background .3s;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 0.5em);
+    left: calc(50% + 11em);
+    opacity: 0;
+    transition: opacity .5s, left .5s;
+    width: 0;
+    height: 0;
+    border-left: 1em solid #004D49;
+    border-top: .6em solid transparent;
+    border-bottom: .6em solid transparent;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    padding: 70px 0;
+    font-size: 20px;
+    color: #88A7AE;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: padding .5s;
+  }
+
+  &:hover {
+    background: #F9F7F2;
+
+    &:after {
+      left: calc(50% + 12em);
+      opacity: 1;
+    }
+
+    a {
+      color: #004D49;
+      border: 2px solid #004D49;
+      padding: 70px 40px 70px 0;
+    }
+  }
+
+`;
 
 
-export default function Landing03() {
+export default function Section04() {
   const transitionDelay = ["0", ".2", ".4", ".6", ".7", ".8", ".9", "1", "1.1", "1.2"];
   const serviceInnerItem = [
     {
@@ -95,18 +148,18 @@ export default function Landing03() {
     },
     {
       icon : joinIcon,
-      descText : "다양한 업사이클링 관련 캠페인에 참여하고\n 직접 캠페인을 개최할 수도 있습니다."
+      descText : "다양한 업사이클링 관련 캠페인을 통해\n 기부에 참여하여 사회적 가치를 추구합니다."
     },
     {
       icon : teacherIcon,
-      descText : "실제로 사용가능한 실용적인 업사이클링 제품을\n 만들기 위한 클래스를 제공합니다."
+      descText : "실제로 사용 가능한 실용적인 업사이클링 제품을\n 만들기 위한 클래스를 제공합니다."
     },
   ]
   
   return (
-    <Section id="section03">
+    <Section id="section04">
       <TextImgBox>
-        {LandingImgs.section03Text.map((ele, idx)=> (
+        {LandingImgs.upcyclingArticleText.map((ele, idx)=> (
             <LandingTextImgItem imgSrc ={ele} transitionDelay={transitionDelay[idx]} idx={idx} key={idx + ele} />
           ))}
       </TextImgBox>
@@ -121,8 +174,8 @@ export default function Landing03() {
             다시, 다 프로젝트
         </TitleBox>
         <DescBox>
-          <p>다시, 다 프로젝트는 누구나 쉽게 업사이클링에 접근할 수 있게 도와주는 서비스입니다.</p>
-          <p>버려지는 폐자원들에 가치를 더해 새로운 제품으로 재탄생시키고, 필요한 곳에 기부함으로써 환경오염을 개선해나가는 길에 함께합니다.</p>
+          <p>다시, 다 프로젝트는 업사이클링을 조금 더 쉽게 접할 수 있도록 도와주는 서비스입니다.</p>
+          <p>버려지는 폐자원에 가치를 더해 새로운 제품으로 재탄생시키고, 필요한 곳에 기부함으로써 환경오염을 개선해나가는 길에 함께합니다.</p>
         </DescBox>
         <ContentBox>
           {serviceInnerItem.map(({icon, descText}) =>(
@@ -139,6 +192,9 @@ export default function Landing03() {
           ))}
         </ContentBox>
       </ServiceDetailBox>
+      <GoToServiceButton>
+        <Link to={ROUTE.LOGIN.link}>버려진 제품에 가치를 더하는 방법 알아보기</Link>
+      </GoToServiceButton>
     </Section>
   )
 }
