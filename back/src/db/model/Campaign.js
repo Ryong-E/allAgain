@@ -156,10 +156,34 @@ const Campaign = {
       throw error;
     }
   },
+  createLike: async ({ userId, campaignId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO campaign_likes(campaign_id, user_id) VALUES (?, ?)",
+        [campaignId, userId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
   deleteParticipant: async ({ userId, campaignId }) => {
     try {
       await promisePool.query(
         "DELETE FROM campaign_participants WHERE user_id = ? AND campaign_id = ?",
+        [userId, campaignId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteLike: async ({ userId, campaignId }) => {
+    try {
+      await promisePool.query(
+        "DELETE FROM campaign_likes WHERE user_id = ? AND campaign_id = ?",
         [userId, campaignId]
       );
 
@@ -180,7 +204,7 @@ const Campaign = {
       throw error;
     }
   },
-  findExistence: async ({ userId, campaignId }) => {
+  findExistenceParticipated: async ({ userId, campaignId }) => {
     try {
       const existence = await promisePool.query(
         "SELECT EXISTS (SELECT * FROM campaign_participants WHERE campaign_id = ? AND user_id = ?) as existence",
@@ -191,6 +215,75 @@ const Campaign = {
     } catch (error) {
       throw error;
     }
+  },
+  findExistenceLiked: async ({ userId, campaignId }) => {
+    try {
+      const existence = await promisePool.query(
+        "SELECT EXISTS (SELECT * FROM campaign_likes WHERE campaign_id = ? AND user_id = ?) as existence",
+        [campaignId, userId]
+      );
+
+      return existence[0][0].existence;
+    } catch (error) {
+      throw error;
+    }
+  },
+  createComment: async ({ campaignId, userId, content, rootCommentId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO campaign_comments(campaign_id, user_id, content, root_comment_id) VALUES (?, ?, ?, ?)",
+        [campaignId, userId, content, rootCommentId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findCommentByCommentId: async ({ commentId }) => {
+    try {
+      const comment = await promisePool.query(
+        "SELECT * FROM campaign_comments WHERE id = ?",
+        [commentId]
+      );
+
+      return comment[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  findAllCommentsByCampaignId: async ({ campaignId }) => {
+    try {
+      const comments = await promisePool.query(
+        "SELECT *, campaign_comments.id as comment_id FROM campaign_comments JOIN users ON campaign_comments.user_id = users.id WHERE campaign_comments.campaign_id = ?",
+        [campaignId]
+      );
+
+      return comments[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteComment: async ({ commentId }) => {
+    try {
+      await promisePool.query("DELETE FROM campaign_comments WHERE id = ?", [
+        commentId,
+      ]);
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateComment: async ({ commentId, content }) => {
+    try {
+      await promisePool.query(
+        "UPDATE campaign_comments SET content = ? WHERE id = ? ",
+        [content, commentId]
+      );
+
+      return null;
+    } catch (error) {}
   },
 };
 
