@@ -2,6 +2,8 @@ import { Feed } from "../db/model/Feed";
 const path = require("path");
 import { imageService } from "./imageService";
 import { Image } from "../db/model/Image";
+import { User } from "../db/model/User";
+import { makeImageUrl } from "../utils/util";
 
 // httpMethod
 
@@ -31,6 +33,9 @@ const feedService = {
       const feedId = item.id;
       const imageUrls = await imageService.getImageUrls({ feedId });
       const likeList = await feedService.getLikes({ feedId });
+      const author = await User.findByUserId({ userId: item.user_id });
+      const { image, nickname } = author[0];
+      const authorImageUrl = makeImageUrl("profiles", String(image));
       const feed = {
         feedId,
         userId: item.user_id,
@@ -40,6 +45,8 @@ const feedService = {
         description: item.description,
         datetime: item.datetime,
         likes: likeList,
+        authorImageUrl,
+        nickname,
       };
       feedList.push(feed);
     }
@@ -56,6 +63,9 @@ const feedService = {
     } = feedData[0];
     const imageUrls = await imageService.getImageUrls({ feedId });
     const likeList = await feedService.getLikes({ feedId });
+    const author = await User.findByUserId({ userId });
+    const { image, nickname } = author[0];
+    const authorImageUrl = makeImageUrl("profiles", String(image));
     const feed = {
       feedId,
       userId,
@@ -65,6 +75,8 @@ const feedService = {
       description,
       datetime,
       likes: likeList,
+      authorImageUrl,
+      nickname,
     };
     return feed;
   },
@@ -75,6 +87,9 @@ const feedService = {
       const feedId = item.id;
       const imageUrls = await imageService.getImageUrls({ feedId });
       const likeList = await feedService.getLikes({ feedId });
+      const author = await User.findByUserId({ userId: item.user_id });
+      const { image, nickname } = author[0];
+      const authorImageUrl = makeImageUrl("profiles", String(image));
       const feed = {
         feedId,
         userId: item.user_id,
@@ -84,6 +99,8 @@ const feedService = {
         description: item.description,
         datetime: item.datetime,
         likes: likeList,
+        authorImageUrl,
+        nickname,
       };
       feedList.push(feed);
     }
