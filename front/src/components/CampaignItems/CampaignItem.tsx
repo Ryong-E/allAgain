@@ -251,7 +251,7 @@ export default function CampaignItem({
           <div className="status">{status}</div>
           <div className="shareAndLikeBox">
             <ShareButton />
-            <LikeToggle liked={liked} campaignId={campaignId}/>
+            <LikeToggle liked={liked} campaignId={campaignId} />
           </div>
         </StatusBox>
         <ItemInfoBox>

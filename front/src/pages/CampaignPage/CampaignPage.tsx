@@ -44,13 +44,12 @@ const CreateCampaignBtn = styled(ConfirmButton)`
 
 const CampaignList = styled.div``;
 export default function CampaignPage() {
-  const { status, data, error } = useQuery([GET_CAMPAIGNLIST], getCampaignList);
   const isLogin = useRecoilValue(loggedInUserId);
+  const { status, data, error } = useQuery([GET_CAMPAIGNLIST], () =>getCampaignList(isLogin));
   const [values, setValues] = useState(["모집 중", "모집 예정", "모집 마감"]);
   const [currentValue, setCurrentValue] = useState("모집 중");
   const filteredStatus =
     data && data!.filter((ele) => ele.status === currentValue);
-    console.log(filteredStatus)
   return (
     <NoPaddingContainer>
       <PageTitle>다시, 다 기부하다</PageTitle>
