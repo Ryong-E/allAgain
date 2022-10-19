@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
-import { getCampaignList } from "../../api/campaignApi";
+import { getCampaignListByUserId } from "../../api/campaignApi";
 import { loggedInUserId } from "../../atoms/atoms";
+import CampaignItem from "../CampaignItems/CampaignItem";
 
 interface UserCampaignListProps {
   isLike?: boolean;
@@ -15,4 +16,21 @@ function UserCampaignList({
   userId,
 }: UserCampaignListProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
+  const { isSuccess, data } = useQuery(["userCampaign"], () =>
+    getCampaignListByUserId(userId, currentUserId)
+  );
+
+  return (
+    <div>
+      {isSuccess &&
+        data!.map((props) => (
+          <CampaignItem
+            {...props}
+            key={`${props.writer.nickname}` + Date.now() + props.campaignId}
+          />
+        ))}
+    </div>
+  );
 }
+
+export default UserCampaignList;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LikeListToggle from "../common/LikeListToggle";
 import ListSelectTab from "./ListSelectTab";
+import UserCampaignList from "./UserCampaignList";
 import UserFeedList from "./UserFeedList";
 
 interface UserListSelectFormProps {
@@ -23,8 +24,14 @@ function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
         {isMyDetail && <LikeListToggle />}
       </UserLikeButtonContainer>
       <ListSelectTab isActive={isSelected} setIsActive={setIsSelected} />
-      {isSelected && (
+      {isSelected ? (
         <UserFeedList isLike={isLike} isMyDetail={isMyDetail} userId={userId} />
+      ) : (
+        <UserCampaignList
+          isLike={isLike}
+          isMyDetail={isMyDetail}
+          userId={userId}
+        />
       )}
     </UserListContainer>
   );
