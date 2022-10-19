@@ -175,8 +175,8 @@ campaignRouter.post(
   }
 );
 
-campaignRouter.delete(
-  "/:campaignId/participants",
+campaignRouter.post(
+  "/:campaignId/likes",
   loginRequired,
   campaignIdCheckValidator(),
   async (req, res, next) => {
@@ -184,7 +184,28 @@ campaignRouter.delete(
       const { currentUserId } = req;
       const { campaignId } = req.params;
 
-      const canceledParticipate = await campaignService.deleteParticipant({
+      const participatedCampaign = await campaignService.postLike({
+        currentUserId,
+        campaignId,
+      });
+
+      res.status(201).json(participatedCampaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/:campaignId/likes",
+  loginRequired,
+  campaignIdCheckValidator(),
+  async (req, res, next) => {
+    try {
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
+
+      const canceledParticipate = await campaignService.deleteLike({
         currentUserId,
         campaignId,
       });

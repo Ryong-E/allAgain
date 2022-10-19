@@ -156,10 +156,34 @@ const Campaign = {
       throw error;
     }
   },
+  createLike: async ({ userId, campaignId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO campaign_likes(campaign_id, user_id) VALUES (?, ?)",
+        [campaignId, userId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
   deleteParticipant: async ({ userId, campaignId }) => {
     try {
       await promisePool.query(
         "DELETE FROM campaign_participants WHERE user_id = ? AND campaign_id = ?",
+        [userId, campaignId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteLike: async ({ userId, campaignId }) => {
+    try {
+      await promisePool.query(
+        "DELETE FROM campaign_likes WHERE user_id = ? AND campaign_id = ?",
         [userId, campaignId]
       );
 
@@ -180,10 +204,22 @@ const Campaign = {
       throw error;
     }
   },
-  findExistence: async ({ userId, campaignId }) => {
+  findExistenceParticipated: async ({ userId, campaignId }) => {
     try {
       const existence = await promisePool.query(
         "SELECT EXISTS (SELECT * FROM campaign_participants WHERE campaign_id = ? AND user_id = ?) as existence",
+        [campaignId, userId]
+      );
+
+      return existence[0][0].existence;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findExistenceLiked: async ({ userId, campaignId }) => {
+    try {
+      const existence = await promisePool.query(
+        "SELECT EXISTS (SELECT * FROM campaign_likes WHERE campaign_id = ? AND user_id = ?) as existence",
         [campaignId, userId]
       );
 

@@ -125,7 +125,11 @@ const campaignService = {
 
     const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
     const imageUrl = makeImageUrl("profiles", image);
-    const participated = await Campaign.findExistence({
+    const participated = await Campaign.findExistenceParticipated({
+      userId: currentUserId,
+      campaignId,
+    });
+    const liked = await Campaign.findExistenceLiked({
       userId: currentUserId,
       campaignId,
     });
@@ -177,6 +181,7 @@ const campaignService = {
         imageUrl,
       },
       participated: participated ? true : false,
+      liked: liked ? true : false,
       comments: filteredComments,
     };
 
@@ -260,6 +265,7 @@ const campaignService = {
         imageUrl,
       },
       participated: false,
+      liked: false,
       comments: filteredComments,
     };
 
@@ -339,7 +345,7 @@ const campaignService = {
       throw new Error("존재하지 않는 캠페인입니다.");
     }
 
-    const participated = await Campaign.findExistence({
+    const participated = await Campaign.findExistenceParticipated({
       userId: currentUserId,
       campaignId,
     });
@@ -350,6 +356,29 @@ const campaignService = {
     await Campaign.createParticipant({ userId: currentUserId, campaignId });
 
     return "참여신청 완료";
+  },
+  postLike: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+
+    const participated = await Campaign.findExistenceLiked({
+      userId: currentUserId,
+      campaignId,
+    });
+    if (participated) {
+      throw new Error("이미 참여 신청한 캠페인입니다.");
+    }
+
+    await Campaign.createLike({ userId: currentUserId, campaignId });
+
+    return "좋아요 완료";
   },
   deleteParticipant: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
@@ -367,6 +396,20 @@ const campaignService = {
     await Campaign.deleteParticipant({ userId: currentUserId, campaignId });
 
     return "참여신청 취소 완료";
+  },
+  deleteLike: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+    if (user.length === 0) {
+      throw new Error("존재하지 않는 유저입니다.");
+    }
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign.length === 0) {
+      throw new Error("존재하지 않는 캠페인입니다.");
+    }
+    await Campaign.deleteLike({ userId: currentUserId, campaignId });
+
+    return "좋아요 취소 완료";
   },
   postComment: async ({
     currentUserId,
