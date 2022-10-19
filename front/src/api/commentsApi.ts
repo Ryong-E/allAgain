@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost:5001";
 const APPLCATION_JSON = "application/json";
 const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
-const campaignApi = (contentType: string = APPLCATION_JSON) =>
+const commentApi = (contentType: string = APPLCATION_JSON) =>
   axios.create({
     baseURL: BASE_URL,
     headers: {
@@ -15,31 +15,53 @@ const campaignApi = (contentType: string = APPLCATION_JSON) =>
   });
 
 interface CreateCommentType {
-  campaignId: number;
+  campaignId ?: number;
+  feedId ?: number;
   content: string;
   rootCommentId: number | null;
+  pathname : String;
 }
 
-export const createCommentApi = async (data: CreateCommentType) => {
+export const createCommentApi = async ({campaignId, feedId,content,rootCommentId, pathname}: CreateCommentType) => {
   try {
-    const response = await campaignApi(APPLCATION_URLENCODED).post(
-      `/campaigns/campaign/comments`,
-      data
-    );
-    return response.data;
+    if(pathname === "campaign"){
+      const response = await commentApi(APPLCATION_URLENCODED).post(
+        `/campaigns/campaign/comments`,
+        {campaignId,content,rootCommentId}
+      );
+      return response.data;
+    }else{
+      const response = await commentApi(APPLCATION_URLENCODED).post(
+        `/feeds/feed/comments`,
+        {feedId,content,rootCommentId}
+      );
+      return response.data;
+    }
   } catch (err: any) {
-    // throw new Error("리스트 못가져옴..");
-    console.log(err);
+    throw new Error("리스트 못가져옴..");
   }
 };
-export const deleteCommentApi = async (commentId: number) => {
+
+interface DeleteCommentType{
+  commentId: number;
+  pathname : String;
+}
+
+export const deleteCommentApi = async ({commentId, pathname}: DeleteCommentType) => {
   try {
-    const response = await campaignApi(APPLCATION_URLENCODED).delete(
-      `/campaigns/campaign/${commentId}`
-    );
-    return response.data;
+    console.log({commentId, pathname})
+    if(pathname === "campaign"){
+      const response = await commentApi(APPLCATION_URLENCODED).delete(
+        `/campaigns/campaign/${commentId}`
+        );
+        return response.data;
+    }else{
+      const response = await commentApi(APPLCATION_URLENCODED).delete(
+        `/feeds/feed/${commentId}`
+        );
+        return response.data;
+    }
   } catch (err: any) {
-    // throw new Error("리스트 못가져옴..");
-    console.log(err);
+    throw new Error("리스트 못가져옴..");
   }
 };

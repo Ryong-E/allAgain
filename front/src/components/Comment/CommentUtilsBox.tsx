@@ -6,7 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCommentApi } from "../../api/commentsApi";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
-import { DELETE_COMMENTS, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import { DELETE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import { useLocation } from "react-router-dom";
 
 const UtilsBox = styled.div`
   display: flex;
@@ -58,6 +59,8 @@ export default function CampaignUtilsBox({
   const reCommentLength = filteredComment.length;
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(loggedInUserId);
+  const {pathname} = useLocation();
+  const categotry = pathname.split("/")[1];
   const handleToggleReComment = () => {
     setIsReComment(true);
   };
@@ -71,13 +74,13 @@ export default function CampaignUtilsBox({
     deleteCommentApi,
     {
       onSuccess: (data: any, variables, context) => {
-        queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
+        queryClient.invalidateQueries([categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL]);
       },
     }
   );
-  const handleDeleteComment = (commentId: number) => {
+  const handleDeleteComment = (commentId: number, categotry : String) => {
     if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
-      deletedCommentMutate.mutate(commentId);
+      deletedCommentMutate.mutate({commentId, pathname : categotry});
     }
   };
 
@@ -97,7 +100,7 @@ export default function CampaignUtilsBox({
       )}
       {isLogin === userId && (
         <div className="deleteBtnBox">
-          <button onClick={() => handleDeleteComment(commentId)}>삭제</button>
+          <button onClick={() => handleDeleteComment(commentId, categotry)}>삭제</button>
         </div>
       )}
     </UtilsBox>

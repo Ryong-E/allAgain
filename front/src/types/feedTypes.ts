@@ -1,3 +1,5 @@
+import { CommentItemType } from "./campaignTypes";
+
 export interface FeedType {
   feedId: number;
   userId: number;
@@ -5,6 +7,7 @@ export interface FeedType {
   tags: string;
   imageUrls: ImageUrlType[];
   description: string;
+  comments ?: CommentItemType[];
 }
 
 export interface CreateFeedType {

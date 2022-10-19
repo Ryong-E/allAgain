@@ -6,10 +6,10 @@ import sendRedIcon from "../../assets/images/icons/icon_red_send.png";
 import UserImgBox from "./UserImgBox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCommentApi } from "../../api/commentsApi";
-import { CREATE_COMMENTS, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import { CREATE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 import { loggedInUserId } from "../../atoms/atoms";
 import { useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 
 const CommentWriteBox = styled.div`
@@ -58,24 +58,29 @@ interface WriteInput {
 export interface CommentData {
   pathID: number;
   commentId?: number;
+  userImg ?: String;
 }
 
 export default function CampaignCommentWrite({
   pathID,
   commentId,
+  userImg
 }: CommentData) {
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(loggedInUserId);
   const navigate = useNavigate();
+  const {pathname} = useLocation();
+  const categotry = pathname.split("/")[1];
   const createCommentMutate = useMutation(
     [CREATE_COMMENTS],
     createCommentApi,
     {
       onSuccess: (data: any, variables, context) => {
-        queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
+        queryClient.invalidateQueries([categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL]);
       },
     }
   );
+
   const {
     register,
     handleSubmit,
@@ -85,9 +90,11 @@ export default function CampaignCommentWrite({
   } = useForm<WriteInput>();
   const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
     createCommentMutate.mutate({
-      campaignId: pathID,
+      feedId : pathID ,
+      campaignId : pathID,
       content: commentWrite!,
       rootCommentId: commentId !== null ? commentId! : null,
+      pathname : categotry
     });
     reset();
   };
@@ -99,7 +106,7 @@ export default function CampaignCommentWrite({
   const commentLength = watch("commentWrite")?.length;
   return (
     <CommentWriteBox>
-      <UserImgBox />
+      <UserImgBox userImg={userImg}/>
       <CommentFrom onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"

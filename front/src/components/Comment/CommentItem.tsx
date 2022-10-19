@@ -74,7 +74,7 @@ export default function CommentItem({
   return (
     <>
       <CommentBox>
-        <UserImgBox />
+        <UserImgBox userImg={writer.image}/>
         <div className="commentTextBox">
           <Link to={`/user/:id`}>
             <UserName userName={writer.nickname} />
@@ -115,6 +115,7 @@ export default function CommentItem({
           isShowReComment={isShowReComment}
           pathID={pathID!}
           commentId={commentId}
+          userImg={writer.image}
         />
       )}
     </>
