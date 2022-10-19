@@ -6,13 +6,21 @@ import { Image } from "../db/model/Image";
 // httpMethod
 
 const feedService = {
-  postFeed: async ({ userId, category, tags, imageUrls, description }) => {
+  postFeed: async ({
+    userId,
+    category,
+    tags,
+    imageUrls,
+    description,
+    datetime,
+  }) => {
     const uploadedFeed = await Feed.createFeed({
       userId,
       category,
       tags,
       imageUrls,
       description,
+      datetime,
     });
     return uploadedFeed;
   },
@@ -29,6 +37,7 @@ const feedService = {
         tags: item.tags,
         imageUrls: imageUrls,
         description: item.description,
+        datetime: item.datetime,
       };
       feedList.push(feed);
     }
@@ -36,9 +45,23 @@ const feedService = {
   },
   getFeedByFeedId: async ({ feedId }) => {
     const feedData = await Feed.findFeedByFeedId({ feedId });
-    const { user_id: userId, category, tags, description } = feedData[0];
+    const {
+      user_id: userId,
+      category,
+      tags,
+      description,
+      datetime,
+    } = feedData[0];
     const imageUrls = await imageService.getImageUrls({ feedId });
-    const feed = { feedId, userId, imageUrls, category, tags, description };
+    const feed = {
+      feedId,
+      userId,
+      imageUrls,
+      category,
+      tags,
+      description,
+      datetime,
+    };
     return feed;
   },
   getFeedByUserId: async ({ userId }) => {
@@ -54,6 +77,7 @@ const feedService = {
         tags: item.tags,
         imageUrls: imageUrls,
         description: item.description,
+        datetime: item.datetime,
       };
       feedList.push(feed);
     }
@@ -92,6 +116,19 @@ const feedService = {
     }
     const deletedFeed = await Feed.deleteFeed({ feedId });
     return deletedFeed;
+  },
+  postLike: async ({ feedId, userId }) => {
+    const likeId = await Feed.createLike({ feedId, userId });
+    return likeId;
+  },
+  deleteLike: async ({ currentUserId, likeId }) => {
+    const likeData = await Feed.findLikeByLikeId({ likeId });
+    const { user_id: userId } = likeData[0];
+    if (userId !== currentUserId) {
+      throw new Error("삭제 권한이 없습니다.");
+    }
+    const deletedLike = await Feed.deleteLike({ likeId });
+    return deletedLike;
   },
 };
 

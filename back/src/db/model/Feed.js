@@ -5,18 +5,25 @@ import { promisePool } from "..";
 // findFeedByUserIdAndFeedId
 
 const Feed = {
-  createFeed: async ({ userId, category, tags, imageUrls, description }) => {
+  createFeed: async ({
+    userId,
+    category,
+    tags,
+    imageUrls,
+    description,
+    datetime,
+  }) => {
     const connection = await promisePool.getConnection(async (conn) => conn);
     let feedId = "";
     try {
       await connection.beginTransaction();
       await connection.query(
-        "INSERT INTO feeds(user_id, category, tags, description) VALUES(?, ?, ?, ?)",
-        [userId, category, tags, description]
+        "INSERT INTO feeds(user_id, category, tags, description, datetime) VALUES(?, ?, ?, ?, ?)",
+        [userId, category, tags, description, datetime]
       );
       const insertedfeedIds = await connection.query(
-        "SELECT id FROM feeds WHERE user_id = ? and category = ? and tags = ? and description = ? ORDER BY id desc",
-        [userId, category, tags, description]
+        "SELECT id FROM feeds WHERE user_id = ? and category = ? and tags = ? and description = ? and datetime = ? ORDER BY id desc",
+        [userId, category, tags, description, datetime]
       );
       feedId = insertedfeedIds[0][0]["id"];
       for (const imageUrl of imageUrls) {
@@ -101,6 +108,28 @@ const Feed = {
     try {
       await promisePool.query("DELETE FROM feeds WHERE id = ?", feedId);
       return "피드 삭제 완료";
+    } catch (error) {
+      throw error;
+    }
+  },
+  createLike: async ({ feedId, userId }) => {
+    const connection = await promisePool.getConnection(async (conn) => conn);
+    try {
+      await connection.beginTransaction();
+      await connection.query("INSERT INTO ");
+      await connection.commit();
+    } catch (error) {
+      await connection.rollback();
+      connection.release();
+      throw error;
+    } finally {
+      connection.release();
+      return "좋아요 완료";
+    }
+  },
+  deleteLike: async ({ likeId }) => {
+    try {
+      await promisePool.query("DELETE FROM feed_likes WHERE id = ?", likeId);
     } catch (error) {
       throw error;
     }
