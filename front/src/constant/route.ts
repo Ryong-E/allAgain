@@ -12,7 +12,7 @@ import CampaignDetailPage from "../pages/CampaignPage/CampaignDetailPage";
 import CampaignCreatePage from "../pages/CampaignPage/CampaignCreatePage";
 import CampaignUpdatePage from "../pages/CampaignPage/CampaignUpdatePage";
 import LandingPage from "../pages/LandingPage/LandingPage";
-import UserPage from "../pages/UserPage/UserPage";
+import UserDetailPage from "../pages/UserPage/UserDetailPage";
 
 export const ROUTE = {
   HOME: {
@@ -45,10 +45,10 @@ export const ROUTE = {
     element: ProfilePage,
     authenticated: true,
   },
-  USER_PAGE: {
-    path: "/profile/:id",
-    link: "/profile/",
-    element: UserPage,
+  USER_DETAIL_PAGE: {
+    path: "/user-detail/:id",
+    link: "/user-detail/",
+    element: UserDetailPage,
   },
   ABOUT: {
     path: "/about",

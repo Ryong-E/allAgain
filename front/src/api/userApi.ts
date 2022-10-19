@@ -6,6 +6,7 @@ import {
   RegisterRequiredParams,
   RegisterResponse,
   MyProfileEditParams,
+  UserInfoResponse,
 } from "../types/userTypes";
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
@@ -146,7 +147,7 @@ export const deleteUser = async ({ userId }: User) => {
 export const getUserProfileById = async (userId: string) => {
   try {
     const token = localStorage.getItem("jwtToken");
-    const { data } = await axios({
+    const { data } = await axios<UserInfoResponse>({
       method: "get",
       url: `${BASE_URL}/users/${userId}`,
       headers: {

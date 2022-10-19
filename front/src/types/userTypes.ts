@@ -1,34 +1,34 @@
 export interface User {
-  userId?: any,
-  email?: string,
-  password?: string,
-  name?: string,
-  nickname?: string,
-  imageUrl?: string,
-  token?: string
+  userId?: any;
+  email?: string;
+  password?: string;
+  name?: string;
+  nickname?: string;
+  imageUrl?: string;
+  token?: string;
 }
 
 export interface MyProfile {
-  email: string,
-  name: string,
-  nickname: string,
-  imageUrl: string,
+  email: string;
+  name: string;
+  nickname: string;
+  imageUrl: string;
 }
 
 export interface MyProfileEditParams {
-  userId?: number | null,
-  nickname?: string,
-  currentPassword?: string,
-  password?: string,
-  passwordConfirm?: string,
+  userId?: number | null;
+  nickname?: string;
+  currentPassword?: string;
+  password?: string;
+  passwordConfirm?: string;
 }
 
 export interface RegisterRequiredParams {
-  email: string,
-  password: string,
-  passwordConfirm: string,
-  name: string,
-  nickname: string,
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  name: string;
+  nickname: string;
 }
 
 export interface RegisterResponse {
@@ -36,8 +36,8 @@ export interface RegisterResponse {
 }
 
 export interface LoginRequiredParams {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface LoginResponse {
@@ -51,4 +51,8 @@ export interface UserResponse {
   };
 }
 
-
+export interface UserInfoResponse {
+  name: string;
+  nickname: string;
+  imageUrl: string;
+}

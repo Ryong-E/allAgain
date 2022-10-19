@@ -35,6 +35,15 @@ export const getFeed = async (feedId: number) => {
   }
 };
 
+export const getFeedByUserId = async (userId: string) => {
+  try {
+    const response = await feedApi().get<FeedType[]>(`${userId}`);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export const deleteFeed = async (feedId: number) => {
   try {
     const response = await feedApi().delete(`${feedId}`);
