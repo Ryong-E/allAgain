@@ -156,29 +156,4 @@ export const cancelParticipateCampaign = async (campaignId: number) => {
     throw new Error("캠페인 탈퇴 안됨...");
   }
 };
-export const LikedOnCampaign = async (campaignId: number) => {
-  try {
-    const response = await campaignApi(APPLCATION_URLENCODED).post(
-      `/${campaignId}/likes`,
-      { campaignId }
-    );
-    return response.data;
-  } catch (err: any) {
-    throw new Error("좋아요 안됨...");
-  }
-};
-export const LikedOffCampaign = async (campaignId: number) => {
-  try {
-    const response = await campaignApi(APPLCATION_URLENCODED).delete(
-      `/${campaignId}/likes`,
-      {
-        data: {
-          campaignId,
-        },
-      }
-    );
-    return response.data;
-  } catch (err: any) {
-    throw new Error("좋아요 취소 안됨...");
-  }
-};
+
