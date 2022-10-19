@@ -65,13 +65,13 @@ function FeedDetail({
         <DetailSection>{description}</DetailSection>
         <CategoryContainer>
           {category.split(",").map((cate) => (
-            <Category>{cate}</Category>
+            <Category key={cate}>{cate}</Category>
           ))}
         </CategoryContainer>
       </DetailContainer>
       <DetailTagContainer>
         {tags.split(",").map((tag) => (
-          <DetailTag>{tag}</DetailTag>
+          <DetailTag key={tag}>{tag}</DetailTag>
         ))}
       </DetailTagContainer>
     </>

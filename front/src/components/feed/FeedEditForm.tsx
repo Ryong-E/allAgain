@@ -16,6 +16,8 @@ import DescriptionEditForm from "./DescriptionEditForm";
 import ImageEditForm from "./ImageEditForm";
 import TagEditForm from "./TagEditForm";
 import { FEEDS } from "../../constant/queryKeys";
+import { useRecoilValue } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -30,6 +32,7 @@ function FeedEditForm({
   description,
   isEditing,
 }: FeedEditProps) {
+  const currentUserId = useRecoilValue(loggedInUserId);
   const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
   const {
     formState: { errors },
@@ -91,6 +94,12 @@ function FeedEditForm({
   const handleGoBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigator(-1);
   };
+
+  useEffect(() => {
+    console.log("test");
+    if (currentUserId === null || currentUserId !== userId)
+      navigator(`/feed/${feedId}`);
+  }, [currentUserId, navigator, userId, feedId]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0 || !uploadImages) {
