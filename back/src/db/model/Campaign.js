@@ -56,6 +56,10 @@ const Campaign = {
         [campaignId]
       );
 
+      if (campaign[0].length === 0) {
+        throw new Error("존재하지 않는 캠페인입니다.");
+      }
+
       return campaign[0];
     } catch (error) {
       throw error;
@@ -246,6 +250,10 @@ const Campaign = {
         "SELECT * FROM campaign_comments WHERE id = ?",
         [commentId]
       );
+
+      if (comment[0].length === 0) {
+        throw new Error("존재하지 않는 댓글입니다.");
+      }
 
       return comment[0];
     } catch (error) {

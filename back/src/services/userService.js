@@ -1,4 +1,4 @@
-import { User } from "../db/model/User";
+import { User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { compareUserId, makeImageUrl } from "../utils/util";
@@ -7,10 +7,6 @@ import { SALT_ROUND } from "../utils/util";
 const userService = {
   login: async ({ email, password }) => {
     const user = await User.findByEmail({ email });
-    // 가입되어있지 않은 이메일 에러처리
-    if (user.length === 0) {
-      throw new Error("가입되어있지 않은 이메일입니다.");
-    }
 
     const {
       id: userId,
@@ -75,9 +71,6 @@ const userService = {
     compareUserId(userId, currentUserId);
 
     const user = await User.findByUserId({ userId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const { password: correctPassword, nickname: currentNickname } = user[0];
 
@@ -136,9 +129,6 @@ const userService = {
   },
   getUserInfo: async ({ userId }) => {
     const user = await User.findByUserId({ userId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const { name, nickname, image } = user[0];
     const imageUrl = makeImageUrl("profiles", image);
@@ -153,9 +143,6 @@ const userService = {
   },
   getMyInfo: async ({ currentUserId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 아이디입니다.");
-    }
 
     const { email, name, nickname, image } = user[0];
     const imageUrl = makeImageUrl("profiles", image);

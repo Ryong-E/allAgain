@@ -1,5 +1,4 @@
-import { Campaign } from "../db/model/Campaign";
-import { User } from "../db/model/User";
+import { Campaign, User } from "../db";
 import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
@@ -16,9 +15,6 @@ const campaignService = {
     introduce,
   }) => {
     const userById = await User.findByUserId({ userId: currentUserId });
-    if (userById.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     // content XSS 대응
     const filteredContent = checkXSS(content);
@@ -97,9 +93,6 @@ const campaignService = {
   },
   getCampaign: async ({ campaignId, currentUserId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 켐페인입니다.");
-    }
 
     const {
       title,
@@ -189,9 +182,6 @@ const campaignService = {
   },
   getCampaignForGuest: async ({ campaignId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 켐페인입니다.");
-    }
 
     const {
       title,
@@ -285,9 +275,6 @@ const campaignService = {
     introduce,
   }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
 
     const { user_id: userId, thumbnail: originalThumbnail } = campaign[0];
     if (currentUserId !== userId) {
@@ -317,9 +304,6 @@ const campaignService = {
   },
   deleteCampaign: async ({ currentUserId, campaignId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
     if (currentUserId !== campaign[0].user_id) {
       throw new Error("삭제권한이 없는 유저입니다.");
     }
@@ -336,14 +320,8 @@ const campaignService = {
   },
   postParticipant: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
 
     const participated = await Campaign.findExistenceParticipated({
       userId: currentUserId,
@@ -359,21 +337,15 @@ const campaignService = {
   },
   postLike: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
 
     const participated = await Campaign.findExistenceLiked({
       userId: currentUserId,
       campaignId,
     });
     if (participated) {
-      throw new Error("이미 참여 신청한 캠페인입니다.");
+      throw new Error("이미 좋아요 한 캠페인입니다.");
     }
 
     await Campaign.createLike({ userId: currentUserId, campaignId });
@@ -382,14 +354,8 @@ const campaignService = {
   },
   deleteParticipant: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
     if (campaign[0].user_id === currentUserId) {
       throw new Error("캠페인을 생성한 유저는 취소할 수 없습니다.");
     }
@@ -399,14 +365,8 @@ const campaignService = {
   },
   deleteLike: async ({ currentUserId, campaignId }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
     await Campaign.deleteLike({ userId: currentUserId, campaignId });
 
     return "좋아요 취소 완료";
@@ -418,22 +378,13 @@ const campaignService = {
     rootCommentId,
   }) => {
     const user = await User.findByUserId({ userId: currentUserId });
-    if (user.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
 
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
 
     if (rootCommentId) {
       const comment = await Campaign.findCommentByCommentId({
         commentId: rootCommentId,
       });
-      if (comment.length === 0) {
-        throw new Error("부모 댓글이 존재하지 않습니다.");
-      }
     }
 
     await Campaign.createComment({
@@ -447,9 +398,6 @@ const campaignService = {
   },
   updateComment: async ({ currentUserId, commentId, content }) => {
     const comment = await Campaign.findCommentByCommentId({ commentId });
-    if (comment.length === 0) {
-      throw new Error("존재하지 않는 댓글입니다.");
-    }
 
     if (comment[0].user_id !== currentUserId) {
       throw new Error("수정권한이 없습니다.");
@@ -461,9 +409,6 @@ const campaignService = {
   },
   deleteComment: async ({ currentUserId, commentId }) => {
     const comment = await Campaign.findCommentByCommentId({ commentId });
-    if (comment.length === 0) {
-      throw new Error("존재하지 않는 댓글입니다.");
-    }
 
     if (comment[0].user_id !== currentUserId) {
       throw new Error("삭제권한이 없습니다.");
