@@ -7,6 +7,9 @@ const User = {
         "SELECT * FROM users WHERE email = ?",
         email
       );
+      if (user[0].length === 0) {
+        throw new Error("가입되어있지 않은 이메일입니다.");
+      }
 
       return user[0];
     } catch (error) {
@@ -31,6 +34,10 @@ const User = {
         "SELECT * FROM users WHERE id = ?",
         userId
       );
+
+      if (user[0].length === 0) {
+        throw new Error("존재하지 않는 유저입니다.");
+      }
 
       return user[0];
     } catch (error) {
