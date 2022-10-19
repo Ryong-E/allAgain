@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { getFeedByUserId } from "../../api/feedApi";
-import { FeedType } from "../../types/feedTypes";
 import FeedAddButton from "../Feed/FeedAddButton";
 import FeedList from "../Feed/FeedList";
 

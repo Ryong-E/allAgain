@@ -20,7 +20,7 @@ function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
   return (
     <UserListContainer>
       <UserLikeButtonContainer>
-        <LikeListToggle />
+        {isMyDetail && <LikeListToggle />}
       </UserLikeButtonContainer>
       <ListSelectTab isActive={isSelected} setIsActive={setIsSelected} />
       {isSelected && (
