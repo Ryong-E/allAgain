@@ -40,9 +40,20 @@ campaignRouter.post(
   }
 );
 
-campaignRouter.get("/", async (req, res, next) => {
+campaignRouter.get("/", loginRequired, async (req, res, next) => {
   try {
-    const campaigns = await campaignService.getAllCampaigns();
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getAllCampaigns({ currentUserId });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/guest", async (req, res, next) => {
+  try {
+    const campaigns = await campaignService.getAllCampaignsForGuest();
 
     res.status(200).json(campaigns);
   } catch (error) {
