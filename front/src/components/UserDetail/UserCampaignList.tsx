@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import { getCampaignListByUserId } from "../../api/campaignApi";
 import { loggedInUserId } from "../../atoms/atoms";
 import CampaignItem from "../CampaignItems/CampaignItem";
@@ -21,7 +22,7 @@ function UserCampaignList({
   );
 
   return (
-    <div>
+    <CampaignItemContainer>
       {isSuccess &&
         data!.map((props) => (
           <CampaignItem
@@ -29,8 +30,12 @@ function UserCampaignList({
             key={`${props.writer.nickname}` + Date.now() + props.campaignId}
           />
         ))}
-    </div>
+    </CampaignItemContainer>
   );
 }
+
+const CampaignItemContainer = styled.div`
+  margin-top: 130px;
+`;
 
 export default UserCampaignList;
