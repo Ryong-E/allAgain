@@ -5,8 +5,6 @@ const BASE_FEED_URL = "http://localhost:5001/feeds/";
 const BASE_IMAGE_URL = "http://localhost:5001/images/";
 const APPLCATION_JSON = "application/json";
 const MULTIPART_FORM_DATA = "multipart/form-data";
-const TEST_TOKEN =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI5LCJpYXQiOjE2NjU3MTQyMDB9.CAPudY_kZD6HmwiZgwFbL9ov4lxvWOOf7QtU38wHf8";
 
 const feedApi = (contentType: string = APPLCATION_JSON) =>
   axios.create({
