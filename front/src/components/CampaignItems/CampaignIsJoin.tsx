@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -10,6 +11,7 @@ import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png";
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
 import { loggedInUserId } from "../../atoms/atoms";
 import { GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import { ROUTE } from "../../constant/route";
 
 const JoinCampaignBox = styled.div`
   margin-top: 10px;
@@ -82,6 +84,7 @@ export default function CampaignIsJoin({
   isSameUser,
   isSameRate,
 }: JoinProps) {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
@@ -103,6 +106,9 @@ export default function CampaignIsJoin({
       cancleCampaign.mutate(campaignId);
     }
   };
+  const handleClickLoginLink = ()=>{
+    navigate(ROUTE.LOGIN.link)
+  }
   const statusClass =
     status === "모집 마감"
       ? "bright"
@@ -113,14 +119,16 @@ export default function CampaignIsJoin({
       : "darkGreen";
   const isClickPossible =
     status === "모집 중" && !isSameUser && isLogin !== null;
+  const isGuest = isLogin === null ? "guestJoin" : "";
   return (
     <JoinCampaignBox>
       <button
-        className={`${isJoin ? "active" : ""} ${statusClass}`}
+        className={`${isJoin ? "active" : ""} ${statusClass} ${isGuest}`}
         onClick={() => {
           isClickPossible && handleJoinCampaign(campaignId);
+          (status === "모집 중" && isLogin === null) && handleClickLoginLink();
         }}
-        disabled={fullOfCampaign || isLogin === null}>
+        disabled={fullOfCampaign}>
         {status === "모집 중" ? (
           <>
             {fullOfCampaign ? (
