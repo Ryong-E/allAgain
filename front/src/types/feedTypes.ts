@@ -1,3 +1,8 @@
+export interface FeedLikeType {
+  likeId: number;
+  userId: number;
+}
+
 export interface FeedType {
   feedId: number;
   userId: number;
@@ -5,6 +10,7 @@ export interface FeedType {
   tags: string;
   imageUrls: ImageUrlType[];
   description: string;
+  likes?: FeedLikeType[];
   authorImageUrl?: string;
   nickname?: string;
 }
