@@ -33,6 +33,8 @@ const UserProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgba(240, 230, 203, 0.2);
+  padding: 170px 80px 0;
 `;
 
 const UserProfileImage = styled.img`

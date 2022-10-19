@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getFeedByUserId } from "../../api/feedApi";
 import { FeedType } from "../../types/feedTypes";
 import FeedAddButton from "../Feed/FeedAddButton";
@@ -11,7 +11,9 @@ interface UserFeedListProps {
 }
 
 function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
-  const { isSuccess, data } = useMutation(["UserDetail"], getFeedByUserId);
+  const { isSuccess, data } = useQuery(["UserDetail"], () =>
+    getFeedByUserId(userId)
+  );
   return (
     <div>
       {isMyDetail && <FeedAddButton />}

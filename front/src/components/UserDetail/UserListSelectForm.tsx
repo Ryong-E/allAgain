@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import LikeListToggle from "../common/LikeListToggle";
+import ListSelectTab from "./ListSelectTab";
 import UserFeedList from "./UserFeedList";
 
 interface UserListSelectFormProps {
@@ -7,42 +10,38 @@ interface UserListSelectFormProps {
 }
 
 function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
-  const [selectedList, setSelectedList] = useState<string>("feed");
+  const [isSelected, setIsSelected] = useState<boolean>(true);
   const [isLike, setIsLike] = useState<boolean>(false);
-
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedList(e.target.value);
-  };
 
   const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsLike(!isLike);
   };
 
   return (
-    <div>
-      <div>
-        <button onClick={handleLikeClick}>Like</button>
-      </div>
-      <div>
-        <input
-          type="radio"
-          id="feed"
-          name="selectList"
-          value="feed"
-          onChange={handleRadioChange}
-          defaultChecked></input>
-        <input
-          type="radio"
-          id="champaign"
-          name="selectList"
-          value="champaign"
-          onChange={handleRadioChange}></input>
-      </div>
-      {selectedList === "feed" && (
+    <UserListContainer>
+      <UserLikeButtonContainer>
+        <LikeListToggle />
+      </UserLikeButtonContainer>
+      <ListSelectTab isActive={isSelected} setIsActive={setIsSelected} />
+      {isSelected && (
         <UserFeedList isLike={isLike} isMyDetail={isMyDetail} userId={userId} />
       )}
-    </div>
+    </UserListContainer>
   );
 }
+
+const UserListContainer = styled.div`
+  width: 100%;
+  min-height: 600px;
+  padding: 47px 310px 100px;
+`;
+
+const UserLikeButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  height: 42.5px;
+  margin-bottom: 13px;
+`;
 
 export default UserListSelectForm;

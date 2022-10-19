@@ -20,7 +20,7 @@ function UserPage() {
   );
 
   return (
-    <Container>
+    <>
       {isSuccess && (
         <UserBanner
           {...data}
@@ -32,7 +32,7 @@ function UserPage() {
         userId={id!}
         isMyDetail={String(currentUserId) === id}
       />
-    </Container>
+    </>
   );
 }
 
