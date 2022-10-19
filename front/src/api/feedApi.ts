@@ -136,3 +136,60 @@ export const uploadFeedImages = async (formData: FormData) => {
     throw new Error(err.message);
   }
 };
+
+export const createLike = async (feedId: number, userId: number) => {
+  try {
+    const response = await feedApi().post<string>("likes", {
+      feedId,
+      userId,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const deleteLike = async (likeId: number) => {
+  try {
+    const response = await feedApi().delete<string>(`likes/${likeId}`);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const createComment = async (
+  feedId: number,
+  content: string,
+  rootCommentId: number | null
+) => {
+  try {
+    const response = await feedApi().post<string>("feed/comments", {
+      feedId,
+      content,
+      rootCommentId,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const updateComment = async (commentId: number, content: string) => {
+  try {
+    const response = await feedApi().put<string>(`feed/${commentId}`, {
+      content,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const deleteComment = async (commentId: number) => {
+  try {
+    await feedApi().put(`feed/${commentId}`);
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};

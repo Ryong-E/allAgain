@@ -39,6 +39,48 @@ export const getCampaignList = async (isLogin?: number | null) => {
   }
 };
 
+export const getCampaignListByUserId = async (
+  userId: string,
+  isLogin?: number | null
+) => {
+  try {
+    if (isLogin !== null) {
+      const response = await campaignApi().get<CampaignItemType[]>(
+        `/${userId}`
+      );
+      return response.data;
+    } else {
+      const response = await campaignNoTokenApi().get<CampaignItemType[]>(
+        `/${userId}/guest`
+      );
+      return response.data;
+    }
+  } catch (err: any) {
+    // throw new Error("리스트 못가져옴..");
+    console.log(err);
+  }
+};
+
+export const getCampaignListParticipated = async () => {
+  try {
+    const response = await campaignApi().get<CampaignItemType[]>(
+      "/participated"
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const getCampaignListLiked = async () => {
+  try {
+    const response = await campaignApi().get<CampaignItemType[]>("/liked");
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export const getCampaignItem = async (
   campaginId: number,
   isLogin?: number | null
