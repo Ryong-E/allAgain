@@ -34,8 +34,7 @@ export const getCampaignList = async (isLogin?: number | null) => {
       return response.data;
     }
   } catch (err: any) {
-    // throw new Error("리스트 못가져옴..");
-    console.log(err);
+    throw new Error("리스트 못가져옴..");
   }
 };
 

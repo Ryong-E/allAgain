@@ -17,7 +17,6 @@ function FeedDetailPage() {
       refetchOnWindowFocus: false,
     }
   );
-    console.log(data);
     
   if (!isSuccess) {
     navigator(-1);
