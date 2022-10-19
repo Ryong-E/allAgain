@@ -87,7 +87,6 @@ const HeaderUtilBox = styled.div`
 export default function HeaderUtils() {
   const navigate = useNavigate();
   const [utilBox, setUtilBox] = useState(false);
-  const [isLogin, setIsLogin] = useRecoilState(loggedInUserId);
   const utilBoxRef = useRef<HTMLDivElement>(null);
   const utilButtonRef = useRef<HTMLDivElement>(null);
 
