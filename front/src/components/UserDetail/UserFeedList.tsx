@@ -1,19 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getFeedByUserId } from "../../api/feedApi";
+import { getFeedByUserId, getFeedLikedByUserId } from "../../api/feedApi";
+import { loggedInUserId } from "../../atoms/atoms";
 import FeedAddButton from "../Feed/FeedAddButton";
 import FeedList from "../Feed/FeedList";
 
 interface UserFeedListProps {
-  isLike?: boolean;
+  isLike: boolean;
   isMyDetail?: boolean;
   userId: string;
 }
 
 function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
-  const { isSuccess, data } = useQuery(["UserDetail"], () =>
-    getFeedByUserId(userId)
-  );
+  const currentUserId = useRecoilValue(loggedInUserId);
+
+  const selectFetch = useCallback(() => {
+    console.log("fetching");
+    if (isLike) return getFeedLikedByUserId(currentUserId!);
+    return getFeedByUserId(userId);
+  }, [isLike, currentUserId, userId]);
+
+  const { isSuccess, data } = useQuery([isLike], () => selectFetch());
+
   return (
     <ListContainer>
       <AddButtonContainer>
@@ -24,23 +34,14 @@ function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
         )}
       </AddButtonContainer>
 
-      {isSuccess && (
-        <FeedList
-          feeds={
-            isLike
-              ? data.filter(({ likes }) => {
-                  if (likes?.find((like) => String(like.userId) === userId))
-                    return true;
-                  return false;
-                })
-              : data
-          }
-          isSimple={true}
-        />
-      )}
+      {isSuccess && <FeedList feeds={data} isSimple={true} />}
     </ListContainer>
   );
 }
+
+UserFeedList.defaultProps = {
+  isLike: false,
+};
 
 const ListContainer = styled.div`
   width: 100%;

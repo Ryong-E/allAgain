@@ -36,7 +36,7 @@ function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
 const UserListContainer = styled.div`
   width: 100%;
   min-height: 600px;
-  padding: 47px 310px 100px;
+  padding: 47px 300px 100px;
 `;
 
 const UserLikeButtonContainer = styled.div`

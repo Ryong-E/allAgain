@@ -70,6 +70,15 @@ export const getFeedByUserId = async (userId: string) => {
   }
 };
 
+export const getFeedLikedByUserId = async (userId: number) => {
+  try {
+    const response = await feedApi().get<FeedType[]>(`user/${userId}/likes`);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export const deleteFeed = async (feedId: number) => {
   try {
     const response = await feedApi().delete(`${feedId}`);
