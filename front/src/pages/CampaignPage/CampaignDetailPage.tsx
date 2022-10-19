@@ -13,7 +13,6 @@ import { loggedInUserId } from '../../atoms/atoms';
 export default function CampaignDetailPage() {
   const { id } = useParams();
   const isLogin = useRecoilValue(loggedInUserId);
-  console.log("isLogin",isLogin)
   const {status, data, error} = useQuery([GET_DETAILCAMPAIGN], () => getCampaignItem(Number(id!),isLogin) ,{cacheTime:5});
 
   return (

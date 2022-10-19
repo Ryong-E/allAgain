@@ -32,7 +32,7 @@ const AdditionalBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 50px;
-  &.guest {
+  &.guestJCT {
     justify-content: start;
   }
 `;
@@ -50,13 +50,13 @@ export default function CampaignPage() {
   const [currentValue, setCurrentValue] = useState("모집 중");
   const filteredStatus =
     data && data!.filter((ele) => ele.status === currentValue);
-  console.log(isLogin);
+    console.log(filteredStatus)
   return (
     <NoPaddingContainer>
       <PageTitle>다시, 다 기부하다</PageTitle>
       <CampaignSlide />
       <Container1300Ver2>
-        <AdditionalBox className={isLogin === null ? "guest" : ""}>
+        <AdditionalBox className={isLogin === null ? "guestJCT" : ""}>
           <TagBox
             values={values}
             currentValue={currentValue}

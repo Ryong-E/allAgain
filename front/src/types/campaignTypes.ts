@@ -48,8 +48,37 @@ export interface FormPropType {
       imageUrl?: String;
     };
     participated: Boolean;
+    comments ?: [
+      {
+        commentId: number;
+        content: String;
+        rootCommentId: number | null;
+        timestamp: Date;
+        writer: {
+          userId: number;
+          nickname: String;
+          image: String; 
+        }
+      }
+    ];
+    liked : Boolean;
   };
 
+
+  export interface CommentItemArrType{
+    comments : CommentItemType[];
+  }
+  export interface CommentItemType{
+    commentId: number;
+    content: String;
+    rootCommentId: number | null;
+    timestamp: Date;
+    writer: {
+      userId: number;
+      nickname: String;
+      image: String; 
+    }
+  }
   export interface CreateCampaignType{
     formData:FormData,
     campaignId:Number

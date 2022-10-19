@@ -39,14 +39,40 @@ const compareUserId = (userId, currentUserId) => {
  */
 const setStatus = (startDate, endDate) => {
   const currentDate = new Date();
+  let changedStartDate = 0;
+  let changedEndDate = 0;
+  let result;
+  currentDate.setHours(currentDate.getHours() + 9);
+
+  if (startDate.getHours() == 0) {
+    startDate.setHours(startDate.getHours() + 9);
+    changedStartDate = 1;
+  }
+
+  if (endDate.getHours() == 0) {
+    endDate.setHours(endDate.getHours() + 9);
+    changedEndDate = 1;
+  }
+  endDate.setDate(endDate.getDate() + 1);
 
   if (currentDate >= startDate && currentDate < endDate) {
-    return "모집 중";
+    result = "모집 중";
   } else if (currentDate < startDate) {
-    return "모집 예정";
+    result = "모집 예정";
   } else if (currentDate >= endDate) {
-    return "모집 마감";
+    result = "모집 마감";
   }
+
+  if (changedStartDate) {
+    startDate.setHours(startDate.getHours() - 9);
+  }
+
+  if (changedEndDate) {
+    endDate.setHours(endDate.getHours() - 9);
+  }
+  endDate.setDate(endDate.getDate() - 1);
+
+  return result;
 };
 
 const checkXSS = (text) => {

@@ -1,7 +1,7 @@
 import { body, check, param } from "express-validator";
 import { validate } from "./commonValidator";
 
-exports.campaignCreateValidator = () => {
+const campaignCreateValidator = () => {
   return [
     body("title").notEmpty().withMessage("제목이 없습니다."),
     body("content").notEmpty().withMessage("내용이 없습니다."),
@@ -59,7 +59,7 @@ exports.campaignCreateValidator = () => {
   ];
 };
 
-exports.getCampaignValidator = () => {
+const getCampaignValidator = () => {
   return [
     param("campaignId")
       .notEmpty()
@@ -68,7 +68,7 @@ exports.getCampaignValidator = () => {
   ];
 };
 
-exports.deleteCampaignValidator = () => {
+const deleteCampaignValidator = () => {
   return [
     param("campaignId")
       .notEmpty()
@@ -77,7 +77,7 @@ exports.deleteCampaignValidator = () => {
   ];
 };
 
-exports.updateCampaignValidator = () => {
+const updateCampaignValidator = () => {
   return [
     body("title").notEmpty().withMessage("제목이 없습니다."),
     body("content").notEmpty().withMessage("내용이 없습니다."),
@@ -132,7 +132,7 @@ exports.updateCampaignValidator = () => {
   ];
 };
 
-exports.campaignImageCreateValidator = () => {
+const campaignImageCreateValidator = () => {
   return [
     check().custom((value, { req }) => {
       if (!req.file?.path) {
@@ -144,9 +144,44 @@ exports.campaignImageCreateValidator = () => {
   ];
 };
 
-exports.campaignIdCheckValidator = () => {
+const campaignIdCheckValidator = () => {
   return [
     param("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
     validate,
   ];
+};
+
+const createCommentValidator = () => {
+  return [
+    body("content").notEmpty().withMessage("내용이 없습니다."),
+    body("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
+    validate,
+  ];
+};
+
+const putCommentValidator = () => {
+  return [
+    param("commentId").notEmpty().withMessage("댓글 아이디가 없습니다."),
+    body("content").notEmpty().withMessage("내용이 없습니다."),
+    validate,
+  ];
+};
+
+const deleteCommentValidator = () => {
+  return [
+    param("commentId").notEmpty().withMessage("댓글 아이디가 없습니다."),
+    validate,
+  ];
+};
+
+export {
+  campaignCreateValidator,
+  getCampaignValidator,
+  updateCampaignValidator,
+  deleteCampaignValidator,
+  campaignImageCreateValidator,
+  campaignIdCheckValidator,
+  createCommentValidator,
+  putCommentValidator,
+  deleteCommentValidator,
 };
