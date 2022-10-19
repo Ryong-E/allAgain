@@ -7,7 +7,7 @@ import UserImgBox from "./UserImgBox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCommentApi } from "../../api/commentsApi";
 import { CREATE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
-import { loggedInUserId } from "../../atoms/atoms";
+import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 import { useRecoilValue } from "recoil";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
@@ -64,10 +64,10 @@ export interface CommentData {
 export default function CampaignCommentWrite({
   pathID,
   commentId,
-  userImg
 }: CommentData) {
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(loggedInUserId);
+  const userImg = useRecoilValue(loggedInUserImgUrl);
   const navigate = useNavigate();
   const {pathname} = useLocation();
   const categotry = pathname.split("/")[1];

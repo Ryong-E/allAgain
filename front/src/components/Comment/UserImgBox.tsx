@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import profileIcon from '../../assets/images/icons/icon_profile.png';
 
 const UserImgWrap = styled.div`
   margin: 0 20px;
@@ -11,7 +10,7 @@ const UserImgWrap = styled.div`
   overflow:hidden;
 `
 interface UserImgType{
-  userImg ?: String;
+  userImg : String | null;
 }
 export default function UserImgBox({userImg}: UserImgType) {
   return (

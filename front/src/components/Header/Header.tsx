@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import NavBar from '../Nav/NavBar';
 import { ROUTE } from '../../constant/route';
@@ -52,20 +52,63 @@ const LandingHeader = styled.header`
   z-index: 1000;
 `;
 
+
+const buttonAni = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  84% {
+    opacity: 0.2;
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(18);
+  }
+`
+
 const LandingHeaderBtnWrap = styled.div`
-  background: #496B7B;
+  position: relative;
+  background: rgba(73, 107, 123, .9);
   color: #ffffff;
   width: 180px;
   padding: 12px;
   text-align: center;
+  font-weight: 300;
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  font-family: 'MapoFlowerIsland';
-  font-size: 17px;
 
   a {
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, .2);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: ${buttonAni} 6s infinite ease-out;
+    opacity: 0;
+
+    &:nth-child(2) {
+      animation-delay: -.3s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: -.6s;
+    }
   }
 `;
 
@@ -102,7 +145,7 @@ const HeaderLoginBtnWrap = styled.div`
 `;
 
 
-export default function Header( props: any ) {
+export default function Header() {
 
   const location = useLocation();
   const pathName = location.pathname;
@@ -134,6 +177,9 @@ export default function Header( props: any ) {
         <LandingHeader>
           <LandingHeaderBtnWrap>
             <Link to={ROUTE.LOGIN.link}>다시, 다 사용하기</Link>
+            <span></span>
+            <span></span>
+            <span></span>
           </LandingHeaderBtnWrap>
         </ LandingHeader>
       )

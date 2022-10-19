@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import CampaignUtilsBox from "./CommentUtilsBox";
 import CommentWrite from "./CommentWrite";
 import CommentItem from "./CommentItem";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { campaignDumData, commentDumData } from "../../atoms/atoms";
 import { useParams } from "react-router-dom";
 import { CommentItemArrType, CommentItemType } from "../../types/campaignTypes";
 
