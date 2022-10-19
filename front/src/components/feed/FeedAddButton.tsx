@@ -2,11 +2,15 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AddIcon from "../../assets/images/icons/icon_plus.png";
 
-function FeedAddButton() {
+interface FeedAddButtonProps {
+  navLink: string;
+}
+
+function FeedAddButton({ navLink }: FeedAddButtonProps) {
   const navigator = useNavigate();
 
   const handleFeedAddClick = () => {
-    navigator("/feed/add");
+    navigator(navLink);
   };
 
   return (
@@ -15,6 +19,10 @@ function FeedAddButton() {
     </AddButton>
   );
 }
+
+FeedAddButton.defaultProps = {
+  navLink: "/feed/add",
+};
 
 const AddButton = styled.button`
   overflow: hidden;

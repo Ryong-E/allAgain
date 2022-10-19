@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LikeListToggle from "../common/LikeListToggle";
 import ListSelectTab from "./ListSelectTab";
@@ -14,14 +14,10 @@ function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
   const [isSelected, setIsSelected] = useState<boolean>(true);
   const [isLike, setIsLike] = useState<boolean>(false);
 
-  const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsLike(!isLike);
-  };
-
   return (
     <UserListContainer>
       <UserLikeButtonContainer>
-        {isMyDetail && <LikeListToggle />}
+        {isMyDetail && <LikeListToggle setLikeActive={setIsLike} />}
       </UserLikeButtonContainer>
       <ListSelectTab isActive={isSelected} setIsActive={setIsSelected} />
       {isSelected ? (
