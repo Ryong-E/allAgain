@@ -128,7 +128,11 @@ export default function CampaignForm({
       for (let [key, value] of Object.entries(data)) {
         if (key == "thumbnail") {
           formData.append("thumbnail", data.thumbnail[0]);
-        } else {
+        } 
+        else if(key == 'title'){
+          formData.append('title',data.title.trim())
+        }
+        else {
           formData.append(key, value);
         }
       }
