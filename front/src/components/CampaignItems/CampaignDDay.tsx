@@ -9,7 +9,7 @@ interface CampaignDDay{
 }
 
 export default function CampaignDDay({status,  endDate, recruitmentNumber, endEvent}: CampaignDDay) {
-  const fixDate = String(endDate).slice(0,10);
+  const fixDate = String(endDate);
   let D_DAY = new Date(fixDate);
   const todayTime = new Date();
   const remainingDate = Number(D_DAY) - Number(todayTime);

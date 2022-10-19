@@ -7,8 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { MyProfile, User } from "../../types/userTypes";
 import { GET_PROFILE } from "../../constant/queryKeys";
 import { getUserProfile } from "../../api/userApi";
-import { useSetRecoilState } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
+import { useRecoilState } from "recoil";
 
 const HeaderUtilWrap = styled.div`
   position: absolute;
@@ -86,8 +86,7 @@ const HeaderUtilBox = styled.div`
 export default function HeaderUtils() {
   const navigate = useNavigate();
   const [utilBox, setUtilBox] = useState(false);
-  const setCurrentUserId = useSetRecoilState(loggedInUserId);
-
+  const [isLogin, setIsLogin] = useRecoilState(loggedInUserId);
   const utilBoxRef = useRef<HTMLDivElement>(null);
   const utilButtonRef = useRef<HTMLDivElement>(null);
 
@@ -115,7 +114,7 @@ export default function HeaderUtils() {
 
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
-    setCurrentUserId(null);
+    setIsLogin(null);
     navigate(ROUTE.LOGIN.link);
   };
 

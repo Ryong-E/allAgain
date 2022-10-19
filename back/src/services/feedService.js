@@ -66,6 +66,35 @@ const feedService = {
     const author = await User.findByUserId({ userId });
     const { image, nickname } = author[0];
     const authorImageUrl = makeImageUrl('profiles', String(image));
+
+    const comments = await Feed.findAllCommentsByFeedId({ feedId });
+    const filteredComments = [];
+
+    for (let comment of comments) {
+      const {
+        comment_id: commentId,
+        user_id: commentUserId,
+        content: commentContent,
+        root_comment_id: rootCommentId,
+        timestamp,
+        nickname: commentUserNickname,
+        image: commentUserImage,
+      } = comment;
+
+      const commentUserImageUrl = makeImageUrl('profiles', commentUserImage);
+      filteredComments.push({
+        commentId,
+        content: commentContent,
+        rootCommentId,
+        timestamp,
+        writer: {
+          userId: commentUserId,
+          nickname: commentUserNickname,
+          image: commentUserImageUrl,
+        },
+      });
+    }
+
     const feed = {
       feedId,
       userId,
@@ -77,6 +106,7 @@ const feedService = {
       likes: likeList,
       authorImageUrl,
       nickname,
+      comments: filteredComments,
     };
     return feed;
   },
@@ -160,6 +190,47 @@ const feedService = {
       likeList.push({ likeId: like['id'], userId: like['user_id'] });
     }
     return likeList;
+  },
+  postComment: async ({ currentUserId, feedId, content, rootCommentId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const feed = await Feed.findFeedByFeedId({ feedId });
+
+    if (rootCommentId) {
+      const comment = await Feed.findCommentByCommentId({
+        commentId: rootCommentId,
+      });
+    }
+
+    await Feed.createComment({
+      feedId,
+      userId: currentUserId,
+      content,
+      rootCommentId: rootCommentId || undefined,
+    });
+
+    return '댓글 생성 완료';
+  },
+  updateComment: async ({ commentId, content, currentUserId }) => {
+    const comment = await Feed.findCommentByCommentId({ commentId });
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error('수정 권한이 없습니다.');
+    }
+
+    await Feed.updateComment({ commentId, content });
+
+    return '댓글 수정 완료';
+  },
+  deleteComment: async ({ currentUserId, commentId }) => {
+    const comment = await Feed.findCommentByCommentId({ commentId });
+
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error('삭제 권한이 없습니다.');
+    }
+
+    await Feed.deleteComment({ commentId });
+
+    return '댓글 삭제 완료';
   },
 };
 

@@ -20,15 +20,10 @@ const UploadFile = styled.input`
   display: none;
 `;
 const UploadFileLabel = styled.label`
-  // display:inline-block;
-  // margin-bottom:10px;
-  // padding:8px 15px;
   line-height: normal;
   border-radius: 5px;
-  // background-color:#928b7a;
   color: white;
   cursor: pointer;
-  // box-shadow: 1px 1px 5px rgba(0,0,0,0.6);
   position: relative;
   background: ${({ theme }) => theme.colors.darkBeige};
   width: 160px;

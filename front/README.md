@@ -1,46 +1,155 @@
-# Getting Started with Create React App
+<h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#343434">다시,다</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 목차
+1.[소개](#📋소개)
 
-## Available Scripts
+2.[기획서](#📜기획서)
 
-In the project directory, you can run:
+3.[프로젝트 소개](#프로젝트-소개)
+- [주요기능](#주요-기능)
+- [적용 기술](#사용-기술)
 
-### `npm start`
+4.기타
+- [추후 기능 목표](#추후-기능-목표)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+5.팀원목록
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# 📋소개
+생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 "<strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#343434">다시, 다</strong>"프로젝트입니다
 
-### `npm test`
+팀 소개를 먼저 하겠습니다 프로젝트명 "다시, 다"는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+이번 프로젝트에서는 업사이클링을 권장하는 서비스를 제공합니다
 
-### `npm run build`
+## 사용 기술
+`Front-End` 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=Typescript&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+<img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat-square&logo=ReactQuery&logoColor=white"/>
+<img src="https://img.shields.io/badge/styledcomponents-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=Axios&logoColor=white"/>
+<img src="https://img.shields.io/badge/ReactHookForm-EC5990?style=flat-square&logo=ReactHookForm&logoColor=white"/>
+<img src="https://img.shields.io/badge/Recoil-black?style=flat-square&logo=Recoil&logoColor=white"/>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
+`Back-End`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<img src="https://img.shields.io/badge/node-339933?style=flat-square&logo=Node.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/Multer-F46519?style=flat-square&logo=Multer&logoColor=white"/>
+<img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/>
+<img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&logo=Mysql&logoColor=white"/>
 
-### `npm run eject`
+---
+`Data-Analysis`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<img src="https://img.shields.io/badge/GoogleColab-F9AB00?style=flat-square&logo=GoogleColab&logoColor=white"/>
+<img src="https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=Pandas&logoColor=white"/>
+<img src="https://img.shields.io/badge/Numpy-013243?style=flat-square&logo=Numpy&logoColor=white"/>
+<img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/>
+<img src="https://img.shields.io/badge/seaborn-2081E2?style=flat-square&logo=seaborn&logoColor=white"/>
+<img src="https://img.shields.io/badge/Matplotlib-000?style=flat-square&logo=Matplotlib&logoColor=white"/>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# 📜기획서
 
-## Learn More
+-  ## 문제인식
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    국내 생활쓰레기 배출량은 매년 꾸준히 증가하고있습니다. 그 원인에는 다양한 이유들이 있겠지만 짦은 유행과 그에 따른 소비 트렌드 변화,배달/택배 서비스 등의 증가로 인한 일회용 쓰레기의 증가 등을 생각해볼 수 있습니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    <환경인식 그래프 이미지>
+
+    사람들은 현재 환경문제에 대한 불안감이 높은 편으로 나타납니다  
+
+    <노력한 그래프>
+
+    하지만 그에비해 환경을 위한 노력은 하지않는다는 것을 알고있습니다.
+
+    기업차원에서도 환경문제에 대해 해결하고 캠페인 등을 진행하고 있지만 개인적인 차원에서 해결할 수 있는 방안이 별로 알려지지않고 진행되지 않고있습니다.
+
+    사람들에게 환경문제가 얼마나 심각하고 해결방안으로는 개인이 할 수있는 것이 무엇인지 알려줄 필요가있다고 생각이 들었습니다
+
+- ## 기획의도(문제해결)
+    환경문제 해결방안 중 개인들이 쉽게 접하고 실천할 수 있는 방안 중에 **업사이클링**에 집중을 하였습니다.
+
+    **'업사이클링'**은 리사이클링(재활용)보다 확장된 개념으로 버려지는 제품을 기능성과 심미성을 갖춘, 새로운 차원의 부가가치를 지닌 제품으로 재탄생 시키는 것입니다.
+
+    업사이클링이라는 개념 인지자의 대다수가 관심은 있지만, 일상에서 적극적으로 실천은 하지 못하고 있는 모습을 보입니다.
+
+    이는 업사이클링 제품에 대한 호기심이 있어도 제품을 주변에서 쉽게 체험해보기가 힘들기 떄문으로 보여집니다
+
+    업사이클링 제품의 접근성을 높인다면 관심도도 높아져 환경문제에 대해 많은 도움이 될 것으로 예상됩니다.
+
+    * ### 문제해결
+        개인의 일상에서 실현 가능한 업사이클링 제품에 대한 아이디어를 공유하고,
+
+        클래스를 통해 업사이클 제품을 직접 제작하도록 제공하며,
+
+        다른 사람들과 함께 캠페인에 참ㅇ여하여 업사이클링 제품을 필요한 곳에 기부합니다
+- ## 프로젝트 소개
+
+    ### 주요 기능
+
+    - 피드
+
+        * 자신의 업사이클링 아이디어와 제품을 공유
+        * 좋아요기능
+        * 팔로우 기능 (해당 게시글 작성자를 팔로우하여 지속적으로 해당 작성자 게시글을 볼 수 있는 기능)
+        * 업사이클링과 관련 클래스(동영상) 보기
+    - 캠페인
+        * 캠페인 게시글 생성
+        * 좋아요 기능
+        * 참여기능 (모집인원 초과시 참여 불가눙)
+
+
+    
+- ## 추후 기능 목표
+
+    * 알림기능
+    * 게시글 신고 기능
+    * 무한 스크롤
+    
+
+# 폴더구조
+
+```
+🖥 front
+├─ 📁node_modules
+├─ 📁public
+└─ 📁src 
+   ├─ 📁api
+   ├─ 📁assets
+   │  ├─ 📁fonts
+   │  └─ 📁images
+   ├─ 📁atoms
+   ├─ 📁components
+   │  ├─ 📁CampaignItems
+   │  ├─ 📁Comment
+   │  ├─ 📁common
+   │  ├─ 📁Feed
+   │  ├─ 📁Footer
+   │  ├─ 📁Header
+   │  ├─ 📁Landing
+   │  ├─ 📁Login
+   │  ├─ 📁Main
+   │  ├─ 📁Nav
+   │  ├─ 📁Profile
+   │  └─ 📁Register
+   ├─ 📁constant
+   ├─ 📁hoc
+   ├─ 📁pages
+   │  ├─ 📁CampaignPage
+   │  ├─ 📁FeedPage
+   │  ├─ 📁LandingPage
+   │  ├─ 📁LoginPage
+   │  ├─ 📁MainPage
+   │  ├─ 📁ProfilePage
+   │  └─ 📁RegisterPage
+   ├─ 📁styles
+   ├─ 📁types
+   └─ 📁utils
+```
+
+

@@ -9,6 +9,9 @@ import {
   deleteCampaignValidator,
   campaignImageCreateValidator,
   campaignIdCheckValidator,
+  createCommentValidator,
+  putCommentValidator,
+  deleteCommentValidator,
 } from "../middlewares/campaignValidator";
 
 const campaignRouter = Router();
@@ -37,9 +40,20 @@ campaignRouter.post(
   }
 );
 
-campaignRouter.get("/", async (req, res, next) => {
+campaignRouter.get("/", loginRequired, async (req, res, next) => {
   try {
-    const campaigns = await campaignService.getAllCampaigns();
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getAllCampaigns({ currentUserId });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/guest", async (req, res, next) => {
+  try {
+    const campaigns = await campaignService.getAllCampaignsForGuest();
 
     res.status(200).json(campaigns);
   } catch (error) {
@@ -192,4 +206,167 @@ campaignRouter.delete(
     }
   }
 );
+
+campaignRouter.post(
+  "/:campaignId/likes",
+  loginRequired,
+  campaignIdCheckValidator(),
+  async (req, res, next) => {
+    try {
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
+
+      const participatedCampaign = await campaignService.postLike({
+        currentUserId,
+        campaignId,
+      });
+
+      res.status(201).json(participatedCampaign);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/:campaignId/likes",
+  loginRequired,
+  campaignIdCheckValidator(),
+  async (req, res, next) => {
+    try {
+      const { currentUserId } = req;
+      const { campaignId } = req.params;
+
+      const canceledLike = await campaignService.deleteLike({
+        currentUserId,
+        campaignId,
+      });
+
+      res.status(204).json(canceledLike);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.post(
+  "/campaign/comments",
+  createCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { currentUserId } = req;
+      const { campaignId, content, rootCommentId } = req.body;
+
+      const createdComment = await campaignService.postComment({
+        currentUserId,
+        campaignId,
+        content,
+        rootCommentId,
+      });
+
+      res.status(201).json(createdComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.put(
+  "/campaign/:commentId",
+  putCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { content } = req.body;
+      const { currentUserId } = req;
+
+      const updatedComment = await campaignService.updateComment({
+        commentId,
+        content,
+        currentUserId,
+      });
+
+      res.status(201).json(updatedComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.delete(
+  "/campaign/:commentId",
+  deleteCommentValidator(),
+  loginRequired,
+  async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { currentUserId } = req;
+
+      const deletedComment = await campaignService.deleteComment({
+        currentUserId,
+        commentId,
+      });
+
+      res.status(204).json(deletedComment);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+campaignRouter.get("/participated", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getParticipatedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/liked", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getLikedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaigns({
+      currentUserId,
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaignsForGuest({
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
 export { campaignRouter };

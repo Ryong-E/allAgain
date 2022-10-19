@@ -153,6 +153,69 @@ const Feed = {
       throw error;
     }
   },
+  createComment: async ({ feedId, userId, content, rootCommentId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO feed_comments(feed_id, user_id, content, root_comment_id) VALUES(?,?,?,?)",
+        [feedId, userId, content, rootCommentId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findCommentByCommentId: async ({ commentId }) => {
+    try {
+      const comment = await promisePool.query(
+        "SELECT * FROM feed_comments WHERE id = ?",
+        [commentId]
+      );
+
+      if (comment[0].length === 0) {
+        throw new Error("존재하지 않는 댓글입니다.");
+      }
+
+      return comment[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  findAllCommentsByFeedId: async ({ feedId }) => {
+    try {
+      const comments = await promisePool.query(
+        "SELECT *, feed_comments.id as comment_id FROM feed_comments JOIN users ON feed_comments.user_id = users.id WHERE feed_comments.feed_id = ?",
+        [feedId]
+      );
+
+      return comments[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteComment: async ({ commentId }) => {
+    try {
+      await promisePool.query(
+        "DELETE FROM feed_comments WHERE id = ?",
+        commentId
+      );
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateComment: async ({ commentId, content }) => {
+    try {
+      await promisePool.query(
+        "UPDATE feed_comments SET content = ? WHERE id = ?",
+        [content, commentId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export { Feed };
