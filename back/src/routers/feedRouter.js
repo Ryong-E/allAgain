@@ -51,7 +51,7 @@ feedRouter.get("/user/:userId", async (req, res, next) => {
   }
 });
 
-feedRouter.get("/user/:userId/likes", async (req, res, next) => {
+feedRouter.get("/user/:userId/likes", loginRequired, async (req, res, next) => {
   try {
     const { userId } = req.params;
     const feeds = await feedService.getLikedFeedsByUserId({ userId });

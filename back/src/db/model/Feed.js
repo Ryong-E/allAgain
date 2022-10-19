@@ -78,10 +78,10 @@ const Feed = {
   findLikedFeedsByUserId: async ({ userId }) => {
     try {
       const feeds = await promisePool.query(
-        "SELECT * FROM feeds JOIN feeds_likes WHERE feeds.id = feeds_likes.feed_id and feeds_likes.user_id = ?",
+        "SELECT * FROM feeds JOIN feed_likes WHERE feeds.id = feed_likes.feed_id and feed_likes.user_id = ? ORDER BY feed_likes.id desc",
         userId
       );
-      return feeds;
+      return feeds[0];
     } catch (error) {
       throw error;
     }
