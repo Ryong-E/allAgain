@@ -37,7 +37,7 @@ export const getFeed = async (feedId: number) => {
 
 export const getFeedByUserId = async (userId: string) => {
   try {
-    const response = await feedApi().get<FeedType[]>(`${userId}`);
+    const response = await feedApi().get<FeedType[]>(`user/${userId}`);
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -65,6 +65,7 @@ export const createFeed = async ({
       tags,
       imageUrls,
       description,
+      datetime: new Date().toJSON(),
     });
     return response.data;
   } catch (err: any) {
@@ -81,7 +82,7 @@ export const updateFeed = async ({
   description,
 }: FeedType) => {
   try {
-    const response = await feedApi().put("", {
+    const response = await feedApi().put(`${feedId}`, {
       feedId,
       userId,
       category,
