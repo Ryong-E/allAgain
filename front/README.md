@@ -1,23 +1,25 @@
-<h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#343434">다시,다</h1>
+<h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#000">"다시, 다"</h1>
 
 # 목차
-1.[소개](#📋소개)
+1. [소개](#📋소개)
 
-2.[기획서](#📜기획서)
+2. [기획서](#📜기획서)
+    - [문제인식](#문제인식)
+    - [문제해결](#문제해결) 
 
-3.[프로젝트 소개](#프로젝트-소개)
-- [주요기능](#주요-기능)
-- [적용 기술](#사용-기술)
+3. [프로젝트 소개](#프로젝트-소개)
+    - [주요기능](#주요-기능)
+    - [기대효과](#기대효과)
+    - [추후 기능 목표](#추후-기능-목표)
 
-4.기타
-- [추후 기능 목표](#추후-기능-목표)
+4. [폴더구조](#폴더구조)
 
-5.팀원목록
+5. [팀원소개](#팀원-소개)
 
 # 📋소개
-생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 "<strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#343434">다시, 다</strong>"프로젝트입니다
+생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000;border-radius:3px;">"다시, 다"</strong>프로젝트입니다
 
-팀 소개를 먼저 하겠습니다 프로젝트명 "다시, 다"는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
+팀 소개를 먼저 하겠습니다 프로젝트명 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000">"다시, 다"</strong>는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
 
 이번 프로젝트에서는 업사이클링을 권장하는 서비스를 제공합니다
 
@@ -50,6 +52,8 @@
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/>
 <img src="https://img.shields.io/badge/seaborn-2081E2?style=flat-square&logo=seaborn&logoColor=white"/>
 <img src="https://img.shields.io/badge/Matplotlib-000?style=flat-square&logo=Matplotlib&logoColor=white"/>
+
+--- 
 
 
 
@@ -88,10 +92,10 @@
         클래스를 통해 업사이클 제품을 직접 제작하도록 제공하며,
 
         다른 사람들과 함께 캠페인에 참ㅇ여하여 업사이클링 제품을 필요한 곳에 기부합니다
-- ## 프로젝트 소개
+---
+# 프로젝트 소개
 
-    ### 주요 기능
-
+- ## 주요 기능
     - 피드
 
         * 자신의 업사이클링 아이디어와 제품을 공유
@@ -103,14 +107,16 @@
         * 좋아요 기능
         * 참여기능 (모집인원 초과시 참여 불가눙)
 
-
+    ### 기대효과
+    사람들이 업사이클링에 쉽게 접근하고 물품들을 보면서 관심도가 올라가 업사이클링 제품을 사용하고 업사이클링을 많이 참여할 것 이라고 예상됩니다.
     
-- ## 추후 기능 목표
+    ### 추후 기능 목표
 
     * 알림기능
     * 게시글 신고 기능
     * 무한 스크롤
-    
+
+---
 
 # 폴더구조
 
@@ -152,4 +158,26 @@
    └─ 📁utils
 ```
 
+# 팀원 소개 
+
+|이름|담당업무|
+| :---: | :---:|
+|정소희|팀장/프론트엔드/디자인|
+|오다현|프론트엔드/데이터분석|
+|김경원|프론트엔드/데이터분석|
+|한동룡|프론트엔드/디자인|
+|신채민|백엔드/데이터분석|
+|이재희|백엔드/데이터분석|
+
+**멤버별 responsibility**
+
+1. 팀장
+2. 프론트엔트
+3. 백엔드
+4. 데이터분석
+5. 디자인
+
+# 버전
+
+# FAQ
 

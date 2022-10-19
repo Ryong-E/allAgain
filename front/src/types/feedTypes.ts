@@ -1,3 +1,5 @@
+import { CommentItemType } from "./campaignTypes";
+
 export interface FeedLikeType {
   likeId: number;
   userId: number;
@@ -13,6 +15,7 @@ export interface FeedType {
   likes?: FeedLikeType[];
   authorImageUrl?: string;
   nickname?: string;
+  comments?: CommentItemType[];
 }
 
 export interface CreateFeedType {

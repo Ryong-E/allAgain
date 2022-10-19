@@ -25,7 +25,7 @@ export default function Comments({ comments }: CommentItemArrType) {
   const [lastIdx, setLastIdx] = useState(-1);
   return (
     <CommentContainer>
-      <CommentWrite pathID={Number(pathID)} />
+      <CommentWrite pathID={Number(pathID)}  />
       <CommentListBox>
         {filteredComments.map((props: CommentItemType) => (
           <CommentItem

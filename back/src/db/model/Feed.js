@@ -75,6 +75,17 @@ const Feed = {
       throw error;
     }
   },
+  findLikedFeedsByUserId: async ({ userId }) => {
+    try {
+      const feeds = await promisePool.query(
+        "SELECT * FROM feeds JOIN feed_likes WHERE feeds.id = feed_likes.feed_id and feed_likes.user_id = ? ORDER BY feed_likes.id desc",
+        userId
+      );
+      return feeds[0];
+    } catch (error) {
+      throw error;
+    }
+  },
   updateFeed: async ({ feedId, category, tags, imageUrls, description }) => {
     const connection = await promisePool.getConnection(async (conn) => conn);
     try {
@@ -141,6 +152,17 @@ const Feed = {
         likeId
       );
       return like;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findLikeByFeedIdAndUserId: async ({ feedId, userId }) => {
+    try {
+      const likes = await promisePool.query(
+        "SELECT count(*) FROM feed_likes WHERE feed_id = ? and user_id = ?",
+        [feedId, userId]
+      );
+      return likes[0][0]["count(*)"];
     } catch (error) {
       throw error;
     }

@@ -13,8 +13,14 @@ import CampaignCreatePage from "../pages/CampaignPage/CampaignCreatePage";
 import CampaignUpdatePage from "../pages/CampaignPage/CampaignUpdatePage";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import UserDetailPage from "../pages/UserPage/UserDetailPage";
+import { NotFoundPage } from "../pages/NotFoundPage";
 
 export const ROUTE = {
+  NOT_FOUND: {
+    path: "*",
+    element: NotFoundPage,
+    authenticated: false,
+  },
   HOME: {
     path: "/",
     link: "/",

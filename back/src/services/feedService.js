@@ -136,6 +136,32 @@ const feedService = {
     }
     return feedList;
   },
+  getLikedFeedsByUserId: async ({ userId }) => {
+    const feedData = await Feed.findLikedFeedsByUserId({ userId });
+    const feedList = [];
+    for (const item of feedData) {
+      const feedId = item.feed_id;
+      const imageUrls = await imageService.getImageUrls({ feedId });
+      const likeList = await feedService.getLikes({ feedId });
+      const author = await User.findByUserId({ userId: item.user_id });
+      const { image, nickname } = author[0];
+      const authorImageUrl = makeImageUrl("profiles", String(image));
+      const feed = {
+        feedId,
+        userId: item.user_id,
+        category: item.category,
+        tags: item.tags,
+        imageUrls: imageUrls,
+        description: item.description,
+        datetime: item.datetime,
+        likes: likeList,
+        authorImageUrl,
+        nickname,
+      };
+      feedList.push(feed);
+    }
+    return feedList;
+  },
   updateFeed: async ({
     currentUserId,
     feedId,
@@ -171,6 +197,7 @@ const feedService = {
     return deletedFeed;
   },
   postLike: async ({ feedId, userId }) => {
+    await feedService.getLikeByFeedIdAndUserId({ feedId, userId });
     const likeId = await Feed.createLike({ feedId, userId });
     return likeId;
   },
@@ -190,6 +217,10 @@ const feedService = {
       likeList.push({ likeId: like['id'], userId: like['user_id'] });
     }
     return likeList;
+  },
+  getLikeByFeedIdAndUserId: async ({ feedId, userId }) => {
+    const likes = await Feed.findLikeByFeedIdAndUserId({ feedId, userId });
+    if (likes > 0) throw new Error("이미 좋아요한 피드입니다.");
   },
   postComment: async ({ currentUserId, feedId, content, rootCommentId }) => {
     const user = await User.findByUserId({ userId: currentUserId });

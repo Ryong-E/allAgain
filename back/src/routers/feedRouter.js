@@ -51,6 +51,16 @@ feedRouter.get("/user/:userId", async (req, res, next) => {
   }
 });
 
+feedRouter.get("/user/:userId/likes", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const feeds = await feedService.getLikedFeedsByUserId({ userId });
+    res.status(200).send(feeds);
+  } catch (error) {
+    next(error);
+  }
+});
+
 feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;

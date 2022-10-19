@@ -14,12 +14,13 @@ interface ReComment{
   pathID : number;
   commentId : number;
   filteredComment : CommentItemType[];
+  userImg: String;
 }
 
-export default function ReCommentBox({pathID, commentId, isShowReComment, lastIdx, filteredComment}: ReComment) {
+export default function ReCommentBox({pathID, commentId, isShowReComment, lastIdx, filteredComment, userImg}: ReComment) {
   return (
     <ReCommentItem>
-      {(isShowReComment && (lastIdx === commentId)) && <CampaignCommentWrite pathID={pathID} commentId={commentId} />}
+      {(isShowReComment && (lastIdx === commentId)) && <CampaignCommentWrite pathID={pathID} commentId={commentId} userImg={userImg} />}
       {filteredComment.map((props)=>(
         <CommentItem {...props} key={props.commentId + Date.now()} />
       ))}
