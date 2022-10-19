@@ -63,7 +63,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
           {(isSameUser) && <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />}
         </>
       ) : (
-        <CampaignComment />
+        <CampaignComment comments={props.comments!} />
       )}
     </> 
   );

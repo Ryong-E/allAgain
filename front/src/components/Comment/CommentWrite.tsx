@@ -6,6 +6,8 @@ import sendRedIcon from '../../assets/images/icons/icon_red_send.png';
 import UserImgBox from './UserImgBox';
 import { SetterOrUpdater, useRecoilState } from 'recoil';
 import { commentDumData } from '../../atoms/atoms';
+import { useMutation } from '@tanstack/react-query';
+import { createComment } from '../../api/commentsApi';
 
 const CommentWriteBox = styled.div`
   display: flex;
@@ -55,12 +57,13 @@ interface WriteInput {
 
 export interface CommentData{
   pathID : number;
-  userId ?: number;
+  commentId ?: number;
 }
 
 
 
-export default function CampaignCommentWrite({pathID,userId}: CommentData) {
+export default function CampaignCommentWrite({pathID,commentId}: CommentData) {
+  const createCommentMutate = useMutation(["createComments"], createComment);
   const [dumComment, setDumComment] = useRecoilState(commentDumData)
   const {
     register,
@@ -70,15 +73,7 @@ export default function CampaignCommentWrite({pathID,userId}: CommentData) {
     formState: { errors }
   } = useForm<WriteInput>();
   const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
-    const lastId = Number(dumComment[dumComment.length-1].userId) + 1
-    const newComment = {
-      campaign_id : pathID,
-      userId :  lastId,
-      root_comment_id : userId !== undefined ? `${userId}` : "",
-      content : commentWrite!,
-      userName :"김다시"
-    }
-    setDumComment((prev) => [ ...prev, newComment ])
+    createCommentMutate.mutate({campaignId:pathID,content:commentWrite!,rootCommentId : commentId !== null ? commentId! : null})
     reset()
   };
   const commentLength = watch('commentWrite')?.length;

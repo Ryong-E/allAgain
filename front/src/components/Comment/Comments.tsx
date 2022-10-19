@@ -6,6 +6,7 @@ import CommentItem from './CommentItem';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { campaignDumData, commentDumData } from '../../atoms/atoms';
 import { useParams } from 'react-router-dom';
+import { CommentItemArrType, CommentItemType } from '../../types/campaignTypes';
 
 const CommentContainer = styled.div`
   padding: 30px 70px;
@@ -19,22 +20,23 @@ const CommentListBox = styled.div``;
 
 
 
-export default function Comments() {
+export default function Comments({comments}: CommentItemArrType) {
   const {id : pathID} = useParams();
-  const [dumComment, setDumComment] = useRecoilState(commentDumData)
-  const filteredDumComment = dumComment.filter(ele => ele.campaign_id === Number(pathID) && ele.root_comment_id === "");
+  const filteredComments = comments.filter((ele : CommentItemType)  => ele.rootCommentId === null);
   const [lastIdx , setLastIdx] = useState(-1);
+  console.log(filteredComments)
   return (
     <CommentContainer>
       <CommentWrite pathID={Number(pathID)} />
       <CommentListBox>
-        {filteredDumComment?.map((props, idx)=>(
+        {comments!.map((props : CommentItemType, idx : number)=>(
           <CommentItem 
             {...props} 
+            comments ={comments}
             lastIdx = {lastIdx}
             setLastIdx = {setLastIdx}
             idx={idx}
-            key={props.campaign_id + props.userId + props.content}
+            key={props.commentId + props.writer.userId }
             pathID={Number(pathID)}
             />
         ))}

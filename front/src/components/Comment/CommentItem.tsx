@@ -6,6 +6,7 @@ import UserImgBox from './UserImgBox';
 import UserName from '../common/UserName';
 import { Link } from 'react-router-dom';
 import ReCommentBox from './ReCommentBox';
+import { CommentItemType } from '../../types/campaignTypes';
 
 const CommentBox = styled.div`
   display: flex;
@@ -44,19 +45,15 @@ const CommentBox = styled.div`
   }
 `;
 
-export interface CommentItem {
-  campaign_id : number;
-  userId: number;
-  root_comment_id: String;
-  content: String;
-  userName: String;
+export interface CommentItem extends CommentItemType{
   pathID ?: number;
   idx ?: number;
   lastIdx ?: number;
   setLastIdx ?: React.Dispatch<React.SetStateAction<number>>;
+  comments ?: CommentItemType[];
 };
 
-export default function CommentItem({campaign_id, userId, root_comment_id, content,userName, pathID, idx, setLastIdx, lastIdx }: CommentItem) {
+export default function CommentItem( {commentId, content, rootCommentId, timestamp, writer , pathID, idx, setLastIdx, lastIdx , comments} : CommentItem ) {
   const [isReComment, setIsReComment] = useState(false);
   const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
@@ -67,7 +64,7 @@ export default function CommentItem({campaign_id, userId, root_comment_id, conte
         <UserImgBox />
         <div className="commentTextBox">
           <Link to={`/user/:id`}>
-            <UserName userName={userName}/>
+            <UserName userName={writer.nickname}/>
           </Link>
           <div className="comment">
             {content.length >= 100 ? 
@@ -83,18 +80,19 @@ export default function CommentItem({campaign_id, userId, root_comment_id, conte
               setShowIsReComment={setShowIsReComment}
               isReComment={isReComment}
               setIsReComment={setIsReComment}
-              root_comment_id={root_comment_id}
-              userId={userId}
+              rootCommentId={rootCommentId}
+              userId={writer.userId}
               setLastIdx={setLastIdx!}/>
         </div>
       </CommentBox>
       {isReComment && 
         <ReCommentBox 
+          comments={comments!}
           lastIdx={lastIdx!}
           idx={idx!}  
           isShowReComment={isShowReComment} 
           pathID={pathID!} 
-          userId={userId}  />
+          commentId={commentId}  />
       }
     </>
   );
