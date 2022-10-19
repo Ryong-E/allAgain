@@ -1,4 +1,4 @@
-<h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#343434">다시,다</h1>
+<h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#000">"다시, 다"</h1>
 
 # 목차
 1. [소개](#📋소개)
@@ -17,9 +17,9 @@
 5. [팀원소개](#팀원-소개)
 
 # 📋소개
-생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:white;background-color:#004D49;border-radius:3px;">"다시, 다"</strong>프로젝트입니다
+생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000;border-radius:3px;">"다시, 다"</strong>프로젝트입니다
 
-팀 소개를 먼저 하겠습니다 프로젝트명 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#343434">"다시, 다"</strong>는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
+팀 소개를 먼저 하겠습니다 프로젝트명 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000">"다시, 다"</strong>는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
 
 이번 프로젝트에서는 업사이클링을 권장하는 서비스를 제공합니다
 
