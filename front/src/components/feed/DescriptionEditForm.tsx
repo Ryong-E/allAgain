@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
+import { getUserProfile } from "../../api/userApi";
 import { FeedFormValues } from "../../types/feedTypes";
 import AuthorInfo from "./AuthorInfo";
 
@@ -7,17 +9,21 @@ interface DescriptionEditFormProps {
   description: string;
   register: UseFormRegister<FeedFormValues>;
   errors?: string;
+  userId: number;
 }
 
 function DescriptionEditForm({
   register,
   description,
   errors,
+  userId,
 }: DescriptionEditFormProps) {
+  const { data } = useQuery(["MyInfo"], getUserProfile);
+
   return (
     <DescriptionContainer>
       <DescriptionHeader>
-        <AuthorInfo size="detail" userId={132132} />
+        <AuthorInfo size="detail" userId={userId} isEditing={true} {...data} />
       </DescriptionHeader>
       <DescriptionSection
         defaultValue={description && description}

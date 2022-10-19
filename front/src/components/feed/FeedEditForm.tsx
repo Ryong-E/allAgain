@@ -137,6 +137,7 @@ function FeedEditForm({
       />
       <TextContainer>
         <DescriptionEditForm
+          userId={userId}
           register={register}
           description={description}
           errors={errors.description?.message}

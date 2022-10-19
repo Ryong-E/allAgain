@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import FollowToggleSmall from "../common/FollowToggleSmall";
 import DefaultProfileBanner from "../../assets/images/icons/icon_profile.png";
 import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
+import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 interface authorInfoProps {
   size: "simple" | "detail";
@@ -20,12 +22,19 @@ function AuthorInfo({
   authorImageUrl,
   isEditing,
 }: authorInfoProps) {
+  const navigate = useNavigate();
+
+  const handleOnClick = useCallback(() => {
+    isEditing || navigate(`/user-detail/${userId}`);
+  }, [userId, isEditing, navigate]);
+
   return (
     <Container isAdmin={isAdmin}>
       <ProfileContainer>
         <AuthorProfile
           size={size}
           src={authorImageUrl ? authorImageUrl : DefaultProfileBanner}
+          onClick={handleOnClick}
         />
         <AuthorName isAdmin={isAdmin}>{nickname}</AuthorName>
         {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
@@ -37,6 +46,7 @@ function AuthorInfo({
 
 AuthorInfo.defaultProps = {
   isAdmin: false,
+  isEditing: false,
 };
 
 const Container = styled.div<{ isAdmin?: boolean }>`
