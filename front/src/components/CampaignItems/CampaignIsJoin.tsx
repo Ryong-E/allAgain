@@ -106,9 +106,9 @@ export default function CampaignIsJoin({
       cancleCampaign.mutate(campaignId);
     }
   };
-  const handleClickLoginLink = ()=>{
-    navigate(ROUTE.LOGIN.link)
-  }
+  const handleClickLoginLink = () => {
+    navigate(ROUTE.LOGIN.link);
+  };
   const statusClass =
     status === "모집 마감"
       ? "bright"
@@ -126,7 +126,7 @@ export default function CampaignIsJoin({
         className={`${isJoin ? "active" : ""} ${statusClass} ${isGuest}`}
         onClick={() => {
           isClickPossible && handleJoinCampaign(campaignId);
-          (status === "모집 중" && isLogin === null) && handleClickLoginLink();
+          status === "모집 중" && isLogin === null && handleClickLoginLink();
         }}
         disabled={fullOfCampaign}>
         {status === "모집 중" ? (
