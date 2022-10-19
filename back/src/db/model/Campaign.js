@@ -68,7 +68,7 @@ const Campaign = {
   findByUserId: async ({ userId }) => {
     try {
       const campaigns = await promisePool.query(
-        "SELECT * FROM campaigns WHERE user_id = ? ORDER BY id DESC",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
         [userId]
       );
 

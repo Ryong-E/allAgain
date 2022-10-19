@@ -341,4 +341,32 @@ campaignRouter.get("/liked", loginRequired, async (req, res, next) => {
     next(error);
   }
 });
+
+campaignRouter.get("/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaigns({
+      currentUserId,
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaignsForGuest({
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
 export { campaignRouter };

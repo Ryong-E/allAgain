@@ -37,7 +37,7 @@ const campaignService = {
     const campaigns = await Campaign.findByUserId({ userId: currentUserId });
     await Campaign.createParticipant({
       userId: currentUserId,
-      campaignId: campaigns[0].id,
+      campaignId: campaigns[0].campaign_id,
     });
 
     return "캠페인 생성 완료";
@@ -577,6 +577,112 @@ const campaignService = {
         participantsCount,
         status,
         liked: true,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getUsersCampaigns: async ({ currentUserId, userId }) => {
+    const campaigns = await Campaign.findByUserId({ userId });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+      const liked = await Campaign.findExistenceLiked({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: liked ? true : false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getUsersCampaignsForGuest: async ({ userId }) => {
+    const campaigns = await Campaign.findByUserId({ userId });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: false,
         writer: {
           userId,
           nickname,
