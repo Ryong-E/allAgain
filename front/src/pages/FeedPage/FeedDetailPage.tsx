@@ -17,7 +17,7 @@ function FeedDetailPage() {
       refetchOnWindowFocus: false,
     }
   );
-
+    
   if (!isSuccess) {
     navigator(-1);
     return <></>;
@@ -27,7 +27,7 @@ function FeedDetailPage() {
     <Container>
       <Container1200>
         <FeedDetail {...data} />
-        {/* <Comments /> */}
+        {<Comments comments={data.comments!} />}
       </Container1200>
     </Container>
   );

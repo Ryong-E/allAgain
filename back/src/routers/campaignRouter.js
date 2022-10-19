@@ -40,9 +40,20 @@ campaignRouter.post(
   }
 );
 
-campaignRouter.get("/", async (req, res, next) => {
+campaignRouter.get("/", loginRequired, async (req, res, next) => {
   try {
-    const campaigns = await campaignService.getAllCampaigns();
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getAllCampaigns({ currentUserId });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/guest", async (req, res, next) => {
+  try {
+    const campaigns = await campaignService.getAllCampaignsForGuest();
 
     res.status(200).json(campaigns);
   } catch (error) {
@@ -304,4 +315,58 @@ campaignRouter.delete(
     }
   }
 );
+
+campaignRouter.get("/participated", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getParticipatedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/liked", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getLikedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaigns({
+      currentUserId,
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const campaigns = await campaignService.getUsersCampaignsForGuest({
+      userId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
 export { campaignRouter };

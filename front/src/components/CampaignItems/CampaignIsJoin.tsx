@@ -107,7 +107,9 @@ export default function CampaignIsJoin({
     }
   };
   const handleClickLoginLink = () => {
-    navigate(ROUTE.LOGIN.link);
+    if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
+      navigate(ROUTE.LOGIN.link);
+    }
   };
   const statusClass =
     status === "모집 마감"
@@ -134,7 +136,7 @@ export default function CampaignIsJoin({
             {fullOfCampaign ? (
               <>남은 자리가 없네요..</>
             ) : isLogin === null ? (
-              <>로그인 후 이용해 주세요</>
+              <>로그인 후 이용 가능합니다</>
             ) : (
               <>
                 <i></i>캠페인 참여하기

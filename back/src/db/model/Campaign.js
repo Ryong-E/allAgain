@@ -68,7 +68,7 @@ const Campaign = {
   findByUserId: async ({ userId }) => {
     try {
       const campaigns = await promisePool.query(
-        "SELECT * FROM campaigns WHERE user_id = ? ORDER BY id DESC",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
         [userId]
       );
 
@@ -196,14 +196,26 @@ const Campaign = {
       throw error;
     }
   },
-  findParticipantByUserId: async ({ userId }) => {
+  findParticipatedCampaignByUserId: async ({ userId }) => {
     try {
       const participatedCampaigns = await promisePool.query(
-        "SELECT * FROM campaign_participants JOIN campaigns ON campaigns.id = campaign_participants.campaign_id WHERE campaign_participants.user_id = ?",
+        "SELECT * FROM campaign_participants JOIN campaigns ON campaigns.id = campaign_participants.campaign_id JOIN users ON campaigns.user_id = users.id WHERE campaign_participants.user_id = ? ORDER BY campaigns.id DESC",
         [userId]
       );
 
       return participatedCampaigns[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  findLikedCampaignByUserId: async ({ userId }) => {
+    try {
+      const likedCampaigns = await promisePool.query(
+        "SELECT * FROM campaign_likes JOIN campaigns ON campaigns.id = campaign_likes.campaign_id JOIN users ON campaigns.user_id = users.id WHERE campaign_likes.user_id = ? ORDER BY campaigns.id DESC",
+        [userId]
+      );
+
+      return likedCampaigns[0];
     } catch (error) {
       throw error;
     }

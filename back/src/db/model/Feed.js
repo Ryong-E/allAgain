@@ -5,18 +5,25 @@ import { promisePool } from "..";
 // findFeedByUserIdAndFeedId
 
 const Feed = {
-  createFeed: async ({ userId, category, tags, imageUrls, description }) => {
+  createFeed: async ({
+    userId,
+    category,
+    tags,
+    imageUrls,
+    description,
+    datetime,
+  }) => {
     const connection = await promisePool.getConnection(async (conn) => conn);
     let feedId = "";
     try {
       await connection.beginTransaction();
       await connection.query(
-        "INSERT INTO feeds(user_id, category, tags, description) VALUES(?, ?, ?, ?)",
-        [userId, category, tags, description]
+        "INSERT INTO feeds(user_id, category, tags, description, datetime) VALUES(?, ?, ?, ?, ?)",
+        [userId, category, tags, description, datetime]
       );
       const insertedfeedIds = await connection.query(
-        "SELECT id FROM feeds WHERE user_id = ? and category = ? and tags = ? and description = ? ORDER BY id desc",
-        [userId, category, tags, description]
+        "SELECT id FROM feeds WHERE user_id = ? and category = ? and tags = ? and description = ? and datetime = ? ORDER BY id desc",
+        [userId, category, tags, description, datetime]
       );
       feedId = insertedfeedIds[0][0]["id"];
       for (const imageUrl of imageUrls) {
@@ -68,6 +75,17 @@ const Feed = {
       throw error;
     }
   },
+  findLikedFeedsByUserId: async ({ userId }) => {
+    try {
+      const feeds = await promisePool.query(
+        "SELECT * FROM feeds JOIN feed_likes WHERE feeds.id = feed_likes.feed_id and feed_likes.user_id = ? ORDER BY feed_likes.id desc",
+        userId
+      );
+      return feeds[0];
+    } catch (error) {
+      throw error;
+    }
+  },
   updateFeed: async ({ feedId, category, tags, imageUrls, description }) => {
     const connection = await promisePool.getConnection(async (conn) => conn);
     try {
@@ -101,6 +119,121 @@ const Feed = {
     try {
       await promisePool.query("DELETE FROM feeds WHERE id = ?", feedId);
       return "피드 삭제 완료";
+    } catch (error) {
+      throw error;
+    }
+  },
+  createLike: async ({ feedId, userId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO feed_likes(feed_id, user_id) VALUES(?, ?)",
+        [feedId, userId]
+      );
+      return "좋아요 완료";
+    } catch (error) {
+      throw error;
+    }
+  },
+  findAllLikesByFeedId: async ({ feedId }) => {
+    try {
+      const likeList = await promisePool.query(
+        "SELECT id, user_id FROM feed_likes WHERE feed_id = ?",
+        feedId
+      );
+      return likeList;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findLikeByLikeId: async ({ likeId }) => {
+    try {
+      const like = await promisePool.query(
+        "SELECT * FROM feed_likes WHERE id = ?",
+        likeId
+      );
+      return like;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findLikeByFeedIdAndUserId: async ({ feedId, userId }) => {
+    try {
+      const likes = await promisePool.query(
+        "SELECT count(*) FROM feed_likes WHERE feed_id = ? and user_id = ?",
+        [feedId, userId]
+      );
+      return likes[0][0]["count(*)"];
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteLike: async ({ likeId }) => {
+    try {
+      await promisePool.query("DELETE FROM feed_likes WHERE id = ?", likeId);
+      return "좋아요 취소 완료";
+    } catch (error) {
+      throw error;
+    }
+  },
+  createComment: async ({ feedId, userId, content, rootCommentId }) => {
+    try {
+      await promisePool.query(
+        "INSERT INTO feed_comments(feed_id, user_id, content, root_comment_id) VALUES(?,?,?,?)",
+        [feedId, userId, content, rootCommentId]
+      );
+
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findCommentByCommentId: async ({ commentId }) => {
+    try {
+      const comment = await promisePool.query(
+        "SELECT * FROM feed_comments WHERE id = ?",
+        [commentId]
+      );
+
+      if (comment[0].length === 0) {
+        throw new Error("존재하지 않는 댓글입니다.");
+      }
+
+      return comment[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  findAllCommentsByFeedId: async ({ feedId }) => {
+    try {
+      const comments = await promisePool.query(
+        "SELECT *, feed_comments.id as comment_id FROM feed_comments JOIN users ON feed_comments.user_id = users.id WHERE feed_comments.feed_id = ?",
+        [feedId]
+      );
+
+      return comments[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteComment: async ({ commentId }) => {
+    try {
+      await promisePool.query(
+        "DELETE FROM feed_comments WHERE id = ?",
+        commentId
+      );
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateComment: async ({ commentId, content }) => {
+    try {
+      await promisePool.query(
+        "UPDATE feed_comments SET content = ? WHERE id = ?",
+        [content, commentId]
+      );
+
+      return null;
     } catch (error) {
       throw error;
     }

@@ -8,3 +8,5 @@ export const FEEDS = "feeds";
 export const FEED_DETAIL = "feedDetail";
 export const GET_CAMPAIGNLIST = "getCampaignList";
 export const GET_DETAILCAMPAIGN = "detailCampaign";
+export const CREATE_COMMENTS = "createComments";
+export const DELETE_COMMENTS = "deleteComments";
