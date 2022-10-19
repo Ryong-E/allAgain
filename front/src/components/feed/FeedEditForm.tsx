@@ -44,7 +44,6 @@ function FeedEditForm({
   const submitMutation = useMutation(isEditing ? updateFeed : createFeed, {
     onSuccess: (data) => {
       queryClient.invalidateQueries([FEEDS]);
-      alert(isEditing);
       isEditing ? navigator(`/feed/${feedId}`) : navigator(`/feed/${data}`);
     },
   });

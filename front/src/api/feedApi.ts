@@ -17,6 +17,34 @@ const feedApi = (contentType: string = APPLCATION_JSON) =>
     },
   });
 
+function dateFormat(date: Date) {
+  let month: number | string = date.getMonth() + 1;
+  let day: number | string = date.getDate();
+  let hour: number | string = date.getHours();
+  let minute: number | string = date.getMinutes();
+  let second: number | string = date.getSeconds();
+
+  month = month >= 10 ? month : "0" + month;
+  day = day >= 10 ? day : "0" + day;
+  hour = hour >= 10 ? hour : "0" + hour;
+  minute = minute >= 10 ? minute : "0" + minute;
+  second = second >= 10 ? second : "0" + second;
+
+  return (
+    date.getFullYear() +
+    "-" +
+    month +
+    "-" +
+    day +
+    " " +
+    hour +
+    ":" +
+    minute +
+    ":" +
+    second
+  );
+}
+
 export const getFeedList = async () => {
   try {
     const response = await feedApi().get<FeedType[]>("");
@@ -60,12 +88,13 @@ export const createFeed = async ({
   description,
 }: CreateFeedType) => {
   try {
+    const datetime = dateFormat(new Date());
     const response = await feedApi().post<string>("", {
       category,
       tags,
       imageUrls,
       description,
-      datetime: new Date().toJSON(),
+      datetime,
     });
     return response.data;
   } catch (err: any) {
