@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 
 
-const LandingImgBox = styled.div<{ transitionDelay: string}>`
-  opacity: 0;
-  transition : opacity 1.5s ${({transitionDelay})=>transitionDelay}s;
+const LandingImgBox = styled.div`
   
   &:nth-child(2),&:nth-child(4),&:nth-child(7),&:nth-child(9){
     text-align:right;
@@ -35,23 +33,19 @@ const LandingImgBox = styled.div<{ transitionDelay: string}>`
   &:nth-child(10){
     margin-left:100px;
   }
-  
-  &.active{
-    opacity: 1;
-  }
 `
 
 
 interface LandingTextImg{
   imgSrc: string;
   idx: number;
-  transitionDelay: string;
+  className: string;
 };
 
 
-export default function LandingTextImgItem({imgSrc, idx,  transitionDelay}:LandingTextImg) {
+export default function LandingTextImgItem({className, imgSrc, idx}:LandingTextImg) {
   return (
-    <LandingImgBox  className={`LadingTextImg${idx+1} active`}  transitionDelay={transitionDelay} >
+    <LandingImgBox className={`LadingTextImg${idx+1} ${className}`} >
       <img src={imgSrc} alt={imgSrc+idx} />
     </LandingImgBox>
   )

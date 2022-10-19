@@ -7,10 +7,16 @@ import joinIcon from "../../assets/images/icons/icon_join.png";
 import teacherIcon from "../../assets/images/icons/icon_teacher.png";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import { useEffect } from "react";
+import { animateFrom, hide } from "../../utils/animateFrom";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Container1300 } from "../common/Containers";
 
+gsap.registerPlugin(ScrollTrigger);
 
 const Section = styled.section`
-
+  padding: 0 0 100px;
 `;
 
 const TextImgBox = styled.div`
@@ -110,6 +116,15 @@ const GoToServiceButton = styled.div`
     border-bottom: .6em solid transparent;
   }
 
+  &:hover {
+    background: #F9F7F2;
+  }
+
+  &:hover:after {
+    left: calc(50% + 12em);
+    opacity: 1;
+  }
+
   a {
     display: block;
     width: 100%;
@@ -119,22 +134,22 @@ const GoToServiceButton = styled.div`
     text-align: center;
     border: 2px solid transparent;
     transition: padding .5s;
-  }
-
-  &:hover {
-    background: #F9F7F2;
-
-    &:after {
-      left: calc(50% + 12em);
-      opacity: 1;
+    
+    &:visited {
+      color: #88A7AE;
     }
 
-    a {
+    &:hover {
       color: #004D49;
       border: 2px solid #004D49;
       padding: 70px 40px 70px 0;
     }
+
+
+
   }
+
+
 
 `;
 
@@ -154,47 +169,63 @@ export default function Section04() {
       icon : teacherIcon,
       descText : "실제로 사용 가능한 실용적인 업사이클링 제품을\n 만들기 위한 클래스를 제공합니다."
     },
-  ]
+  ];
+
+
+  useEffect(() => {
+    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
+      ScrollTrigger.create({
+        trigger: elem,
+        start: "bottom bottom",
+        onEnter: () => { animateFrom(elem); }, 
+        onLeaveBack: () => { hide(elem); },
+      });
+    });
+
+  }, []);
+
   
   return (
     <Section id="section04">
-      <TextImgBox>
-        {LandingImgs.upcyclingArticleText.map((ele, idx)=> (
-            <LandingTextImgItem imgSrc ={ele} transitionDelay={transitionDelay[idx]} idx={idx} key={idx + ele} />
-          ))}
-      </TextImgBox>
-      <UpcycleIconBox>
-        <i></i>
-        <div>
-          <img src={upcycleIcon} alt="upcycleIcon" />
-        </div>
-      </UpcycleIconBox>
-      <ServiceDetailBox>
-        <TitleBox>
-            다시, 다 프로젝트
-        </TitleBox>
-        <DescBox>
-          <p>다시, 다 프로젝트는 업사이클링을 조금 더 쉽게 접할 수 있도록 도와주는 서비스입니다.</p>
-          <p>버려지는 폐자원에 가치를 더해 새로운 제품으로 재탄생시키고, 필요한 곳에 기부함으로써 환경오염을 개선해나가는 길에 함께합니다.</p>
-        </DescBox>
-        <ContentBox>
-          {serviceInnerItem.map(({icon, descText}) =>(
-            <div className="innerBox" key={icon + descText}>
-              <div className="imgBox">
-                <img src={icon} alt="serviceIcon" />
+      <Container1300>
+        <TextImgBox>
+          {LandingImgs.upcyclingArticleText.map((ele, idx)=> (
+              <LandingTextImgItem className={"gs_reveal delay400"} imgSrc ={ele} idx={idx} key={idx + ele} />
+            ))}
+        </TextImgBox>
+        <UpcycleIconBox>
+          <i></i>
+          <div>
+            <img src={upcycleIcon} alt="upcycleIcon" />
+          </div>
+        </UpcycleIconBox>
+        <ServiceDetailBox>
+          <TitleBox className="gs_reveal gs_reveal_fromTop delay200">
+              다시, 다 프로젝트
+          </TitleBox>
+          <DescBox className="gs_reveal gs_reveal_fromTop delay400">
+            <p>다시, 다 프로젝트는 업사이클링을 조금 더 쉽게 접할 수 있도록 도와주는 서비스입니다.</p>
+            <p>버려지는 폐자원에 가치를 더해 새로운 제품으로 재탄생시키고, 필요한 곳에 기부함으로써 환경오염을 개선해나가는 길에 함께합니다.</p>
+          </DescBox>
+          <ContentBox>
+            {serviceInnerItem.map(({icon, descText}, idx) =>(
+              <div className={`innerBox gs_reveal gs_reveal_fromTop delay${idx*200}`} key={icon + descText}>
+                <div className="imgBox">
+                  <img src={icon} alt="serviceIcon" />
+                </div>
+                <div className="contentTextBox">
+                  {descText.split("\n").map((ele,idx) => (
+                    <p key={idx + ele} >{ele}</p>
+                  ))}
+                </div>
               </div>
-              <div className="contentTextBox">
-                {descText.split("\n").map((ele,idx) => (
-                  <p key={idx + ele} >{ele}</p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </ContentBox>
-      </ServiceDetailBox>
-      <GoToServiceButton>
-        <Link to={ROUTE.LOGIN.link}>버려진 제품에 가치를 더하는 방법 알아보기</Link>
-      </GoToServiceButton>
+            ))}
+          </ContentBox>
+        </ServiceDetailBox>
+        <GoToServiceButton>
+          <Link to={ROUTE.LOGIN.link}>버려진 제품에 가치를 더하는 방법 알아보기</Link>
+        </GoToServiceButton>
+      </Container1300>
     </Section>
   )
 }
