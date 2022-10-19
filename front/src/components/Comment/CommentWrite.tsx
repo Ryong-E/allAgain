@@ -4,10 +4,9 @@ import sendHoverIcon from '../../assets/images/icons/icon_send_hover.png';
 import sendIcon from '../../assets/images/icons/icon_send.png';
 import sendRedIcon from '../../assets/images/icons/icon_red_send.png';
 import UserImgBox from './UserImgBox';
-import { SetterOrUpdater, useRecoilState } from 'recoil';
-import { commentDumData } from '../../atoms/atoms';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createComment } from '../../api/commentsApi';
+import { GET_DETAILCAMPAIGN } from '../../constant/queryKeys';
 
 const CommentWriteBox = styled.div`
   display: flex;
@@ -63,8 +62,13 @@ export interface CommentData{
 
 
 export default function CampaignCommentWrite({pathID,commentId}: CommentData) {
-  const createCommentMutate = useMutation(["createComments"], createComment);
-  const [dumComment, setDumComment] = useRecoilState(commentDumData)
+  const queryClient = useQueryClient();
+
+  const createCommentMutate = useMutation(["createComments"], createComment, {
+    onSuccess: (data: any, variables, context) => {
+      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
+    },
+  });
   const {
     register,
     handleSubmit,

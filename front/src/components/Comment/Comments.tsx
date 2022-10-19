@@ -24,20 +24,18 @@ export default function Comments({comments}: CommentItemArrType) {
   const {id : pathID} = useParams();
   const filteredComments = comments.filter((ele : CommentItemType)  => ele.rootCommentId === null);
   const [lastIdx , setLastIdx] = useState(-1);
-  console.log(filteredComments)
   return (
     <CommentContainer>
       <CommentWrite pathID={Number(pathID)} />
       <CommentListBox>
-        {comments!.map((props : CommentItemType, idx : number)=>(
+        {filteredComments.map((props : CommentItemType)=>(
           <CommentItem 
             {...props} 
             comments ={comments}
             lastIdx = {lastIdx}
             setLastIdx = {setLastIdx}
-            idx={idx}
-            key={props.commentId + props.writer.userId }
             pathID={Number(pathID)}
+            key={props.commentId + props.writer.userId }
             />
         ))}
       </CommentListBox>

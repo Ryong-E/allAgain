@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import CampaignCommentWrite from './CommentWrite';
 import CampaignUtilsBox from './CommentUtilsBox';
 import UserImgBox from './UserImgBox';
@@ -47,17 +47,21 @@ const CommentBox = styled.div`
 
 export interface CommentItem extends CommentItemType{
   pathID ?: number;
-  idx ?: number;
   lastIdx ?: number;
   setLastIdx ?: React.Dispatch<React.SetStateAction<number>>;
   comments ?: CommentItemType[];
 };
 
-export default function CommentItem( {commentId, content, rootCommentId, timestamp, writer , pathID, idx, setLastIdx, lastIdx , comments} : CommentItem ) {
+export default function CommentItem( {commentId, content, rootCommentId, timestamp, writer , pathID, setLastIdx, lastIdx , comments} : CommentItem ) {
   const [isReComment, setIsReComment] = useState(false);
   const [isShowReComment, setShowIsReComment] = useState(false);
   const [isLong, setIsLong] = useState(false); 
-
+  const filteredComment = useMemo(()=> {
+    if(comments! === (null || undefined)){
+      return []
+    }
+    return comments!.filter((ele : CommentItemType) => ele.rootCommentId === commentId)
+  },[comments!]);
   return (
     <>
       <CommentBox>
@@ -76,20 +80,21 @@ export default function CommentItem( {commentId, content, rootCommentId, timesta
                 </>:
                 content}
           </div>
-          <CampaignUtilsBox idx={idx!}
+          <CampaignUtilsBox 
+              timestamp={timestamp}
+              filteredComment={filteredComment}
               setShowIsReComment={setShowIsReComment}
               isReComment={isReComment}
               setIsReComment={setIsReComment}
               rootCommentId={rootCommentId}
-              userId={writer.userId}
+              commentId={commentId}
               setLastIdx={setLastIdx!}/>
         </div>
       </CommentBox>
       {isReComment && 
         <ReCommentBox 
-          comments={comments!}
+          filteredComment={filteredComment}
           lastIdx={lastIdx!}
-          idx={idx!}  
           isShowReComment={isShowReComment} 
           pathID={pathID!} 
           commentId={commentId}  />
