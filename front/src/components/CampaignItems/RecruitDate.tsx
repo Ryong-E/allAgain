@@ -82,7 +82,6 @@ export default function RecruitDate({
 
   useEffect(() => {
     if (dateRef.current !== null) {
-      console.log(isClick);
       if (isWrite) {
         dateRef.current.style.opacity = "1";
       } else if (!isWrite) {
@@ -92,7 +91,6 @@ export default function RecruitDate({
   }, [isClick, isWrite]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value);
     setValue(registername, e.target.value);
     trigger(registername);
     if (e.target.value !== "") {
@@ -131,7 +129,7 @@ export default function RecruitDate({
           }}
           onChange={handleChange}
           ref={dateRef}
-          defaultValue={new Date(new Date(defaultvalue).toString().split('GMT')[0]+' UTC').toISOString().slice(0,10)}></DateInput>
+          defaultValue={defaultvalue ? new Date(new Date(defaultvalue).toString().split('GMT')[0]+' UTC').toISOString().slice(0,10) : ""}></DateInput>
       </InputWrap>
     </>
   );
