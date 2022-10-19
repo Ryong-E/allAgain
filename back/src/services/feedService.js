@@ -138,6 +138,29 @@ const feedService = {
   },
   getLikedFeedsByUserId: async ({ userId }) => {
     const feedData = await Feed.findLikedFeedsByUserId({ userId });
+    const feedList = [];
+    for (const item of feedData) {
+      const feedId = item.feed_id;
+      const imageUrls = await imageService.getImageUrls({ feedId });
+      const likeList = await feedService.getLikes({ feedId });
+      const author = await User.findByUserId({ userId: item.user_id });
+      const { image, nickname } = author[0];
+      const authorImageUrl = makeImageUrl("profiles", String(image));
+      const feed = {
+        feedId,
+        userId: item.user_id,
+        category: item.category,
+        tags: item.tags,
+        imageUrls: imageUrls,
+        description: item.description,
+        datetime: item.datetime,
+        likes: likeList,
+        authorImageUrl,
+        nickname,
+      };
+      feedList.push(feed);
+    }
+    return feedList;
   },
   updateFeed: async ({
     currentUserId,
