@@ -278,7 +278,7 @@ export default function CampaignItem({
             </div>
           </PeriodBox>
           <CreatedUser>
-            <Link to={`/user/:id`}>
+            <Link to={`/user/${writer!.userId}`}>
               <UserImgBox userImg={writer!.imageUrl!} />
               <UserName userName={writer!.nickname!} />
             </Link>
