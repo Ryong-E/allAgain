@@ -96,10 +96,11 @@ function FeedEditForm({
   };
 
   useEffect(() => {
-    console.log("test");
-    if (currentUserId === null || currentUserId !== userId)
-      navigator(`/feed/${feedId}`);
-  }, [currentUserId, navigator, userId, feedId]);
+    if (isEditing) {
+      if (currentUserId === null || currentUserId !== userId)
+        navigator(`/feed/${feedId}`);
+    }
+  }, [currentUserId, navigator, userId, feedId, isEditing]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (uploadImages.length !== 0 || !uploadImages) {
