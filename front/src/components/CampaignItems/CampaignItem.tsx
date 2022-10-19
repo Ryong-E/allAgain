@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import LikeToggle from "../common/LikeToggle"
 import { ShareButton } from "../common/Buttons"
 import { Link } from "react-router-dom"
@@ -53,7 +53,7 @@ const ThumbnailImgBox = styled.div`
 `
 const ContentsBox = styled.div`
   padding: 20px 28px 20px 40px;
-  border-left: 1px solid #000;
+  border-left: 1px solid rgba(231,225,210,.8);
   width: calc(100% - 320px);
   display:flex;
   flex-direction: column;
@@ -151,6 +151,12 @@ const LimitBox = styled.div`
   }
 `
 
+const keyfram = keyframes`
+  100%{
+    width:var(--lengthRate);
+  }
+`
+
 const RateBox = styled.div`
   display: flex;
   align-items: center;
@@ -165,6 +171,9 @@ const RateBox = styled.div`
       transition: width 1.3s;
       &.participantsCount{
         width:var(--lengthRate);
+      }
+      &.rateMotion{
+        animation: ${keyfram} 1.3s forwards;
       }
     }
   }
@@ -200,9 +209,15 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
   const recruitmentEnd = fixDate(String(recruitmentEndDate))
   const campaignStart = fixDate(String(campaignStartDate))
   const campaignEnd = fixDate(String(campaignEndDate))
+  const [isLoding, setIsLoding] = useState(false);
+
   useEffect(() => {
     rateAnimation()
   }, [participants])
+  useEffect(() => {
+    setTimeout(()=>{setIsLoding(true)},10)
+  }, [])
+  
   return (
     <ListItemBox className={status === "모집 마감" ? "bright" : status === "모집 예정" ? "lightGreen" : ""}>
       <CampaignItemLinkBox>
@@ -255,7 +270,7 @@ export default function CampaignItem({ campaignId, title, content, thumbnail, re
         <LimitBox>
           <RateBox>
             <div className="lengthBox">
-              <div className={`length ${participants ? "participantsCount" : ""}`} ref={length}></div>
+              <div className={`length ${isLoding ? "participantsCount" : "" }`} ref={length}></div>
             </div>
             <div className="participating">
               <span>{participants}명</span> 참여 중
