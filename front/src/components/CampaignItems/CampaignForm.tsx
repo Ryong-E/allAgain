@@ -61,20 +61,24 @@ export default function CampaignForm({
 
   const updateCampainMutaion = useMutation(updateCampaign, {
     onError: (error: any) => {
-      console.log(error);
+       alert(error)
     },
     onSuccess: (data: any) => {
+      alert("캠페인 수정이 완료되었습니다")
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
       queryClient.invalidateQueries(["detailCampaign"]);
+      navigate(`/campaign/${campaignId}`);
     },
   });
 
   const createCampainMutaion = useMutation(createCampaign, {
     onError: (error: any) => {
-      console.log(error);
+      alert(error);
     },
     onSuccess: (data: any) => {
+      alert("캠페인 생성이 완료되었습니다")
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
+      navigate(`/campaign/${campaignId}`);
     },
   });
 
@@ -128,19 +132,19 @@ export default function CampaignForm({
       for (let [key, value] of Object.entries(data)) {
         if (key == "thumbnail") {
           formData.append("thumbnail", data.thumbnail[0]);
-        } else {
+        } 
+        else if(key == 'title'){
+          formData.append('title',data.title.trim())
+        }
+        else {
           formData.append(key, value);
         }
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
         updateCampainMutaion.mutate({formData, campaignId});
-        alert("캠페인 수정이 완료 되었습니다.");
-        navigate(`/campaign/${campaignId}`);
       } else {
         createCampainMutaion.mutate(formData)
-        alert("캠페인 생성이 완료 되었습니다.");
-        navigate(`/campaign/${campaignId}`);
       }
     }
   };
