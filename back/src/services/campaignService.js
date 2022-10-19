@@ -418,6 +418,120 @@ const campaignService = {
 
     return "댓글 삭제 완료";
   },
+  getParticipatedCampaigns: async ({ currentUserId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaigns = await Campaign.findParticipatedCampaignByUserId({
+      userId: currentUserId,
+    });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+      const liked = await Campaign.findExistenceLiked({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: liked ? true : false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getLikedCampaigns: async ({ currentUserId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaigns = await Campaign.findLikedCampaignByUserId({
+      userId: currentUserId,
+    });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: true,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
 };
 
 export { campaignService };

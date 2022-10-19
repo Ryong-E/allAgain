@@ -304,4 +304,30 @@ campaignRouter.delete(
     }
   }
 );
+
+campaignRouter.get("/participated", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getParticipatedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
+
+campaignRouter.get("/liked", loginRequired, async (req, res, next) => {
+  try {
+    const { currentUserId } = req;
+    const campaigns = await campaignService.getLikedCampaigns({
+      currentUserId,
+    });
+
+    res.status(200).json(campaigns);
+  } catch (error) {
+    next(error);
+  }
+});
 export { campaignRouter };
