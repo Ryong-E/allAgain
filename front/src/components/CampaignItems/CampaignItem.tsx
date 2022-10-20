@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { useRef, useEffect, useState } from "react";
 import LikeToggle from "../common/LikeToggle";
 import { ShareButton } from "../common/Buttons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import UserImgBox from "../Comment/UserImgBox";
 import UserName from "../common/UserName";
 import CampaignDDay from "./CampaignDDay";
@@ -209,6 +209,7 @@ export default function CampaignItem({
   let participants = participantsCount - 1;
   let lengthRate = (participants / recruitment) * 100;
   const length = useRef<HTMLDivElement>(null);
+  const {pathname} = useLocation();
   const rateAnimation = () => {
     const len = length.current;
     if (len !== null) {
@@ -229,7 +230,15 @@ export default function CampaignItem({
       setIsLoding(true);
     }, 10);
   }, []);
-
+  console.log(`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`);
+  console.log(`pathname`,pathname);
+  const handlePreventDefault = (e : React.MouseEvent<HTMLElement> )=>{
+    const currentPath = `${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`;
+    if(currentPath === pathname){
+      e.preventDefault();
+      return
+    }
+  }
   return (
     <ListItemBox
       className={
@@ -240,7 +249,7 @@ export default function CampaignItem({
           : ""
       }>
       <CampaignItemLinkBox>
-        <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`}>
+        <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`} onClick={handlePreventDefault}>
           <ThumbnailImgBox className="thumbnailBox">
             <img src={`http://${thumbnail!}`} alt="썸네일이미지" />
           </ThumbnailImgBox>
@@ -256,7 +265,7 @@ export default function CampaignItem({
         </StatusBox>
         <ItemInfoBox>
           <CampaignItemLinkBox>
-            <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`}>
+            <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`} onClick={handlePreventDefault}>
               <TextBox>
                 <h3 className="title">{title}</h3>
                 <div className="desc">{introduce}</div>
