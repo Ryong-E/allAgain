@@ -144,18 +144,30 @@ export const deleteUser = async ({ userId }: User) => {
   }
 };
 
-export const getUserProfileById = async (userId: string) => {
+export const getUserProfileById = async (userId: string,currentUserId : number | null) => {
   try {
     const token = sessionStorage.getItem("jwtToken");
-    const { data } = await axios<UserInfoResponse>({
-      method: "get",
-      url: `${BASE_URL}/users/${userId}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    return data;
+    if(currentUserId){
+      const { data } = await axios<UserInfoResponse>({
+        method: "get",
+        url: `${BASE_URL}/users/${userId}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      return data;
+    }
+    else{
+      const { data } = await axios<UserInfoResponse>({
+        method: "get",
+        url: `${BASE_URL}/users/${userId}/guest`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return data;
+    }
   } catch (err: any) {
     throw err.response;
   }

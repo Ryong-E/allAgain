@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useState, ChangeEvent } from "react";
 import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png"
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png"
+import { useRecoilState } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
  // const FollowLabel = styled.label<{ checked: boolean }>`
   // background: ${({ checked }) => checked ? "transparent" : "#004D49"};
@@ -69,11 +71,16 @@ const FollowLabel = styled.label`
 `;
 
 export default function FollowToggle() {
-
+  const [currentUser,setCurrentUser] = useRecoilState(loggedInUserId)
   const [isFollowed, setIsFollwed] = useState(false);
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    setIsFollwed(!isFollowed);
+    if(currentUser){
+      setIsFollwed(!isFollowed);
+    }
+    else{
+      alert("로그인 후 이용가능합니다.")
+    }
   }
 
   return (
@@ -82,7 +89,7 @@ export default function FollowToggle() {
         htmlFor="followToggle" 
         // checked={isFollowed}
         className={isFollowed ? "active" : ""}>팔로우</FollowLabel>
-      <input 
+      <input
         id="followToggle"
         type="checkbox" 
         checked={isFollowed}

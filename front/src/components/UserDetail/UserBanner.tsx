@@ -5,7 +5,16 @@ interface UserBannerProps {
   userId: string;
   imageUrl: string;
   nickname: string;
-  isMyDetail?: boolean;
+  isMyDetail: boolean;
+  followees: {
+    count:number;
+    users:[];
+  };
+  followers:{
+    count:number;
+    users:[];
+  };
+  NumberOfFeeds:number;
 }
 
 function UserBanner({
@@ -13,6 +22,9 @@ function UserBanner({
   imageUrl,
   nickname,
   isMyDetail,
+  followees,
+  followers,
+  NumberOfFeeds
 }: UserBannerProps) {
   return (
     <UserProfileContainer>
@@ -20,9 +32,9 @@ function UserBanner({
       <UserNickname>{nickname}</UserNickname>
       {isMyDetail || <FollowToggle />}
       <UserInfoContainer>
-        <UserInfo>게시물 128</UserInfo>
-        <UserInfo>팔로워 1.1M</UserInfo>
-        <UserInfo>팔로우 0</UserInfo>
+        <UserInfo>{`게시글 수 ${NumberOfFeeds}`}</UserInfo>
+        <UserInfo>{`팔로워 ${followers?.count}`}</UserInfo>
+        <UserInfo>{`팔로잉 ${followees?.count}`}</UserInfo>
       </UserInfoContainer>
     </UserProfileContainer>
   );
