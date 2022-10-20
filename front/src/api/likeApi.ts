@@ -10,7 +10,7 @@ const campaignApi = (contentType: string = APPLCATION_JSON) =>
     baseURL: BASE_URL,
     headers: {
       "Content-Type": contentType,
-      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+      Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
     },
   });
 export const LikedOnCampaign = async (campaignId: number) => {

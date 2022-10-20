@@ -10,7 +10,7 @@ const campaignApi = (contentType: string = APPLCATION_JSON) =>
     baseURL: BASE_URL,
     headers: {
       "Content-Type": contentType,
-      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+      Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
     },
   });
 
@@ -103,16 +103,12 @@ export const getCampaignItem = async (
 
 export const insertImage = async (data: FormData) => {
   try {
-    const response = await axios.post(
-      BASE_URL + "/images",
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        },
-      }
-    );
+    const response = await axios.post(BASE_URL + "/images", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
     return response;
   } catch (err: any) {
     throw new Error("사진 업로드 실패");
@@ -121,16 +117,12 @@ export const insertImage = async (data: FormData) => {
 
 export const createCampaign = async (formData: FormData) => {
   try {
-    const response = await axios.post(
-      BASE_URL,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        },
-      }
-    );
+    const response = await axios.post(BASE_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
   } catch (err: any) {
     throw new Error("캠페인 생성 실패");
   }
@@ -141,16 +133,12 @@ export const updateCampaign = async ({
   campaignId,
 }: CreateCampaignType) => {
   try {
-    const response = await axios.put(
-      BASE_URL + `/${campaignId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        },
-      }
-    );
+    const response = await axios.put(BASE_URL + `/${campaignId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
   } catch (err: any) {
     throw new Error("캠페인 수정 실패");
   }
@@ -198,4 +186,3 @@ export const cancelParticipateCampaign = async (campaignId: number) => {
     throw new Error("캠페인 탈퇴 안됨...");
   }
 };
-

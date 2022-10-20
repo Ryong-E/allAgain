@@ -11,7 +11,7 @@ const feedApi = (contentType: string = APPLCATION_JSON) =>
     baseURL: contentType === APPLCATION_JSON ? BASE_FEED_URL : BASE_IMAGE_URL,
     headers: {
       "Content-Type": contentType,
-      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+      Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
     },
   });
 

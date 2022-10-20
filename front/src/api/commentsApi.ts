@@ -10,30 +10,36 @@ const commentApi = (contentType: string = APPLCATION_JSON) =>
     baseURL: BASE_URL,
     headers: {
       "Content-Type": contentType,
-      Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+      Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
     },
   });
 
 interface CreateCommentType {
-  campaignId ?: number;
-  feedId ?: number;
+  campaignId?: number;
+  feedId?: number;
   content: string;
   rootCommentId: number | null;
-  pathname : String;
+  pathname: String;
 }
 
-export const createCommentApi = async ({campaignId, feedId,content,rootCommentId, pathname}: CreateCommentType) => {
+export const createCommentApi = async ({
+  campaignId,
+  feedId,
+  content,
+  rootCommentId,
+  pathname,
+}: CreateCommentType) => {
   try {
-    if(pathname === "campaign"){
+    if (pathname === "campaign") {
       const response = await commentApi(APPLCATION_URLENCODED).post(
         `/campaigns/campaign/comments`,
-        {campaignId,content,rootCommentId}
+        { campaignId, content, rootCommentId }
       );
       return response.data;
-    }else{
+    } else {
       const response = await commentApi(APPLCATION_URLENCODED).post(
         `/feeds/feed/comments`,
-        {feedId,content,rootCommentId}
+        { feedId, content, rootCommentId }
       );
       return response.data;
     }
@@ -42,24 +48,27 @@ export const createCommentApi = async ({campaignId, feedId,content,rootCommentId
   }
 };
 
-interface DeleteCommentType{
+interface DeleteCommentType {
   commentId: number;
-  pathname : String;
+  pathname: String;
 }
 
-export const deleteCommentApi = async ({commentId, pathname}: DeleteCommentType) => {
+export const deleteCommentApi = async ({
+  commentId,
+  pathname,
+}: DeleteCommentType) => {
   try {
-    console.log({commentId, pathname})
-    if(pathname === "campaign"){
+    console.log({ commentId, pathname });
+    if (pathname === "campaign") {
       const response = await commentApi(APPLCATION_URLENCODED).delete(
         `/campaigns/campaign/${commentId}`
-        );
-        return response.data;
-    }else{
+      );
+      return response.data;
+    } else {
       const response = await commentApi(APPLCATION_URLENCODED).delete(
         `/feeds/feed/${commentId}`
-        );
-        return response.data;
+      );
+      return response.data;
     }
   } catch (err: any) {
     throw new Error("리스트 못가져옴..");
