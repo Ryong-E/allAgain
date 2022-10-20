@@ -7,9 +7,7 @@ interface TimestampType{
 export default function TimeStamp({timestamp}: TimestampType) {
   const elapsedTime = ()=>{
     const today = new Date();
-    const createdDate = new Date(timestamp);
-  
-    const diff = (Number(today) - Number(createdDate))
+    const diff = (Number(today) - Number(timestamp))
     const times = [
       {time: "분", milliSeconds: 1000 * 60},
       {time: "시간", milliSeconds: 1000 * 60 * 60},

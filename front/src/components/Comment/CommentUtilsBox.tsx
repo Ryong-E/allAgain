@@ -61,6 +61,9 @@ export default function CampaignUtilsBox({
   const isLogin = useRecoilValue(loggedInUserId);
   const {pathname} = useLocation();
   const categotry = pathname.split("/")[1];
+  const createdDate = new Date(timestamp);
+  createdDate.setHours(createdDate.getHours() + 9)
+  
   const handleToggleReComment = () => {
     setIsReComment(true);
   };
@@ -86,7 +89,7 @@ export default function CampaignUtilsBox({
 
   return (
     <UtilsBox>
-      <TimeStamp timestamp={timestamp} />
+      <TimeStamp timestamp={createdDate} />
       {rootCommentId === null && (
         <div className="reCommentBox">
           {reCommentLength > 0 && !isReComment ? (
