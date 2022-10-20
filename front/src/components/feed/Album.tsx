@@ -64,7 +64,7 @@ function Album({ size, imageUrls, feedId }: albumProps) {
       </ImageContainer>
       {IMAGE_LAST_INDEX !== IMAGE_FIRST_INDEX && (
         <ImageNavigator size={size}>
-          {imageUrls!.map((imageUrl, index) => (
+          {imageUrls?.map((imageUrl, index) => (
             <Navigator
               observeIndex={index}
               currentIndex={imageIndex}
