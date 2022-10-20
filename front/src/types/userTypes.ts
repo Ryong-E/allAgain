@@ -55,14 +55,19 @@ export interface UserInfoResponse {
   name: string;
   nickname: string;
   imageUrl: string;
-  NumberOfFeeds:number;
-  followed:boolean;
-  followers:{
-    count:number;
-    users:[]
-  };
-  followees:{
-    count:number;
-    users:[]
-  }
+  NumberOfFeeds: number;
+  followed: boolean;
+  followers: FollowUserRes;
+  followees: FollowUserRes;
+}
+
+export interface FollowUserRes {
+  count: number;
+  users: FollowUser[];
+}
+
+export interface FollowUser {
+  userId: number;
+  nickname: string;
+  imageUrl: string;
 }

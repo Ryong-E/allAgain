@@ -75,6 +75,7 @@ const CategoryButton = styled(SaveButton)<{
   &:hover {
     color: #ffffff;
   }
+  transition: all 0.3s;
 `;
 
 export default FeedCategoryFilter;

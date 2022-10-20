@@ -52,6 +52,7 @@ const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
         display: block;
       }
     `}
+  transition: all 0.3s;
 `;
 
 interface FollowToggleSmallType {
@@ -67,13 +68,13 @@ export default function FollowToggleSmall({
 }: FollowToggleSmallType) {
   const [isFollowed, setIsFollwed] = useState(false);
   const [followUserId, setFollowUserId] = useRecoilState(followedUserIds);
-  const currentUserId = useRecoilValue(loggedInUserId);
+  const isToken = sessionStorage.getItem("jwtToken");
 
   const createFollow = useMutation(() => followUser(userId!));
   const deleteFollow = useMutation(() => deleteFollowUser(userId!));
 
   const handleOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (currentUserId) {
+    if (isToken) {
       if (createFollow.isLoading || deleteFollow.isLoading) return;
       if (isFollowed) {
         deleteFollow.mutate();

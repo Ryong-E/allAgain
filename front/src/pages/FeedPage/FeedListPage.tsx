@@ -32,13 +32,14 @@ const initialState: CategoryState = {
 };
 
 function FeedListPage() {
+  const isToken = sessionStorage.getItem("jwtToken");
   const currentUserId = useRecoilValue(loggedInUserId);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryState>(initialState);
 
   const { isSuccess, data } = useQuery(
-    [FEEDS, selectedCategory],
-    currentUserId ? getFeedListAuthorized : getFeedList,
+    [FEEDS, selectedCategory, currentUserId],
+    currentUserId && isToken ? getFeedListAuthorized : getFeedList,
     {
       refetchOnWindowFocus: false,
     }
@@ -77,23 +78,26 @@ function FeedListPage() {
             />
             {currentUserId && <FeedAddButton />}
           </FeedListOptionsContainer>
-          {isSuccess && (
-            <FeedList
-              feeds={data.filter(({ category }) => {
-                const selectedList: string[] = [];
-                Object.keys(selectedCategory).forEach(
-                  (key) => selectedCategory[key] && selectedList.push(key)
-                );
-                if (selectedList.includes("전체")) return true;
-                const diff = category
-                  .split(",")
-                  .filter((toFind) => selectedList.includes(toFind));
-                if (diff.length) return true;
-                return false;
-              })}
-              isSimple={false}
-            />
-          )}
+
+          <FeedListContainer>
+            {isSuccess && (
+              <FeedList
+                feeds={data.filter(({ category }) => {
+                  const selectedList: string[] = [];
+                  Object.keys(selectedCategory).forEach(
+                    (key) => selectedCategory[key] && selectedList.push(key)
+                  );
+                  if (selectedList.includes("전체")) return true;
+                  const diff = category
+                    .split(",")
+                    .filter((toFind) => selectedList.includes(toFind));
+                  if (diff.length) return true;
+                  return false;
+                })}
+                isSimple={false}
+              />
+            )}
+          </FeedListContainer>
         </Container1300>
       </Container>
     </PageWrap>
@@ -105,6 +109,11 @@ const FeedListOptionsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const FeedListContainer = styled.div`
+  width: 100%;
+  min-height: 900px;
 `;
 
 export default FeedListPage;
