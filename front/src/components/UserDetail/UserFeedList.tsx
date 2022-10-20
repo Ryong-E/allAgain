@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getFeedByUserId, getFeedLikedByUserId } from "../../api/feedApi";
@@ -17,7 +17,6 @@ function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
 
   const selectFetch = useCallback(() => {
-    console.log("fetching");
     if (isLike) return getFeedLikedByUserId(currentUserId!);
     return getFeedByUserId(userId);
   }, [isLike, currentUserId, userId]);

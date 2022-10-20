@@ -1,14 +1,18 @@
 import CampaignDetail from "../../components/CampaignItems/CampaignDetail";
-import CampaignItem from "../../components/CampaignItems/CampaignItem";
 import { Container } from "../../components/common/Containers";
-import { Container1300Ver2 } from "./CampaignPage";
+import { CampaingContainer } from "./CampaignPage";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCampaignItem } from "../../api/campaignApi";
 import { GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 import { loggedInUserId } from "../../atoms/atoms";
+import styled from "styled-components";
+
+const CampaignDetailRoot = styled(Container)`
+  min-height: calc(100vh - 50px);
+`
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
@@ -20,10 +24,10 @@ export default function CampaignDetailPage() {
   );
 
   return (
-    <Container>
-      <Container1300Ver2>
+    <CampaignDetailRoot>
+      <CampaingContainer>
         {data && <CampaignDetail {...data!} />}
-      </Container1300Ver2>
-    </Container>
+      </CampaingContainer>
+    </CampaignDetailRoot>
   );
 }
