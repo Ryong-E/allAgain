@@ -15,7 +15,7 @@ const LikeButton = styled.button`
   height: 30px;
   background: url(${LikeIconOff}) no-repeat 50% 50% / contain;
   transition: all 0.3s;
-  &:hover {
+  &:not(.guestLike):hover {
     transform: scale(0.9);
   }
   &.active {
@@ -57,7 +57,7 @@ export default function LikeToggle({ liked, campaignId }: LikePropsType) {
   return (
     <div>
       <LikeButton
-        className={isActive ? "active" : ""}
+        className={`${isActive ? "active" : ""} ${isLogin === null ? "guestLike" : ""}`}
         onClick={() => {
           isLogin !== null
             ? handleClickLike(campaignId!)
