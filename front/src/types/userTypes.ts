@@ -55,4 +55,14 @@ export interface UserInfoResponse {
   name: string;
   nickname: string;
   imageUrl: string;
+  NumberOfFeeds:number;
+  followed:boolean;
+  followers:{
+    count:number;
+    users:[]
+  };
+  followees:{
+    count:number;
+    users:[]
+  }
 }
