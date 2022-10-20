@@ -33,7 +33,9 @@ function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
         )}
       </AddButtonContainer>
 
-      {isSuccess && <FeedList feeds={data} isSimple={true} />}
+      {isSuccess && data.length !== 0 && (
+        <FeedList feeds={data} isSimple={true} />
+      )}
     </ListContainer>
   );
 }
