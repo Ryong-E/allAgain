@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -85,6 +85,7 @@ export default function CampaignIsJoin({
   isSameRate,
 }: JoinProps) {
   const navigate = useNavigate();
+  const {pathname} = useLocation();
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
@@ -108,7 +109,7 @@ export default function CampaignIsJoin({
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link);
+      navigate(ROUTE.LOGIN.link, {state : pathname});
     }
   };
   const statusClass =

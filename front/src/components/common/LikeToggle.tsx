@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LikedOffCampaign, LikedOnCampaign } from "../../api/likeApi";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { useEffect, useState } from "react";
 
@@ -30,6 +30,7 @@ interface LikePropsType {
 
 export default function LikeToggle({ liked, campaignId }: LikePropsType) {
   const navigate = useNavigate();
+  const {pathname} = useLocation();
   const isLogin = useRecoilValue(loggedInUserId);
   const [isActive, setIsActive] = useState<Boolean>(false);
   const LikeCampaign = useMutation(LikedOnCampaign);
@@ -47,7 +48,7 @@ export default function LikeToggle({ liked, campaignId }: LikePropsType) {
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link);
+      navigate(ROUTE.LOGIN.link, {state : pathname});
     }
   };
   useEffect(()=>{

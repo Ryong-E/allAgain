@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { ButtonBlock, LargeButton } from "../common/Buttons";
 import { InputBlock, InputIconText, InputIcon, InputIconBlock, InputErrorMsg } from "../common/Form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { useRecoilState } from "recoil";
 
@@ -45,7 +45,7 @@ type Inputs = {
 export default function LoginForm() {
 
   const navigate = useNavigate();
-
+  const {state} = useLocation();
   const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
   const [loggedInUserImg, setLoggedInUserImg] = useRecoilState(loggedInUserImgUrl);
 
@@ -79,8 +79,11 @@ export default function LoginForm() {
       localStorage.setItem('jwtToken', data.token);
       setLoggedInUser(data.userId);
       setLoggedInUserImg(data.imageUrl);
-
-      navigate(ROUTE.HOME.link);
+      if(state){
+        navigate(state)
+      }else{
+        navigate(ROUTE.HOME.link);
+      }
     },
     onSettled: () => {
       console.log("end");

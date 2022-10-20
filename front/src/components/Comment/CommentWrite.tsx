@@ -100,7 +100,7 @@ export default function CampaignCommentWrite({
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link);
+      navigate(ROUTE.LOGIN.link, {state : pathname});
     }
   };
   const commentLength = watch("commentWrite")?.length;
