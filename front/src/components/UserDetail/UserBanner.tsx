@@ -7,14 +7,14 @@ interface UserBannerProps {
   nickname: string;
   isMyDetail: boolean;
   followees: {
-    count:number;
-    users:[];
+    count: number;
+    users: [];
   };
-  followers:{
-    count:number;
-    users:[];
+  followers: {
+    count: number;
+    users: [];
   };
-  NumberOfFeeds:number;
+  NumberOfFeeds: number;
 }
 
 function UserBanner({
@@ -24,7 +24,7 @@ function UserBanner({
   isMyDetail,
   followees,
   followers,
-  NumberOfFeeds
+  NumberOfFeeds,
 }: UserBannerProps) {
   return (
     <UserProfileContainer>
@@ -43,6 +43,7 @@ function UserBanner({
 const UserProfileContainer = styled.div`
   width: 100%;
   display: flex;
+  min-width: 1920px;
   flex-direction: column;
   align-items: center;
   background: rgba(240, 230, 203, 0.2);

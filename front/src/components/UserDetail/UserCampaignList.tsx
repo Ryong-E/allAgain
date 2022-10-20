@@ -57,15 +57,20 @@ function UserCampaignList({
     () => getCampaignListByUserId(userId, currentUserId)
   );
 
-  // useEffect(() => {
-  //   console.log(
-  //     partData?.filter(({ writer }) => writer.userId !== currentUserId)
-  //   );
-  // }, [partData, currentUserId]);
-
-  // useEffect(() => {
-  //   console.log(options);
-  // }, [options]);
+  useEffect(() => {
+    if (isLike && likeData) setData(likeData);
+    else if (options.hold && options.participated) {
+      const newData =
+        partData && holdData
+          ? holdData.concat(
+              partData.filter(({ writer }) => writer.userId !== currentUserId)
+            )
+          : [];
+      setData(newData);
+    } else if (options.participated && partData) setData(partData);
+    else if (options.hold && holdData) setData(holdData);
+    else setData([]);
+  }, [holdData, partData, likeData, isLike, currentUserId, options]);
 
   return (
     <>
@@ -86,48 +91,13 @@ function UserCampaignList({
         )}
       </ListContainer>
       <ItemContainer>
-        {isLike &&
-          likeSuccess &&
-          likeData!.map((props: CampaignItemType) => (
+        {data &&
+          data!.map((props: CampaignItemType) => (
             <CampaignItem
               {...props}
               key={`${props.writer.nickname}` + Date.now() + props.campaignId}
             />
           ))}
-        {!isLike &&
-          options.hold &&
-          holdSuccess &&
-          holdData!.map((props: CampaignItemType) => (
-            <CampaignItem
-              {...props}
-              key={`${props.writer.nickname}` + Date.now() + props.campaignId}
-            />
-          ))}
-        {!isLike && options.participated && partSuccess && options.hold
-          ? partData
-              ?.filter(({ writer }) => writer.userId !== currentUserId)
-              ?.map((props: CampaignItemType) => {
-                console.log("filtered");
-                return (
-                  <CampaignItem
-                    {...props}
-                    key={
-                      `${props.writer.nickname}` + Date.now() + props.campaignId
-                    }
-                  />
-                );
-              })
-          : partData?.map((props: CampaignItemType) => {
-              console.log("not filtered");
-              return (
-                <CampaignItem
-                  {...props}
-                  key={
-                    `${props.writer.nickname}` + Date.now() + props.campaignId
-                  }
-                />
-              );
-            })}
       </ItemContainer>
     </>
   );
