@@ -1,5 +1,5 @@
-import { useQueries } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -8,6 +8,7 @@ import {
   getCampaignListLiked,
 } from "../../api/campaignApi";
 import { loggedInUserId } from "../../atoms/atoms";
+import { CampaignItemType } from "../../types/campaignTypes";
 import CampaignItem from "../CampaignItems/CampaignItem";
 import FeedAddButton from "../Feed/FeedAddButton";
 import ListOptionCheckbox from "./ListOptionCheckbox";
@@ -29,27 +30,30 @@ function UserCampaignList({
   userId,
 }: UserCampaignListProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
-  const res = useQueries({
-    queries: [
-      {
-        queryKey: ["userCampaign"],
-        queryFn: () => getCampaignListByUserId(userId, currentUserId),
-      },
-      {
-        queryKey: ["participatedCampaign"],
-        queryFn: () => getCampaignListParticipated(),
-      },
-      {
-        queryKey: ["likedCampaign"],
-        queryFn: () => getCampaignListLiked(),
-      },
-    ],
-  });
-
   const [options, setOptions] = useState<OptionType>({
     participated: true,
     hold: true,
   });
+
+  const { isSuccess: likeSuccess, data: likeData } = useQuery(
+    [isLike],
+    getCampaignListLiked,
+    {
+      enabled: isLike,
+    }
+  );
+
+  const { isSuccess: partSuccess, data: partData } = useQuery(
+    [options, isMyDetail],
+    getCampaignListParticipated,
+    {
+      enabled: isMyDetail,
+    }
+  );
+
+  const { isSuccess: holdSuccess, data: holdData } = useQuery([options], () =>
+    getCampaignListByUserId(userId, currentUserId)
+  );
 
   return (
     <>
@@ -70,36 +74,39 @@ function UserCampaignList({
         )}
       </ListContainer>
       <ItemContainer>
-        {isLike ||
-          (options.hold &&
-            res &&
-            res[0].isSuccess &&
-            res[0].data!.map((props) => (
-              <CampaignItem
-                {...props}
-                key={`${props.writer.nickname}` + Date.now() + props.campaignId}
-              />
-            )))}
-        {isLike ||
-          (isMyDetail &&
-            options.participated &&
-            res &&
-            res[1].isSuccess &&
-            res[1].data!.map((props) => (
-              <CampaignItem
-                {...props}
-                key={`${props.writer.nickname}` + Date.now() + props.campaignId}
-              />
-            )))}
         {isLike &&
-          res &&
-          res[2].isSuccess &&
-          res[2].data!.map((props) => (
+          likeSuccess &&
+          likeData!.map((props: CampaignItemType) => (
             <CampaignItem
               {...props}
               key={`${props.writer.nickname}` + Date.now() + props.campaignId}
             />
           ))}
+        {options.hold &&
+          holdSuccess &&
+          holdData!.map((props: CampaignItemType) => (
+            <CampaignItem
+              {...props}
+              key={`${props.writer.nickname}` + Date.now() + props.campaignId}
+            />
+          ))}
+        {options.participated && partSuccess && options.hold
+          ? partData!
+              .filter(({ writer }) => writer.userId !== currentUserId)
+              .map((props: CampaignItemType) => (
+                <CampaignItem
+                  {...props}
+                  key={
+                    `${props.writer.nickname}` + Date.now() + props.campaignId
+                  }
+                />
+              ))
+          : partData!.map((props: CampaignItemType) => (
+              <CampaignItem
+                {...props}
+                key={`${props.writer.nickname}` + Date.now() + props.campaignId}
+              />
+            ))}
       </ItemContainer>
     </>
   );

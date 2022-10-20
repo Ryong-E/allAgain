@@ -16,6 +16,7 @@ export interface FeedType {
   authorImageUrl?: string;
   nickname?: string;
   comments?: CommentItemType[];
+  datetime?: string;
 }
 
 export interface CreateFeedType {
