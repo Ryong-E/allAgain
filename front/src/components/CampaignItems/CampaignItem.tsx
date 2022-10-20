@@ -230,8 +230,6 @@ export default function CampaignItem({
       setIsLoding(true);
     }, 10);
   }, []);
-  console.log(`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`);
-  console.log(`pathname`,pathname);
   const handlePreventDefault = (e : React.MouseEvent<HTMLElement> )=>{
     const currentPath = `${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`;
     if(currentPath === pathname){
