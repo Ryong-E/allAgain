@@ -130,7 +130,26 @@ const userService = {
 
     return null;
   },
-  getUserInfo: async ({ userId }) => {
+  getUserInfo: async ({ userId, currentUserId }) => {
+    const user = await User.findByUserId({ userId });
+
+    const { name, nickname, image } = user[0];
+    const imageUrl = makeImageUrl("profiles", image);
+    const followed = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    const targetUser = {
+      name,
+      nickname,
+      imageUrl,
+      followed: followed ? true : false,
+    };
+
+    return targetUser;
+  },
+  getUserInfoForGuest: async ({ userId }) => {
     const user = await User.findByUserId({ userId });
 
     const { name, nickname, image } = user[0];
@@ -140,6 +159,7 @@ const userService = {
       name,
       nickname,
       imageUrl,
+      followed: false,
     };
 
     return targetUser;
