@@ -8,6 +8,9 @@ const userService = {
   login: async ({ email, password }) => {
     const user = await User.findByEmail({ email });
 
+    if (user[0].length === 0) {
+      throw new Error("가입되어있지 않은 이메일입니다.");
+    }
     const {
       id: userId,
       password: correctPassword,
