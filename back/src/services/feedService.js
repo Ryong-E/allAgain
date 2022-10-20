@@ -44,8 +44,8 @@ const feedService = {
       const { image, nickname } = author[0];
       const authorImageUrl = makeImageUrl("profiles", String(image));
       let score = 1;
+      let flag = false;
       if (currentUserId) {
-        let flag = false;
         followees.forEach((followee) => {
           if (item.user_id === followee) {
             flag = true;
@@ -69,6 +69,7 @@ const feedService = {
         authorImageUrl,
         nickname,
         score,
+        followed: flag,
       };
       feedList.push(feed);
     }

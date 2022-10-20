@@ -17,13 +17,14 @@ import { getCampaignList } from "../../api/campaignApi";
 import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
 import { loggedInUserId } from "../../atoms/atoms";
 
-export const NoPaddingContainer = styled(Container)`
+export const CampaignRoot = styled(Container)`
   padding: 70px 0 0;
   max-width: 100%;
+  min-height: calc(100vh - 50px);
   overflow: hidden;
 `;
 
-export const Container1300Ver2 = styled(Container1300)`
+export const CampaingContainer = styled(Container1300)`
   padding: 100px 0;
 `;
 
@@ -51,10 +52,10 @@ export default function CampaignPage() {
   const filteredStatus =
     data && data!.filter((ele) => ele.status === currentValue);
   return (
-    <NoPaddingContainer>
+    <CampaignRoot>
       <PageTitle>다시, 다 기부하다</PageTitle>
       <CampaignSlide />
-      <Container1300Ver2>
+      <CampaingContainer>
         <AdditionalBox className={isLogin === null ? "guestJCT" : ""}>
           <TagBox
             data={data}
@@ -77,7 +78,7 @@ export default function CampaignPage() {
               />
             ))}
         </CampaignList>
-      </Container1300Ver2>
-    </NoPaddingContainer>
+      </CampaingContainer>
+    </CampaignRoot>
   );
 }

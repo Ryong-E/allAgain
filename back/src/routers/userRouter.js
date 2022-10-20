@@ -121,7 +121,19 @@ userRouter.get("/me", loginRequired, async (req, res, next) => {
 userRouter.get("/:userId", loginRequired, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const targetUser = await userService.getUserInfo({ userId });
+    const { currentUserId } = req;
+    const targetUser = await userService.getUserInfo({ userId, currentUserId });
+
+    res.status(200).json(targetUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const targetUser = await userService.getUserInfoForGuest({ userId });
 
     res.status(200).json(targetUser);
   } catch (error) {
