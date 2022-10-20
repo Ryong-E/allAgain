@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CampaignItemType, CreateCampaignType } from "../types/campaignTypes";
 
-const BASE_URL = "http://localhost:5001/campaigns";
+const BASE_URL = process.env.REACT_APP_BASE_API_URL + "/campaigns";
 const APPLCATION_JSON = "application/json";
 const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
@@ -104,7 +104,7 @@ export const getCampaignItem = async (
 export const insertImage = async (data: FormData) => {
   try {
     const response = await axios.post(
-      "http://localhost:5001/campaigns/images",
+      BASE_URL + "/images",
       data,
       {
         headers: {
@@ -122,7 +122,7 @@ export const insertImage = async (data: FormData) => {
 export const createCampaign = async (formData: FormData) => {
   try {
     const response = await axios.post(
-      "http://localhost:5001/campaigns",
+      BASE_URL,
       formData,
       {
         headers: {
@@ -142,7 +142,7 @@ export const updateCampaign = async ({
 }: CreateCampaignType) => {
   try {
     const response = await axios.put(
-      `http://localhost:5001/campaigns/${campaignId}`,
+      BASE_URL + `/${campaignId}`,
       formData,
       {
         headers: {

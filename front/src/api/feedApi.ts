@@ -1,8 +1,8 @@
 import axios from "axios";
 import { CreateFeedType, FeedType, ImageUrlType } from "../types/feedTypes";
 
-const BASE_FEED_URL = "http://localhost:5001/feeds/";
-const BASE_IMAGE_URL = "http://localhost:5001/images/";
+const BASE_FEED_URL = process.env.REACT_APP_BASE_API_URL + "/feeds/";
+const BASE_IMAGE_URL = process.env.REACT_APP_BASE_API_URL + "/images/";
 const APPLCATION_JSON = "application/json";
 const MULTIPART_FORM_DATA = "multipart/form-data";
 

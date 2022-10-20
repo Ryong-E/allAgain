@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CampaignItemType, CreateCampaignType } from "../types/campaignTypes";
 
-const BASE_URL = "http://localhost:5001/";
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 const APPLCATION_JSON = "application/json";
 const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
