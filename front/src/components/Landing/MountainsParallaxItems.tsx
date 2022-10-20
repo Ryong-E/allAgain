@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
+  opacity: 0;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -17,18 +18,22 @@ const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
     left: -10px;
   }
   &.active{
+    opacity: 1;
     background-position: 0 46%;
   }
   &.active.parallaxItem1{
+    opacity: 1;
     background-position: 0 55%;
   }
   &.active.parallaxItem2{
+    opacity: 1;
     background-position: 0 51%;
   }
   &.active.parallaxItem5{
+    opacity: 1;
     background-position: 0 30%;
   }
-  transition: background-position 1.3s 1.${({zIndex}) => zIndex+3}s;
+  transition: background-position 1.8s ${({zIndex}) => 0.16*(zIndex-1)}s, opacity 1.8s ${({zIndex}) => 0.16*(zIndex-1)}s;
   @media (max-width:1920px){
     &.parallaxItem2{
       width:101%;

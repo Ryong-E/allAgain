@@ -129,4 +129,36 @@ userRouter.get("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+userRouter.post("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const createdfollow = await userService.postFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(201).json(createdfollow);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.delete("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const deletedfollow = await userService.deleteFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(204).json(deletedfollow);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { userRouter };

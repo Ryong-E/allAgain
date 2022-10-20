@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { Router } from "express";
-import { loginRequired } from "../middlewares/loginRequired";
-import { feedService } from "../services/feedService";
+import { Router } from 'express';
+import { loginRequired } from '../middlewares/loginRequired';
+import { feedService } from '../services/feedService';
 
 const feedRouter = Router();
 
-feedRouter.post("/", loginRequired, async (req, res, next) => {
+feedRouter.post('/', loginRequired, async (req, res, next) => {
   try {
     const { category, tags, imageUrls, description, datetime } = req.body;
     const createdFeed = await feedService.postFeed({
@@ -22,7 +22,7 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.get("/", async (req, res, next) => {
+feedRouter.get('/', async (req, res, next) => {
   try {
     const feedList = await feedService.getAllFeeds();
     res.status(200).send(feedList);
@@ -31,7 +31,7 @@ feedRouter.get("/", async (req, res, next) => {
   }
 });
 
-feedRouter.get("/:feedId", async (req, res, next) => {
+feedRouter.get('/:feedId', async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const feed = await feedService.getFeedByFeedId({ feedId });
@@ -41,7 +41,7 @@ feedRouter.get("/:feedId", async (req, res, next) => {
   }
 });
 
-feedRouter.get("/user/:userId", async (req, res, next) => {
+feedRouter.get('/user/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params;
     const feeds = await feedService.getFeedByUserId({ userId });
@@ -51,7 +51,7 @@ feedRouter.get("/user/:userId", async (req, res, next) => {
   }
 });
 
-feedRouter.get("/user/:userId/likes", loginRequired, async (req, res, next) => {
+feedRouter.get('/user/:userId/likes', loginRequired, async (req, res, next) => {
   try {
     const { userId } = req.params;
     const feeds = await feedService.getLikedFeedsByUserId({ userId });
@@ -61,7 +61,7 @@ feedRouter.get("/user/:userId/likes", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
+feedRouter.put('/:feedId', loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const { category, tags, imageUrls, description } = req.body;
@@ -81,7 +81,7 @@ feedRouter.put("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {
+feedRouter.delete('/:feedId', loginRequired, async (req, res, next) => {
   try {
     const { feedId } = req.params;
     const currentUserId = req.currentUserId;
@@ -92,20 +92,20 @@ feedRouter.delete("/:feedId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.post("/likes", loginRequired, async (req, res, next) => {
+feedRouter.post('/likes', loginRequired, async (req, res, next) => {
   try {
     const { feedId, userId } = req.body;
     const likeId = await feedService.postLike({
       feedId,
       userId,
     });
-    res.status(201).send(likeId.toString());
+    res.status(201).send({ likeId: likeId[0][0].id });
   } catch (error) {
     next(error);
   }
 });
 
-feedRouter.delete("/likes/:likeId", loginRequired, async (req, res, next) => {
+feedRouter.delete('/likes/:likeId', loginRequired, async (req, res, next) => {
   try {
     const { likeId } = req.params;
     const currentUserId = req.currentUserId;
@@ -116,7 +116,7 @@ feedRouter.delete("/likes/:likeId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.post("/feed/comments", loginRequired, async (req, res, next) => {
+feedRouter.post('/feed/comments', loginRequired, async (req, res, next) => {
   try {
     const { currentUserId } = req;
     const { feedId, content, rootCommentId } = req.body;
@@ -134,7 +134,7 @@ feedRouter.post("/feed/comments", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.put("/feed/:commentId", loginRequired, async (req, res, next) => {
+feedRouter.put('/feed/:commentId', loginRequired, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { content } = req.body;
@@ -151,7 +151,7 @@ feedRouter.put("/feed/:commentId", loginRequired, async (req, res, next) => {
   }
 });
 
-feedRouter.delete("/feed/:commentId", loginRequired, async (req, res, next) => {
+feedRouter.delete('/feed/:commentId', loginRequired, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { currentUserId } = req;

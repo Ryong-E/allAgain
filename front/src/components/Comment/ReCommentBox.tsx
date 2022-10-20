@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { CommentItemType } from '../../types/campaignTypes'
 import CommentItem from './CommentItem'
@@ -14,13 +13,12 @@ interface ReComment{
   pathID : number;
   commentId : number;
   filteredComment : CommentItemType[];
-  userImg: String;
 }
 
-export default function ReCommentBox({pathID, commentId, isShowReComment, lastIdx, filteredComment, userImg}: ReComment) {
+export default function ReCommentBox({pathID, commentId, isShowReComment, lastIdx, filteredComment}: ReComment) {
   return (
     <ReCommentItem>
-      {(isShowReComment && (lastIdx === commentId)) && <CampaignCommentWrite pathID={pathID} commentId={commentId} userImg={userImg} />}
+      {(isShowReComment && (lastIdx === commentId)) && <CampaignCommentWrite pathID={pathID} commentId={commentId}/>}
       {filteredComment.map((props)=>(
         <CommentItem {...props} key={props.commentId + Date.now()} />
       ))}

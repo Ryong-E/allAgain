@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-/* 리디바탕체 - 페이지 타이틀 폰트 */
+/* 리디바탕체 - 페이지 타이틀 폰트, 랜딩페이지 명조 폰트 */
 @font-face {
   font-family: 'RIDIBatang';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
@@ -17,10 +17,20 @@
   font-style: normal;
 }
 
-/* 마포꽃섬 - 랜딩페이지 명조 폰트 */
+/* 코트라볼드체 - 랜딩페이지 top섹션 타이틀 */
 @font-face {
-  font-family: 'MapoFlowerIsland';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff') format('woff');
+  font-family: 'KOTRA_BOLD-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.1/KOTRA_BOLD-Bold.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
+
+/* 스포카한산스네오체 - 랜딩페이지 그래프 숫자 */
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans&display=swap');

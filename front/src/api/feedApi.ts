@@ -1,8 +1,8 @@
 import axios from "axios";
 import { CreateFeedType, FeedType, ImageUrlType } from "../types/feedTypes";
 
-const BASE_FEED_URL = "http://localhost:5001/feeds/";
-const BASE_IMAGE_URL = "http://localhost:5001/images/";
+const BASE_FEED_URL = process.env.REACT_APP_BASE_API_URL + "/feeds/";
+const BASE_IMAGE_URL = process.env.REACT_APP_BASE_API_URL + "/images/";
 const APPLCATION_JSON = "application/json";
 const MULTIPART_FORM_DATA = "multipart/form-data";
 
@@ -64,6 +64,15 @@ export const getFeed = async (feedId: number) => {
 export const getFeedByUserId = async (userId: string) => {
   try {
     const response = await feedApi().get<FeedType[]>(`user/${userId}`);
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const getFeedLikedByUserId = async (userId: number) => {
+  try {
+    const response = await feedApi().get<FeedType[]>(`user/${userId}/likes`);
     return response.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -135,9 +144,13 @@ export const uploadFeedImages = async (formData: FormData) => {
   }
 };
 
+interface LikeId {
+  likeId: number;
+}
+
 export const createLike = async (feedId: number, userId: number) => {
   try {
-    const response = await feedApi().post<string>("likes", {
+    const response = await feedApi().post<LikeId>("likes", {
       feedId,
       userId,
     });

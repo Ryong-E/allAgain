@@ -23,6 +23,7 @@ function FeedDetail({
   tags,
   nickname,
   authorImageUrl,
+  likes,
 }: FeedType) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
@@ -53,7 +54,7 @@ function FeedDetail({
             nickname={nickname}
             authorImageUrl={authorImageUrl}
           />
-          <LikesCount likes={1122} />
+          <LikesCount likeList={likes ? likes : []} feedId={feedId} />
           <SocialButtonContainer>
             <WarningButton />
             <ShareButton />

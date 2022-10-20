@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container } from '../common/Containers';
 import { ROUTE } from '../../constant/route';
@@ -9,6 +9,10 @@ const FooterWrap = styled.footer`
   font-size: 14px;
   font-weight: 300;
   height: 50px;
+
+  &.bg-dark {
+    background: #222222;
+  }
 `;
 
 const FooterContainer = styled.div`
@@ -31,8 +35,12 @@ const FooterLinkWrap = styled.ul`
 `;
 
 export default function Footer() {
+
+  const location = useLocation();
+  const pathName = location.pathname;
+
   return (
-    <FooterWrap>
+    <FooterWrap className={pathName === "/landing" ? "bg-dark" : ""}>
       <FooterContainer>
         <Copyright>다시, 다 &copy; 2022</Copyright>
         <FooterLinkWrap>

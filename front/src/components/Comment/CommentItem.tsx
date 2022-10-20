@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState, useMemo } from "react";
-import CampaignCommentWrite from "./CommentWrite";
 import CampaignUtilsBox from "./CommentUtilsBox";
 import UserImgBox from "./UserImgBox";
 import UserName from "../common/UserName";
@@ -76,7 +75,7 @@ export default function CommentItem({
       <CommentBox>
         <UserImgBox userImg={writer.image}/>
         <div className="commentTextBox">
-          <Link to={`/user/:id`}>
+          <Link to={`/user/${writer.userId}`}>
             <UserName userName={writer.nickname} />
           </Link>
           <div className="comment">
@@ -115,7 +114,6 @@ export default function CommentItem({
           isShowReComment={isShowReComment}
           pathID={pathID!}
           commentId={commentId}
-          userImg={writer.image}
         />
       )}
     </>

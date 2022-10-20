@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { GET_CAMPAIGNLIST } from '../../constant/queryKeys';
+import { CampaignItemType } from '../../types/campaignTypes';
 
 const TagListBox = styled.div`
   width: 650px;
@@ -31,28 +34,34 @@ interface PropsType {
   values : String[];
   currentValue : String;
   setCurrentValue : React.Dispatch<React.SetStateAction<string>>;
+  data: CampaignItemType[] | undefined
 }
 
-export default function TagBox({values, currentValue, setCurrentValue}: PropsType) {
-  
+export default function TagBox({values, currentValue, setCurrentValue, data}: PropsType) {
+  const queryClient = useQueryClient();
   const handleChangeCurrentState = (e: React.MouseEvent<HTMLButtonElement>) => {
     const event = e.target as HTMLButtonElement;
     const { value } = event;
     if (value !== currentValue) {
       setCurrentValue(value);
     }
+    
   };
+  useEffect(()=>{
+    queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
+  },[currentValue])
   return (
     <TagListBox>
-      {values.map((element) => (
-        <TagItemBox 
+      {values.map((element) => {
+        const eleLength = data?.filter(obj => obj.status === element).length;
+        return <TagItemBox 
           key={`${element}`}
           className={currentValue === element ? 'active' : ''}
           value={`${element}`} 
           onClick={handleChangeCurrentState}>
-          {element}
+          {element} ( {eleLength} )
         </TagItemBox>
-      ))}
+      })}
     </TagListBox>
   );
 }
