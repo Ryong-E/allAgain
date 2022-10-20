@@ -151,3 +151,40 @@ export const WithdrawalConfirmButton = styled.button<ButtonProps>`
 export const SubmitButton = styled(SaveButton)`
   margin-top: 40px;
 `;
+
+
+export const CropperModelWrap = styled.div`
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  box-shadow: 5px 5px 15px rgba(231, 225, 210, .8);
+  border: 2px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 20px 60px;
+
+  .crop-preview {
+    display: none;
+  }
+
+  .button-wrap {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-size: 16px;
+      padding: 8px 15px;
+      margin: 20px 0 0 10px;
+      border-radius: ${({ theme }) => theme.borderRadius.small};
+    }
+
+    .ok-btn {
+      background: ${({ theme }) => theme.colors.dasidaGreen};
+      color: #fff;
+    }
+  }
+
+`;

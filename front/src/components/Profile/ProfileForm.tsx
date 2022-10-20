@@ -81,16 +81,14 @@ export default function ProfileForm() {
   const queryClient = useQueryClient();
 
   const updateProfileMutation = useMutation([UPDATE_PROFILE], updateUserProfile, {
-    onMutate: variable => {
-      console.log("onMutate", variable);
-    },
     onError: (error: any, variable, context) => {
       if(error.data.errorMessage === "이미 존재하는 닉네임입니다.") {
         setError("nickname", {message: "다른 닉네임을 사용해주세요."});
       }
     },
     onSuccess: (data: any, variables, context) => {
-      console.log("success", data, variables, context);
+      console.log("success", data);
+      alert("프로필 정보가 수정되었습니다.");
       queryClient.invalidateQueries([GET_PROFILE]);
       setValue("currentPassword", "");
       setValue("password", "");
