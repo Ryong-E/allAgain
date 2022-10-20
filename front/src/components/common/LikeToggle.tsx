@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import { useEffect, useState } from "react";
 
 const LikeButton = styled.button`
   display: block;
@@ -32,7 +33,7 @@ export default function LikeToggle({ liked, campaignId }: LikePropsType) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loggedInUserId);
-
+  const [isActive, setIsActive] = useState<Boolean>(false);
   const LikeCampaign = useMutation(LikedOnCampaign, {
     onSuccess: (data: any, variables, context) => {
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
@@ -46,10 +47,14 @@ export default function LikeToggle({ liked, campaignId }: LikePropsType) {
     },
   });
   const handleClickLike = (campaignId: number) => {
-    if (!liked!) {
-      LikeCampaign.mutate(campaignId);
-    } else {
+    if (LikeCampaign.isLoading || cancleLikeCampaign.isLoading) return;
+    
+    if (isActive) {
+      setIsActive(false)
       cancleLikeCampaign.mutate(campaignId);
+    } else {
+      setIsActive(true)
+      LikeCampaign.mutate(campaignId);
     }
   };
   const handleClickLoginLink = () => {
@@ -57,10 +62,13 @@ export default function LikeToggle({ liked, campaignId }: LikePropsType) {
       navigate(ROUTE.LOGIN.link);
     }
   };
+  useEffect(()=>{
+    setIsActive(liked!)
+  },[])
   return (
     <div>
       <LikeButton
-        className={liked! ? "active" : ""}
+        className={isActive ? "active" : ""}
         onClick={() => {
           isLogin !== null
             ? handleClickLike(campaignId!)
