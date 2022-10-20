@@ -75,7 +75,7 @@ export default function CommentItem({
       <CommentBox>
         <UserImgBox userImg={writer.image}/>
         <div className="commentTextBox">
-          <Link to={`/user/:id`}>
+          <Link to={`/user/${writer.userId}`}>
             <UserName userName={writer.nickname} />
           </Link>
           <div className="comment">
