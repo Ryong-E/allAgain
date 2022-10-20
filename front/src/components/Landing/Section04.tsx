@@ -177,7 +177,7 @@ export default function Section04() {
       <Container1300>
         <TextImgBox>
           {LandingImgs.upcyclingArticleText.map((ele, idx)=> (
-              <LandingTextImgItem className={`gs_reveal gs_reveal_fromBottom delay${idx % 2 ? 600 : 800}`} imgSrc ={ele} idx={idx} key={idx + ele} />
+              <LandingTextImgItem className={`gs_reveal gs_reveal_fromBottom delay${idx % 2 ? 400 : 200}`} imgSrc ={ele} idx={idx} key={idx + ele} />
             ))}
         </TextImgBox>
         <UpcycleIconBox>

@@ -24,8 +24,11 @@ const LandingImgBox = styled.div`
   &:nth-child(9){
     margin-right:100px;
   }
+  &:nth-child(1),&:nth-child(2){
+    margin-bottom:30px;
+  }
   &:not(:nth-child(9),:nth-child(10)):nth-child(n+4){
-    margin-bottom:40px;
+    margin-bottom:60px;
   }
   &:nth-child(4),&:nth-child(5){
     margin-bottom:70px;
