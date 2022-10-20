@@ -1,5 +1,5 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -31,9 +31,10 @@ function UserCampaignList({
 }: UserCampaignListProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const [options, setOptions] = useState<OptionType>({
-    participated: true,
+    participated: false,
     hold: true,
   });
+  const [data, setData] = useState<CampaignItemType[]>([]);
 
   const { isSuccess: likeSuccess, data: likeData } = useQuery(
     [isLike],
@@ -44,16 +45,27 @@ function UserCampaignList({
   );
 
   const { isSuccess: partSuccess, data: partData } = useQuery(
-    [options, isMyDetail],
+    [options.participated, isMyDetail],
     getCampaignListParticipated,
     {
       enabled: isMyDetail,
     }
   );
 
-  const { isSuccess: holdSuccess, data: holdData } = useQuery([options], () =>
-    getCampaignListByUserId(userId, currentUserId)
+  const { isSuccess: holdSuccess, data: holdData } = useQuery(
+    [options.hold],
+    () => getCampaignListByUserId(userId, currentUserId)
   );
+
+  // useEffect(() => {
+  //   console.log(
+  //     partData?.filter(({ writer }) => writer.userId !== currentUserId)
+  //   );
+  // }, [partData, currentUserId]);
+
+  // useEffect(() => {
+  //   console.log(options);
+  // }, [options]);
 
   return (
     <>
@@ -82,7 +94,8 @@ function UserCampaignList({
               key={`${props.writer.nickname}` + Date.now() + props.campaignId}
             />
           ))}
-        {options.hold &&
+        {!isLike &&
+          options.hold &&
           holdSuccess &&
           holdData!.map((props: CampaignItemType) => (
             <CampaignItem
@@ -90,23 +103,31 @@ function UserCampaignList({
               key={`${props.writer.nickname}` + Date.now() + props.campaignId}
             />
           ))}
-        {options.participated && partSuccess && options.hold
-          ? partData!
-              .filter(({ writer }) => writer.userId !== currentUserId)
-              .map((props: CampaignItemType) => (
+        {!isLike && options.participated && partSuccess && options.hold
+          ? partData
+              ?.filter(({ writer }) => writer.userId !== currentUserId)
+              ?.map((props: CampaignItemType) => {
+                console.log("filtered");
+                return (
+                  <CampaignItem
+                    {...props}
+                    key={
+                      `${props.writer.nickname}` + Date.now() + props.campaignId
+                    }
+                  />
+                );
+              })
+          : partData?.map((props: CampaignItemType) => {
+              console.log("not filtered");
+              return (
                 <CampaignItem
                   {...props}
                   key={
                     `${props.writer.nickname}` + Date.now() + props.campaignId
                   }
                 />
-              ))
-          : partData!.map((props: CampaignItemType) => (
-              <CampaignItem
-                {...props}
-                key={`${props.writer.nickname}` + Date.now() + props.campaignId}
-              />
-            ))}
+              );
+            })}
       </ItemContainer>
     </>
   );
