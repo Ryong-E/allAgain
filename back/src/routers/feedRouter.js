@@ -24,7 +24,7 @@ feedRouter.post("/", loginRequired, async (req, res, next) => {
 
 feedRouter.get("/", async (req, res, next) => {
   try {
-    const feedList = await feedService.getAllFeeds({ currentUserId });
+    const feedList = await feedService.getAllFeeds({ currentUserId: null });
     res.status(200).send(feedList);
   } catch (error) {
     next(error);
