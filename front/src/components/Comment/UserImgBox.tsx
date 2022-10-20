@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import guestUserImg from "../../assets/images/icons/icon_profile.png";
 
 const UserImgWrap = styled.div`
   margin: 0 20px;
@@ -6,7 +7,7 @@ const UserImgWrap = styled.div`
   width: 30px;
   flex-shrink: 0;
   border-radius:50%;
-  border : 1px solid #666;
+  border : 1px solid  rgb(231, 229, 224);
   overflow:hidden;
   img{
     width:100%;
@@ -20,7 +21,7 @@ interface UserImgType{
 export default function UserImgBox({userImg}: UserImgType) {
   return (
     <UserImgWrap className='userImgBox'>
-      <img src={`http://${userImg}`} alt="" />
+      <img src={userImg ?`http://${userImg}` : guestUserImg} alt="" />
     </UserImgWrap>
   )
 }
