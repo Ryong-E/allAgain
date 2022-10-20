@@ -1,5 +1,5 @@
 import { gsap } from "gsap";
-import "../styles/animateStyles.css";
+// import "../styles/animateStyles.css";
 
 export function animateFrom(elem: any) {
   let x: number | undefined, 
@@ -22,6 +22,10 @@ export function animateFrom(elem: any) {
   }
 
   // 지연시간
+  if(elem.classList.contains("delay200")) {
+    delayTime = .2;
+  }
+
   if(elem.classList.contains("delay400")) {
     delayTime = .4;
   }
@@ -39,13 +43,13 @@ export function animateFrom(elem: any) {
   }
 
   gsap.fromTo(elem, {x: x, y: y, autoAlpha: 0}, {
-    duration: 2.2,
+    duration: 2,
     delay: delayTime,
     x: 0,
     y: 0, 
     autoAlpha: 1, 
     ease: "expo", 
-    overwrite: "auto"
+    // overwrite: "auto"
   });
 }
 

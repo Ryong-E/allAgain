@@ -94,7 +94,6 @@ export default function BarLineChart() {
       start: "50% bottom",
       onEnter: () => { setShowChart(!showChart) },
       onLeaveBack: () => {setShowChart(false); },
-      markers: true,
     });
   }, []);
 

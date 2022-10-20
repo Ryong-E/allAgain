@@ -8,6 +8,41 @@ import { animateFrom, hide } from "../../utils/animateFrom";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const EmissionsItem = styled.div`
+  padding: 100px 0;
+  font-weight: 300;
+  
+  .title{
+    font-size: 18px;
+    color: #ACD1CB;
+    margin-bottom: 80px;
+  }
+  .emissions{
+    letter-spacing: .02em;
+    font-size: 46px;
+
+    .unit {
+      font-size: 30px;
+    }
+  }
+`;
+
+const ReasonTextBox = styled.div`
+  font-size: 22px;
+  font-weight: 300;
+  text-align: center;
+  color: #ACD1CB;
+  line-height: 3;
+
+  strong {
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0 10px;
+    padding: 0 10px;
+    color: #fff;
+    background: rgba(180, 224, 217, .3);
+  }
+`;
 
 const Section = styled.section`
   position: relative;
@@ -17,6 +52,22 @@ const Section = styled.section`
 
   &.colorDark {
     color: #343434;
+
+    ${ReasonTextBox} {
+      color: #6A6558;
+      font-weight: 400;
+
+      strong {
+        background: #004D49;
+      }
+    }
+
+    ${EmissionsItem} {
+      .title{
+        color: #6A6558;
+        font-weight: 400;
+      }
+    }
   }
 
 
@@ -31,8 +82,8 @@ const SectionGradientBg = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 110%;
-  background: linear-gradient(180deg, #192A2E 0%, #2D4D4D 68%, #3D5B5B 100%);
+  height: 200%;
+  background: linear-gradient(180deg, #192A2E 0%, #2D4D4D 36%, #3D5B5B 65%);
   z-index: 1;
 `;
 
@@ -71,41 +122,7 @@ const SimpleEmissionsBox = styled.div`
   display:flex;
   justify-content: space-between;
   padding: 0 40px;
-`
-const EmissionsItem = styled.div`
-  padding: 100px 0;
-  font-weight: 300;
-  
-  .title{
-    font-size: 18px;
-    color: #ACD1CB;
-    margin-bottom: 80px;
-  }
-  .emissions{
-    letter-spacing: .02em;
-    font-size: 46px;
-
-    .unit {
-      font-size: 30px;
-    }
-  }
 `;
-
-const ReasonTextBox = styled.div`
-  font-size: 22px;
-  font-weight: 300;
-  text-align: center;
-  color: #ACD1CB;
-  line-height: 3;
-
-  strong {
-    font-size: 32px;
-    font-weight: 400;
-    margin: 0 10px;
-    color: #fff;
-  }
-`;
-
 
 
 
@@ -137,7 +154,6 @@ export default function Section03() {
       ScrollTrigger.create({
         trigger: elem,
         start: "50% bottom",
-        scrub: 1,
         onEnter: () => { animateFrom(elem); }, 
         onLeaveBack: () => { hide(elem); },
       });
@@ -150,18 +166,21 @@ export default function Section03() {
     ScrollTrigger.create({
       trigger: ".bgTrigger",
       start: "150% bottom",
-      markers: true,
       onEnter: () => { 
         gsap.to(bgEl, {
           opacity: 0,
-          duration: .4
+          duration: .5,
+          onComplete: () => {
+            bgEl.style.zIndex = -1;
+          }
         });
         sectionEl.classList.add("colorDark");
       }, 
       onLeaveBack: () => {
         gsap.to(bgEl, {
           opacity: 1,
-          duration: .4
+          zIndex: 5,
+          duration: .5
         });
         sectionEl.classList.remove("colorDark");
       },

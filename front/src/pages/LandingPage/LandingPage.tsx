@@ -17,9 +17,7 @@ export default function LandingPage() {
       <Section01 />
       <Section02 />
       <Section03 />
-      <Container1300>
-        <Section04 />
-      </Container1300>
+      <Section04 />
     </LandingRoot>
   )
 }
