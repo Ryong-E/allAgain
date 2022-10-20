@@ -11,6 +11,7 @@ import { loggedInUserId } from "../../atoms/atoms";
 import styled from "styled-components";
 
 const CampaignDetailRoot = styled(Container)`
+  padding : 170px 4.1666vw 100px;
   min-height: calc(100vh - 50px);
 `
 
