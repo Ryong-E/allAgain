@@ -21,7 +21,7 @@ function ListOptionCheckbox({
       <input
         id="participated"
         type="checkbox"
-        defaultChecked={true}
+        defaultChecked={false}
         onChange={() =>
           setOption({ ...options, participated: !options.participated })
         }

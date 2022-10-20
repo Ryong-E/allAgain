@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { deleteFeed } from "../../api/feedApi";
 import { loggedInUserId } from "../../atoms/atoms";
 import { FeedType } from "../../types/feedTypes";
+import TimeStamp from "../Comment/TimeStamp";
 import {
   DelButton,
   ConfirmButton,
@@ -24,6 +25,7 @@ function FeedDetail({
   nickname,
   authorImageUrl,
   likes,
+  datetime,
 }: FeedType) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
@@ -61,7 +63,12 @@ function FeedDetail({
           </SocialButtonContainer>
         </DetailHeader>
         <DetailTime>
-          <PostTime>3시간 전</PostTime>
+          <PostTime>
+            <TimeStamp
+              timestamp={
+                datetime ? new Date(datetime) : new Date()
+              }></TimeStamp>
+          </PostTime>
         </DetailTime>
         <DetailSection>{description}</DetailSection>
         <CategoryContainer>

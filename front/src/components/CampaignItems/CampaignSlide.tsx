@@ -13,7 +13,7 @@ import "swiper/css/navigation";
 import { Autoplay, EffectFade, Navigation} from "swiper";
 
 const SlideWrap = styled(Swiper)`
-  
+  min-width: 1330px;
 
 
   .swiper-button-next,.swiper-button-prev{
@@ -32,11 +32,11 @@ const SlideWrap = styled(Swiper)`
   
 `
 const Slide = styled(SwiperSlide)`
-  
   img{
     display:block;
     margin: 0 auto;
     max-width:1920px;
+    width:100%;
   }
 `
 

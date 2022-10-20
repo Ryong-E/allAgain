@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FeedType } from "../../types/feedTypes";
+import TimeStamp from "../Comment/TimeStamp";
 import { ShareButton, WarningButton } from "../common/Buttons";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
@@ -18,6 +19,7 @@ function Feed({
   nickname,
   authorImageUrl,
   likes,
+  datetime,
 }: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -42,7 +44,14 @@ function Feed({
             nickname={nickname}
             authorImageUrl={authorImageUrl}
           />
-          {isAdmin || <PostTime>3시간</PostTime>}
+          {isAdmin || (
+            <PostTime>
+              <TimeStamp
+                timestamp={
+                  datetime ? new Date(datetime) : new Date()
+                }></TimeStamp>
+            </PostTime>
+          )}
         </PostContainer>
       )}
     </FeedContainer>

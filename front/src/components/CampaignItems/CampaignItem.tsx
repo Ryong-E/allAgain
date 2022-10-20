@@ -52,7 +52,8 @@ const ThumbnailImgBox = styled.div`
 const ContentsBox = styled.div`
   padding: 20px 28px 20px 40px;
   border-left: 1px solid rgba(231, 225, 210, 0.8);
-  width: calc(100% - 320px);
+  width: calc(100% - 360px);
+  min-width: calc(1300px - 360px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
