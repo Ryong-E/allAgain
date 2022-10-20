@@ -1,9 +1,7 @@
 import styled, { css } from "styled-components";
 import LikeIconOn from "../../assets/images/icons/icon_like_on.png";
 import LikeIconOff from "../../assets/images/icons/icon_like_off.png";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
-import { loggedInUserId } from "../../atoms/atoms";
+import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { createLike, deleteLike } from "../../api/feedApi";
@@ -45,7 +43,7 @@ export default function FeedLikeToggle({
   const [keepCount, setKeepCount] = useState<number>(1);
 
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const createLikeKey = useMutation(() => createLike(feedId, userId!));
   const deleteLikeKey = useMutation(() => {
@@ -68,7 +66,7 @@ export default function FeedLikeToggle({
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link, {state : pathname});
+      navigate(ROUTE.LOGIN.link, { state: pathname });
     }
   };
 

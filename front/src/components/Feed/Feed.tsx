@@ -20,6 +20,7 @@ function Feed({
   authorImageUrl,
   likes,
   datetime,
+  followed,
 }: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -43,6 +44,7 @@ function Feed({
             isAdmin={isAdmin}
             nickname={nickname}
             authorImageUrl={authorImageUrl}
+            followed={followed}
           />
           {isAdmin || (
             <PostTime>
@@ -57,6 +59,10 @@ function Feed({
     </FeedContainer>
   );
 }
+
+Feed.defaultProps = {
+  followed: false,
+};
 
 const FeedContainer = styled.div`
   width: 400px;
