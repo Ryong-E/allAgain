@@ -91,6 +91,7 @@ const ImageContainer = styled.div<{ size: "simple" | "detail" }>`
           width: 1200px;
           height: 650px;
           box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+          background-color: #ffffff;
         `}
   position: relative;
   overflow: hidden;

@@ -97,6 +97,8 @@ const DetailContainer = styled.div`
   width: 1200px;
   padding: 40px 60px 20px;
   background-color: #ffffff;
+  box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+  margin-top: 40px;
 `;
 
 const DetailHeader = styled.div`
