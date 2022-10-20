@@ -33,10 +33,14 @@ function AuthorInfo({
       <ProfileContainer>
         <AuthorProfile
           size={size}
-          src={authorImageUrl ? authorImageUrl : DefaultProfileBanner}
+          src={
+            `http://` + (authorImageUrl ? authorImageUrl : DefaultProfileBanner)
+          }
           onClick={handleOnClick}
         />
-        <AuthorName isAdmin={isAdmin}>{nickname}</AuthorName>
+        <AuthorName isAdmin={isAdmin} onClick={handleOnClick}>
+          {nickname}
+        </AuthorName>
         {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
       </ProfileContainer>
       {size === "simple" && <FollowToggleSmall isAdmin={isAdmin} />}
