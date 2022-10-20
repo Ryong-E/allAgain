@@ -14,7 +14,7 @@ function Album({ size, imageUrls, feedId }: albumProps) {
   const [imageIndex, setImageIndex] = useState<number>(0);
   const navigator = useNavigate();
 
-  const IMAGE_LAST_INDEX = imageUrls!.length - 1;
+  const IMAGE_LAST_INDEX = imageUrls?.length - 1;
   const IMAGE_FIRST_INDEX = 0;
 
   const handleViewerClick = (isNext: boolean): void => {
