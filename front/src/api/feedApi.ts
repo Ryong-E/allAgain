@@ -52,6 +52,15 @@ export const getFeedList = async () => {
   }
 };
 
+export const getFeedListAuthorized = async () => {
+  try {
+    const response = await feedApi().get<FeedType[]>("all");
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export const getFeed = async (feedId: number) => {
   try {
     const response = await feedApi().get<FeedType>(`${feedId}`);

@@ -79,7 +79,6 @@ export const updateUserProfile = async ({
   password,
   passwordConfirm,
 }: MyProfileEditParams) => {
-  console.log(userId);
   try {
     const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios({
@@ -144,10 +143,13 @@ export const deleteUser = async ({ userId }: User) => {
   }
 };
 
-export const getUserProfileById = async (userId: string,currentUserId : number | null) => {
+export const getUserProfileById = async (
+  userId: string,
+  currentUserId: number | null
+) => {
   try {
     const token = sessionStorage.getItem("jwtToken");
-    if(currentUserId){
+    if (currentUserId) {
       const { data } = await axios<UserInfoResponse>({
         method: "get",
         url: `${BASE_URL}/users/${userId}`,
@@ -157,8 +159,7 @@ export const getUserProfileById = async (userId: string,currentUserId : number |
         },
       });
       return data;
-    }
-    else{
+    } else {
       const { data } = await axios<UserInfoResponse>({
         method: "get",
         url: `${BASE_URL}/users/${userId}/guest`,
@@ -168,6 +169,40 @@ export const getUserProfileById = async (userId: string,currentUserId : number |
       });
       return data;
     }
+  } catch (err: any) {
+    throw err.response;
+  }
+};
+
+export const followUser = async (userId: string) => {
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    const { data } = await axios<string>({
+      method: "post",
+      url: `${BASE_URL}/users/${userId}/follow`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (err: any) {
+    throw err.response;
+  }
+};
+
+export const deleteFollowUser = async (userId: string) => {
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    const { data } = await axios<string>({
+      method: "delete",
+      url: `${BASE_URL}/users/${userId}/follow`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
   } catch (err: any) {
     throw err.response;
   }

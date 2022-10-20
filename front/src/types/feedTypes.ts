@@ -17,6 +17,7 @@ export interface FeedType {
   nickname?: string;
   comments?: CommentItemType[];
   datetime?: string;
+  followed?: boolean;
 }
 
 export interface CreateFeedType {
