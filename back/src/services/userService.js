@@ -1,4 +1,4 @@
-import { User } from "../db";
+import { Feed, User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { compareUserId, makeImageUrl } from "../utils/util";
@@ -130,8 +130,84 @@ const userService = {
 
     return null;
   },
-  getUserInfo: async ({ userId }) => {
+  getUserInfo: async ({ userId, currentUserId }) => {
     const user = await User.findByUserId({ userId });
+    const feeds = await Feed.findFeedByUserId({ userId });
+
+    const followers = await User.findFollowersByUserId({ userId });
+    const filteredFollowers = [];
+    for (let follower of followers) {
+      const { id: userId, nickname, image } = follower;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowers.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const followees = await User.findFolloweesByUserId({ userId });
+    const filteredFollowees = [];
+    for (let followee of followees) {
+      const { id: userId, nickname, image } = followee;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowees.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const { name, nickname, image } = user[0];
+    const imageUrl = makeImageUrl("profiles", image);
+    const followed = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    const targetUser = {
+      name,
+      nickname,
+      imageUrl,
+      NumberOfFeeds: feeds[0].length,
+      followed: followed ? true : false,
+      followers: { count: followers.length, users: filteredFollowers },
+      followees: { count: followees.length, users: filteredFollowees },
+    };
+
+    return targetUser;
+  },
+  getUserInfoForGuest: async ({ userId }) => {
+    const user = await User.findByUserId({ userId });
+    const feeds = await Feed.findFeedByUserId({ userId });
+
+    const followers = await User.findFollowersByUserId({ userId });
+    const filteredFollowers = [];
+    for (let follower of followers) {
+      const { id: userId, nickname, image } = follower;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowers.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const followees = await User.findFolloweesByUserId({ userId });
+    const filteredFollowees = [];
+    for (let followee of followees) {
+      const { id: userId, nickname, image } = followee;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowees.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
 
     const { name, nickname, image } = user[0];
     const imageUrl = makeImageUrl("profiles", image);
@@ -140,6 +216,10 @@ const userService = {
       name,
       nickname,
       imageUrl,
+      NumberOfFeeds: feeds[0].length,
+      followed: false,
+      followers: { count: followers.length, users: filteredFollowers },
+      followees: { count: followees.length, users: filteredFollowees },
     };
 
     return targetUser;
@@ -158,6 +238,37 @@ const userService = {
     };
 
     return userInfo;
+  },
+  postFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (follow) {
+      throw new Error("이미 팔로우 중입니다.");
+    }
+
+    await User.createFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 완료";
+  },
+  deleteFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (!follow) {
+      throw new Error("팔로우 중인 유저가 아닙니다.");
+    }
+    await User.deleteFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 취소 완료";
   },
 };
 

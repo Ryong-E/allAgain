@@ -121,9 +121,53 @@ userRouter.get("/me", loginRequired, async (req, res, next) => {
 userRouter.get("/:userId", loginRequired, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const targetUser = await userService.getUserInfo({ userId });
+    const { currentUserId } = req;
+    const targetUser = await userService.getUserInfo({ userId, currentUserId });
 
     res.status(200).json(targetUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const targetUser = await userService.getUserInfoForGuest({ userId });
+
+    res.status(200).json(targetUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.post("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const createdfollow = await userService.postFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(201).json(createdfollow);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.delete("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const deletedfollow = await userService.deleteFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(204).json(deletedfollow);
   } catch (error) {
     next(error);
   }
