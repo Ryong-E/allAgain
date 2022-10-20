@@ -8,6 +8,11 @@ const UserImgWrap = styled.div`
   border-radius:50%;
   border : 1px solid #666;
   overflow:hidden;
+  img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
 `
 interface UserImgType{
   userImg : String | null;
