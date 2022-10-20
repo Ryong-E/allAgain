@@ -12,12 +12,12 @@ function UserPage() {
 
   const { isSuccess, data } = useQuery(
     ["testProfile"],
-    () => getUserProfileById(id!),
+    () => getUserProfileById(id!,currentUserId),
     {
       refetchOnWindowFocus: false,
     }
   );
-
+  console.log(data)
   return (
     <>
       {isSuccess && (

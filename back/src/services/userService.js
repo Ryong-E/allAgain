@@ -1,4 +1,4 @@
-import { User } from "../db";
+import { Feed, User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { compareUserId, makeImageUrl } from "../utils/util";
@@ -132,6 +132,7 @@ const userService = {
   },
   getUserInfo: async ({ userId, currentUserId }) => {
     const user = await User.findByUserId({ userId });
+    const feeds = await Feed.findFeedByUserId({ userId });
 
     const followers = await User.findFollowersByUserId({ userId });
     const filteredFollowers = [];
@@ -170,6 +171,7 @@ const userService = {
       name,
       nickname,
       imageUrl,
+      NumberOfFeeds: feeds[0].length,
       followed: followed ? true : false,
       followers: { count: followers.length, users: filteredFollowers },
       followees: { count: followees.length, users: filteredFollowees },
@@ -179,6 +181,7 @@ const userService = {
   },
   getUserInfoForGuest: async ({ userId }) => {
     const user = await User.findByUserId({ userId });
+    const feeds = await Feed.findFeedByUserId({ userId });
 
     const followers = await User.findFollowersByUserId({ userId });
     const filteredFollowers = [];
@@ -213,6 +216,7 @@ const userService = {
       name,
       nickname,
       imageUrl,
+      NumberOfFeeds: feeds[0].length,
       followed: false,
       followers: { count: followers.length, users: filteredFollowers },
       followees: { count: followees.length, users: filteredFollowees },

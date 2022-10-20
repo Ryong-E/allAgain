@@ -1,6 +1,7 @@
 import mysql from "mysql2";
 import { Campaign } from "./model/Campaign";
 import { User } from "./model/User";
+import { Feed } from "./model/Feed";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -13,4 +14,4 @@ const pool = mysql.createPool({
 });
 const promisePool = pool.promise();
 
-export { pool, promisePool, Campaign, User };
+export { pool, promisePool, Campaign, User, Feed };
