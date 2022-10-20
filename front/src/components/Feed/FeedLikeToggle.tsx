@@ -41,6 +41,7 @@ export default function FeedLikeToggle({
   const [liked, setLiked] = useState<boolean>(false);
   const [keepLikeId, setKeepLikeId] = useState<number>();
   const [keepCount, setKeepCount] = useState<number>(1);
+  const isToken = sessionStorage.getItem("jwtToken");
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -53,16 +54,18 @@ export default function FeedLikeToggle({
   });
 
   const handleClickLike = () => {
-    if (createLikeKey.isLoading || deleteLikeKey.isLoading) return;
-    if (liked) {
-      deleteLikeKey.mutate();
-      setLiked(false);
-      setKeepCount(keepCount - 1);
-    } else if (!liked) {
-      createLikeKey.mutate();
-      setLiked(true);
-      setKeepCount(keepCount + 1);
-    }
+    if (isToken) {
+      if (createLikeKey.isLoading || deleteLikeKey.isLoading) return;
+      if (liked) {
+        deleteLikeKey.mutate();
+        setLiked(false);
+        setKeepCount(keepCount - 1);
+      } else if (!liked) {
+        createLikeKey.mutate();
+        setLiked(true);
+        setKeepCount(keepCount + 1);
+      }
+    } else alert("로그인한 유저만 이용할 수 있는 기능입니다");
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {

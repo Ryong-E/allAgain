@@ -76,7 +76,7 @@ function FeedListPage() {
               onClick={handleCategoryButtonClick}
               selectedCategory={selectedCategory}
             />
-            {currentUserId && <FeedAddButton />}
+            {isToken && <FeedAddButton />}
           </FeedListOptionsContainer>
 
           <FeedListContainer>
