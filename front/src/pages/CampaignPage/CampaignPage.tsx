@@ -57,6 +57,7 @@ export default function CampaignPage() {
       <Container1300Ver2>
         <AdditionalBox className={isLogin === null ? "guestJCT" : ""}>
           <TagBox
+            data={data}
             values={values}
             currentValue={currentValue}
             setCurrentValue={setCurrentValue}

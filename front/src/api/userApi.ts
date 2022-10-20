@@ -56,7 +56,7 @@ export const loginUser = async ({ email, password }: User) => {
 // 나의 계정프로필 조회
 export const getUserProfile = async () => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios({
       method: "get",
       url: `${BASE_URL}/users/me`,
@@ -81,7 +81,7 @@ export const updateUserProfile = async ({
 }: MyProfileEditParams) => {
   console.log(userId);
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios({
       method: "put",
       url: `${BASE_URL}/users/${userId}`,
@@ -106,7 +106,7 @@ export const updateUserProfile = async ({
 // 프로필이미지 수정
 export const updateUserImage = async ({ userId, formData }: any) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
 
     const { data } = await axios.post(
       `${BASE_URL}/users/${userId}/profile/image`,
@@ -128,7 +128,7 @@ export const updateUserImage = async ({ userId, formData }: any) => {
 // 회원 탈퇴
 export const deleteUser = async ({ userId }: User) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     await axios({
       method: "delete",
       url: `${BASE_URL}/users/${userId}`,
@@ -137,7 +137,7 @@ export const deleteUser = async ({ userId }: User) => {
         Authorization: "Bearer " + token,
       },
     }).then((res) => {
-      localStorage.removeItem("jwtToken");
+      sessionStorage.removeItem("jwtToken");
     });
   } catch (err: any) {
     throw new Error(err);
@@ -146,7 +146,7 @@ export const deleteUser = async ({ userId }: User) => {
 
 export const getUserProfileById = async (userId: string) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios<UserInfoResponse>({
       method: "get",
       url: `${BASE_URL}/users/${userId}`,

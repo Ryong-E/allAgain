@@ -1,8 +1,8 @@
-import styled, { keyframes } from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
-import NavBar from '../Nav/NavBar';
-import { ROUTE } from '../../constant/route';
-import HeaderUtils from './HeaderUtils';
+import styled, { keyframes } from "styled-components";
+import { Link, useLocation } from "react-router-dom";
+import NavBar from "../Nav/NavBar";
+import { ROUTE } from "../../constant/route";
+import HeaderUtils from "./HeaderUtils";
 
 const HeaderWrap = styled.header`
   position: fixed;
@@ -10,7 +10,7 @@ const HeaderWrap = styled.header`
   left: 0;
   width: 100%;
   height: 70px;
-  border-bottom: 1px solid rgba(191, 177, 186, .5);
+  border-bottom: 1px solid rgba(191, 177, 186, 0.5);
   z-index: 1000;
 `;
 
@@ -35,7 +35,7 @@ const Logo = styled.div`
     width: 100%;
     height: 100%;
 
-    font-family: 'SANGJUGyeongcheonIsland';
+    font-family: "SANGJUGyeongcheonIsland";
     font-size: 28px;
   }
 `;
@@ -51,7 +51,6 @@ const LandingHeader = styled.header`
   padding: 40px;
   z-index: 1000;
 `;
-
 
 const buttonAni = keyframes`
   0% {
@@ -72,11 +71,11 @@ const buttonAni = keyframes`
     opacity: 0;
     transform: translate(-50%, -50%) scale(18);
   }
-`
+`;
 
 const LandingHeaderBtnWrap = styled.div`
   position: relative;
-  background: rgba(73, 107, 123, .9);
+  background: rgba(73, 107, 123, 0.9);
   color: #ffffff;
   width: 180px;
   padding: 12px;
@@ -95,7 +94,7 @@ const LandingHeaderBtnWrap = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, .2);
+    background: rgba(255, 255, 255, 0.2);
     width: 4px;
     height: 4px;
     border-radius: 50%;
@@ -103,11 +102,11 @@ const LandingHeaderBtnWrap = styled.div`
     opacity: 0;
 
     &:nth-child(2) {
-      animation-delay: -.3s;
+      animation-delay: -0.3s;
     }
 
     &:nth-child(3) {
-      animation-delay: -.6s;
+      animation-delay: -0.6s;
     }
   }
 `;
@@ -138,51 +137,43 @@ const HeaderLoginBtnWrap = styled.div`
       left: -12.5px;
       transform: translate(0, -45%);
       width: 1px;
-      height: .8em; 
+      height: 0.8em;
       background: #343434;
     }
   }
 `;
 
-
 export default function Header() {
-
   const location = useLocation();
   const pathName = location.pathname;
 
-  const isToken = localStorage.getItem("jwtToken");
+  const isToken = sessionStorage.getItem("jwtToken");
 
-
-  return (
-      pathName !== "/landing" ? (
-          <HeaderWrap>
-          <HeaderContainer>
-            <Logo>
-              <Link to={ROUTE.HOME.link}>ㄷㅅ, ㄷ</Link>
-            </Logo>
-            <NavBar />
-            {
-              isToken ? (
-                <HeaderUtils />
-              ) : (
-                <HeaderLoginBtnWrap>
-                   <Link to={ROUTE.LOGIN.link}>로그인</Link>
-                   <Link to={ROUTE.REGISTER.link}>회원가입</Link>
-                </HeaderLoginBtnWrap>
-              )
-            }
-          </HeaderContainer>
-        </HeaderWrap>
-      ) : (
-        <LandingHeader>
-          <LandingHeaderBtnWrap>
-            <Link to={ROUTE.LOGIN.link}>다시, 다 사용하기</Link>
-            <span></span>
-            <span></span>
-            <span></span>
-          </LandingHeaderBtnWrap>
-        </ LandingHeader>
-      )
-
+  return pathName !== "/landing" ? (
+    <HeaderWrap>
+      <HeaderContainer>
+        <Logo>
+          <Link to={ROUTE.HOME.link}>ㄷㅅ, ㄷ</Link>
+        </Logo>
+        <NavBar />
+        {isToken ? (
+          <HeaderUtils />
+        ) : (
+          <HeaderLoginBtnWrap>
+            <Link to={ROUTE.LOGIN.link}>로그인</Link>
+            <Link to={ROUTE.REGISTER.link}>회원가입</Link>
+          </HeaderLoginBtnWrap>
+        )}
+      </HeaderContainer>
+    </HeaderWrap>
+  ) : (
+    <LandingHeader>
+      <LandingHeaderBtnWrap>
+        <Link to={ROUTE.LOGIN.link}>다시, 다 사용하기</Link>
+        <span></span>
+        <span></span>
+        <span></span>
+      </LandingHeaderBtnWrap>
+    </LandingHeader>
   );
 }

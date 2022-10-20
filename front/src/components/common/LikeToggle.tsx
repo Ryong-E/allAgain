@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import LikeIconOn from "../../assets/images/icons/icon_like_on.png";
 import LikeIconOff from "../../assets/images/icons/icon_like_off.png";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { LikedOffCampaign, LikedOnCampaign } from "../../api/likeApi";
-import { GET_CAMPAIGNLIST, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import { useEffect, useState } from "react";
 
 const LikeButton = styled.button`
   display: block;
@@ -15,7 +15,7 @@ const LikeButton = styled.button`
   height: 30px;
   background: url(${LikeIconOff}) no-repeat 50% 50% / contain;
   transition: all 0.3s;
-  &:hover {
+  &:not(.guestLike):hover {
     transform: scale(0.9);
   }
   &.active {
@@ -29,38 +29,35 @@ interface LikePropsType {
 }
 
 export default function LikeToggle({ liked, campaignId }: LikePropsType) {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const {pathname} = useLocation();
   const isLogin = useRecoilValue(loggedInUserId);
-
-  const LikeCampaign = useMutation(LikedOnCampaign, {
-    onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
-      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
-    },
-  });
-  const cancleLikeCampaign = useMutation(LikedOffCampaign, {
-    onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
-      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
-    },
-  });
+  const [isActive, setIsActive] = useState<Boolean>(false);
+  const LikeCampaign = useMutation(LikedOnCampaign);
+  const cancleLikeCampaign = useMutation(LikedOffCampaign);
   const handleClickLike = (campaignId: number) => {
-    if (!liked!) {
-      LikeCampaign.mutate(campaignId);
-    } else {
+    if (LikeCampaign.isLoading || cancleLikeCampaign.isLoading) return;
+    
+    if (isActive) {
+      setIsActive(false)
       cancleLikeCampaign.mutate(campaignId);
+    } else {
+      setIsActive(true)
+      LikeCampaign.mutate(campaignId);
     }
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link);
+      navigate(ROUTE.LOGIN.link, {state : pathname});
     }
   };
+  useEffect(()=>{
+    setIsActive(liked!)
+  },[])
   return (
     <div>
       <LikeButton
-        className={liked! ? "active" : ""}
+        className={`${isActive ? "active" : ""} ${isLogin === null ? "guestLike" : ""}`}
         onClick={() => {
           isLogin !== null
             ? handleClickLike(campaignId!)

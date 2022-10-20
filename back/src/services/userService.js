@@ -8,6 +8,9 @@ const userService = {
   login: async ({ email, password }) => {
     const user = await User.findByEmail({ email });
 
+    if (user[0].length === 0) {
+      throw new Error("가입되어있지 않은 이메일입니다.");
+    }
     const {
       id: userId,
       password: correctPassword,
@@ -127,8 +130,81 @@ const userService = {
 
     return null;
   },
-  getUserInfo: async ({ userId }) => {
+  getUserInfo: async ({ userId, currentUserId }) => {
     const user = await User.findByUserId({ userId });
+
+    const followers = await User.findFollowersByUserId({ userId });
+    const filteredFollowers = [];
+    for (let follower of followers) {
+      const { id: userId, nickname, image } = follower;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowers.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const followees = await User.findFolloweesByUserId({ userId });
+    const filteredFollowees = [];
+    for (let followee of followees) {
+      const { id: userId, nickname, image } = followee;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowees.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const { name, nickname, image } = user[0];
+    const imageUrl = makeImageUrl("profiles", image);
+    const followed = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    const targetUser = {
+      name,
+      nickname,
+      imageUrl,
+      followed: followed ? true : false,
+      followers: { count: followers.length, users: filteredFollowers },
+      followees: { count: followees.length, users: filteredFollowees },
+    };
+
+    return targetUser;
+  },
+  getUserInfoForGuest: async ({ userId }) => {
+    const user = await User.findByUserId({ userId });
+
+    const followers = await User.findFollowersByUserId({ userId });
+    const filteredFollowers = [];
+    for (let follower of followers) {
+      const { id: userId, nickname, image } = follower;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowers.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
+
+    const followees = await User.findFolloweesByUserId({ userId });
+    const filteredFollowees = [];
+    for (let followee of followees) {
+      const { id: userId, nickname, image } = followee;
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredFollowees.push({
+        userId,
+        nickname,
+        imageUrl,
+      });
+    }
 
     const { name, nickname, image } = user[0];
     const imageUrl = makeImageUrl("profiles", image);
@@ -137,6 +213,9 @@ const userService = {
       name,
       nickname,
       imageUrl,
+      followed: false,
+      followers: { count: followers.length, users: filteredFollowers },
+      followees: { count: followees.length, users: filteredFollowees },
     };
 
     return targetUser;
@@ -155,6 +234,37 @@ const userService = {
     };
 
     return userInfo;
+  },
+  postFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (follow) {
+      throw new Error("이미 팔로우 중입니다.");
+    }
+
+    await User.createFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 완료";
+  },
+  deleteFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (!follow) {
+      throw new Error("팔로우 중인 유저가 아닙니다.");
+    }
+    await User.deleteFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 취소 완료";
   },
 };
 

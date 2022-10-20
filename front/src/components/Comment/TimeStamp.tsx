@@ -8,7 +8,6 @@ export default function TimeStamp({timestamp}: TimestampType) {
   const elapsedTime = ()=>{
     const today = new Date();
     const createdDate = new Date(timestamp);
-    createdDate.setHours(createdDate.getHours() + 9);
   
     const diff = (Number(today) - Number(createdDate))
     const times = [

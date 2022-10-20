@@ -3,13 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import AlertIcon from "../../assets/images/icons/icon_alert.png";
 import { useState, useRef, useEffect } from "react";
-import { useQuery } from '@tanstack/react-query';
-import { MyProfile, User } from '../../types/userTypes';
-import { GET_PROFILE } from '../../constant/queryKeys';
-import { getUserProfile } from '../../api/userApi';
-import { useResetRecoilState } from 'recoil';
-import { loggedInUserId, loggedInUserImgUrl } from '../../atoms/atoms';
-
+import { useQuery } from "@tanstack/react-query";
+import { MyProfile, User } from "../../types/userTypes";
+import { GET_PROFILE } from "../../constant/queryKeys";
+import { getUserProfile } from "../../api/userApi";
+import { useResetRecoilState } from "recoil";
+import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 
 const HeaderUtilWrap = styled.div`
   position: absolute;
@@ -93,7 +92,6 @@ export default function HeaderUtils() {
   const resetloggedInUserId = useResetRecoilState(loggedInUserId);
   const resetloggedInUserImgUrl = useResetRecoilState(loggedInUserImgUrl);
 
-
   // Utilbox 이외의 영역 클릭 시 Utilbox 닫힘
   useEffect(() => {
     function handleClickOutside(e: any) {
@@ -117,14 +115,13 @@ export default function HeaderUtils() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("jwtToken");
     resetloggedInUserId();
     resetloggedInUserImgUrl();
     navigate(ROUTE.LOGIN.link);
   };
 
-
-  const [previewImage,setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
   useQuery<MyProfile, Error>([GET_PROFILE], getUserProfile, {
     refetchOnWindowFocus: true,
