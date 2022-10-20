@@ -14,7 +14,7 @@ interface UserBannerProps {
     count:number;
     users:[];
   };
-  NumberOfFeeds?:number;
+  NumberOfFeeds:number;
 }
 
 function UserBanner({
