@@ -16,12 +16,17 @@
 
 5. [팀원소개](#팀원-소개)
 
+<br/>
+<br/>
+
 # 📋소개
 생활 쓰레기 배출량을 줄이기 위해 업사이클링을 권장하는 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000;border-radius:3px;">"다시, 다"</strong>프로젝트입니다
 
 팀 소개를 먼저 하겠습니다 프로젝트명 <strong style="font-family:SANGJUGyeongcheonIsland;font-size: 20px;color:#000">"다시, 다"</strong>는 모든 것들을 다시 사용해보자라는 의미를 담은 이름입니다
 
 이번 프로젝트에서는 업사이클링을 권장하는 서비스를 제공합니다
+
+<br/>
 
 ## 사용 기술
 `Front-End` 
@@ -34,7 +39,8 @@
 <img src="https://img.shields.io/badge/ReactHookForm-EC5990?style=flat-square&logo=ReactHookForm&logoColor=white"/>
 <img src="https://img.shields.io/badge/Recoil-black?style=flat-square&logo=Recoil&logoColor=white"/>
 
----
+<br/>
+
 `Back-End`
 
 <img src="https://img.shields.io/badge/node-339933?style=flat-square&logo=Node.js&logoColor=white"/>
@@ -43,7 +49,9 @@
 <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/>
 <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&logo=Mysql&logoColor=white"/>
 
----
+
+<br/>
+
 `Data-Analysis`
 
 <img src="https://img.shields.io/badge/GoogleColab-F9AB00?style=flat-square&logo=GoogleColab&logoColor=white"/>
@@ -53,9 +61,10 @@
 <img src="https://img.shields.io/badge/seaborn-2081E2?style=flat-square&logo=seaborn&logoColor=white"/>
 <img src="https://img.shields.io/badge/Matplotlib-000?style=flat-square&logo=Matplotlib&logoColor=white"/>
 
---- 
 
 
+<br/>
+<br/>
 
 # 📜기획서
 
@@ -78,6 +87,9 @@
     기업차원에서도 환경문제에 대해 해결하고 캠페인 등을 진행하고 있지만 개인적인 차원에서 해결할 수 있는 방안이 별로 알려지지않고 진행되지 않고있습니다.
 
     사람들에게 환경문제가 얼마나 심각하고 해결방안으로는 개인이 할 수 있는 것이 무엇인지 알려줄 필요가있다고 생각이 들었습니다
+
+    <br/>
+    <br/>
 
 - ## 기획의도(문제해결)
     **업사이클링**은 리사이클링(재활용)보다 확장된 개념으로 버려지는 제품을 기능성과 심미성을 갖춘, 새로운 차원의 부가가치를 지닌 제품으로 재탄생 시키는 것입니다.
@@ -103,7 +115,11 @@
     
     그래서 우리는 사람들이 업사이클링이라는 것에 좀 더 쉽게 접근할 수 있도록 우리에게 친근한 sns형식으로 업사이클링에 대한 정보를 공유하고, 캠페인을 열어 사람들에게 업사이클링을 알리는 서비스가 필요하다고 생각합니다
 
----
+
+
+<br/>
+<br/>
+
 # 프로젝트 소개
 
 - ## 주요 기능
@@ -127,7 +143,8 @@
     * 게시글 신고 기능
     * 무한 스크롤
 
----
+<br/>
+<br/>
 
 # 폴더구조
 
@@ -168,6 +185,8 @@
    ├─ 📁types
    └─ 📁utils
 ```
+<br/>
+<br/>
 
 # 팀원 소개 
 
