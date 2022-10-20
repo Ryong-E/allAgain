@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { getFeedList } from "../../api/feedApi";
+import { getFeedList, getFeedListAuthorized } from "../../api/feedApi";
 import {
   Container,
   Container1300,
@@ -33,12 +33,16 @@ const initialState: CategoryState = {
 
 function FeedListPage() {
   const currentUserId = useRecoilValue(loggedInUserId);
-  const { isSuccess, data } = useQuery([FEEDS], getFeedList, {
-    refetchOnWindowFocus: false,
-  });
-
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryState>(initialState);
+
+  const { isSuccess, data } = useQuery(
+    [FEEDS, selectedCategory],
+    currentUserId ? getFeedListAuthorized : getFeedList,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const handleCategoryButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>

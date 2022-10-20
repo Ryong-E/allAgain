@@ -1,9 +1,13 @@
-import styled from "styled-components";
-import { useState, ChangeEvent } from "react";
+import styled, { css } from "styled-components";
+import { useState, ChangeEvent, useEffect } from "react";
 import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png";
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
+import { useMutation } from "@tanstack/react-query";
+import { deleteFollowUser, followUser } from "../../api/userApi";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { followedUserIds, loggedInUserId } from "../../atoms/atoms";
 
-const FollowLabel = styled.label<{ isAdmin: boolean }>`
+const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
   background: ${({ theme }) => theme.colors.dasidaGreen};
   color: ${({ theme }) => theme.colors.white};
   border: 1px solid
@@ -13,6 +17,7 @@ const FollowLabel = styled.label<{ isAdmin: boolean }>`
   position: relative;
   display: block;
   width: 60px;
+  height: 20px;
   border-radius: 60px;
   padding: 0px;
   font-size: 12px;
@@ -37,47 +42,82 @@ const FollowLabel = styled.label<{ isAdmin: boolean }>`
     transition: all 0.3s;
   }
 
-  &.active {
-    color: ${({ theme }) => theme.colors.dasidaGreen};
-    background: ${({ isAdmin, theme }) =>
-      isAdmin ? theme.colors.white : "transparent"};
-    padding: 0 0 0 14px;
-  }
-
-  &.active:before {
-    display: block;
-  }
+  ${({ followed, theme, isAdmin }) =>
+    followed &&
+    css`
+      color: ${theme.colors.dasidaGreen};
+      background: ${isAdmin ? theme.colors.white : "transparent"};
+      padding: 0 0 0 14px;
+      &::before {
+        display: block;
+      }
+    `}
 `;
 
 interface FollowToggleSmallType {
   isAdmin: boolean;
+  followed: boolean;
+  userId?: number;
 }
 
-export default function FollowToggleSmall({ isAdmin }: FollowToggleSmallType) {
+export default function FollowToggleSmall({
+  isAdmin,
+  followed,
+  userId,
+}: FollowToggleSmallType) {
   const [isFollowed, setIsFollwed] = useState(false);
+  const [followUserId, setFollowUserId] = useRecoilState(followedUserIds);
+  const currentUserId = useRecoilValue(loggedInUserId);
 
-  function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    setIsFollwed(!isFollowed);
-  }
+  const createFollow = useMutation(() => followUser(userId!));
+  const deleteFollow = useMutation(() => deleteFollowUser(userId!));
+
+  const handleOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (currentUserId) {
+      if (createFollow.isLoading || deleteFollow.isLoading) return;
+      if (isFollowed) {
+        deleteFollow.mutate();
+        setIsFollwed(false);
+        setFollowUserId(followUserId.filter((el) => el !== userId!));
+      } else {
+        createFollow.mutate();
+        setIsFollwed(true);
+        setFollowUserId([...followUserId, userId!]);
+      }
+    } else {
+      alert("로그인 후 이용 가능한 기능입니다");
+    }
+  };
+
+  useEffect(() => {
+    setIsFollwed(followed);
+  }, [followed]);
+
+  useEffect(() => {
+    if (followUserId.find((el) => el === userId!) !== undefined)
+      setIsFollwed(true);
+    else setIsFollwed(false);
+  }, [followUserId, setIsFollwed, userId]);
 
   return (
     <div>
       <FollowLabel
         isAdmin={isAdmin}
-        htmlFor="followToggleSmall"
-        className={isFollowed ? "active" : ""}>
+        followed={isFollowed}
+        onClick={handleOnClick}>
         팔로우
       </FollowLabel>
-      <input
+      {/* <input
         id="followToggleSmall"
         type="checkbox"
         checked={isFollowed}
         onChange={handleOnChange}
-      />
+      /> */}
     </div>
   );
 }
 
 FollowToggleSmall.defaultProps = {
   isAdmin: false,
+  followed: false,
 };

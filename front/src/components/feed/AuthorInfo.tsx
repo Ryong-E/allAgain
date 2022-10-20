@@ -12,6 +12,7 @@ interface authorInfoProps {
   userId: number;
   isAdmin?: boolean;
   isEditing?: boolean;
+  followed: boolean;
 }
 
 function AuthorInfo({
@@ -21,6 +22,7 @@ function AuthorInfo({
   nickname,
   authorImageUrl,
   isEditing,
+  followed,
 }: authorInfoProps) {
   const navigate = useNavigate();
 
@@ -43,7 +45,13 @@ function AuthorInfo({
         </AuthorName>
         {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
       </ProfileContainer>
-      {size === "simple" && <FollowToggleSmall isAdmin={isAdmin} />}
+      {size === "simple" && (
+        <FollowToggleSmall
+          isAdmin={isAdmin}
+          followed={followed}
+          userId={userId}
+        />
+      )}
     </Container>
   );
 }
@@ -51,6 +59,7 @@ function AuthorInfo({
 AuthorInfo.defaultProps = {
   isAdmin: false,
   isEditing: false,
+  followed: false,
 };
 
 const Container = styled.div<{ isAdmin?: boolean }>`

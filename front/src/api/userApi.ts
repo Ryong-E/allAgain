@@ -174,7 +174,7 @@ export const getUserProfileById = async (
   }
 };
 
-export const followUser = async (userId: string) => {
+export const followUser = async (userId: number) => {
   try {
     const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios<string>({
@@ -191,7 +191,7 @@ export const followUser = async (userId: string) => {
   }
 };
 
-export const deleteFollowUser = async (userId: string) => {
+export const deleteFollowUser = async (userId: number) => {
   try {
     const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios<string>({
