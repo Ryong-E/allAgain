@@ -1,7 +1,5 @@
 import { Feed } from "../db/model/Feed";
-const path = require("path");
 import { imageService } from "./imageService";
-import { Image } from "../db/model/Image";
 import { User } from "../db/model/User";
 import { makeImageUrl } from "../utils/util";
 
@@ -26,9 +24,18 @@ const feedService = {
     });
     return uploadedFeed;
   },
-  getAllFeeds: async () => {
+  getAllFeeds: async ({ currentUserId }) => {
     const feedData = await Feed.findAllFeeds();
     const feedList = [];
+    const followees = [];
+    if (currentUserId) {
+      const followeesData = await User.findFolloweesByUserId({
+        userId: currentUserId,
+      });
+      followeesData.map((data) => {
+        followees.push(data.followee);
+      });
+    }
     for (const item of feedData[0]) {
       const feedId = item.id;
       const imageUrls = await imageService.getImageUrls({ feedId });
@@ -37,9 +44,19 @@ const feedService = {
       const { image, nickname } = author[0];
       const authorImageUrl = makeImageUrl("profiles", String(image));
       let score = 1;
-      const feedDatetime = new Date(item.datetime);
-      const now = new Date();
-      if ((now - feedDatetime) / 86400000 <= 3) score = 2;
+      if (currentUserId) {
+        let flag = false;
+        followees.forEach((followee) => {
+          if (item.user_id === followee) {
+            flag = true;
+          }
+        });
+        const feedDatetime = new Date(item.datetime);
+        const now = new Date();
+        if (flag && (now - feedDatetime) / 86400000 <= 3) {
+          score = 2;
+        }
+      }
       const feed = {
         feedId,
         userId: item.user_id,
