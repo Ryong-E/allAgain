@@ -45,7 +45,7 @@ export default function Footer() {
         <Copyright>다시, 다 &copy; 2022</Copyright>
         <FooterLinkWrap>
           <li>
-            <Link to={ROUTE.ABOUT.link}>서비스 소개</Link>
+            <Link to={ROUTE.LANDING.link}>서비스 소개</Link>
           </li>
           <li>
             <Link to={ROUTE.ABOUT_TEAM.link}>팀 소개</Link>

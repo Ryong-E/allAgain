@@ -80,18 +80,6 @@ const Sources = styled.span`
 
 export default function Section02() {
 
-  useEffect(() => {
-    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
-      ScrollTrigger.create({
-        trigger: elem,
-        start: "50% bottom",
-        onEnter: () => { animateFrom(elem); console.log("왜 두번"); }, 
-        onLeaveBack: () => { hide(elem); },
-      });
-    });
-  }, []);
-
-
   const sourcesList = ["자료출처 : KOSIS 국가통계포털 환경문제에 대한 인식 (2022년 기준)", "자료출처 : KOSIS 국가통계포털 환경오염 방지 노력 (2010-2020)"];
 
   return (

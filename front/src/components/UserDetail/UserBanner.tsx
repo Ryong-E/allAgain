@@ -42,6 +42,7 @@ function UserBanner({
 
 const UserProfileContainer = styled.div`
   width: 100%;
+  min-width: 1300px;
   display: flex;
   min-width: 1920px;
   flex-direction: column;

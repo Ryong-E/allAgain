@@ -34,10 +34,9 @@ function UserListSelectForm({ userId, isMyDetail }: UserListSelectFormProps) {
 }
 
 const UserListContainer = styled.div`
-  width: 100%;
-  min-width: 1900px;
+  width: 1300px;
   min-height: 600px;
-  padding: 47px 300px 100px;
+  margin: 47px auto 100px;
 `;
 
 const UserLikeButtonContainer = styled.div`
