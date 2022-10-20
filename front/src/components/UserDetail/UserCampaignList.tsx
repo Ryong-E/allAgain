@@ -37,7 +37,7 @@ function UserCampaignList({
   const [data, setData] = useState<CampaignItemType[]>([]);
 
   const { isSuccess: likeSuccess, data: likeData } = useQuery(
-    [isLike],
+    [isLike, "campaignIsLike"],
     getCampaignListLiked,
     {
       enabled: isLike,
@@ -53,7 +53,7 @@ function UserCampaignList({
   );
 
   const { isSuccess: holdSuccess, data: holdData } = useQuery(
-    [options.hold],
+    [options.hold, "campaignHold"],
     () => getCampaignListByUserId(userId, currentUserId)
   );
 
