@@ -19,6 +19,11 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.colors.bodyText};
   }
 
+  // 현재는 pc용 웹서비스 (모바일 반응형 X)
+  body {
+    min-width: 1360px;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
