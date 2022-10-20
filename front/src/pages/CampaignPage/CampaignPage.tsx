@@ -26,7 +26,6 @@ export const CampaignRoot = styled(Container)`
 
 export const CampaingContainer = styled(Container1300)`
   padding: 100px 0;
-  min-width: 1300px;
 `;
 
 const AdditionalBox = styled.div`
