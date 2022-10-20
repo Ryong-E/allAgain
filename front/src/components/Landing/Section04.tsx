@@ -171,26 +171,13 @@ export default function Section04() {
     },
   ];
 
-
-  useEffect(() => {
-    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
-      ScrollTrigger.create({
-        trigger: elem,
-        start: "bottom bottom",
-        onEnter: () => { animateFrom(elem); }, 
-        onLeaveBack: () => { hide(elem); },
-      });
-    });
-
-  }, []);
-
   
   return (
     <Section id="section04">
       <Container1300>
         <TextImgBox>
           {LandingImgs.upcyclingArticleText.map((ele, idx)=> (
-              <LandingTextImgItem className={"gs_reveal delay400"} imgSrc ={ele} idx={idx} key={idx + ele} />
+              <LandingTextImgItem className={`gs_reveal gs_reveal_fromBottom delay${idx % 2 ? 600 : 800}`} imgSrc ={ele} idx={idx} key={idx + ele} />
             ))}
         </TextImgBox>
         <UpcycleIconBox>
@@ -200,16 +187,16 @@ export default function Section04() {
           </div>
         </UpcycleIconBox>
         <ServiceDetailBox>
-          <TitleBox className="gs_reveal gs_reveal_fromTop delay200">
+          <TitleBox className="gs_reveal gs_reveal_fromTop delay600">
               다시, 다 프로젝트
           </TitleBox>
-          <DescBox className="gs_reveal gs_reveal_fromTop delay400">
+          <DescBox className="gs_reveal gs_reveal_fromTop delay600">
             <p>다시, 다 프로젝트는 업사이클링을 조금 더 쉽게 접할 수 있도록 도와주는 서비스입니다.</p>
             <p>버려지는 폐자원에 가치를 더해 새로운 제품으로 재탄생시키고, 필요한 곳에 기부함으로써 환경오염을 개선해나가는 길에 함께합니다.</p>
           </DescBox>
           <ContentBox>
             {serviceInnerItem.map(({icon, descText}, idx) =>(
-              <div className={`innerBox gs_reveal gs_reveal_fromTop delay${idx*200}`} key={icon + descText}>
+              <div className={`innerBox gs_reveal gs_reveal_fromTop delay${400 + idx*400}`} key={icon + descText}>
                 <div className="imgBox">
                   <img src={icon} alt="serviceIcon" />
                 </div>
@@ -223,7 +210,7 @@ export default function Section04() {
           </ContentBox>
         </ServiceDetailBox>
         <GoToServiceButton>
-          <Link to={ROUTE.LOGIN.link}>버려진 제품에 가치를 더하는 방법 알아보기</Link>
+          <Link to={ROUTE.HOME.link}>버려진 제품에 가치를 더하는 방법 알아보기</Link>
         </GoToServiceButton>
       </Container1300>
     </Section>

@@ -9,6 +9,7 @@ const HeaderWrap = styled.header`
   top: 0;
   left: 0;
   width: 100%;
+  min-width: 1360px;
   height: 70px;
   border-bottom: 1px solid rgba(191, 177, 186, 0.5);
   z-index: 1000;

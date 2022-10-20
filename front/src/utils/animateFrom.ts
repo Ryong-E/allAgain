@@ -1,5 +1,5 @@
 import { gsap } from "gsap";
-// import "../styles/animateStyles.css";
+import "../styles/animateStyles.css";
 
 export function animateFrom(elem: any) {
   let x: number | undefined, 
@@ -36,6 +36,10 @@ export function animateFrom(elem: any) {
 
   if(elem.classList.contains("delay800")) {
     delayTime = .8;
+  }
+
+  if(elem.classList.contains("delay1000")) {
+    delayTime = 1;
   }
 
   if(elem.classList.contains("delay1200")) {

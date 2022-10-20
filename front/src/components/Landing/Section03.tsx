@@ -150,16 +150,6 @@ export default function Section03() {
   const sectionRef = useRef<any>(null);
   
   useEffect(() => {
-    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
-      ScrollTrigger.create({
-        trigger: elem,
-        start: "50% bottom",
-        onEnter: () => { animateFrom(elem); }, 
-        onLeaveBack: () => { hide(elem); },
-      });
-    });
-
-
     const bgEl = bgRef.current;
     const sectionEl = sectionRef.current;
 
