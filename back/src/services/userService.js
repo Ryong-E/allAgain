@@ -159,6 +159,37 @@ const userService = {
 
     return userInfo;
   },
+  postFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (follow) {
+      throw new Error("이미 팔로우 중입니다.");
+    }
+
+    await User.createFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 완료";
+  },
+  deleteFollowee: async ({ currentUserId, targetUserId }) => {
+    const CurrentUser = await User.findByUserId({ userId: currentUserId });
+    const targetUser = await User.findByUserId({ userId: targetUserId });
+
+    const follow = await User.findExistenceFollowee({
+      currentUserId,
+      targetUserId,
+    });
+    if (!follow) {
+      throw new Error("팔로우 중인 유저가 아닙니다.");
+    }
+    await User.deleteFollowee({ currentUserId, targetUserId });
+
+    return "팔로우 취소 완료";
+  },
 };
 
 export { userService };
