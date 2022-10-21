@@ -35,6 +35,7 @@ function DescriptionEditForm({
             message: "내용은 최소 4글자 이상이여야 합니다.",
           },
         })}
+        onKeyDown={(event)=>{event.stopPropagation();}}
       />
       <ValidateWarning>{errors}</ValidateWarning>
     </DescriptionContainer>
