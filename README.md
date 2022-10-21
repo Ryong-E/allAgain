@@ -78,7 +78,7 @@
 
     <img src="./front/src/assets/images/readmeimages/activeBarChart.png" style="width:500px">
 
-        사람들이 환경문제에 대해 불안감을 가지고 있고, 그만큼 환경문제에 관심을 가지고 노력하느 사람이 많아지고 있다는 것을 알 수 있습니다.
+        사람들이 환경문제에 대해 불안감을 가지고 있고, 그만큼 환경문제에 관심을 가지고 노력하는 사람이 많아지고 있다는 것을 알 수 있습니다.
 
     <img src="./front/src/assets/images/readmeimages/garbageDataChart.png" style="width:500px">
 
