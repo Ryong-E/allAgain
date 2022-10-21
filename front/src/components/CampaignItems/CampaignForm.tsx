@@ -97,21 +97,21 @@ export default function CampaignForm({
     if (data.recruitmentEndDate < data.recruitmentStartDate) {
       setError("recruitmentEndDate", {
         type: "custom",
-        message: "마감날짜가 시작날짜보다 이전입니다",
+        message: "모집 마감날짜가 모집 시작날짜보다 이전입니다",
       });
       isError = true;
     }
     if (data.campaignEndDate < data.campaignStartDate) {
       setError("campaignEndDate", {
         type: "custom",
-        message: "캠페인마감날짜가 시작날짜보다 이전입니다",
+        message: "캠페인 마감날짜가 캠페인 시작날짜보다 이전입니다",
       });
       isError = true;
     }
-    if (data.campaignStartDate < data.recruitmentStartDate) {
+    if (data.campaignStartDate < data.recruitmentEndDate) {
       setError("campaignEndDate", {
         type: "custom",
-        message: "캠페인 시작 날짜가 모집 시작날짜보다 이전입니다",
+        message: "캠페인 시작 날짜가 모집 마감날짜보다 이전입니다",
       });
       isError = true;
     }
