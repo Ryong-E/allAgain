@@ -31,7 +31,7 @@ export default function Comments({ comments }: CommentItemArrType) {
             lastIdx={lastIdx}
             setLastIdx={setLastIdx}
             pathID={Number(pathID)}
-            key={props.commentId + props.writer.userId}
+            key={props.commentId + props.writer.userId + Date.now()}
           />
         ))}
       </CommentListBox>
