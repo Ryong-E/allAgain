@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { deleteFeed } from "../../api/feedApi";
@@ -32,11 +32,12 @@ function FeedDetail({
 }: FeedType) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
+  const { state } = useLocation();
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleDeleteClick = async () => {
     await deleteFeed(feedId);
-    navigator("/feed/");
+    navigator(state ? `${state}` : `/feed/`);
   };
 
   const handleEditClick = () => {
@@ -98,10 +99,10 @@ function FeedDetail({
   );
 }
 
-const AlbumBox =styled.div`
-  overflow:hidden;
+const AlbumBox = styled.div`
+  overflow: hidden;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
-`
+`;
 
 const ButtonContainer = styled.div`
   margin-top: 173px;
