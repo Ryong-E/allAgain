@@ -11,7 +11,7 @@ function FeedDetailPage() {
   const navigator = useNavigate();
 
   const { isSuccess, data } = useQuery(
-    [FEED_DETAIL],
+    [FEED_DETAIL, id],
     () => getFeed(parseInt(id!)),
     {
       refetchOnWindowFocus: false,

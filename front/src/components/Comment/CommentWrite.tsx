@@ -6,10 +6,14 @@ import sendRedIcon from "../../assets/images/icons/icon_red_send.png";
 import UserImgBox from "./UserImgBox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCommentApi } from "../../api/commentsApi";
-import { CREATE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import {
+  CREATE_COMMENTS,
+  FEED_DETAIL,
+  GET_DETAILCAMPAIGN,
+} from "../../constant/queryKeys";
 import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 import { useRecoilValue } from "recoil";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import ConfirmModal from "../Modals/ConfirmModal";
 import { useState } from "react";
@@ -60,29 +64,29 @@ interface WriteInput {
 export interface CommentData {
   pathID: number;
   commentId?: number;
-  userImg ?: String;
+  userImg?: String;
 }
 
 export default function CampaignCommentWrite({
   pathID,
   commentId,
 }: CommentData) {
+  const { id } = useParams();
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(loggedInUserId);
   const userImg = useRecoilValue(loggedInUserImgUrl);
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const [showModal, setShowModal] = useState(false);
   const categotry = pathname.split("/")[1];
-  const createCommentMutate = useMutation(
-    [CREATE_COMMENTS],
-    createCommentApi,
-    {
-      onSuccess: (data: any, variables, context) => {
-        queryClient.invalidateQueries([categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL]);
-      },
-    }
-  );
+  const createCommentMutate = useMutation([CREATE_COMMENTS], createCommentApi, {
+    onSuccess: (data: any, variables, context) => {
+      queryClient.invalidateQueries([
+        categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL,
+        id,
+      ]);
+    },
+  });
 
   const {
     register,
@@ -93,11 +97,11 @@ export default function CampaignCommentWrite({
   } = useForm<WriteInput>();
   const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
     createCommentMutate.mutate({
-      feedId : pathID ,
-      campaignId : pathID,
+      feedId: pathID,
+      campaignId: pathID,
       content: commentWrite!,
       rootCommentId: commentId !== null ? commentId! : null,
-      pathname : categotry
+      pathname: categotry,
     });
     reset();
   };
@@ -107,7 +111,7 @@ export default function CampaignCommentWrite({
   const commentLength = watch("commentWrite")?.length;
   return (
     <CommentWriteBox>
-      <UserImgBox userImg={userImg}/>
+      <UserImgBox userImg={userImg} />
       <CommentFrom onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
@@ -131,7 +135,13 @@ export default function CampaignCommentWrite({
           type="submit"
         />
       </CommentFrom>
-      {showModal && <ConfirmModal showModal={showModal} setShowModal={setShowModal} returnPath={pathname} />}
+      {showModal && (
+        <ConfirmModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          returnPath={pathname}
+        />
+      )}
     </CommentWriteBox>
   );
 }
