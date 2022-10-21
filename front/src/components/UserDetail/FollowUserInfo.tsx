@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { deleteFollowUser, followUser } from "../../api/userApi";
 import CheckedIcon from "../../assets/images/icons/icon_check_gr.png";
@@ -18,24 +19,31 @@ function FollowUserInfo({
   isFollowing,
 }: FollowUserInfoProps) {
   const [followStatus, setFollowStatus] = useState<boolean>(true);
+  const navigator = useNavigate();
 
   const createFollow = useMutation(() => followUser(userId!));
   const deleteFollow = useMutation(() => deleteFollowUser(userId!));
 
   const handleFollowClick = () => {
-    if (createFollow.isLoading || deleteFollow.isLoading) return;
-    if (followStatus) {
-      deleteFollow.mutate();
-      setFollowStatus(false);
-    } else {
-      createFollow.mutate();
-      setFollowStatus(true);
+    if (sessionStorage.getItem("jwtToken") !== null) {
+      if (createFollow.isLoading || deleteFollow.isLoading) return;
+      if (followStatus) {
+        deleteFollow.mutate();
+        setFollowStatus(false);
+      } else {
+        createFollow.mutate();
+        setFollowStatus(true);
+      }
     }
   };
 
   return (
     <UserContainer>
-      <UserProfileBox>
+      <UserProfileBox
+        onClick={() => {
+          alert(userId);
+          navigator(`/user/${userId}`);
+        }}>
         <UserProfileImg src={"http://" + imageUrl} />
         <UserProfileNickname>{nickname}</UserProfileNickname>
       </UserProfileBox>

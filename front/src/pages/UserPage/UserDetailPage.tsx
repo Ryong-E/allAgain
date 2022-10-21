@@ -11,13 +11,13 @@ function UserPage() {
   const currentUserId = useRecoilValue(loggedInUserId);
 
   const { isSuccess, data } = useQuery(
-    ["testProfile"],
-    () => getUserProfileById(id!,currentUserId),
+    ["myProfile", id],
+    () => getUserProfileById(id!, currentUserId),
     {
       refetchOnWindowFocus: false,
     }
   );
-  console.log(data)
+  console.log(data);
   return (
     <>
       {isSuccess && (

@@ -21,7 +21,7 @@ function UserFeedList({ isLike, isMyDetail, userId }: UserFeedListProps) {
     return getFeedByUserId(userId);
   }, [isLike, currentUserId, userId]);
 
-  const { isSuccess, data } = useQuery([isLike, "feedIsLike"], () =>
+  const { isSuccess, data } = useQuery([isLike, "feedIsLike", userId], () =>
     selectFetch()
   );
 
