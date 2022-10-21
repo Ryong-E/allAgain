@@ -41,14 +41,14 @@
 🖥 back  
 ├─ 📁node_modules  
 └─ 📁src  
-   ├─ 📁db  
-   │  ├─ 📁model  
-   ├─ 📁images  
-   │  ├─ 📁campaignImages  
-   │  ├─ 📁campaignThumbnail  
-   │  ├─ 📁feeds  
-   │  └─ 📁profiles  
-   ├─ 📁middlewares  
-   ├─ 📁routers  
-   ├─ 📁services  
-   ├─ 📁utils
+  ├─ 📁db  
+  ├─ 📁model  
+  ├─ 📁images  
+    ├─ 📁campaignImages  
+    ├─ 📁campaignThumbnail  
+    ├─ 📁feeds  
+    └─ 📁profiles  
+  ├─ 📁middlewares  
+  ├─ 📁routers  
+  ├─ 📁services  
+  └─ 📁utils
