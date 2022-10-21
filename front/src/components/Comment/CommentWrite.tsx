@@ -82,8 +82,7 @@ export default function CampaignCommentWrite({
   const createCommentMutate = useMutation([CREATE_COMMENTS], createCommentApi, {
     onSuccess: (data: any, variables, context) => {
       queryClient.invalidateQueries([
-        categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL,
-        id,
+        categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL,id,
       ]);
     },
   });
@@ -96,13 +95,15 @@ export default function CampaignCommentWrite({
     formState: { errors },
   } = useForm<WriteInput>();
   const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
-    createCommentMutate.mutate({
-      feedId: pathID,
-      campaignId: pathID,
-      content: commentWrite!,
-      rootCommentId: commentId !== null ? commentId! : null,
-      pathname: categotry,
-    });
+    if(commentWrite !== undefined){
+      createCommentMutate.mutate({
+        feedId: pathID,
+        campaignId: pathID,
+        content: commentWrite!,
+        rootCommentId: commentId !== null ? commentId! : null,
+        pathname: categotry,
+      });
+    }
     reset();
   };
   const handleClickLoginLink = () => {
@@ -118,13 +119,14 @@ export default function CampaignCommentWrite({
           placeholder={
             isLogin === null
               ? "로그인 후 이용 가능합니다"
-              : "댓글 달기...(최대 80자)"
+              : "댓글 달기...(최소 2자/최대 80자)"
           }
-          tabIndex={0}
-          required
           {...register("commentWrite", {
+            required:"",
+            minLength:2,
             maxLength: 80,
           })}
+          onPaste={(e)=> e.preventDefault()}
           disabled={isLogin === null}
         />
         <SubmitIconBtn

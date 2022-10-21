@@ -74,7 +74,7 @@ export default function CampaignPage() {
             filteredStatus!.map((props, idx) => (
               <CampaignItem
                 {...props}
-                key={`${props.writer.nickname}` + Date.now() + props.campaignId}
+                key={`${props.writer.nickname}` + props.campaignId}
               />
             ))}
         </CampaignList>

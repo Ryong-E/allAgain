@@ -18,7 +18,7 @@ export default function CampaignDetailPage() {
   const { id } = useParams();
   const isLogin = useRecoilValue(loggedInUserId);
   const { status, data, error } = useQuery(
-    [GET_DETAILCAMPAIGN],
+    [GET_DETAILCAMPAIGN, id],
     () => getCampaignItem(Number(id!), isLogin),
     { cacheTime: 5 }
   );

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -85,17 +85,18 @@ export default function CampaignIsJoin({
   isSameUser,
   isSameRate,
 }: JoinProps) {
+  const {id} = useParams();
   const [showModal, setShowModal] = useState(false);
   const {pathname} = useLocation();
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
+      queryClient.invalidateQueries([GET_DETAILCAMPAIGN, id]);
     },
   });
   const cancleCampaign = useMutation(cancelParticipateCampaign, {
     onSuccess: (data: any, variables, context) => {
-      queryClient.invalidateQueries([GET_DETAILCAMPAIGN]);
+      queryClient.invalidateQueries([GET_DETAILCAMPAIGN, id]);
     },
   });
   const [year, month, date] = startDate.split("-");

@@ -20,7 +20,7 @@ export default function ReCommentBox({pathID, commentId, isShowReComment, lastId
     <ReCommentItem>
       {(isShowReComment && (lastIdx === commentId)) && <CampaignCommentWrite pathID={pathID} commentId={commentId}/>}
       {filteredComment.map((props)=>(
-        <CommentItem {...props} key={props.commentId + Date.now()} />
+        <CommentItem {...props} key={props.commentId} />
       ))}
     </ReCommentItem>
   )

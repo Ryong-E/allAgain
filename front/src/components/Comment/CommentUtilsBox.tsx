@@ -7,7 +7,7 @@ import { deleteCommentApi } from "../../api/commentsApi";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
 import { DELETE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ConfirmAlertModal from "../Modals/ConfirmAlertModal";
 
 const UtilsBox = styled.div`
@@ -59,6 +59,7 @@ export default function CampaignUtilsBox({
   timestamp,
   userId,
 }: CommentUtils) {
+  const {id} =useParams();
   const reCommentLength = filteredComment.length;
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(loggedInUserId);
@@ -81,7 +82,7 @@ export default function CampaignUtilsBox({
     deleteCommentApi,
     {
       onSuccess: (data: any, variables, context) => {
-        queryClient.invalidateQueries([categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL]);
+        queryClient.invalidateQueries([categotry === "campaign" ? GET_DETAILCAMPAIGN : FEED_DETAIL, id]);
       },
     }
   );
@@ -108,7 +109,7 @@ export default function CampaignUtilsBox({
           <button onClick={() => setShowModal(true)}>삭제</button>
         </div>
       )}
-      {showModal && <ConfirmAlertModal content={"캠페인"} showModal={showModal} setShowModal={setShowModal} onClick={onClick} />}
+      {showModal && <ConfirmAlertModal content={"댓글"} showModal={showModal} setShowModal={setShowModal} onClick={onClick} />}
     </UtilsBox>
   );
 }
