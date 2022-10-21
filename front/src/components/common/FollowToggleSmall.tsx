@@ -7,6 +7,7 @@ import { deleteFollowUser, followUser } from "../../api/userApi";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { followedUserIds, loggedInUserId } from "../../atoms/atoms";
 import ConfirmModal from "../Modals/ConfirmModal";
+import { ROUTE } from "../../constant/route";
 
 const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
   background: ${({ theme }) => theme.colors.dasidaGreen};
@@ -110,7 +111,11 @@ export default function FollowToggleSmall({
         onClick={handleOnClick}>
         팔로우
       </FollowLabel>
-      <ConfirmModal showModal={showModal} setShowModal={setShowModal} />
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        returnPath={ROUTE.FEED_LIST.link}
+      />
     </div>
   );
 }

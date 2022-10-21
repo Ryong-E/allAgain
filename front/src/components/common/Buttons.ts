@@ -29,7 +29,7 @@ export const Button = styled.button`
   }
 `;
 
-export const RoundedButton = styled(Button)`
+export const RoundedButton: any = styled(Button)`
   border-radius: ${({ theme }) => theme.borderRadius.small};
 `;
 
