@@ -33,7 +33,7 @@ function ListOptionCheckbox({
         defaultChecked={true}
         onChange={() => setOption({ ...options, hold: !options.hold })}
       />
-      <CheckboxLabel htmlFor="hold">개최한 캠페인</CheckboxLabel>
+      <CheckboxLabel htmlFor="hold">등록한 캠페인</CheckboxLabel>
     </CheckboxContainer>
   );
 }

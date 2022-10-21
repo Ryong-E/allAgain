@@ -15,11 +15,11 @@ function FeedDetailPage() {
     () => getFeed(parseInt(id!)),
     {
       refetchOnWindowFocus: false,
+      onError: () => navigator(-1),
     }
   );
-    
+
   if (!isSuccess) {
-    navigator(-1);
     return <></>;
   }
 
@@ -32,6 +32,5 @@ function FeedDetailPage() {
     </Container>
   );
 }
-
 
 export default FeedDetailPage;
