@@ -78,12 +78,11 @@ export default function LoginForm() {
     },
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
-      console.log("state",state)
       sessionStorage.setItem("jwtToken", data.token);
       setLoggedInUser(data.userId);
       setLoggedInUserImg(data.imageUrl);
       if (state) {
-        navigate(`${state}`);
+        navigate(state);
       } else {
         navigate(ROUTE.HOME.link);
       }
