@@ -4,7 +4,7 @@ import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png";
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
 import { useRecoilState } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteFollowUser, followUser } from "../../api/userApi";
 
 // const FollowLabel = styled.label<{ checked: boolean }>`
@@ -79,9 +79,9 @@ interface FollowToggleProps {
 export default function FollowToggle({ followed, userId }: FollowToggleProps) {
   const isToken = sessionStorage.getItem("jwtToken");
   const [isFollowed, setIsFollowed] = useState(false);
-
-  const createFollow = useMutation(() => followUser(userId!));
-  const deleteFollow = useMutation(() => deleteFollowUser(userId!));
+  const queryClient = useQueryClient()
+  const createFollow = useMutation(() => followUser(userId!),{onSuccess:()=>{queryClient.invalidateQueries(['userProfile']);}});
+  const deleteFollow = useMutation(() => deleteFollowUser(userId!),{onSuccess:()=>{queryClient.invalidateQueries(['userProfile']);}});
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
     if (isToken) {
