@@ -26,6 +26,7 @@ function UserBanner({
   NumberOfFeeds,
 }: UserBannerProps) {
   const [modalActive, setModalActive] = useState<boolean>(false);
+  const [selectedModal, setSelectedModal] = useState<boolean>(true);
 
   const handleInfoClick = () => {
     setModalActive(true);
@@ -42,12 +43,19 @@ function UserBanner({
       <UserInfoContainer>
         <UserInfo>{`게시글 수 ${NumberOfFeeds}`}</UserInfo>
         <UserInfo
-          onClick={handleInfoClick}>{`팔로워 ${followers?.count}`}</UserInfo>
+          onClick={() => {
+            handleInfoClick();
+            setSelectedModal(true);
+          }}>{`팔로워 ${followers?.count}`}</UserInfo>
         <UserInfo
-          onClick={handleInfoClick}>{`팔로잉 ${followees?.count}`}</UserInfo>
+          onClick={() => {
+            handleInfoClick();
+            setSelectedModal(false);
+          }}>{`팔로잉 ${followees?.count}`}</UserInfo>
       </UserInfoContainer>
       {modalActive && (
         <FollowersTab
+          selected={selectedModal}
           followees={followees}
           followers={followers}
           removeFunction={() => setModalActive(false)}

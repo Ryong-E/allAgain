@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { FollowUser, FollowUserRes } from "../../types/userTypes";
 import FollowUserInfo from "./FollowUserInfo";
 
 interface FollowersTabProps {
+  selected: boolean;
   followees: FollowUserRes;
   followers: FollowUserRes;
   removeFunction: () => void;
 }
 
 function FollowersTab({
+  selected,
   followees,
   followers,
   removeFunction,
 }: FollowersTabProps) {
   const [isSelect, setIsSelect] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsSelect(selected);
+  }, [selected]);
 
   return (
     <FollowModalBack>
@@ -69,7 +75,7 @@ const FollowModalBack = styled.div`
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 9999;
-  left:0;
+  left: 0;
   top: 0;
   animation: ${BackFadeIn} ease-out 0.3s;
 `;
