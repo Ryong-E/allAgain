@@ -38,7 +38,7 @@ export default function QuillEditor({
   function handleImage() {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/png, image/jpg");
+    input.setAttribute("accept", "image/*");
     input.click();
     input.addEventListener("change", async () => {
       const file = input.files![0];

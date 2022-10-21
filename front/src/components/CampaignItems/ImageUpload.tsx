@@ -112,7 +112,7 @@ function ImageUpload({ register, watch, defaultvalue }: any) {
         <UploadFile
           name="image-file"
           type="file"
-          accept="image/png, image/jpg"
+          accept="image/*"
           id="upload-file"
           {...register("thumbnail")}></UploadFile>
         {previewImage ? (
