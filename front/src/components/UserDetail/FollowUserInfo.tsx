@@ -45,7 +45,6 @@ function FollowUserInfo({
     <UserContainer>
       <UserProfileBox
         onClick={() => {
-          alert(userId);
           navigator(`/user/${userId}`);
         }}>
         <UserProfileImg src={"http://" + imageUrl} />
