@@ -61,7 +61,6 @@ const UserProfileContainer = styled.div`
   width: 100%;
   min-width: 1300px;
   display: flex;
-  min-width: 1920px;
   flex-direction: column;
   align-items: center;
   background: rgba(240, 230, 203, 0.2);
