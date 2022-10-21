@@ -33,6 +33,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
 import { FormPropType, FormType } from "../../types/campaignTypes";
 import { onCheckEnter } from "../../utils/enterPrevent";
+import ErrorAlertModal from "../Modals/ErrorAlertModal";
 
 export default function CampaignForm({
   thumbnail,
@@ -50,6 +51,7 @@ export default function CampaignForm({
   const [editorContent, setEditorContent] = useState<string>("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [showModal, setShowModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -62,7 +64,7 @@ export default function CampaignForm({
 
   const updateCampainMutaion = useMutation(updateCampaign, {
     onError: (error: any) => {
-      alert(error);
+      setShowModal(true);
     },
     onSuccess: (data: any) => {
       alert("캠페인 수정이 완료되었습니다");
@@ -74,7 +76,7 @@ export default function CampaignForm({
 
   const createCampainMutaion = useMutation(createCampaign, {
     onError: (error: any) => {
-      alert(error);
+      setShowModal(true);
     },
     onSuccess: (data: any) => {
       alert("캠페인 생성이 완료되었습니다");
@@ -323,6 +325,7 @@ export default function CampaignForm({
           </ConfirmButton>
         </ButtonBox>
       </form>
+      {showModal && <ErrorAlertModal  content={`${updateMod ? "수정하기" : "생성하기"}가 실패하였습니다. 다시 한번 확인해주세요`} showModal={showModal} setShowModal={setShowModal}/>}
     </>
   );
 }
