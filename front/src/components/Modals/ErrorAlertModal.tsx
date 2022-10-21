@@ -6,14 +6,12 @@ interface ErrorAlertModalProps {
   content: string;
   showModal: boolean;
   setShowModal: React.Dispatch<SetStateAction<boolean>>;
-  onClick: () => void;
 }
 
 function ErrorAlertModal({
   content,
   showModal,
   setShowModal,
-  onClick,
 }: ErrorAlertModalProps) {
   return (
     <ModalBack isActive={showModal}>

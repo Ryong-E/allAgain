@@ -1,6 +1,7 @@
 import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 import { FeedFormValues } from "../../types/feedTypes";
+import { onCheckEnter } from "../../utils/enterPrevent";
 
 interface TagEditFormProps {
   tags: string;
@@ -12,6 +13,9 @@ function TagEditForm({ register, tags, errors }: TagEditFormProps) {
   return (
     <DescriptionTagContainer>
       <DescriptionTag
+        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+          onCheckEnter(event);
+        }}
         type="text"
         defaultValue={tags && "#" + tags.replaceAll(",", "#")}
         placeholder="#으로 구분하여 태그를 입력해 주세요.."

@@ -4,7 +4,8 @@ import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
-import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
+import { loggedInUserId } from "../../atoms/atoms";
+import DefaultProfile from "../../assets/images/icons/icon_profile.png";
 
 interface authorInfoProps {
   size: "simple" | "detail";
@@ -22,11 +23,11 @@ function AuthorInfo({
   isAdmin,
   nickname,
   isEditing,
+  authorImageUrl,
   followed,
 }: authorInfoProps) {
   const navigate = useNavigate();
   const currentUserId = useRecoilValue(loggedInUserId);
-  const currentUserProfileImg = useRecoilValue(loggedInUserImgUrl);
 
   const handleOnClick = useCallback(() => {
     isEditing || navigate(`/user/${userId}`);
@@ -37,7 +38,7 @@ function AuthorInfo({
       <ProfileContainer>
         <AuthorProfile
           size={size}
-          src={`http://` + currentUserProfileImg}
+          src={authorImageUrl ? "http://" + authorImageUrl : DefaultProfile}
           onClick={handleOnClick}
         />
         <AuthorName isAdmin={isAdmin} onClick={handleOnClick}>

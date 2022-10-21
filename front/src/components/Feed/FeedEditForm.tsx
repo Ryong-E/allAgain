@@ -18,7 +18,7 @@ import TagEditForm from "./TagEditForm";
 import { FEEDS } from "../../constant/queryKeys";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
-import { onCheckEnter } from "../../utils/enterPrevent";
+import ErrorAlertModal from "../Modals/ErrorAlertModal";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -35,6 +35,7 @@ function FeedEditForm({
 }: FeedEditProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const [uploadImages, setUploadImages] = useState<ImageType[]>([]);
+  const [isImageError, setIsImageError] = useState<boolean>(false);
   const {
     formState: { errors },
     register,
@@ -103,39 +104,43 @@ function FeedEditForm({
     }
   }, [currentUserId, navigator, userId, feedId, isEditing]);
 
-  const handleFormSubmit = handleSubmit(
-    async (data) => {
-      if (uploadImages.length !== 0 || !uploadImages) {
-        const { description, tags, category } = data;
-        const formData = new FormData();
-        uploadImages.forEach(
-          ({ file }) => file && formData.append("image", file)
-        );
-        const newUploadImageUrls = await uploadFeedImages(formData);
-        const uploadImageUrls = uploadImages
-          .filter((image) => image.file === undefined)
-          .concat(newUploadImageUrls);
-        const submitData = {
-          feedId,
-          userId,
-          description,
-          tags: tags.slice(1).replaceAll("#", ","),
-          imageUrls: uploadImageUrls as unknown as ImageUrlType[],
-          category: typeof category !== "string" ? category.join() : category,
-        };
-        submitMutation.mutate(submitData);
-      } else throw new Error("이미지는 최소 1개 이상 업로드해야합니다");
-    },
-    (err: any) => alert(err.message)
-  );
-
+  const handleFormSubmit = handleSubmit(async (data) => {
+    if (uploadImages.length !== 0 || !uploadImages) {
+      const { description, tags, category } = data;
+      const formData = new FormData();
+      uploadImages.forEach(
+        ({ file }) => file && formData.append("image", file)
+      );
+      const newUploadImageUrls = await uploadFeedImages(formData);
+      const uploadImageUrls = uploadImages
+        .filter((image) => image.file === undefined)
+        .concat(newUploadImageUrls);
+      const submitData = {
+        feedId,
+        userId,
+        description,
+        tags: tags.slice(1).replaceAll("#", ","),
+        imageUrls: uploadImageUrls as unknown as ImageUrlType[],
+        category: typeof category !== "string" ? category.join() : category,
+      };
+      submitMutation.mutate(submitData);
+    } else throw new Error("test");
+  });
 
   useEffect(() => {
     setUploadImages(imageUrls);
   }, [imageUrls]);
 
   return (
-    <form onSubmit={handleFormSubmit} onKeyDown={(event)=>{onCheckEnter(event)}}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}>
+      <ErrorAlertModal
+        content={"이미지는 최소 1개 이상 업로드해주세요"}
+        showModal={isImageError}
+        setShowModal={setIsImageError}
+      />
       <ImageEditForm
         onChange={handleOnChange}
         onDeleteClick={handleDeleteClick}
@@ -161,7 +166,14 @@ function FeedEditForm({
       </TextContainer>
       <ButtonContainer>
         <ClsButton onClick={handleGoBackClick}>취소</ClsButton>
-        <ConfirmButton type="submit">완료</ConfirmButton>
+        <ConfirmButton
+          onClick={() => {
+            if (uploadImages.length === 0 && !isImageError)
+              setIsImageError(true);
+            else handleFormSubmit();
+          }}>
+          완료
+        </ConfirmButton>
       </ButtonContainer>
     </form>
   );
