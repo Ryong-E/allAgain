@@ -24,7 +24,7 @@ const campaignNoTokenApi = (contentType: string = APPLCATION_JSON) =>
 
 export const getCampaignList = async (isLogin?: number | null) => {
   try {
-    if (isLogin !== null) {
+    if (sessionStorage.getItem("jwtToken")) {
       const response = await campaignApi().get<CampaignItemType[]>("");
       return response.data;
     } else {
@@ -43,7 +43,7 @@ export const getCampaignListByUserId = async (
   isLogin?: number | null
 ) => {
   try {
-    if (isLogin !== null) {
+    if (sessionStorage.getItem("jwtToken")) {
       const response = await campaignApi().get<CampaignItemType[]>(
         `/${userId}`
       );
@@ -85,7 +85,7 @@ export const getCampaignItem = async (
   isLogin?: number | null
 ) => {
   try {
-    if (isLogin !== null) {
+    if (sessionStorage.getItem("jwtToken")) {
       const response = await campaignApi().get<CampaignItemType>(
         `/campaign/${campaginId}`
       );
