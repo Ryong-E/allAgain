@@ -1,9 +1,7 @@
 import styled, { css } from "styled-components";
 import LikeIconOn from "../../assets/images/icons/icon_like_on.png";
 import LikeIconOff from "../../assets/images/icons/icon_like_off.png";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
-import { loggedInUserId } from "../../atoms/atoms";
+import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
 import { createLike, deleteLike } from "../../api/feedApi";
@@ -43,9 +41,10 @@ export default function FeedLikeToggle({
   const [liked, setLiked] = useState<boolean>(false);
   const [keepLikeId, setKeepLikeId] = useState<number>();
   const [keepCount, setKeepCount] = useState<number>(1);
+  const isToken = sessionStorage.getItem("jwtToken");
 
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const createLikeKey = useMutation(() => createLike(feedId, userId!));
   const deleteLikeKey = useMutation(() => {
@@ -55,20 +54,22 @@ export default function FeedLikeToggle({
   });
 
   const handleClickLike = () => {
-    if (createLikeKey.isLoading || deleteLikeKey.isLoading) return;
-    if (liked) {
-      deleteLikeKey.mutate();
-      setLiked(false);
-      setKeepCount(keepCount - 1);
-    } else if (!liked) {
-      createLikeKey.mutate();
-      setLiked(true);
-      setKeepCount(keepCount + 1);
-    }
+    if (isToken) {
+      if (createLikeKey.isLoading || deleteLikeKey.isLoading) return;
+      if (liked) {
+        deleteLikeKey.mutate();
+        setLiked(false);
+        setKeepCount(keepCount - 1);
+      } else if (!liked) {
+        createLikeKey.mutate();
+        setLiked(true);
+        setKeepCount(keepCount + 1);
+      }
+    } else alert("로그인한 유저만 이용할 수 있는 기능입니다");
   };
   const handleClickLoginLink = () => {
     if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link, {state : pathname});
+      navigate(ROUTE.LOGIN.link, { state: pathname });
     }
   };
 

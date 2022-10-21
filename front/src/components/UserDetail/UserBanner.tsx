@@ -1,19 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { FollowUserRes } from "../../types/userTypes";
 import FollowToggle from "../common/FollowToggle";
+import FollowersTab from "./FollowersTab";
 
 interface UserBannerProps {
   userId: string;
   imageUrl: string;
   nickname: string;
   isMyDetail: boolean;
-  followees: {
-    count: number;
-    users: [];
-  };
-  followers: {
-    count: number;
-    users: [];
-  };
+  followed: boolean;
+  followees: FollowUserRes;
+  followers: FollowUserRes;
   NumberOfFeeds: number;
 }
 
@@ -22,20 +20,39 @@ function UserBanner({
   imageUrl,
   nickname,
   isMyDetail,
+  followed,
   followees,
   followers,
   NumberOfFeeds,
 }: UserBannerProps) {
+  const [modalActive, setModalActive] = useState<boolean>(false);
+
+  const handleInfoClick = () => {
+    setModalActive(true);
+    console.log("test");
+  };
+
   return (
     <UserProfileContainer>
       <UserProfileImage src={imageUrl} />
       <UserNickname>{nickname}</UserNickname>
-      {isMyDetail || <FollowToggle />}
+      {isMyDetail || (
+        <FollowToggle followed={followed} userId={parseInt(userId)} />
+      )}
       <UserInfoContainer>
         <UserInfo>{`게시글 수 ${NumberOfFeeds}`}</UserInfo>
-        <UserInfo>{`팔로워 ${followers?.count}`}</UserInfo>
-        <UserInfo>{`팔로잉 ${followees?.count}`}</UserInfo>
+        <UserInfo
+          onClick={handleInfoClick}>{`팔로워 ${followers?.count}`}</UserInfo>
+        <UserInfo
+          onClick={handleInfoClick}>{`팔로잉 ${followees?.count}`}</UserInfo>
       </UserInfoContainer>
+      {modalActive && (
+        <FollowersTab
+          followees={followees}
+          followers={followers}
+          removeFunction={() => setModalActive(false)}
+        />
+      )}
     </UserProfileContainer>
   );
 }

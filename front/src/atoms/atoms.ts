@@ -14,3 +14,8 @@ export const loggedInUserImgUrl = atom<String | null>({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const followedUserIds = atom<number[]>({
+  key: "followedUserIds",
+  default: [],
+});
