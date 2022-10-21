@@ -17,7 +17,7 @@ import ConfirmModal from "../Modals/ConfirmModal";
 const JoinCampaignBox = styled.div`
   margin-top: 10px;
 
-  button {
+  > button {
     display: flex;
     align-items: center;
     justify-content: center;

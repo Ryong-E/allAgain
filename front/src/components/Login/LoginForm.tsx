@@ -52,7 +52,6 @@ export default function LoginForm() {
   const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
   const [loggedInUserImg, setLoggedInUserImg] =
     useRecoilState(loggedInUserImgUrl);
-
   // 로그인 Form 유효성 검사
   const {
     register,
@@ -79,11 +78,12 @@ export default function LoginForm() {
     },
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
+      console.log("state",state)
       sessionStorage.setItem("jwtToken", data.token);
       setLoggedInUser(data.userId);
       setLoggedInUserImg(data.imageUrl);
       if (state) {
-        navigate(state);
+        navigate(`${state}`);
       } else {
         navigate(ROUTE.HOME.link);
       }

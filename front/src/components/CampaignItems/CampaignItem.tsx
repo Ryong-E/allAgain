@@ -73,7 +73,7 @@ const StatusBox = styled.div`
   .shareAndLikeBox {
     display: flex;
     align-items: center;
-    button + div {
+    > button + div {
       margin-left: 20px;
     }
   }
