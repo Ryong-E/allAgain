@@ -108,7 +108,7 @@ export default function ProfileImage() {
   return (
     <StyledProfile.ProfileImageWrap>
       <StyledProfile.ImageFormContainer>
-        <StyledProfile.InputImage type="file" name="profileImage" accept="image/png, image/jpg" id="imageUpload" onChange={ onChange }/>
+        <StyledProfile.InputImage type="file" name="profileImage" accept="image/*" id="imageUpload" onChange={ onChange }/>
         <StyledProfile.PreviewImage imageUrl={previewImage} />
         <StyledProfile.EditImageButton htmlFor="imageUpload"/>
       </StyledProfile.ImageFormContainer>

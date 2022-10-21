@@ -18,6 +18,17 @@ export default function ShareBox({ contentId }: ContentIdType) {
   const currentUrl = window.location.href;
   const {pathname} = useLocation();
   const pathLength = pathname.split('/').length;
+  const [currentScroll, setCurrentScroll] = useState(0);
+  useEffect(()=>{
+    window.addEventListener("scroll",()=>{
+      setCurrentScroll(window.scrollY);
+    }) 
+    return ()=> {
+      window.removeEventListener("scroll",()=>{
+        setCurrentScroll(window.scrollY);
+      }) 
+    }
+  })
   
   const linkCopy = (text: string) => 
   {
@@ -50,6 +61,7 @@ export default function ShareBox({ contentId }: ContentIdType) {
       document.execCommand("copy");
       document.body.removeChild(textarea);
       alert("클립보드에 복사되었습니다.");
+      window.scrollTo(0, currentScroll);
     }
   };
 

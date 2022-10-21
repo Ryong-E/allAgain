@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
 import { getFeed } from "../../api/feedApi";
 import Comments from "../../components/Comment/Comments";
 import { Container, Container1200 } from "../../components/common/Containers";
@@ -26,16 +25,13 @@ function FeedDetailPage() {
 
   return (
     <Container>
-      <FeedDetailContainer>
+      <Container1200>
         <FeedDetail {...data} />
         {<Comments comments={data.comments!} />}
-      </FeedDetailContainer>
+      </Container1200>
     </Container>
   );
 }
 
-const FeedDetailContainer = styled(Container1200)`
-  overflow: hidden;
-`
 
 export default FeedDetailPage;
