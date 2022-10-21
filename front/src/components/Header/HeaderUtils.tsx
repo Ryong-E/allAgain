@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MyProfile, User } from "../../types/userTypes";
 import { GET_PROFILE } from "../../constant/queryKeys";
 import { getUserProfile } from "../../api/userApi";
-import { useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 
 const HeaderUtilWrap = styled.div`
@@ -22,8 +22,8 @@ const HeaderUtilWrap = styled.div`
 `;
 
 const HeaderUtilButton = styled.div`
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   background: no-repeat 50% 50% / contain;
   cursor: pointer;
 
@@ -91,6 +91,7 @@ export default function HeaderUtils() {
 
   const resetloggedInUserId = useResetRecoilState(loggedInUserId);
   const resetloggedInUserImgUrl = useResetRecoilState(loggedInUserImgUrl);
+  const loggedInUser = useRecoilValue(loggedInUserId);
 
   // Utilbox 이외의 영역 클릭 시 Utilbox 닫힘
   useEffect(() => {
@@ -133,7 +134,7 @@ export default function HeaderUtils() {
 
   return (
     <HeaderUtilWrap>
-      <NoticeButton />
+      {/* <NoticeButton /> */}
       <MeButton
         ref={utilButtonRef}
         onClick={handleUtilBox}
@@ -143,7 +144,7 @@ export default function HeaderUtils() {
         <HeaderUtilBox ref={utilBoxRef}>
           <ul>
             <li>
-              <Link to={ROUTE.MY_PAGE.link}>마이페이지</Link>
+              <Link to={`${ROUTE.MY_DETAIL_PAGE.link}/${loggedInUser}`}>마이페이지</Link>
             </li>
             <li>
               <Link to={ROUTE.MY_PROFILE.link}>계정관리</Link>

@@ -1,180 +1,69 @@
-import styled, { keyframes } from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import NavBar from "../Nav/NavBar";
 import { ROUTE } from "../../constant/route";
 import HeaderUtils from "./HeaderUtils";
+import * as StyledHeader from "./Header.style";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const HeaderWrap = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-width: 1360px;
-  height: 70px;
-  border-bottom: 1px solid rgba(191, 177, 186, 0.5);
-  z-index: 1000;
-`;
+gsap.registerPlugin(ScrollTrigger);
 
-const HeaderContainer = styled.div`
-  position: relative;
-  height: 100%;
-  padding: 0 80px;
-`;
 
-const Logo = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  z-index: 10;
-
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-
-    font-family: "SANGJUGyeongcheonIsland";
-    font-size: 28px;
-  }
-`;
-
-const LandingHeader = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  padding: 40px;
-  z-index: 1000;
-`;
-
-const buttonAni = keyframes`
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  80% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  84% {
-    opacity: 0.2;
-  }
-  94% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(18);
-  }
-`;
-
-const LandingHeaderBtnWrap = styled.div`
-  position: relative;
-  background: rgba(73, 107, 123, 0.9);
-  color: #ffffff;
-  width: 180px;
-  padding: 12px;
-  text-align: center;
-  font-weight: 300;
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-
-  a {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.2);
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    animation: ${buttonAni} 6s infinite ease-out;
-    opacity: 0;
-
-    &:nth-child(2) {
-      animation-delay: -0.3s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: -0.6s;
-    }
-  }
-`;
-
-const HeaderLoginBtnWrap = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 80px;
-  transform: translate(0, -50%);
-  z-index: 10;
-
-  display: flex;
-  justify-content: flex-end;
-
-  a {
-    position: relative;
-    margin-left: 25px;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.dasidaGreen};
-      font-weight: 500;
-    }
-
-    &:last-child:before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: -12.5px;
-      transform: translate(0, -45%);
-      width: 1px;
-      height: 0.8em;
-      background: #343434;
-    }
-  }
-`;
 
 export default function Header() {
   const location = useLocation();
   const pathName = location.pathname;
+  
+  const headerRef = useRef<any>(null);
 
   const isToken = sessionStorage.getItem("jwtToken");
 
-  return pathName !== "/landing" ? (
-    <HeaderWrap>
-      <HeaderContainer>
-        <Logo>
+  useEffect(() => {
+    const target = headerRef.current;
+
+    const showAnim = gsap.from(target, { 
+      yPercent: -100,
+      paused: true,
+      duration: 0.2
+    }).progress(1);
+    
+    ScrollTrigger.create({
+      start: "top -80",
+      end: 99999,
+      toggleClass: {targets: target, className: "scrolled"},
+      onUpdate: (self) => {
+        self.direction === -1 ? showAnim.play() : showAnim.reverse()
+      }
+    });
+        
+  }, [pathName]);
+
+  return pathName !== ROUTE.LANDING.link ? (
+    <StyledHeader.HeaderWrap ref={headerRef} className={pathName !== ROUTE.HOME.link ? "" : "main-header"}>
+      <StyledHeader.HeaderContainer>
+        <StyledHeader.Logo>
           <Link to={ROUTE.HOME.link}>ㄷㅅ, ㄷ</Link>
-        </Logo>
+        </StyledHeader.Logo>
         <NavBar />
         {isToken ? (
           <HeaderUtils />
         ) : (
-          <HeaderLoginBtnWrap>
+          <StyledHeader.HeaderLoginBtnWrap>
             <Link to={ROUTE.LOGIN.link}>로그인</Link>
             <Link to={ROUTE.REGISTER.link}>회원가입</Link>
-          </HeaderLoginBtnWrap>
+          </StyledHeader.HeaderLoginBtnWrap>
         )}
-      </HeaderContainer>
-    </HeaderWrap>
+      </StyledHeader.HeaderContainer>
+    </StyledHeader.HeaderWrap>
   ) : (
-    <LandingHeader>
-      <LandingHeaderBtnWrap>
+    <StyledHeader.LandingHeader>
+      <StyledHeader.LandingHeaderBtnWrap>
         <Link to={ROUTE.LOGIN.link}>다시, 다 사용하기</Link>
         <span></span>
         <span></span>
         <span></span>
-      </LandingHeaderBtnWrap>
-    </LandingHeader>
+      </StyledHeader.LandingHeaderBtnWrap>
+    </StyledHeader.LandingHeader>
   );
 }

@@ -40,7 +40,7 @@ export default function Footer() {
   const pathName = location.pathname;
 
   return (
-    <FooterWrap className={pathName === "/landing" ? "bg-dark" : ""}>
+    <FooterWrap className={pathName === ROUTE.LANDING.link ? "bg-dark" : ""}>
       <FooterContainer>
         <Copyright>다시, 다 &copy; 2022</Copyright>
         <FooterLinkWrap>
