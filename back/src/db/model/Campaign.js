@@ -276,7 +276,7 @@ const Campaign = {
   findAllCommentsByCampaignId: async ({ campaignId }) => {
     try {
       const comments = await promisePool.query(
-        "SELECT *, campaign_comments.id as comment_id FROM campaign_comments JOIN users ON campaign_comments.user_id = users.id WHERE campaign_comments.campaign_id = ?",
+        "SELECT *, campaign_comments.id as comment_id FROM campaign_comments JOIN users ON campaign_comments.user_id = users.id WHERE campaign_comments.campaign_id = ? ORDER BY campaign_comments.id desc",
         [campaignId]
       );
 
