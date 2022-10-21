@@ -44,7 +44,11 @@ function Album({ size, imageUrls, feedId }: albumProps) {
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               src={"http://" + imageUrl.url}
               alt={imageUrl.name}
-              key={imageUrl.id}
+              key={
+                `${imageUrl.id}` +
+                Date.now().toLocaleString() +
+                `${imageUrl.name}`
+              }
             />
           </Slide>
         ))}
