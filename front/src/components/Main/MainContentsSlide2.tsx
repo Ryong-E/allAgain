@@ -12,25 +12,6 @@ import { Link } from 'react-router-dom';
 import * as StyledSlider from "./MainContentSlide.style";
 
 export default function MainContentsSlide2() {
-  // const [resizePreView, setResizePreView] = useState(5);
-
-  // const handleWindowResize = ()=>{
-  //   const width = window.innerWidth;
-  //   if(width >= 1000){
-  //     setResizePreView(width / 400);
-  //   }else if(800 <= width && width < 1000){
-  //     setResizePreView(width / 440);
-  //   }else{
-  //     setResizePreView(width / 500);
-  //   }
-  // }
-  // useEffect(()=>{
-  //   handleWindowResize();
-  // },[])
-  // useEffect(()=>{
-  //   window.addEventListener("resize",handleWindowResize);
-  // })
-
 
   const title = ["우유팩으로 지갑을 만든다?", "a", "b", "a", "b", "a", "b"];
   const slideImgUrl = [slideImg01, slideImg02, slideImg03, slideImg04, slideImg05, slideImg06, slideImg07];
@@ -40,7 +21,7 @@ export default function MainContentsSlide2() {
   return (
     <StyledSlider.ContentSlideRoot>
       <StyledSlider.ContentTitleBox>
-        <p>당신의 업사이클링 경험을 공유해 주세요</p>
+        <p>업사이클링 제품을 만들어서 도움이 필요한 곳에 기부해 주세요</p>
       </StyledSlider.ContentTitleBox>
       <StyledSlider.SwiperWrap
         slidesPerView={'auto'}

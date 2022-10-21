@@ -21,9 +21,15 @@ export const ROUTE = {
     element: NotFoundPage,
     authenticated: false,
   },
-  HOME: {
+  LANDING: {
     path: "/",
     link: "/",
+    element: LandingPage,
+    authenticated: false,
+  },
+  HOME: {
+    path: "/home",
+    link: "/home",
     element: MainPage,
     authenticated: false,
   },
@@ -39,22 +45,23 @@ export const ROUTE = {
     element: RegisterPage,
     authenticated: false,
   },
-  MY_PAGE: {
-    path: "/mypage",
-    link: "/mypage",
-    element: Template,
-    authenticated: true,
-  },
   MY_PROFILE: {
     path: "/profile",
     link: "/profile",
     element: ProfilePage,
     authenticated: true,
   },
+  MY_DETAIL_PAGE: {
+    path: "/user",
+    link: "/user",
+    element: Template,
+    authenticated: true,
+  },
   USER_DETAIL_PAGE: {
     path: "/user/:id",
     link: "/user/",
     element: UserDetailPage,
+    authenticated: false,
   },
   ABOUT: {
     path: "/about",
@@ -66,12 +73,6 @@ export const ROUTE = {
     path: "/team2luda",
     link: "/team2luda",
     element: Template,
-    authenticated: false,
-  },
-  LANDING: {
-    path: "/landing",
-    link: "/landing",
-    element: LandingPage,
     authenticated: false,
   },
   FEED_LIST: {

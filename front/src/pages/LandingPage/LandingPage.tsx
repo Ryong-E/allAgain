@@ -24,7 +24,7 @@ export default function LandingPage() {
     gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
       ScrollTrigger.create({
         trigger: elem,
-        start: "50% bottom",
+        start: "70% bottom",
         onEnter: () => { animateFrom(elem); console.log("왜 두번"); }, 
         onLeaveBack: () => { hide(elem); },
       });
