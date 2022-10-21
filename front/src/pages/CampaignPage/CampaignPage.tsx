@@ -38,7 +38,7 @@ const AdditionalBox = styled.div`
   }
 `;
 
-const CreateCampaignBtn = styled(ConfirmButton)`
+export const CreateCampaignBtn = styled(ConfirmButton)`
   height: 50px;
   width: auto;
 `;

@@ -8,27 +8,30 @@ import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
 import { DELETE_COMMENTS, FEED_DETAIL, GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 import { useLocation } from "react-router-dom";
+import ConfirmAlertModal from "../Modals/ConfirmAlertModal";
 
 const UtilsBox = styled.div`
   display: flex;
   font-size: 12px;
   color: ${({ theme }) => theme.colors.placeholder};
   margin-top: 10px;
-  button {
-    border: none;
-    background: inherit;
-    color: inherit;
-  }
+
   .timeStamp {
     margin-right: 15px;
   }
   .reCommentBox {
     margin-right: 10px;
     button {
+    border: none;
+    background: inherit;
+    color: inherit;
     }
   }
   .deleteBtnBox {
     button {
+      border: none;
+    background: inherit;
+    color: inherit;
     }
   }
 `;
@@ -63,6 +66,7 @@ export default function CampaignUtilsBox({
   const categotry = pathname.split("/")[1];
   const createdDate = new Date(timestamp);
   createdDate.setHours(createdDate.getHours() + 9)
+  const [showModal, setShowModal] = useState(false);
   
   const handleToggleReComment = () => {
     setIsReComment(true);
@@ -81,10 +85,8 @@ export default function CampaignUtilsBox({
       },
     }
   );
-  const handleDeleteComment = (commentId: number, categotry : String) => {
-    if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
-      deletedCommentMutate.mutate({commentId, pathname : categotry});
-    }
+  const onClick = () => {
+    deletedCommentMutate.mutate({commentId, pathname : categotry});
   };
 
   return (
@@ -103,9 +105,10 @@ export default function CampaignUtilsBox({
       )}
       {isLogin === userId && (
         <div className="deleteBtnBox">
-          <button onClick={() => handleDeleteComment(commentId, categotry)}>삭제</button>
+          <button onClick={() => setShowModal(true)}>삭제</button>
         </div>
       )}
+      {showModal && <ConfirmAlertModal content={"캠페인"} showModal={showModal} setShowModal={setShowModal} onClick={onClick} />}
     </UtilsBox>
   );
 }

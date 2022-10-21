@@ -1,5 +1,6 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
@@ -8,6 +9,8 @@ import {
   getCampaignListLiked,
 } from "../../api/campaignApi";
 import { loggedInUserId } from "../../atoms/atoms";
+import { ROUTE } from "../../constant/route";
+import { CreateCampaignBtn } from "../../pages/CampaignPage/CampaignPage";
 import { CampaignItemType } from "../../types/campaignTypes";
 import CampaignItem from "../CampaignItems/CampaignItem";
 import FeedAddButton from "../Feed/FeedAddButton";
@@ -30,6 +33,7 @@ function UserCampaignList({
   userId,
 }: UserCampaignListProps) {
   const currentUserId = useRecoilValue(loggedInUserId);
+  const navigate = useNavigate();
   const [options, setOptions] = useState<OptionType>({
     participated: false,
     hold: true,
@@ -78,7 +82,7 @@ function UserCampaignList({
         <AddButtonContainer>
           {isMyDetail && (
             <AddPos>
-              <FeedAddButton navLink="/campaign/add" />
+              <CreateCampaignBtn onClick={()=> navigate(ROUTE.CAMPAGIN_CREATE.link)} >새로운 캠페인 등록</CreateCampaignBtn>
             </AddPos>
           )}
         </AddButtonContainer>
