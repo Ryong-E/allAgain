@@ -8,7 +8,7 @@ const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-position: 0 0%;
+  background-position: 0 30%;
   background-repeat: no-repeat;
   background-size: 100%;
   background-image: url(${({bgImage})=> bgImage});
@@ -33,7 +33,7 @@ const ParallaxItem = styled.div<{bgImage: string, zIndex: number}>`
     opacity: 1;
     background-position: 0 30%;
   }
-  transition: background-position 1.8s ${({zIndex}) => 0.16*(zIndex-1)}s, opacity 1.8s ${({zIndex}) => 0.16*(zIndex-1)}s;
+  transition: background-position 1s ${({zIndex}) => 0.3*(zIndex-1)}s, opacity 1.8s ${({zIndex}) => 0.3*(zIndex-1)}s;
   @media (max-width:1920px){
     &.parallaxItem2{
       width:101%;

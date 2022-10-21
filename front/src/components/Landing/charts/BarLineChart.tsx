@@ -138,7 +138,7 @@ export default function BarLineChart() {
         showChart && (
           <>
             <Bar dataKey="생활쓰레기 발생량" fill="#B4E0D9" barSize={60}  animationBegin={0} animationDuration={1200} />
-            <Line type="monotone" dataKey="생활쓰레기 발생량" stroke="#D76440" strokeWidth={1.5} dot={{ stroke: "#D76440", strokeWidth: 1 }} activeDot={{ stroke: "#D76440", strokeWidth: 2, r: 2 }}  animationBegin={1200} animationDuration={1400} />
+            <Line type="monotone" dataKey="생활쓰레기 발생량" stroke="#D76440" strokeWidth={1.5} dot={{ stroke: "#D76440", strokeWidth: 1 }} activeDot={{ stroke: "#D76440", strokeWidth: 2, r: 2 }}  animationBegin={600} animationDuration={1500} />
           </>
         )
       }

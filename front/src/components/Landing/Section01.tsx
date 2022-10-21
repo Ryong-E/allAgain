@@ -54,7 +54,7 @@ const MainDescTextBox = styled.div`
   color: #1A2C30;
   transform: translate(-50%, -50%);
   mix-blend-mode: overlay;
-  transition : opacity 2s 1.5s;
+  transition : opacity 2.4s 1s;
   
   p {
     display: flex;
