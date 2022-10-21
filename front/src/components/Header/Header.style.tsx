@@ -133,7 +133,7 @@ export const LandingHeaderBtnWrap = styled.div`
     border-radius: 50%;
     animation: ${buttonAni} 6s infinite ease-out;
     opacity: 0;
-
+    pointer-events:none;
     &:nth-child(2) {
       animation-delay: -0.3s;
     }
