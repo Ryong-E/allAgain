@@ -77,6 +77,18 @@ const Campaign = {
       throw error;
     }
   },
+  findParticipantsCountByCampaignId: async ({ campaignId }) => {
+    try {
+      const participantsCount = await promisePool.query(
+        "SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants WHERE campaign_id = ? GROUP BY campaign_id ",
+        [campaignId]
+      );
+
+      return participantsCount[0][0].participants_count;
+    } catch (error) {
+      throw error;
+    }
+  },
   findByUserIdWithParticipants: async ({ userId }) => {
     try {
       const campaigns = await promisePool.query(

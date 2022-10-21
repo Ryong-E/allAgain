@@ -494,7 +494,6 @@ const campaignService = {
         campaign_end_date: campaignEndDate,
         recruitment_number: recruitmentNumber,
         introduce,
-        participants_count: participantsCount,
         user_id: userId,
         nickname,
         image,
@@ -508,6 +507,8 @@ const campaignService = {
         userId: currentUserId,
         campaignId,
       });
+      const participantsCount =
+        await Campaign.findParticipantsCountByCampaignId({ campaignId });
 
       filteredCampaigns.push({
         campaignId,
