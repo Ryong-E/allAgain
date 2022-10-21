@@ -83,6 +83,7 @@ const ModalContainer = styled.div`
   animation: ${BoxSlideIn} ease-out 0.3s;
   z-index: 10000;
   justify-content: space-between;
+  align-items: center;
 `;
 const ModalMain = styled.div`
   width: 100%;
@@ -93,11 +94,10 @@ const ModalMain = styled.div`
   font-weight: 500;
   font-size: 20px;
   line-height: 40px;
-  align-items: center;
   text-align: center;
 `;
 const ModalContent = styled.div`
-  height: 80px;
+  width: 50%;
   text-align: center;
 `;
 const ButtonContainer = styled.div`
