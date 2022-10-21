@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { getUserProfile } from "../../api/userApi";
 import { FeedFormValues } from "../../types/feedTypes";
 import AuthorInfo from "./AuthorInfo";
-import { onCheckEnter } from "../../utils/enterPrevent";
 
 interface DescriptionEditFormProps {
   description: string;
