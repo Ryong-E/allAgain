@@ -1,35 +1,27 @@
 import { SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { ROUTE } from "../../constant/route";
-import { ClsButton, ConfirmButton } from "../common/Buttons";
+import { ClsButton, DelButton } from "../common/Buttons";
 
-interface ConfirmModalProps {
-  returnPath: string;
+interface ConfirmAlertModalProps {
+  content: string;
   showModal: boolean;
   setShowModal: React.Dispatch<SetStateAction<boolean>>;
+  onClick: () => void;
 }
 
-function ConfirmModal({
-  returnPath,
+function ConfirmAlertModal({
+  content,
   showModal,
   setShowModal,
-}: ConfirmModalProps) {
-  const navigator = useNavigate();
-
+  onClick,
+}: ConfirmAlertModalProps) {
   return (
     <ModalBack isActive={showModal}>
       <ModalContainer>
-        <ModalMain>로그인 후 이용 가능한 기능입니다</ModalMain>
-        <ModalContent>
-          해당 기능은 로그인 후에 이용할 수 있습니다. <br />
-          로그인으로 이동하시겠습니까?
-        </ModalContent>
+        <ModalMain>{content} 삭제하기</ModalMain>
+        <ModalContent>정말로 삭제하시겠습니까?</ModalContent>
         <ButtonContainer>
-          <ConfirmButton
-            onClick={() => navigator(ROUTE.LOGIN.link, { state: returnPath })}>
-            로그인
-          </ConfirmButton>
+          <DelButton onClick={onClick}>삭제하기</DelButton>
           <ClsButton onClick={() => setShowModal(false)}>닫기</ClsButton>
         </ButtonContainer>
       </ModalContainer>
@@ -117,4 +109,4 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
-export default ConfirmModal;
+export default ConfirmAlertModal;
