@@ -15,6 +15,7 @@ interface authorInfoProps {
   isAdmin?: boolean;
   isEditing?: boolean;
   followed: boolean;
+  imageUrl?: string;
 }
 
 function AuthorInfo({
@@ -24,6 +25,7 @@ function AuthorInfo({
   nickname,
   isEditing,
   authorImageUrl,
+  imageUrl,
   followed,
 }: authorInfoProps) {
   const navigate = useNavigate();
@@ -38,7 +40,13 @@ function AuthorInfo({
       <ProfileContainer>
         <AuthorProfile
           size={size}
-          src={authorImageUrl ? "http://" + authorImageUrl : DefaultProfile}
+          src={
+            authorImageUrl
+              ? "http://" + authorImageUrl
+              : imageUrl
+              ? "http://" + imageUrl
+              : DefaultProfile
+          }
           onClick={handleOnClick}
         />
         <AuthorName isAdmin={isAdmin} onClick={handleOnClick}>
