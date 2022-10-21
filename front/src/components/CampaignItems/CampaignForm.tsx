@@ -163,7 +163,7 @@ export default function CampaignForm({
 
   return (
     <>
-      <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)} onKeyDown={(event)=>{onCheckEnter(event)}}>
+      <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)} onKeyDown={onCheckEnter}>
         <CampaignDescription>
           <ThumbnailBox>
             <ImageUpload
@@ -198,6 +198,7 @@ export default function CampaignForm({
                   required: "캠페인 소개글을 작성해주세요",
                 })}
                 defaultValue={introduce ? (introduce as string) : ""}
+                onKeyDown={(event)=>{event.stopPropagation();}}
               />
               {errors.introduce && (
                 <InputErrorText>{errors.introduce.message}</InputErrorText>

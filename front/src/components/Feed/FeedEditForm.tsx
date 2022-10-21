@@ -132,7 +132,7 @@ function FeedEditForm({
   }, [imageUrls]);
 
   return (
-    <form onSubmit={handleFormSubmit} onKeyDown={(event)=>{onCheckEnter(event)}}>
+    <form onSubmit={handleFormSubmit} onKeyDown={onCheckEnter}>
       <ImageEditForm
         onChange={handleOnChange}
         onDeleteClick={handleDeleteClick}
