@@ -37,7 +37,7 @@ export const ROUTE = {
     path: "/login",
     link: "/login",
     element: LoginPage,
-    authenticated: false,
+    authenticated: null,
   },
   REGISTER: {
     path: "/register",
