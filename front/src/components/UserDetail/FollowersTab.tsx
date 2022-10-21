@@ -69,6 +69,7 @@ const FollowModalBack = styled.div`
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 9999;
+  left:0;
   top: 0;
   animation: ${BackFadeIn} ease-out 0.3s;
 `;
