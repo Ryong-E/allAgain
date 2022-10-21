@@ -34,7 +34,7 @@ function UserBanner({
 
   return (
     <UserProfileContainer>
-      <UserProfileImage src={imageUrl} />
+      <UserProfileImage src={"http://" + imageUrl} />
       <UserNickname>{nickname}</UserNickname>
       {isMyDetail || (
         <FollowToggle followed={followed} userId={parseInt(userId)} />
@@ -72,6 +72,7 @@ const UserProfileImage = styled.img`
   height: 140px;
   object-fit: cover;
   overflow: hidden;
+  border-radius: 70px;
 `;
 
 const UserNickname = styled.div`
