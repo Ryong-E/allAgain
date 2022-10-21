@@ -78,6 +78,12 @@ const FeedContainer = styled.div`
     margin-right: 0px;
   }
   margin-right: 50px;
+  border-radius: 30px 30px 20px 20px;
+  transition: ease .3s;
+
+  &:hover {
+    box-shadow: 5px 5px 15px 3px rgba(201, 195, 180, 0.5);
+  }
 `;
 
 const FeedAdminBorder = styled.div`
@@ -88,13 +94,15 @@ const FeedAdminBorder = styled.div`
   width: calc(100%);
   height: calc(100%);
   border: ${({ theme }) => theme.colors.dasidaGreen} solid 2px;
+  border-radius: 30px 30px 20px 20px;
+  z-index: 5;
 `;
 
 const FeedAdminBanner = styled.div`
   pointer-events: none;
   position: absolute;
   right: 0;
-  top: 14px;
+  top: 24px;
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.dasidaGreen};
   width: 70px;
@@ -103,6 +111,8 @@ const FeedAdminBanner = styled.div`
   line-height: 28px;
   font-weight: 700;
   text-align: center;
+  border-radius: 5px 0 0 5px;
+  z-index: 5;
 `;
 
 const MenuContainer = styled.div`

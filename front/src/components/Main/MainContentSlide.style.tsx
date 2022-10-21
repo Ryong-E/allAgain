@@ -48,6 +48,7 @@ export const Slide = styled(SwiperSlide)`
   box-shadow: ${({ theme }) => theme.boxShadowDefault};
   border-radius: 20px;
   user-select:none;
+  transition: box-shadow .4s;
 
   &.lastSlide {
     width: 100px;
@@ -65,7 +66,8 @@ export const Slide = styled(SwiperSlide)`
   }
 
   
-  &:hover {
+  &:not(.lastSlide):hover {
+    box-shadow: 5px 5px 15px 3px rgb(211 205 190 / 50%);
 
     .slideImg img {
       transform: scale(1.07);
@@ -105,12 +107,17 @@ export const SlideImg = styled.div`
 
 export const SlideContent = styled.div`
   padding: 0 20px;
+  background: #fff;
+  border-radius: 20px;
 
   .contentTitle{
     padding: 12px 0;
     font-size: 18px;
     font-weight: 500;
     border-bottom: 1px solid #e7e5e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
@@ -123,8 +130,11 @@ export const InfoBox = styled.div`
 
 
 export const UserImg = styled.div`
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #e7e5e0;
 
   img {
     width:100%;

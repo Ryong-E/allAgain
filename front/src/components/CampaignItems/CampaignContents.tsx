@@ -3,6 +3,7 @@ const CampaignContentsBox = styled.div`
 border: 1px solid rgba(231,225,210,.8);
 box-shadow: ${({theme})=> theme.boxShadowDefault};
 background:${({theme})=> theme.colors.white};
+border-radius: 10px;
 text-align:center;
 padding:80px 60px;
 & h1{

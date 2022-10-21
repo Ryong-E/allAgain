@@ -33,12 +33,12 @@ function FollowersTab({
           <FollowListButton
             onClick={() => setIsSelect(true)}
             isActive={isSelect}>
-            팔로워 {followers.count}명
+            팔로워 {followers.count}
           </FollowListButton>
           <FollowListButton
             onClick={() => setIsSelect(false)}
             isActive={!isSelect}>
-            팔로잉 {followees.count}명
+            팔로잉 {followees.count}
           </FollowListButton>
         </FollowListButtonTab>
         <FollowListBox>
@@ -114,9 +114,10 @@ const BoxSlideIn = keyframes`
 
 const FollowListContainer = styled.div`
   margin: auto;
-  padding: 38px 50px;
-  width: 700px;
-  height: 800px;
+  padding: 38px 30px;
+  width: 100%;
+  max-width: 560px;
+  height: 700px;
   background: #f9f7f2;
   box-shadow: 10px 10px 15px rgba(162, 190, 231, 0.25);
   border-radius: 15px;
@@ -127,11 +128,12 @@ const FollowListContainer = styled.div`
 `;
 
 const FollowListButtonTab = styled.div`
-  width: 600px;
-  height: 73px;
+  width: 100%;
+  height: 60px;
   border-bottom: 1px solid #dcdcdc;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const FollowListButton = styled.div<{ isActive?: boolean }>`
@@ -139,17 +141,22 @@ const FollowListButton = styled.div<{ isActive?: boolean }>`
   height: 100%;
   border-bottom: ${({ isActive }) => isActive && "3px solid #004D49"};
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 40px;
   align-items: center;
   text-align: center;
 `;
 
 const FollowListBox = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
 `;
 
 export default FollowersTab;

@@ -49,12 +49,14 @@ function CategorySelectForm({
 
 const CategoryFormContainer = styled.div`
   color: ${({ theme }) => theme.colors.dasidaGreen};
+  font-weight: 500;
   width: 1200px;
-  padding: 14px 45px 14px 45px;
-  background-color: white;
+  padding: 18px 60px 14px 60px;
+  background-color: #f4f7f7;
+  margin-bottom: 10px;
 `;
 const CategoryLabel = styled.div`
-  margin-top: 8px;
+  margin-top: 15px;
   width: 100%;
   display: flex;
 `;

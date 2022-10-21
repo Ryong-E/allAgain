@@ -73,6 +73,7 @@ function FeedDetail({
         </DetailTime>
         <DetailSection>{description}</DetailSection>
         <CategoryContainer>
+          <span>카테고리</span>
           {category.split(",").map((cate) => (
             <Category key={cate}>{cate}</Category>
           ))}
@@ -96,10 +97,10 @@ function FeedDetail({
 const AlbumBox = styled.div`
   overflow: hidden;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+  border-radius: 10px 10px 150px 10px;
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 173px;
   margin-bottom: 40px;
   width: 100%;
   display: flex;
@@ -112,6 +113,7 @@ const DetailContainer = styled.div`
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
   margin-top: 80px;
+  border-radius: 50px 50px 0 0;
 `;
 
 const DetailHeader = styled.div`
@@ -145,33 +147,38 @@ const CategoryContainer = styled.div`
   margin-top: 65px;
   width: 100%;
   display: flex;
+
+  & > span {
+    font-weight: 600;
+    margin-right: 15px;
+  }
 `;
 
 const Category = styled.div`
   background: ${({ theme }) => theme.colors.dasidaGreen};
   color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.dasidaGreen};
-  width: 70px;
   border-radius: 60px;
-  padding: 0px;
-  font-size: 12px;
+  padding: 3px 15px;
+  font-size: 13px;
   text-align: center;
   margin-right: 7px;
 `;
 
 const DetailTagContainer = styled.div`
   width: 1200px;
-  padding: 14px 45px 14px 45px;
+  padding: 14px 60px 14px 60px;
   background-color: #004d49;
   display: flex;
   margin-bottom: 43px;
+  border-radius: 0 0 10px 10px;
 `;
 
 const DetailTag = styled.div`
   color: #ffffff;
   font-size: 14px;
   line-height: 19px;
-  font-weight: 600;
+  font-weight:600;
   text-align: center;
   margin-right: 15px;
   &:last-child {

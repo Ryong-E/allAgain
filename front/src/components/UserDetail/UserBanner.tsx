@@ -89,7 +89,6 @@ const UserNickname = styled.div`
   margin-top: 32px;
   margin-bottom: 28px;
   text-align: center;
-  color: #000000;
 `;
 
 const UserInfoContainer = styled.div`
@@ -106,7 +105,7 @@ const UserInfo = styled.div`
   font-size: 18px;
   line-height: 25px;
   text-align: center;
-  color: #000000;
+  cursor: pointer;
 `;
 
 export default UserBanner;

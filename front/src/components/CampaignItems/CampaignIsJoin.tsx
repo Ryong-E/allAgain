@@ -26,6 +26,7 @@ const JoinCampaignBox = styled.div`
     cursor: pointer;
     background: ${({ theme }) => theme.colors.dasidaGreen};
     border: 2px solid transparent;
+    border-radius: 10px;
     color: ${({ theme }) => theme.colors.white};
     font-size: 18px;
 

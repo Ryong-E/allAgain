@@ -77,10 +77,10 @@ const SwiperWrap = styled(Swiper)<{ size: "simple" | "detail" }>`
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    background-color: #e0d4b7e0;
+    background-color: rgba(52, 52, 52, .2);
     &::after {
       font-size: 14px;
-      color: white;
+      color: rgba(255, 255, 255, .6);
     }
   }
   .swiper-button-prev {
@@ -102,22 +102,39 @@ const SwiperWrap = styled(Swiper)<{ size: "simple" | "detail" }>`
       width: 6px;
       height: 6px;
       margin: 0 2px;
+      background: #E0D4B7;
+      opacity: .5;
     }
     span.swiper-pagination-bullet-active {
-      background-color: ${({ theme }) => theme.colors.dasidaGreen};
+      opacity: 1;
     }
   }
 `;
 const Slide = styled(SwiperSlide)<{ size: "simple" | "detail" }>`
+  overflow: hidden;
+  
   ${(props) =>
     props.size === "simple"
       ? css`
           width: 100%;
           height: 100%;
+          cursor: pointer;
+
+          img {
+            transition: .4s ease;
+          }
+        
+          &:hover {
+            img {
+              transform: scale(1.06);
+              filter: contrast(0.7);
+            }
+          }
         `
       : css`
           width: 650px !important;
           height: 650px;
+          cursor: drag;
         `}
 `;
 

@@ -47,7 +47,7 @@ export const HeaderWrap = styled.header`
   }
 
   &.main-header {
-    border: none;
+    border-color: transparent;
 
     ${Logo} {
       a {
@@ -112,8 +112,12 @@ export const LandingHeaderBtnWrap = styled.div`
   color: #ffffff;
   width: 180px;
   text-align: center;
-  font-weight: 300;
   border-radius: ${({ theme }) => theme.borderRadius.small};
+  transition: ease .3s;
+
+  &:hover {
+    background: #314c59;
+  }
 
   a {
     display: block;
@@ -157,6 +161,7 @@ export const HeaderLoginBtnWrap = styled.div`
   a {
     position: relative;
     margin-left: 25px;
+    font-size: 16px;
 
     &:hover {
       color: ${({ theme }) => theme.colors.dasidaGreen};

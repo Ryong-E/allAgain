@@ -5,27 +5,28 @@ import { GET_CAMPAIGNLIST } from '../../constant/queryKeys';
 import { CampaignItemType } from '../../types/campaignTypes';
 
 const TagListBox = styled.div`
-  width: 650px;
   height: 70px;
   background: #f2eee3;
   display: inline-flex;
   align-items: center;
   padding: 0 30px;
-  border-radius: 5px;
+  border-radius: 50px;
 `;
 const TagItemBox = styled.button`
-  padding: 10px 12px;
+  padding: 10px 16px;
   margin: 0 10px;
-  border-radius: 5px;
+  border-radius: 50px;
   background: inherit;
+  font-size: 16px;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.lightBeige};
   transition: background .3s, color .3s;
   &.active {
-    background: ${({ theme }) => theme.colors.darkBeige};
+    background: ${({ theme }) => theme.colors.dasidaGreen};
     color: ${({ theme }) => theme.colors.white};
   }
   &:not(.active):hover{
-    background: ${({ theme }) => theme.colors.dasidaGreen};
+    background: #e0d8c0;
     color: ${({ theme }) => theme.colors.white};
   }
 `;
@@ -59,7 +60,7 @@ export default function TagBox({values, currentValue, setCurrentValue, data}: Pr
           className={currentValue === element ? 'active' : ''}
           value={`${element}`} 
           onClick={handleChangeCurrentState}>
-          {element} ( {eleLength} )
+          {element} {eleLength}
         </TagItemBox>
       })}
     </TagListBox>

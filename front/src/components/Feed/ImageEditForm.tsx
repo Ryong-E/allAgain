@@ -47,14 +47,12 @@ const ImageFormContainer = styled.div`
 
 const ImageFormDescription = styled.div`
   width: 100%;
-  font-family: "Noto Sans";
-  font-weight: 400;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 27px;
   align-items: center;
   text-align: right;
   color: #a9a9a9;
-  margin: 30px 0;
+  margin: 20px 0;
 `;
 
 export default ImageEditForm;

@@ -64,28 +64,32 @@ const UserContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 10px 0;
 `;
 const UserProfileBox = styled.div`
   display: flex;
   align-items: center;
 `;
 const UserProfileImg = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
   object-fit: cover;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: 50%;
+  border: 1px solid #e7e5e0;
+  cursor: pointer;
 `;
 const UserProfileNickname = styled.div`
   width: 121px;
   height: 28px;
-  font-size: 20px;
+  font-size: 18px;
   align-items: center;
-  text-align: center;
+  margin-left: 20px;
+  cursor: pointer;
 `;
 const FollowButton = styled.button<{ isActive?: boolean }>`
   position: relative;
-  width: 126px;
+  width: 116px;
   height: 36px;
   border-radius: 5px;
   font-weight: 700;
@@ -104,7 +108,7 @@ const FollowButton = styled.button<{ isActive?: boolean }>`
     css`
       background: transparent;
       color: #004d49;
-      padding: 0 0 0 14px;
+      padding: 0 0 0 20px;
     `}
 
   &::before {
@@ -112,7 +116,7 @@ const FollowButton = styled.button<{ isActive?: boolean }>`
     position: absolute;
     content: "";
     top: 50%;
-    left: 25px;
+    left: 20px;
     transform: translate(0, -50%);
     width: 0.9em;
     height: 0.9em;

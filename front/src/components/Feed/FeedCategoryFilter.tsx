@@ -43,10 +43,10 @@ function FeedCategoryFilter({
 }
 
 const CategoryButtonContainer = styled.div`
-  width: 810px;
-  height: 71px;
+  width: calc(100% - 70px);
+  height: 66px;
   background-color: #f2eee3;
-  border-radius: 5px;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   padding: 0 30px;
@@ -60,12 +60,13 @@ const CategoryButton = styled(SaveButton)<{
   height: 35px;
   font-size: 16px;
   padding: 0 18px;
-  border-radius: 5px;
+  border-radius: 50px;
   box-shadow: none;
+  margin: 0;
   ${(props) =>
     props.selectedCategory[props.value] === true
       ? css`
-          background-color: #afa58d;
+          background-color: ${({ theme }) => theme.colors.dasidaGreen};
           color: #ffffff;
         `
       : css`
@@ -73,6 +74,7 @@ const CategoryButton = styled(SaveButton)<{
           color: #928b7a;
         `}
   &:hover {
+    background: #e0d8c0;
     color: #ffffff;
   }
   transition: all 0.3s;

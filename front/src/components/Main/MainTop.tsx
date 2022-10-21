@@ -23,7 +23,7 @@ const TopBgWrap = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0 0 300px 0px;
-    box-shadow: inset -30px -30px 30px 2px rgba(89, 45, 16, .15);
+    box-shadow: inset -30px -30px 40px 2px rgba(159, 85, 56, .3);
     z-index: 5;
   }
 `;

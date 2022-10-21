@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import FollowToggleSmall from "../common/FollowToggleSmall";
 import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
+import DasidadBadge from "../../assets/images/icons/icon_certified_dasida.png";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
@@ -52,7 +53,7 @@ function AuthorInfo({
         <AuthorName isAdmin={isAdmin} onClick={handleOnClick}>
           {nickname}
         </AuthorName>
-        {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
+        {size === "simple" && <AuthorBadge src={isAdmin ? DasidadBadge : CertifiedBadge} isAdmin={isAdmin} />}
       </ProfileContainer>
       {size === "simple" && currentUserId !== userId && (
         <FollowToggleSmall
@@ -102,17 +103,20 @@ const AuthorProfile = styled.img<{ size: "simple" | "detail" }>`
         `}
   object-fit: cover;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const AuthorName = styled.div<{ isAdmin?: boolean }>`
   margin: 0 0 0 14px;
   font-size: 16px;
+  font-weight: 500;
   line-height: 19px;
   color: ${(props) => (props.isAdmin ? "#FFFFFF" : "#00000")};
+  cursor: pointer;
 `;
 
-const AuthorBadge = styled.img`
-  margin-left: 5px;
+const AuthorBadge = styled.img<{ isAdmin?: boolean }>`
+  margin-left: 7px;
   margin-right: 14px;
   width: 16px;
   height: 16px;
