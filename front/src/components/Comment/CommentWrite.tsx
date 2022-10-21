@@ -91,11 +91,11 @@ export default function CampaignCommentWrite({
     register,
     handleSubmit,
     watch,
-    reset,
+    setValue,
     formState: { errors },
   } = useForm<WriteInput>();
   const onSubmit: SubmitHandler<WriteInput> = ({ commentWrite }) => {
-    if(commentWrite !== undefined){
+    if((commentWrite !== undefined) && commentWrite !== ""){
       createCommentMutate.mutate({
         feedId: pathID,
         campaignId: pathID,
@@ -104,7 +104,7 @@ export default function CampaignCommentWrite({
         pathname: categotry,
       });
     }
-    reset();
+    setValue('commentWrite',"")
   };
   const handleClickLoginLink = () => {
     setShowModal(true);
@@ -123,10 +123,9 @@ export default function CampaignCommentWrite({
           }
           {...register("commentWrite", {
             required:"",
-            minLength:2,
             maxLength: 80,
           })}
-          onPaste={(e)=> e.preventDefault()}
+          // onPaste={(e)=> e.preventDefault()}
           disabled={isLogin === null}
         />
         <SubmitIconBtn
