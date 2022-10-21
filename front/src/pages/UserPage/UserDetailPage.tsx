@@ -15,7 +15,6 @@ function UserPage() {
     () => getUserProfileById(id!, currentUserId),
     {
       refetchOnMount: true,
-      cacheTime: 5,
     }
   );
   return (
