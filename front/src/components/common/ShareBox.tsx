@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ShareButton } from "./Buttons";
 
@@ -15,8 +16,11 @@ interface ContentIdType {
 export default function ShareBox({ contentId }: ContentIdType) {
   const [isClick, setIsClick] = useState(false);
   const currentUrl = window.location.href;
-
-  const linkCopy = (text: string) => {
+  const {pathname} = useLocation();
+  const pathLength = pathname.split('/').length;
+  
+  const linkCopy = (text: string) => 
+  {
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(text)
@@ -53,7 +57,7 @@ export default function ShareBox({ contentId }: ContentIdType) {
   
   return (
     <>
-      <ShareButton  onClick={() => linkCopy( !contentId ? `${currentUrl}` : `${currentUrl}/${contentId}` )}  />
+      <ShareButton  onClick={() => linkCopy( pathLength === 3 ? `${currentUrl}` : `${currentUrl}/${contentId}` )}  />
     </>
   );
 }

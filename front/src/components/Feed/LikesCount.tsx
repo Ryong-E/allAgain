@@ -35,7 +35,6 @@ function LikesCount({ likeList, feedId }: likesCountProps) {
 }
 
 const Container = styled.div`
-  margin-left: 21px;
   height: 22px;
   display: flex;
   align-items: center;

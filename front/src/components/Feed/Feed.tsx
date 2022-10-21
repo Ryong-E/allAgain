@@ -66,6 +66,7 @@ Feed.defaultProps = {
 };
 
 const FeedContainer = styled.div`
+  overflow: hidden;
   width: 400px;
   position: relative;
   background-color: #ffffff;
@@ -109,10 +110,10 @@ const MenuContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 17px 0 21px;
 `;
 
 const SocialButtonContainer = styled.div`
-  margin-right: 17px;
   width: 62px;
   height: 22px;
   display: flex;

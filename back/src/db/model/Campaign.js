@@ -68,7 +68,8 @@ const Campaign = {
   findByUserId: async ({ userId }) => {
     try {
       const campaigns = await promisePool.query(
-        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
+        // "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
         [userId]
       );
 
@@ -275,7 +276,7 @@ const Campaign = {
   findAllCommentsByCampaignId: async ({ campaignId }) => {
     try {
       const comments = await promisePool.query(
-        "SELECT *, campaign_comments.id as comment_id FROM campaign_comments JOIN users ON campaign_comments.user_id = users.id WHERE campaign_comments.campaign_id = ?",
+        "SELECT *, campaign_comments.id as comment_id FROM campaign_comments JOIN users ON campaign_comments.user_id = users.id WHERE campaign_comments.campaign_id = ? ORDER BY campaign_comments.id desc",
         [campaignId]
       );
 

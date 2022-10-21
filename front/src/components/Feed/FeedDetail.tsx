@@ -11,6 +11,7 @@ import {
   ShareButton,
   WarningButton,
 } from "../common/Buttons";
+import ShareBox from "../common/ShareBox";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
 import LikesCount from "./LikesCount";
@@ -59,7 +60,7 @@ function FeedDetail({
           <LikesCount likeList={likes ? likes : []} feedId={feedId} />
           <SocialButtonContainer>
             <WarningButton />
-            <ShareButton />
+            <ShareBox contentId={feedId} />
           </SocialButtonContainer>
         </DetailHeader>
         <DetailTime>
@@ -98,7 +99,7 @@ const DetailContainer = styled.div`
   padding: 40px 60px 20px;
   background-color: #ffffff;
   box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
-  margin-top: 40px;
+  margin-top: 80px;
 `;
 
 const DetailHeader = styled.div`
