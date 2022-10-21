@@ -32,6 +32,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GET_CAMPAIGNLIST } from "../../constant/queryKeys";
 import { FormPropType, FormType } from "../../types/campaignTypes";
+import { onCheckEnter } from "../../utils/enterPrevent";
 
 export default function CampaignForm({
   thumbnail,
@@ -162,7 +163,7 @@ export default function CampaignForm({
 
   return (
     <>
-      <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)}>
+      <form encType="multipart/form-data" onSubmit={handleSubmit(onValid)} onKeyDown={(event)=>{onCheckEnter(event)}}>
         <CampaignDescription>
           <ThumbnailBox>
             <ImageUpload

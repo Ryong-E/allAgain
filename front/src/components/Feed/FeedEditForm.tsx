@@ -18,6 +18,7 @@ import TagEditForm from "./TagEditForm";
 import { FEEDS } from "../../constant/queryKeys";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
+import { onCheckEnter } from "../../utils/enterPrevent";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -125,12 +126,13 @@ function FeedEditForm({
     } else alert("이미지를 최소 1개 이상 업로드해주세요");
   });
 
+
   useEffect(() => {
     setUploadImages(imageUrls);
   }, [imageUrls]);
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} onKeyDown={(event)=>{onCheckEnter(event)}}>
       <ImageEditForm
         onChange={handleOnChange}
         onDeleteClick={handleDeleteClick}
