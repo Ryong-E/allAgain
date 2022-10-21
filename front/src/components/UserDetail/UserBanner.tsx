@@ -30,7 +30,6 @@ function UserBanner({
 
   const handleInfoClick = () => {
     setModalActive(true);
-    console.log("test");
   };
 
   return (

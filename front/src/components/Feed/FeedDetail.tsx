@@ -6,12 +6,7 @@ import { deleteFeed } from "../../api/feedApi";
 import { loggedInUserId } from "../../atoms/atoms";
 import { FeedType } from "../../types/feedTypes";
 import TimeStamp from "../Comment/TimeStamp";
-import {
-  DelButton,
-  ConfirmButton,
-  ShareButton,
-  WarningButton,
-} from "../common/Buttons";
+import { DelButton, ConfirmButton } from "../common/Buttons";
 import ShareBox from "../common/ShareBox";
 import ConfirmAlertModal from "../Modals/ConfirmAlertModal";
 import Album from "./Album";

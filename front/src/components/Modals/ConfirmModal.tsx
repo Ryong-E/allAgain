@@ -16,7 +16,6 @@ function ConfirmModal({
   setShowModal,
 }: ConfirmModalProps) {
   const navigator = useNavigate();
-  console.log(returnPath)
   return (
     <ModalBack isActive={showModal}>
       <ModalContainer>
