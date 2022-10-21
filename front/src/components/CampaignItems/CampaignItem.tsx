@@ -9,6 +9,7 @@ import CampaignDDay from "./CampaignDDay";
 import { ROUTE } from "../../constant/route";
 import { fixDate } from "../../utils/dateFix";
 import { CampaignItemType } from "../../types/campaignTypes";
+import ShareBox from "../common/ShareBox";
 
 const ListItemBox = styled.div`
   display: flex;
@@ -258,7 +259,7 @@ export default function CampaignItem({
         <StatusBox className="statusBox">
           <div className="status">{status}</div>
           <div className="shareAndLikeBox">
-            <ShareButton />
+            <ShareBox contentId={campaignId} />
             <LikeToggle liked={liked} campaignId={campaignId} />
           </div>
         </StatusBox>
