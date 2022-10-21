@@ -59,7 +59,7 @@ export default function Header() {
   ) : (
     <StyledHeader.LandingHeader>
       <StyledHeader.LandingHeaderBtnWrap>
-        <Link to={ROUTE.LOGIN.link}>다시, 다 사용하기</Link>
+        <Link to={ isToken ? ROUTE.HOME.link : ROUTE.LOGIN.link }>다시, 다 사용하기</Link>
         <span></span>
         <span></span>
         <span></span>
