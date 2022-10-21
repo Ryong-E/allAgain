@@ -41,7 +41,7 @@ function UserBanner({
         <FollowToggle followed={followed} userId={parseInt(userId)} />
       )}
       <UserInfoContainer>
-        <UserInfo>{`게시글 수 ${NumberOfFeeds}`}</UserInfo>
+        <UserInfo>{`게시글 ${NumberOfFeeds}`}</UserInfo>
         <UserInfo
           onClick={() => {
             handleInfoClick();

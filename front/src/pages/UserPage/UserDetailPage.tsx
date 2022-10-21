@@ -11,13 +11,14 @@ function UserPage() {
   const currentUserId = useRecoilValue(loggedInUserId);
 
   const { isSuccess, data } = useQuery(
-    ["myProfile", id],
+    ["userProfile", id],
     () => getUserProfileById(id!, currentUserId),
     {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      notifyOnChangeProps: ["data"],
     }
   );
-  console.log(data);
   return (
     <>
       {isSuccess && (

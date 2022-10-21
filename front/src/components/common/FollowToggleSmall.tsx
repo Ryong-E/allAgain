@@ -71,6 +71,7 @@ export default function FollowToggleSmall({
   const [isFollowed, setIsFollwed] = useState(false);
   const [followUserId, setFollowUserId] = useRecoilState(followedUserIds);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [flag, setFlag] = useState<boolean>(true);
   const isToken = sessionStorage.getItem("jwtToken");
 
   const createFollow = useMutation(() => followUser(userId!));
@@ -94,14 +95,28 @@ export default function FollowToggleSmall({
   };
 
   useEffect(() => {
-    setIsFollwed(followed);
-  }, [followed]);
+    if (flag) {
+      if (followed) {
+        if (followUserId.find((el) => el === userId!) === undefined)
+          setFollowUserId([...followUserId!, userId!]);
+      }
+      setIsFollwed(followed);
+      setFlag(false);
+      console.log("state push ", userId, followed);
+    }
+  }, [followed, followUserId, flag, setFlag, userId, setFollowUserId]);
 
   useEffect(() => {
-    if (followUserId.find((el) => el === userId!) !== undefined)
-      setIsFollwed(true);
-    else setIsFollwed(false);
-  }, [followUserId, setIsFollwed, userId]);
+    if (!flag) {
+      if (followUserId.find((el) => el === userId!) !== undefined)
+        setIsFollwed(true);
+      else setIsFollwed(false);
+    }
+  }, [followUserId, setIsFollwed, userId, flag]);
+
+  useEffect(() => {
+    console.log(followUserId);
+  }, [followUserId]);
 
   return (
     <div>

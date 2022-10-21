@@ -78,7 +78,7 @@ export default function LoginForm() {
     },
     onSuccess: (data: any, variables, context) => {
       console.log("success", data, variables, context);
-      console.log("state",state)
+      console.log("state", state);
       sessionStorage.setItem("jwtToken", data.token);
       setLoggedInUser(data.userId);
       setLoggedInUserImg(data.imageUrl);
@@ -92,6 +92,10 @@ export default function LoginForm() {
       console.log("end");
     },
   });
+
+  useEffect(() => {
+    console.log("loginPageMounted");
+  }, []);
 
   // 로그인 Form 제출 시 로그인 요청
   const handleLoginVaildate = ({ email, password }: LoginRequiredParams) => {
