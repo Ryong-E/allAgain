@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loggedInUserId } from "../../atoms/atoms";
@@ -26,6 +26,10 @@ function Feed({
   followed,
 }: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (userId === 0) setIsAdmin(true);
+  }, [userId, setIsAdmin]);
 
   return (
     <FeedContainer>
