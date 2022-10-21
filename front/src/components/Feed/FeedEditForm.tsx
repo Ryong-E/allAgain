@@ -103,28 +103,31 @@ function FeedEditForm({
     }
   }, [currentUserId, navigator, userId, feedId, isEditing]);
 
-  const handleFormSubmit = handleSubmit(async (data) => {
-    if (uploadImages.length !== 0 || !uploadImages) {
-      const { description, tags, category } = data;
-      const formData = new FormData();
-      uploadImages.forEach(
-        ({ file }) => file && formData.append("image", file)
-      );
-      const newUploadImageUrls = await uploadFeedImages(formData);
-      const uploadImageUrls = uploadImages
-        .filter((image) => image.file === undefined)
-        .concat(newUploadImageUrls);
-      const submitData = {
-        feedId,
-        userId,
-        description,
-        tags: tags.slice(1).replaceAll("#", ","),
-        imageUrls: uploadImageUrls as unknown as ImageUrlType[],
-        category: typeof category !== "string" ? category.join() : category,
-      };
-      submitMutation.mutate(submitData);
-    } else alert("이미지를 최소 1개 이상 업로드해주세요");
-  });
+  const handleFormSubmit = handleSubmit(
+    async (data) => {
+      if (uploadImages.length !== 0 || !uploadImages) {
+        const { description, tags, category } = data;
+        const formData = new FormData();
+        uploadImages.forEach(
+          ({ file }) => file && formData.append("image", file)
+        );
+        const newUploadImageUrls = await uploadFeedImages(formData);
+        const uploadImageUrls = uploadImages
+          .filter((image) => image.file === undefined)
+          .concat(newUploadImageUrls);
+        const submitData = {
+          feedId,
+          userId,
+          description,
+          tags: tags.slice(1).replaceAll("#", ","),
+          imageUrls: uploadImageUrls as unknown as ImageUrlType[],
+          category: typeof category !== "string" ? category.join() : category,
+        };
+        submitMutation.mutate(submitData);
+      } else throw new Error("이미지는 최소 1개 이상 업로드해야합니다");
+    },
+    (err: any) => alert(err.message)
+  );
 
 
   useEffect(() => {
