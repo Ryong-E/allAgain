@@ -314,7 +314,7 @@ export default function CampaignForm({
           <ClsButton
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();
-              navigate("/campaign");
+              navigate(-1);
             }}>
             취소
           </ClsButton>

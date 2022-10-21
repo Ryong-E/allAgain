@@ -16,8 +16,10 @@ import { fixDate } from "../../utils/dateFix";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
 import { CampaignItemType } from "../../types/campaignTypes";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CampaignDetail(props: CampaignItemType): JSX.Element {
+  const {state} = useLocation();
   const EditorRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const loggedUser = useRecoilValue(loggedInUserId);
@@ -33,9 +35,10 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
         .replaceAll("&lt;", "<")}`;
     }
   }, [isActive, []]);
+
   return (
     <>
-      {isSameUser && <CUDBtn campaignId={props.campaignId!} />}
+      {isSameUser && <CUDBtn campaignId={props.campaignId!} state={state} />}
       <CampaignItem {...props} />
       <CampaignIsJoin
         isJoin={props.participated}
@@ -68,7 +71,7 @@ export default function CampaignDetail(props: CampaignItemType): JSX.Element {
             isSameRate={isSameRate}
           />
           {isSameUser && (
-            <CUDBtn campaignId={props.campaignId!} JCTCenter={true} />
+            <CUDBtn campaignId={props.campaignId!} JCTCenter={true} state={state} />
           )}
         </>
       ) : (

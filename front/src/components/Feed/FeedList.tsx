@@ -1,9 +1,6 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { FeedType } from "../../types/feedTypes";
 import Feed from "./Feed";
-import { followedUserIds } from "../../atoms/atoms";
-import { useEffect } from "react";
 
 type FeedListProps = {
   feeds: FeedType[];

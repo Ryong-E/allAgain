@@ -1,11 +1,10 @@
 import styled, { css } from "styled-components";
 import FollowToggleSmall from "../common/FollowToggleSmall";
-import DefaultProfileBanner from "../../assets/images/icons/icon_profile.png";
 import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useRecoilValue } from "recoil";
-import { loggedInUserId } from "../../atoms/atoms";
+import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 
 interface authorInfoProps {
   size: "simple" | "detail";
@@ -22,12 +21,12 @@ function AuthorInfo({
   userId,
   isAdmin,
   nickname,
-  authorImageUrl,
   isEditing,
   followed,
 }: authorInfoProps) {
   const navigate = useNavigate();
   const currentUserId = useRecoilValue(loggedInUserId);
+  const currentUserProfileImg = useRecoilValue(loggedInUserImgUrl);
 
   const handleOnClick = useCallback(() => {
     isEditing || navigate(`/user/${userId}`);
@@ -38,9 +37,7 @@ function AuthorInfo({
       <ProfileContainer>
         <AuthorProfile
           size={size}
-          src={
-            `http://` + (authorImageUrl ? authorImageUrl : DefaultProfileBanner)
-          }
+          src={`http://` + currentUserProfileImg}
           onClick={handleOnClick}
         />
         <AuthorName isAdmin={isAdmin} onClick={handleOnClick}>

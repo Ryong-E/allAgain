@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { loggedInUserId } from "../../atoms/atoms";
 import { FeedType } from "../../types/feedTypes";
 import TimeStamp from "../Comment/TimeStamp";
-import { WarningButton } from "../common/Buttons";
 import ShareBox from "../common/ShareBox";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
@@ -37,7 +34,6 @@ function Feed({
       <MenuContainer>
         <LikesCount likeList={likes ? likes : []} feedId={feedId} />
         <SocialButtonContainer>
-          <WarningButton />
           <ShareBox contentId={feedId} />
         </SocialButtonContainer>
       </MenuContainer>
@@ -123,7 +119,7 @@ const SocialButtonContainer = styled.div`
   width: 62px;
   height: 22px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 const PostContainer = styled.div<{ isAdmin: boolean }>`
