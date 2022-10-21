@@ -25,11 +25,7 @@ export default function (RequestedComponent: any, option: boolean | null) {
           navigate(ROUTE.LOGIN.link, { state: pathname });
         }
       } else {
-        console.log("Now state is ", state);
         // 로그인한 상태
-        console.log("Now Optiion is ", option);
-        console.log("Now if is ", option === false);
-        console.log("Now page is ", pathname);
         if (option === false) {
           // 로그인한 유저가 출입불가능한 페이지로 접근
           // alert("이미 로그인한 상태입니다.");

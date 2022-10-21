@@ -1,11 +1,10 @@
 import styled, { css } from "styled-components";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png";
-import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
 import { useMutation } from "@tanstack/react-query";
 import { deleteFollowUser, followUser } from "../../api/userApi";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { followedUserIds, loggedInUserId } from "../../atoms/atoms";
+import { useRecoilState } from "recoil";
+import { followedUserIds } from "../../atoms/atoms";
 import ConfirmModal from "../Modals/ConfirmModal";
 import { ROUTE } from "../../constant/route";
 
@@ -102,7 +101,6 @@ export default function FollowToggleSmall({
       }
       setIsFollwed(followed);
       setFlag(false);
-      console.log("state push ", userId, followed);
     }
   }, [followed, followUserId, flag, setFlag, userId, setFollowUserId]);
 

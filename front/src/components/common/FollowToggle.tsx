@@ -4,7 +4,8 @@ import CheckIconGreen from "../../assets/images/icons/icon_check_gr.png";
 import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteFollowUser, followUser } from "../../api/userApi";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import ConfirmModal from "../Modals/ConfirmModal";
 
 // const FollowLabel = styled.label<{ checked: boolean }>`
 // background: ${({ checked }) => checked ? "transparent" : "#004D49"};
@@ -76,10 +77,12 @@ interface FollowToggleProps {
 }
 
 export default function FollowToggle({ followed, userId }: FollowToggleProps) {
-  const isToken = sessionStorage.getItem("jwtToken");
   const [isFollowed, setIsFollowed] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const { id } = useParams();
+  const { pathname } = useLocation();
+  const isToken = sessionStorage.getItem("jwtToken");
 
   const createFollow = useMutation(() => followUser(userId!), {
     onSuccess: () => queryClient.invalidateQueries(["userProfile", id]),
@@ -99,7 +102,7 @@ export default function FollowToggle({ followed, userId }: FollowToggleProps) {
         createFollow.mutate();
       }
     } else {
-      alert("로그인 후 이용가능합니다.");
+      setShowModal(true);
     }
   }
 
@@ -109,6 +112,11 @@ export default function FollowToggle({ followed, userId }: FollowToggleProps) {
 
   return (
     <div>
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        returnPath={pathname}
+      />
       <FollowLabel
         htmlFor="followToggle"
         className={isFollowed ? "active" : ""}>

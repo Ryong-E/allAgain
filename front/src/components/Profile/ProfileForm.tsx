@@ -102,13 +102,16 @@ export default function ProfileForm() {
     console.log("리액트훅폼", nickname, currentPassword, password, passwordConfirm);
 
     // 현재 비밀번호값을 입력했으면 새 비밀번호도 입력 필요
-    if((getValues("currentPassword") !== "") && (getValues("password") == "")) {
+    if((getValues("currentPassword") !== "") && (getValues("password") === "")) {
       return setError("password", {message: "새 비밀번호를 입력하세요"});
     }
 
     // 비밀번호 변경 시 현재 비밀번호 필수로 입력
     else if((getValues("password") !== "") && (getValues("currentPassword") === "")) {
       return setError("currentPassword", {message: "현재 비밀번호를 입력하세요"});
+    }
+    else if((getValues('currentPassword') !== "") && (getValues('currentPassword') === getValues('password'))){
+      return setError('password',{message:"현재 비밀번호와 변경될 비밀번호가 같습니다"});
     }
     updateProfileMutation.mutate({ userId, nickname, currentPassword, password, passwordConfirm });
   }

@@ -11,7 +11,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-
 const LandingRoot = styled(Container)`
   padding: 0;
   max-width: 100%;
@@ -19,14 +18,17 @@ const LandingRoot = styled(Container)`
 `;
 
 export default function LandingPage() {
-
   useEffect(() => {
-    gsap.utils.toArray(".gs_reveal").forEach(function(elem: any) {
+    gsap.utils.toArray(".gs_reveal").forEach(function (elem: any) {
       ScrollTrigger.create({
         trigger: elem,
         start: "70% bottom",
-        onEnter: () => { animateFrom(elem); console.log("왜 두번"); }, 
-        onLeaveBack: () => { hide(elem); },
+        onEnter: () => {
+          animateFrom(elem);
+        },
+        onLeaveBack: () => {
+          hide(elem);
+        },
       });
     });
   }, []);
@@ -38,5 +40,5 @@ export default function LandingPage() {
       <Section03 />
       <Section04 />
     </LandingRoot>
-  )
+  );
 }

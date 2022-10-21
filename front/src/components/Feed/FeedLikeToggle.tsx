@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 import LikeIconOn from "../../assets/images/icons/icon_like_on.png";
 import LikeIconOff from "../../assets/images/icons/icon_like_off.png";
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTE } from "../../constant/route";
+import { useLocation } from "react-router-dom";
 import { createLike, deleteLike } from "../../api/feedApi";
 import { useEffect, useState } from "react";
+import ConfirmModal from "../Modals/ConfirmModal";
 
 const LikeButton = styled.button<{ isActive: boolean }>`
   display: block;
@@ -41,9 +41,9 @@ export default function FeedLikeToggle({
   const [liked, setLiked] = useState<boolean>(false);
   const [keepLikeId, setKeepLikeId] = useState<number>();
   const [keepCount, setKeepCount] = useState<number>(1);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const isToken = sessionStorage.getItem("jwtToken");
 
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const createLikeKey = useMutation(() => createLike(feedId, userId!));
@@ -67,11 +67,6 @@ export default function FeedLikeToggle({
       }
     } else alert("로그인한 유저만 이용할 수 있는 기능입니다");
   };
-  const handleClickLoginLink = () => {
-    if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link, { state: pathname });
-    }
-  };
 
   useEffect(() => {
     setLiked(isLiked);
@@ -87,10 +82,15 @@ export default function FeedLikeToggle({
 
   return (
     <ButtonContainer>
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        returnPath={pathname}
+      />
       <LikeButton
         isActive={liked}
         onClick={() => {
-          userId !== null ? handleClickLike() : handleClickLoginLink();
+          userId !== null ? handleClickLike() : setShowModal(true);
         }}></LikeButton>
       <Count>{keepCount}</Count>
     </ButtonContainer>
