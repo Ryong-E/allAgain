@@ -51,7 +51,7 @@ const NavListLi = styled.li`
   a {
     display: block;
     padding: 10px;
-    color: ${({ theme }) => theme.colors.brown};
+    font-size: 16px;
 
     &:hover {
       font-weight: 500;

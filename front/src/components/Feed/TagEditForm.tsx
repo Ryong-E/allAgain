@@ -35,7 +35,7 @@ function TagEditForm({ register, tags, errors }: TagEditFormProps) {
 
 const DescriptionTagContainer = styled.div`
   width: 1200px;
-  padding: 14px 45px 14px 45px;
+  padding: 14px 60px 14px 60px;
   min-height: 49px;
   background-color: #004d49;
   display: flex;

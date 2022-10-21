@@ -17,11 +17,10 @@ const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
 
   position: relative;
   display: block;
-  width: 60px;
-  height: 20px;
+  width: 62px;
   border-radius: 60px;
-  padding: 0px;
-  font-size: 12px;
+  padding: 3px 0;
+  font-size: 13px;
   text-align: center;
   cursor: pointer;
 
@@ -48,7 +47,7 @@ const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
     css`
       color: ${theme.colors.dasidaGreen};
       background: ${isAdmin ? theme.colors.white : "transparent"};
-      padding: 0 0 0 14px;
+      padding: 3px 0 3px 14px;
       &::before {
         display: block;
       }

@@ -6,6 +6,8 @@ const IntroBox = styled.div`
   background:${({theme}) => theme.colors.white};
   box-shadow: ${({theme})=> theme.boxShadowDefault};
   border: 1px solid rgba(231,225,210,.8);
+  border-radius: 20px;
+
   .introTitle{
     font-weight:600;
     font-size:20px;

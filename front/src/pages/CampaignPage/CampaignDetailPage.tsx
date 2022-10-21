@@ -12,6 +12,10 @@ import styled from "styled-components";
 
 const CampaignDetailRoot = styled(Container)`
   min-height: calc(100vh - 50px);
+
+  ${CampaingContainer} {
+    padding: 0;
+  }
 `
 
 export default function CampaignDetailPage() {

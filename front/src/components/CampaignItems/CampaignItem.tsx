@@ -17,6 +17,8 @@ const ListItemBox = styled.div`
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid rgba(231, 225, 210, 0.8);
   box-shadow: ${({ theme }) => theme.boxShadowDefault};
+  border-radius: 20px;
+  overflow: hidden;
   & + & {
     margin-top: 20px;
   }
@@ -69,6 +71,7 @@ const StatusBox = styled.div`
     background: ${({ theme }) => theme.colors.dasidaGreen};
     color: ${({ theme }) => theme.colors.white};
     letter-spacing: -0.4px;
+    border-radius: 5px;
   }
   .shareAndLikeBox {
     display: flex;

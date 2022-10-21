@@ -57,10 +57,9 @@ const CategoryLabel = styled.label`
 
   position: relative;
   display: block;
-  width: 70px;
   border-radius: 60px;
-  padding: 0px;
-  font-size: 12px;
+  padding: 3px 18px;
+  font-size: 13px;
   text-align: center;
   margin-right: 7px;
   cursor: pointer;
@@ -76,7 +75,7 @@ const CategoryLabel = styled.label`
     content: "";
     position: absolute;
     top: 50%;
-    left: 5px;
+    left: 10px;
     transform: translate(0, -50%);
     width: 0.9em;
     height: 0.9em;
@@ -86,8 +85,8 @@ const CategoryLabel = styled.label`
 
   &.active {
     color: ${({ theme }) => theme.colors.dasidaGreen};
-    background: transparent;
-    padding: 0 0 0 14px;
+    background: #ffffff;
+    padding: 3px 11px 3px 25px;
   }
 
   &.active:before {

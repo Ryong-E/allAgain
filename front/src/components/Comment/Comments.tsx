@@ -10,6 +10,7 @@ const CommentContainer = styled.div`
   border: 1px solid rgba(231, 225, 210, 0.8);
   box-shadow: ${({ theme }) => theme.boxShadowDefault};
   background: ${({ theme }) => theme.colors.white};
+  border-radius: 10px;
 `;
 
 const CommentListBox = styled.div``;

@@ -12,7 +12,7 @@ const CommentBox = styled.div`
   padding: 25px 0 0;
 
   .userImgBox {
-    margin: 10px 20px 0 !important;
+    margin: 5px 20px 0 !important;
   }
 
   .commentTextBox {
@@ -21,7 +21,7 @@ const CommentBox = styled.div`
       margin-bottom: 5px;
       .userNameBox {
         .userName {
-          font-weight: bold;
+          font-weight: 600;
           font-size: 15px;
         }
       }
@@ -30,7 +30,6 @@ const CommentBox = styled.div`
     }
 
     .comment {
-      font-size: 14px;
       word-break: break-all;
 
       > button {
