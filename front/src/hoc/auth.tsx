@@ -27,7 +27,8 @@ export default function (RequestedComponent: any, option: boolean | null) {
         // 로그인한 상태
         if (option === false) {
           // 로그인한 유저가 출입불가능한 페이지로 접근
-          navigate("/");
+          // alert("이미 로그인한 상태입니다.");
+          navigate(ROUTE.HOME.link);
         }
       }
     }, []);
