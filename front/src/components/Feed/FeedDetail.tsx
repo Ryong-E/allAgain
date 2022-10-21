@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -12,6 +13,7 @@ import {
   WarningButton,
 } from "../common/Buttons";
 import ShareBox from "../common/ShareBox";
+import ConfirmAlertModal from "../Modals/ConfirmAlertModal";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
 import LikesCount from "./LikesCount";
@@ -30,6 +32,7 @@ function FeedDetail({
 }: FeedType) {
   const currentUserId = useRecoilValue(loggedInUserId);
   const navigator = useNavigate();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleDeleteClick = async () => {
     await deleteFeed(feedId);
@@ -44,7 +47,7 @@ function FeedDetail({
     <>
       {currentUserId === userId && (
         <ButtonContainer>
-          <DelButton onClick={handleDeleteClick}>삭제</DelButton>
+          <DelButton onClick={() => setShowModal(true)}>삭제</DelButton>
           <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
         </ButtonContainer>
       )}
@@ -83,6 +86,12 @@ function FeedDetail({
           <DetailTag key={tag}>{tag}</DetailTag>
         ))}
       </DetailTagContainer>
+      <ConfirmAlertModal
+        content={"피드"}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onClick={handleDeleteClick}
+      />
     </>
   );
 }

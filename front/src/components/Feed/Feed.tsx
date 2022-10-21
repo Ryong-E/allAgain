@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { loggedInUserId } from "../../atoms/atoms";
 import { FeedType } from "../../types/feedTypes";
 import TimeStamp from "../Comment/TimeStamp";
-import {  WarningButton } from "../common/Buttons";
+import { WarningButton } from "../common/Buttons";
 import ShareBox from "../common/ShareBox";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
@@ -25,6 +27,10 @@ function Feed({
 }: feedProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (userId === 0) setIsAdmin(true);
+  }, [userId, setIsAdmin]);
+
   return (
     <FeedContainer>
       <Album imageUrls={imageUrls} size="simple" feedId={feedId} />
@@ -32,7 +38,7 @@ function Feed({
         <LikesCount likeList={likes ? likes : []} feedId={feedId} />
         <SocialButtonContainer>
           <WarningButton />
-          <ShareBox contentId={feedId}/>
+          <ShareBox contentId={feedId} />
         </SocialButtonContainer>
       </MenuContainer>
       {isAdmin && <FeedAdminBorder />}

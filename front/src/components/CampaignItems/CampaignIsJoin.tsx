@@ -12,11 +12,12 @@ import CheckIconWhite from "../../assets/images/icons/icon_check_wh.png";
 import { loggedInUserId } from "../../atoms/atoms";
 import { GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
 import { ROUTE } from "../../constant/route";
+import ConfirmModal from "../Modals/ConfirmModal";
 
 const JoinCampaignBox = styled.div`
   margin-top: 10px;
 
-  button {
+  > button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,7 +85,7 @@ export default function CampaignIsJoin({
   isSameUser,
   isSameRate,
 }: JoinProps) {
-  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   const {pathname} = useLocation();
   const queryClient = useQueryClient();
   const joinCampaign = useMutation(joinParticipateCampaign, {
@@ -108,9 +109,7 @@ export default function CampaignIsJoin({
     }
   };
   const handleClickLoginLink = () => {
-    if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link, {state : pathname});
-    }
+    setShowModal(true);
   };
   const statusClass =
     status === "모집 마감"
@@ -152,6 +151,7 @@ export default function CampaignIsJoin({
           <>모집이 마감되었습니다.</>
         )}
       </button>
+      {showModal && <ConfirmModal showModal={showModal} setShowModal={setShowModal} returnPath={pathname} />}
     </JoinCampaignBox>
   );
 }

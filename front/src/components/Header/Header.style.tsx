@@ -111,7 +111,6 @@ export const LandingHeaderBtnWrap = styled.div`
   background: rgba(73, 107, 123, 0.9);
   color: #ffffff;
   width: 180px;
-  padding: 12px;
   text-align: center;
   font-weight: 300;
   border-radius: ${({ theme }) => theme.borderRadius.small};
@@ -120,6 +119,7 @@ export const LandingHeaderBtnWrap = styled.div`
     display: block;
     width: 100%;
     height: 100%;
+    padding: 12px;
   }
 
   span {
@@ -133,7 +133,7 @@ export const LandingHeaderBtnWrap = styled.div`
     border-radius: 50%;
     animation: ${buttonAni} 6s infinite ease-out;
     opacity: 0;
-
+    pointer-events:none;
     &:nth-child(2) {
       animation-delay: -0.3s;
     }

@@ -4,6 +4,8 @@ import DefaultProfileBanner from "../../assets/images/icons/icon_profile.png";
 import CertifiedBadge from "../../assets/images/icons/icon_certified.png";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { useRecoilValue } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
 interface authorInfoProps {
   size: "simple" | "detail";
@@ -25,6 +27,7 @@ function AuthorInfo({
   followed,
 }: authorInfoProps) {
   const navigate = useNavigate();
+  const currentUserId = useRecoilValue(loggedInUserId);
 
   const handleOnClick = useCallback(() => {
     isEditing || navigate(`/user/${userId}`);
@@ -45,7 +48,7 @@ function AuthorInfo({
         </AuthorName>
         {size === "simple" && <AuthorBadge src={CertifiedBadge} />}
       </ProfileContainer>
-      {size === "simple" && (
+      {size === "simple" && currentUserId !== userId && (
         <FollowToggleSmall
           isAdmin={isAdmin}
           followed={followed}

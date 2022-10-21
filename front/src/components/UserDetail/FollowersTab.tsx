@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { FollowUser, FollowUserRes } from "../../types/userTypes";
 import FollowUserInfo from "./FollowUserInfo";
 
 interface FollowersTabProps {
+  selected: boolean;
   followees: FollowUserRes;
   followers: FollowUserRes;
   removeFunction: () => void;
 }
 
 function FollowersTab({
+  selected,
   followees,
   followers,
   removeFunction,
 }: FollowersTabProps) {
   const [isSelect, setIsSelect] = useState<boolean>(true);
+  const queryClient = useQueryClient();
+  const { id } = useParams();
+
+  useEffect(() => {
+    setIsSelect(selected);
+  }, [selected]);
 
   return (
     <FollowModalBack>
@@ -45,7 +55,12 @@ function FollowersTab({
               ))}
         </FollowListBox>
       </FollowListContainer>
-      <FollowModalDisableDiv onClick={removeFunction} />
+      <FollowModalDisableDiv
+        onClick={() => {
+          queryClient.invalidateQueries(["userProfile", id]);
+          removeFunction();
+        }}
+      />
     </FollowModalBack>
   );
 }
@@ -69,7 +84,7 @@ const FollowModalBack = styled.div`
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 9999;
-  left:0;
+  left: 0;
   top: 0;
   animation: ${BackFadeIn} ease-out 0.3s;
 `;

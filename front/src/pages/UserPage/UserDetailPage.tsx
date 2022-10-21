@@ -10,19 +10,19 @@ function UserPage() {
   const { id } = useParams();
   const currentUserId = useRecoilValue(loggedInUserId);
 
-  const { isSuccess, data } = useQuery(
-    ["testProfile"],
-    () => getUserProfileById(id!,currentUserId),
+  const userQuery = useQuery(
+    ["userProfile", id],
+    () => getUserProfileById(id!, currentUserId),
     {
-      refetchOnWindowFocus: false,
+      refetchOnMount: true,
+      cacheTime: 5,
     }
   );
-  console.log(data)
   return (
     <>
-      {isSuccess && (
+      {userQuery.isSuccess && (
         <UserBanner
-          {...data}
+          {...userQuery.data}
           userId={id!}
           isMyDetail={String(currentUserId) === id}
         />

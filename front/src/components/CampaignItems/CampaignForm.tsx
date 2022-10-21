@@ -15,7 +15,7 @@ import {
 import RecruitDate from "./RecruitDate";
 import QuillEditor from "./QuillEditor";
 import { FieldValues, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createCampaign, updateCampaign } from "../../api/campaignApi";
 import {
@@ -61,10 +61,10 @@ export default function CampaignForm({
 
   const updateCampainMutaion = useMutation(updateCampaign, {
     onError: (error: any) => {
-       alert(error)
+      alert(error);
     },
     onSuccess: (data: any) => {
-      alert("캠페인 수정이 완료되었습니다")
+      alert("캠페인 수정이 완료되었습니다");
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
       queryClient.invalidateQueries(["detailCampaign"]);
       navigate(`/campaign/${campaignId}`);
@@ -76,7 +76,7 @@ export default function CampaignForm({
       alert(error);
     },
     onSuccess: (data: any) => {
-      alert("캠페인 생성이 완료되었습니다")
+      alert("캠페인 생성이 완료되었습니다");
       queryClient.invalidateQueries([GET_CAMPAIGNLIST]);
       navigate(`/campaign/${campaignId}`);
     },
@@ -132,19 +132,17 @@ export default function CampaignForm({
       for (let [key, value] of Object.entries(data)) {
         if (key == "thumbnail") {
           formData.append("thumbnail", data.thumbnail[0]);
-        } 
-        else if(key == 'title'){
-          formData.append('title',data.title.trim())
-        }
-        else {
+        } else if (key == "title") {
+          formData.append("title", data.title.trim());
+        } else {
           formData.append(key, value);
         }
       }
       if (updateMod) {
         formData.append("campaignId", `${campaignId}`);
-        updateCampainMutaion.mutate({formData, campaignId});
+        updateCampainMutaion.mutate({ formData, campaignId });
       } else {
-        createCampainMutaion.mutate(formData)
+        createCampainMutaion.mutate(formData);
       }
     }
   };
@@ -313,7 +311,7 @@ export default function CampaignForm({
         </div>
         <ButtonBox>
           <ClsButton
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();
               navigate("/campaign");
             }}>

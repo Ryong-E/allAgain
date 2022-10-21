@@ -6,6 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { deleteFollowUser, followUser } from "../../api/userApi";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { followedUserIds, loggedInUserId } from "../../atoms/atoms";
+import ConfirmModal from "../Modals/ConfirmModal";
+import { ROUTE } from "../../constant/route";
 
 const FollowLabel = styled.button<{ isAdmin: boolean; followed: boolean }>`
   background: ${({ theme }) => theme.colors.dasidaGreen};
@@ -68,6 +70,8 @@ export default function FollowToggleSmall({
 }: FollowToggleSmallType) {
   const [isFollowed, setIsFollwed] = useState(false);
   const [followUserId, setFollowUserId] = useRecoilState(followedUserIds);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [flag, setFlag] = useState<boolean>(true);
   const isToken = sessionStorage.getItem("jwtToken");
 
   const createFollow = useMutation(() => followUser(userId!));
@@ -86,19 +90,33 @@ export default function FollowToggleSmall({
         setFollowUserId([...followUserId, userId!]);
       }
     } else {
-      alert("로그인 후 이용 가능한 기능입니다");
+      setShowModal(true);
     }
   };
 
   useEffect(() => {
-    setIsFollwed(followed);
-  }, [followed]);
+    if (flag) {
+      if (followed) {
+        if (followUserId.find((el) => el === userId!) === undefined)
+          setFollowUserId([...followUserId!, userId!]);
+      }
+      setIsFollwed(followed);
+      setFlag(false);
+      console.log("state push ", userId, followed);
+    }
+  }, [followed, followUserId, flag, setFlag, userId, setFollowUserId]);
 
   useEffect(() => {
-    if (followUserId.find((el) => el === userId!) !== undefined)
-      setIsFollwed(true);
-    else setIsFollwed(false);
-  }, [followUserId, setIsFollwed, userId]);
+    if (!flag) {
+      if (followUserId.find((el) => el === userId!) !== undefined)
+        setIsFollwed(true);
+      else setIsFollwed(false);
+    }
+  }, [followUserId, setIsFollwed, userId, flag]);
+
+  useEffect(() => {
+    console.log(followUserId);
+  }, [followUserId]);
 
   return (
     <div>
@@ -108,12 +126,11 @@ export default function FollowToggleSmall({
         onClick={handleOnClick}>
         팔로우
       </FollowLabel>
-      {/* <input
-        id="followToggleSmall"
-        type="checkbox"
-        checked={isFollowed}
-        onChange={handleOnChange}
-      /> */}
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        returnPath={ROUTE.FEED_LIST.link}
+      />
     </div>
   );
 }

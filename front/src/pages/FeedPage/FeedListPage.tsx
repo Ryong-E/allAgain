@@ -12,8 +12,8 @@ import FeedList from "../../components/Feed/FeedList";
 import FeedCategoryFilter from "../../components/Feed/FeedCategoryFilter";
 import { useEffect, useState } from "react";
 import { FEEDS } from "../../constant/queryKeys";
-import { useRecoilValue } from "recoil";
-import { loggedInUserId } from "../../atoms/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { followedUserIds, loggedInUserId } from "../../atoms/atoms";
 
 interface CategoryState {
   [key: string]: boolean;
@@ -34,6 +34,7 @@ const initialState: CategoryState = {
 function FeedListPage() {
   const isToken = sessionStorage.getItem("jwtToken");
   const currentUserId = useRecoilValue(loggedInUserId);
+  const setFollowedUsers = useSetRecoilState(followedUserIds);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryState>(initialState);
 
@@ -42,6 +43,7 @@ function FeedListPage() {
     currentUserId && isToken ? getFeedListAuthorized : getFeedList,
     {
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
     }
   );
 
@@ -65,6 +67,10 @@ function FeedListPage() {
     )
       setSelectedCategory(initialState);
   }, [selectedCategory, data]);
+
+  useEffect(() => {
+    setFollowedUsers([]);
+  }, [setFollowedUsers, data]);
 
   return (
     <PageWrap>

@@ -1,8 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled, { css } from "styled-components";
 import { deleteFollowUser, followUser } from "../../api/userApi";
 import CheckedIcon from "../../assets/images/icons/icon_check_gr.png";
+import { loggedInUserId } from "../../atoms/atoms";
 
 interface FollowUserInfoProps {
   userId: number;
@@ -18,28 +21,36 @@ function FollowUserInfo({
   isFollowing,
 }: FollowUserInfoProps) {
   const [followStatus, setFollowStatus] = useState<boolean>(true);
+  const currentUserId = useRecoilValue(loggedInUserId);
+  const navigator = useNavigate();
+  const { id } = useParams();
 
   const createFollow = useMutation(() => followUser(userId!));
   const deleteFollow = useMutation(() => deleteFollowUser(userId!));
 
   const handleFollowClick = () => {
-    if (createFollow.isLoading || deleteFollow.isLoading) return;
-    if (followStatus) {
-      deleteFollow.mutate();
-      setFollowStatus(false);
-    } else {
-      createFollow.mutate();
-      setFollowStatus(true);
+    if (sessionStorage.getItem("jwtToken") !== null) {
+      if (createFollow.isLoading || deleteFollow.isLoading) return;
+      if (followStatus) {
+        deleteFollow.mutate();
+        setFollowStatus(false);
+      } else {
+        createFollow.mutate();
+        setFollowStatus(true);
+      }
     }
   };
 
   return (
     <UserContainer>
-      <UserProfileBox>
+      <UserProfileBox
+        onClick={() => {
+          navigator(`/user/${userId}`);
+        }}>
         <UserProfileImg src={"http://" + imageUrl} />
         <UserProfileNickname>{nickname}</UserProfileNickname>
       </UserProfileBox>
-      {isFollowing && (
+      {isFollowing && currentUserId === parseInt(id!) && (
         <FollowButton onClick={handleFollowClick} isActive={followStatus}>
           팔로우
         </FollowButton>

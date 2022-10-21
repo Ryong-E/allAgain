@@ -68,8 +68,31 @@ const Campaign = {
   findByUserId: async ({ userId }) => {
     try {
       const campaigns = await promisePool.query(
-        // "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
-        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
+        "SELECT * FROM campaigns WHERE user_id = ? ORDER BY id DESC",
+        [userId]
+      );
+
+      return campaigns[0];
+    } catch (error) {
+      throw error;
+    }
+  },
+  findParticipantsCountByCampaignId: async ({ campaignId }) => {
+    try {
+      const participantsCount = await promisePool.query(
+        "SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants WHERE campaign_id = ? GROUP BY campaign_id ",
+        [campaignId]
+      );
+
+      return participantsCount[0][0].participants_count;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findByUserIdWithParticipants: async ({ userId }) => {
+    try {
+      const campaigns = await promisePool.query(
+        "SELECT *, campaigns.id as campaign_id FROM campaigns JOIN users ON campaigns.user_id = users.id JOIN (SELECT campaign_id, COUNT(*) as participants_count FROM campaign_participants GROUP BY campaign_id) cp ON campaigns.id = cp.campaign_id WHERE campaigns.user_id = ? ORDER BY campaigns.id DESC",
         [userId]
       );
 

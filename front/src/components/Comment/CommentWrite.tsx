@@ -11,6 +11,8 @@ import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 import { useRecoilValue } from "recoil";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
+import ConfirmModal from "../Modals/ConfirmModal";
+import { useState } from "react";
 
 const CommentWriteBox = styled.div`
   display: flex;
@@ -70,6 +72,7 @@ export default function CampaignCommentWrite({
   const userImg = useRecoilValue(loggedInUserImgUrl);
   const navigate = useNavigate();
   const {pathname} = useLocation();
+  const [showModal, setShowModal] = useState(false);
   const categotry = pathname.split("/")[1];
   const createCommentMutate = useMutation(
     [CREATE_COMMENTS],
@@ -99,9 +102,7 @@ export default function CampaignCommentWrite({
     reset();
   };
   const handleClickLoginLink = () => {
-    if (window.confirm("로그인 후 이용 가능합니다.\n로그인 하시겠습니까?")) {
-      navigate(ROUTE.LOGIN.link, {state : pathname});
-    }
+    setShowModal(true);
   };
   const commentLength = watch("commentWrite")?.length;
   return (
@@ -130,6 +131,7 @@ export default function CampaignCommentWrite({
           type="submit"
         />
       </CommentFrom>
+      {showModal && <ConfirmModal showModal={showModal} setShowModal={setShowModal} returnPath={pathname} />}
     </CommentWriteBox>
   );
 }

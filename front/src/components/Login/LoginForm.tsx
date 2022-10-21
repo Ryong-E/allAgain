@@ -52,7 +52,6 @@ export default function LoginForm() {
   const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
   const [loggedInUserImg, setLoggedInUserImg] =
     useRecoilState(loggedInUserImgUrl);
-
   // 로그인 Form 유효성 검사
   const {
     register,
@@ -92,6 +91,10 @@ export default function LoginForm() {
       console.log("end");
     },
   });
+
+  useEffect(() => {
+    console.log("loginPageMounted");
+  }, []);
 
   // 로그인 Form 제출 시 로그인 요청
   const handleLoginVaildate = ({ email, password }: LoginRequiredParams) => {
