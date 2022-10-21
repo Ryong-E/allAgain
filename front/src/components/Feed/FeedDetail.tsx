@@ -51,7 +51,9 @@ function FeedDetail({
           <ConfirmButton onClick={handleEditClick}>수정</ConfirmButton>
         </ButtonContainer>
       )}
-      <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
+      <AlbumBox>
+        <Album imageUrls={imageUrls} size="detail" feedId={feedId} />
+      </AlbumBox>
       <DetailContainer>
         <DetailHeader>
           <AuthorInfo
@@ -95,6 +97,12 @@ function FeedDetail({
     </>
   );
 }
+
+const AlbumBox =styled.div`
+  overflow:hidden;
+  box-shadow: 5px 5px 10px rgba(231, 225, 210, 0.8);
+`
+
 const ButtonContainer = styled.div`
   margin-top: 173px;
   margin-bottom: 40px;
