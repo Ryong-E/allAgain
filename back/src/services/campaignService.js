@@ -37,7 +37,7 @@ const campaignService = {
     const campaigns = await Campaign.findByUserId({ userId: currentUserId });
     await Campaign.createParticipant({
       userId: currentUserId,
-      campaignId: campaigns[0].campaign_id,
+      campaignId: campaigns[0].id,
     });
 
     return "캠페인 생성 완료";
@@ -588,7 +588,7 @@ const campaignService = {
     return filteredCampaigns;
   },
   getUsersCampaigns: async ({ currentUserId, userId }) => {
-    const campaigns = await Campaign.findByUserId({ userId });
+    const campaigns = await Campaign.findByUserIdWithParticipants({ userId });
 
     const filteredCampaigns = [];
     let status;
@@ -643,7 +643,7 @@ const campaignService = {
     return filteredCampaigns;
   },
   getUsersCampaignsForGuest: async ({ userId }) => {
-    const campaigns = await Campaign.findByUserId({ userId });
+    const campaigns = await Campaign.findByUserIdWithParticipants({ userId });
 
     const filteredCampaigns = [];
     let status;
