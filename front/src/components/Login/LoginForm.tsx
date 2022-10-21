@@ -48,10 +48,10 @@ type Inputs = {
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
   const [loggedInUser, setLoggedInUser] = useRecoilState(loggedInUserId);
-  const [loggedInUserImg, setLoggedInUserImg] = useRecoilState(loggedInUserImgUrl);
-
+  const [loggedInUserImg, setLoggedInUserImg] =
+    useRecoilState(loggedInUserImgUrl);
 
   // 로그인 Form 유효성 검사
   const {
@@ -82,8 +82,8 @@ export default function LoginForm() {
       sessionStorage.setItem("jwtToken", data.token);
       setLoggedInUser(data.userId);
       setLoggedInUserImg(data.imageUrl);
-      if (location.pathname !== ROUTE.LANDING.path) {
-        navigate(-1);
+      if (state) {
+        navigate(state);
       } else {
         navigate(ROUTE.HOME.link);
       }
