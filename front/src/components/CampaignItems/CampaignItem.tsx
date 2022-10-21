@@ -1,8 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { useRef, useEffect, useState } from "react";
 import LikeToggle from "../common/LikeToggle";
-import { ShareButton } from "../common/Buttons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import UserImgBox from "../Comment/UserImgBox";
 import UserName from "../common/UserName";
 import CampaignDDay from "./CampaignDDay";
@@ -44,6 +43,7 @@ const ThumbnailImgBox = styled.div`
   height: 100%;
   flex-shrink: 0;
   overflow: hidden;
+  cursor:pointer;
   img {
     width: 100%;
     height: 100%;
@@ -183,11 +183,7 @@ const RateBox = styled.div`
 `;
 
 const CampaignItemLinkBox = styled.div`
-  a {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+  cursor:pointer;
 `;
 
 export default function CampaignItem({
@@ -212,6 +208,7 @@ export default function CampaignItem({
   let lengthRate = (participants / recruitment) * 100;
   const length = useRef<HTMLDivElement>(null);
   const {pathname} = useLocation();
+  const navigator = useNavigate();
   const rateAnimation = () => {
     const len = length.current;
     if (len !== null) {
@@ -237,8 +234,11 @@ export default function CampaignItem({
     if(currentPath === pathname){
       e.preventDefault();
       return
+    }else{
+      navigator(currentPath,{state : pathname})
     }
   }
+
   return (
     <ListItemBox
       className={
@@ -249,11 +249,9 @@ export default function CampaignItem({
           : ""
       }>
       <CampaignItemLinkBox>
-        <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`} onClick={handlePreventDefault}>
-          <ThumbnailImgBox className="thumbnailBox">
-            <img src={`http://${thumbnail!}`} alt="썸네일이미지" />
-          </ThumbnailImgBox>
-        </Link>
+      <ThumbnailImgBox className="thumbnailBox"  onClick={handlePreventDefault}>
+        <img src={`http://${thumbnail!}`} alt="썸네일이미지" />
+      </ThumbnailImgBox>
       </CampaignItemLinkBox>
       <ContentsBox>
         <StatusBox className="statusBox">
@@ -265,12 +263,10 @@ export default function CampaignItem({
         </StatusBox>
         <ItemInfoBox>
           <CampaignItemLinkBox>
-            <Link to={`${ROUTE.CAMPAGIN_DETAIL.link}${campaignId}`} onClick={handlePreventDefault}>
-              <TextBox>
-                <h3 className="title">{title}</h3>
-                <div className="desc">{introduce}</div>
-              </TextBox>
-            </Link>
+            <TextBox  onClick={handlePreventDefault}>
+              <h3 className="title">{title}</h3>
+              <div className="desc">{introduce}</div>
+            </TextBox>
           </CampaignItemLinkBox>
           <PeriodBox>
             <div className="recruitment">

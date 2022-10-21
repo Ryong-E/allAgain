@@ -18,6 +18,7 @@ import TagEditForm from "./TagEditForm";
 import { FEEDS } from "../../constant/queryKeys";
 import { useRecoilValue } from "recoil";
 import { loggedInUserId } from "../../atoms/atoms";
+import { onCheckEnter } from "../../utils/enterPrevent";
 
 interface FeedEditProps extends FeedType {
   isEditing: boolean;
@@ -128,12 +129,13 @@ function FeedEditForm({
     (err: any) => alert(err.message)
   );
 
+
   useEffect(() => {
     setUploadImages(imageUrls);
   }, [imageUrls]);
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} onKeyDown={(event)=>{onCheckEnter(event)}}>
       <ImageEditForm
         onChange={handleOnChange}
         onDeleteClick={handleDeleteClick}

@@ -33,7 +33,7 @@ const CommentBox = styled.div`
       font-size: 14px;
       word-break: break-all;
 
-      button {
+      > button {
         font-size: 13px;
         color: ${({ theme }) => theme.colors.darkBeige};
       }
