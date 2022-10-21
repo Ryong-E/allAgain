@@ -65,7 +65,6 @@ function FeedDetail({
           />
           <LikesCount likeList={likes ? likes : []} feedId={feedId} />
           <SocialButtonContainer>
-            <WarningButton />
             <ShareBox contentId={feedId} />
           </SocialButtonContainer>
         </DetailHeader>
@@ -188,6 +187,6 @@ const SocialButtonContainer = styled.div`
   width: 62px;
   height: 22px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 export default FeedDetail;
