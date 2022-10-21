@@ -11,6 +11,7 @@ import {
   ShareButton,
   WarningButton,
 } from "../common/Buttons";
+import ShareBox from "../common/ShareBox";
 import Album from "./Album";
 import AuthorInfo from "./AuthorInfo";
 import LikesCount from "./LikesCount";
@@ -59,7 +60,7 @@ function FeedDetail({
           <LikesCount likeList={likes ? likes : []} feedId={feedId} />
           <SocialButtonContainer>
             <WarningButton />
-            <ShareButton />
+            <ShareBox contentId={feedId} />
           </SocialButtonContainer>
         </DetailHeader>
         <DetailTime>
