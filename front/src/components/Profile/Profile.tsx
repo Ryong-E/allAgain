@@ -7,8 +7,8 @@ import ProfileImage from "./ProfileImage";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
-import { useRecoilValue } from "recoil";
-import { loggedInUserId } from "../../atoms/atoms";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { loggedInUserId, loggedInUserImgUrl } from "../../atoms/atoms";
 
 export default function Profile() {
 
@@ -16,6 +16,9 @@ export default function Profile() {
 
   const loginUserId = useRecoilValue(loggedInUserId);
   const [userId, setUserId] = useState(loginUserId);
+
+  const resetloggedInUserId = useResetRecoilState(loggedInUserId);
+  const resetloggedInUserImgUrl = useResetRecoilState(loggedInUserImgUrl);
 
   useEffect(() => {
     setUserId(userId);
@@ -26,6 +29,8 @@ export default function Profile() {
     },
     onSuccess: (data: any, variables, context) => {
       console.log("탈퇴성공");
+      resetloggedInUserId();
+      resetloggedInUserImgUrl();
       navigate(ROUTE.LANDING.link);
     },
   });
