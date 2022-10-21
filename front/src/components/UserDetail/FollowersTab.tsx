@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -19,7 +19,7 @@ function FollowersTab({
   removeFunction,
 }: FollowersTabProps) {
   const [isSelect, setIsSelect] = useState<boolean>(true);
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { id } = useParams();
 
   useEffect(() => {
