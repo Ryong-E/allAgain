@@ -37,3 +37,37 @@ export interface UserMyInfoRes extends UserDefaultRes {
 }
 
 //User Request
+interface Email {
+  email: string;
+}
+interface Password {
+  password: string;
+}
+interface PasswordConfirm {
+  paswordConfirm: string;
+}
+interface Nickname {
+  nickname: string;
+}
+
+export interface LoginParams extends Email, Password {}
+
+export interface RegisterParams extends LoginParams, PasswordConfirm, Nickname {
+  name: string;
+}
+
+export interface OnlyUserIdParam {
+  userId: string;
+}
+
+export interface UpdateProfileParams
+  extends Password,
+    PasswordConfirm,
+    Nickname,
+    OnlyUserIdParam {
+  currentPassword: string;
+}
+
+export interface UpdateProfileImageParams extends OnlyUserIdParam {
+  image: FormData;
+}

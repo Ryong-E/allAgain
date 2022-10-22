@@ -52,11 +52,11 @@ function FeedListPage() {
   ) => {
     const eventValue = (event.target as HTMLButtonElement).value;
     if (eventValue !== "전체")
-      setSelectedCategory({
-        ...selectedCategory,
+      setSelectedCategory((prev) => ({
+        ...prev,
         [eventValue]: !selectedCategory[eventValue],
         전체: false,
-      });
+      }));
     else setSelectedCategory(initialState);
   };
 
