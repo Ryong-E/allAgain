@@ -1,10 +1,9 @@
-import { Campaign } from "../db/Campaign";
-import { User } from "../db/user";
-const path = require("path");
+import { Campaign, User } from "../db";
+import { checkXSS, makeImageUrl, setStatus } from "../utils/util";
 
 const campaignService = {
-  addCampaign: async ({
-    userId,
+  postCampaign: async ({
+    currentUserId,
     title,
     content,
     thumbnail,
@@ -15,46 +14,17 @@ const campaignService = {
     recruitmentNumber,
     introduce,
   }) => {
-    const userById = await User.findByUserId({ userId });
-    if (userById.length === 0) {
-      throw new Error("존재하지 않는 유저입니다.");
-    }
-    // thumbnail 없을 때 처리
-    let thumbnailUrl = undefined;
-    if (thumbnail !== "null") {
-      const re = new RegExp(`campaignThumbnail.*`, "g");
-      const serverUrl = process.env.SERVER_URL || "localhost";
-      const serverPort = process.env.SERVER_PORT || 5000;
-      thumbnailUrl = path.join(
-        serverUrl + ":" + serverPort,
-        "/",
-        thumbnail.match(re)[0]
-      );
-    }
-
-    let status;
-    const currentDate = new Date();
-    // 현재 시간 >= recruitment_start_date = 모집중
-    // 현재 시간 < recruitment_start_date = 모집예정
-    // 현재 시간 > recruitment_end_date = 모집마감
-    if (
-      currentDate >= recruitmentStartDate &&
-      currentDate < recruitmentEndDate
-    ) {
-      status = "모집 중";
-    } else if (currentDate < recruitmentStartDate) {
-      status = "모집 예정";
-    } else if (currentDate >= recruitmentEndDate) {
-      status = "모집 마감";
-    }
+    const userById = await User.findByUserId({ userId: currentUserId });
 
     // content XSS 대응
+    const filteredContent = checkXSS(content);
 
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.create({
-      userId,
+      userId: currentUserId,
       title,
-      content,
-      thumbnail: thumbnailUrl,
+      content: filteredContent,
+      thumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
       campaignStartDate,
@@ -64,98 +34,290 @@ const campaignService = {
       introduce,
     });
 
+    const campaigns = await Campaign.findByUserId({ userId: currentUserId });
+    await Campaign.createParticipant({
+      userId: currentUserId,
+      campaignId: campaigns[0].id,
+    });
+
     return "캠페인 생성 완료";
   },
-  getAllCampaigns: async () => {
+  getAllCampaigns: async ({ currentUserId }) => {
     const campaigns = await Campaign.findAll();
     const filteredCampaigns = [];
     let status;
-    const currentDate = new Date();
-    for (let i = 0; i < campaigns.length; i++) {
-      // status 설정
-      // 현재 시간 >= recruitment_start_date = 모집중
-      // 현재 시간 < recruitment_start_date = 모집예정
-      // 현재 시간 > recruitment_end_date = 모집마감
-      if (
-        currentDate >= campaigns[i].recruitment_start_date &&
-        currentDate < campaigns[i].recruitment_end_date
-      ) {
-        status = "모집 중";
-      } else if (currentDate < campaigns[i].recruitment_start_date) {
-        status = "모집 예정";
-      } else if (currentDate >= campaigns[i].recruitment_end_date) {
-        status = "모집 마감";
-      }
-      await Campaign.updateStatus({
-        campaignId: campaigns[i].campaign_id,
-        status,
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+      const liked = await Campaign.findExistenceLiked({
+        userId: currentUserId,
+        campaignId,
       });
 
       filteredCampaigns.push({
-        campaignId: campaigns[i].campaign_id,
-        title: campaigns[i].title,
-        thumbnail: campaigns[i].thumbnail,
-        recruitmentStartDate: campaigns[i].recruitment_start_date,
-        recruitmentEndDate: campaigns[i].recruitment_end_date,
-        campaignStartDate: campaigns[i].campaign_start_date,
-        campaignEndDate: campaigns[i].campaign_end_date,
-        recruitmentNumber: campaigns[i].recruitment_number,
-        introduce: campaigns[i].introduce,
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
         status,
+        liked: liked ? true : false,
         writer: {
-          nickname: campaigns[i].nickname,
-          imageUrl: campaigns[i].image_url,
+          userId,
+          nickname,
+          imageUrl,
         },
       });
     }
 
     return filteredCampaigns;
   },
-  getCampaign: async ({ campaignId }) => {
-    const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 켐페인입니다.");
+  getAllCampaignsForGuest: async () => {
+    const campaigns = await Campaign.findAll();
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
     }
 
-    let status;
-    const currentDate = new Date();
-    if (
-      currentDate >= campaign[0].recruitment_start_date &&
-      currentDate < campaign[0].recruitment_end_date
-    ) {
-      status = "모집 중";
-    } else if (currentDate < campaign[0].recruitment_start_date) {
-      status = "모집 예정";
-    } else if (currentDate >= campaign[0].recruitment_end_date) {
-      status = "모집 마감";
-    }
+    return filteredCampaigns;
+  },
+  getCampaign: async ({ campaignId, currentUserId }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+
+    const {
+      title,
+      thumbnail,
+      introduce,
+      content,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
+      campaign_start_date: campaignStartDate,
+      campaign_end_date: campaignEndDate,
+      recruitment_number: recruitmentNumber,
+      participants_count: participantsCount,
+      user_id: userId,
+      nickname,
+      image,
+    } = campaign[0];
+
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     await Campaign.updateStatus({
-      campaignId: campaign[0].campaign_id,
+      campaignId,
       status,
     });
 
+    const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+    const imageUrl = makeImageUrl("profiles", image);
+    const participated = await Campaign.findExistenceParticipated({
+      userId: currentUserId,
+      campaignId,
+    });
+    const liked = await Campaign.findExistenceLiked({
+      userId: currentUserId,
+      campaignId,
+    });
+
+    const comments = await Campaign.findAllCommentsByCampaignId({ campaignId });
+    const filteredComments = [];
+
+    for (let comment of comments) {
+      const {
+        comment_id: commentId,
+        user_id: commentUserId,
+        content: commentContent,
+        root_comment_id: rootCommentId,
+        timestamp,
+        nickname: commentUserNickname,
+        image: commentUserIamge,
+      } = comment;
+
+      const commentUserImageUrl = makeImageUrl("profiles", commentUserIamge);
+      filteredComments.push({
+        commentId,
+        content: commentContent,
+        rootCommentId,
+        timestamp,
+        writer: {
+          userId: commentUserId,
+          nickname: commentUserNickname,
+          image: commentUserImageUrl,
+        },
+      });
+    }
+
     const filteredCampaign = {
-      campaignId: campaign[0].campaign_id,
-      title: campaign[0].title,
-      content: campaign[0].content,
-      thumbnail: campaign[0].thumbnail,
-      recruitmentStartDate: campaign[0].recruitment_start_date,
-      recruitmentEndDate: campaign[0].recruitment_end_date,
-      campaignStartDate: campaign[0].campaign_start_date,
-      campaignEndDate: campaign[0].campaign_end_date,
-      recruitmentNumber: campaign[0].recruitment_number,
-      introduce: campaign[0].introduce,
+      campaignId,
+      title,
+      introduce,
+      content,
+      thumbnail: thumbnailUrl,
+      recruitmentStartDate,
+      recruitmentEndDate,
+      campaignStartDate,
+      campaignEndDate,
+      recruitmentNumber,
+      participantsCount,
       status,
       writer: {
-        nickname: campaign[0].nickname,
-        imageUrl: campaign[0].image_url,
+        userId,
+        nickname,
+        imageUrl,
       },
+      participated: participated ? true : false,
+      liked: liked ? true : false,
+      comments: filteredComments,
+    };
+
+    return filteredCampaign;
+  },
+  getCampaignForGuest: async ({ campaignId }) => {
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+
+    const {
+      title,
+      thumbnail,
+      introduce,
+      content,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
+      campaign_start_date: campaignStartDate,
+      campaign_end_date: campaignEndDate,
+      recruitment_number: recruitmentNumber,
+      participants_count: participantsCount,
+      user_id: userId,
+      nickname,
+      image,
+    } = campaign[0];
+
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
+    await Campaign.updateStatus({
+      campaignId,
+      status,
+    });
+
+    const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+    const imageUrl = makeImageUrl("profiles", image);
+
+    const comments = await Campaign.findAllCommentsByCampaignId({ campaignId });
+    const filteredComments = [];
+
+    for (let comment of comments) {
+      const {
+        comment_id: commentId,
+        user_id: commentUserId,
+        content: commentContent,
+        root_comment_id: rootCommentId,
+        timestamp,
+        nickname: commentUserNickname,
+        image: commentUserIamge,
+      } = comment;
+
+      const commentUserImageUrl = makeImageUrl("profiles", commentUserIamge);
+      filteredComments.push({
+        commentId,
+        content: commentContent,
+        rootCommentId,
+        timestamp,
+        writer: {
+          userId: commentUserId,
+          nickname: commentUserNickname,
+          image: commentUserImageUrl,
+        },
+      });
+    }
+
+    const filteredCampaign = {
+      campaignId,
+      title,
+      introduce,
+      content,
+      thumbnail: thumbnailUrl,
+      recruitmentStartDate,
+      recruitmentEndDate,
+      campaignStartDate,
+      campaignEndDate,
+      recruitmentNumber,
+      participantsCount,
+      status,
+      writer: {
+        userId,
+        nickname,
+        imageUrl,
+      },
+      participated: false,
+      liked: false,
+      comments: filteredComments,
     };
 
     return filteredCampaign;
   },
   updateCampaign: async ({
-    userId,
+    currentUserId,
     campaignId,
     title,
     content,
@@ -168,50 +330,22 @@ const campaignService = {
     introduce,
   }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
-    if (userId !== campaign[0].user_id) {
+
+    const { user_id: userId, thumbnail: originalThumbnail } = campaign[0];
+    if (currentUserId !== userId) {
       throw new Error("수정권한이 없는 유저입니다.");
     }
 
-    let thumbnailUrl = undefined;
-    if (thumbnail !== "null") {
-      const re = new RegExp(`campaignThumbnail.*`, "g");
-      const serverUrl = process.env.SERVER_URL || "localhost";
-      const serverPort = process.env.SERVER_PORT || 5000;
-      thumbnailUrl = path.join(
-        serverUrl + ":" + serverPort,
-        "/",
-        thumbnail.match(re)[0]
-      );
-    } else {
-      thumbnailUrl = campaign[0].thumbnail;
-    }
-
-    let status;
-    const currentDate = new Date();
-    // 현재 시간 >= recruitment_start_date = 모집중
-    // 현재 시간 < recruitment_start_date = 모집예정
-    // 현재 시간 > recruitment_end_date = 모집마감
-    if (
-      currentDate >= recruitmentStartDate &&
-      currentDate < recruitmentEndDate
-    ) {
-      status = "모집 중";
-    } else if (currentDate < recruitmentStartDate) {
-      status = "모집 예정";
-    } else if (currentDate >= recruitmentEndDate) {
-      status = "모집 마감";
-    }
-
+    const updatedThumbnail = thumbnail || originalThumbnail;
+    const status = setStatus(recruitmentStartDate, recruitmentEndDate);
     // XSS 대응
+    const filteredContent = checkXSS(content);
 
     await Campaign.update({
       campaignId,
       title,
-      content,
-      thumbnail: thumbnailUrl,
+      content: filteredContent,
+      thumbnail: updatedThumbnail,
       recruitmentStartDate,
       recruitmentEndDate,
       campaignStartDate,
@@ -223,12 +357,9 @@ const campaignService = {
 
     return "업데이트 완료";
   },
-  deleteCampaign: async ({ userId, campaignId }) => {
+  deleteCampaign: async ({ currentUserId, campaignId }) => {
     const campaign = await Campaign.findByCampaignId({ campaignId });
-    if (campaign.length === 0) {
-      throw new Error("존재하지 않는 캠페인입니다.");
-    }
-    if (userId !== campaign[0].user_id) {
+    if (currentUserId !== campaign[0].user_id) {
       throw new Error("삭제권한이 없는 유저입니다.");
     }
 
@@ -236,19 +367,332 @@ const campaignService = {
 
     return "삭제 완료";
   },
-  addCampaignImages: async ({ image }) => {
-    const re = new RegExp(`campaignImages.*`, "g");
-    const serverUrl = process.env.SERVER_URL || "localhost";
-    const serverPort = process.env.SERVER_PORT || 5000;
-    const imageUrl = path.join(
-      serverUrl + ":" + serverPort,
-      "/",
-      image.match(re)[0]
-    );
+  postCampaignImages: async ({ filename }) => {
+    const createdImage = await Campaign.createImage({ filename });
+    const imageUrl = makeImageUrl("campaignImages", filename);
 
-    const createdImage = await Campaign.createImage({ imageUrl });
+    return { imageUrl };
+  },
+  postParticipant: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
 
-    return { imageUrl: createdImage };
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+
+    const participated = await Campaign.findExistenceParticipated({
+      userId: currentUserId,
+      campaignId,
+    });
+    if (participated) {
+      throw new Error("이미 참여 신청한 캠페인입니다.");
+    }
+
+    await Campaign.createParticipant({ userId: currentUserId, campaignId });
+
+    return "참여신청 완료";
+  },
+  postLike: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+
+    const participated = await Campaign.findExistenceLiked({
+      userId: currentUserId,
+      campaignId,
+    });
+    if (participated) {
+      throw new Error("이미 좋아요 한 캠페인입니다.");
+    }
+
+    await Campaign.createLike({ userId: currentUserId, campaignId });
+
+    return "좋아요 완료";
+  },
+  deleteParticipant: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    if (campaign[0].user_id === currentUserId) {
+      throw new Error("캠페인을 생성한 유저는 취소할 수 없습니다.");
+    }
+    await Campaign.deleteParticipant({ userId: currentUserId, campaignId });
+
+    return "참여신청 취소 완료";
+  },
+  deleteLike: async ({ currentUserId, campaignId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+    await Campaign.deleteLike({ userId: currentUserId, campaignId });
+
+    return "좋아요 취소 완료";
+  },
+  postComment: async ({
+    currentUserId,
+    campaignId,
+    content,
+    rootCommentId,
+  }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaign = await Campaign.findByCampaignId({ campaignId });
+
+    if (rootCommentId) {
+      const comment = await Campaign.findCommentByCommentId({
+        commentId: rootCommentId,
+      });
+    }
+
+    await Campaign.createComment({
+      campaignId,
+      userId: currentUserId,
+      content,
+      rootCommentId: rootCommentId || undefined,
+    });
+
+    return "댓글 생성 완료";
+  },
+  updateComment: async ({ currentUserId, commentId, content }) => {
+    const comment = await Campaign.findCommentByCommentId({ commentId });
+
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error("수정권한이 없습니다.");
+    }
+
+    await Campaign.updateComment({ commentId, content });
+
+    return "댓글 수정 완료";
+  },
+  deleteComment: async ({ currentUserId, commentId }) => {
+    const comment = await Campaign.findCommentByCommentId({ commentId });
+
+    if (comment[0].user_id !== currentUserId) {
+      throw new Error("삭제권한이 없습니다.");
+    }
+
+    await Campaign.deleteComment({ commentId });
+
+    return "댓글 삭제 완료";
+  },
+  getParticipatedCampaigns: async ({ currentUserId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaigns = await Campaign.findParticipatedCampaignByUserId({
+      userId: currentUserId,
+    });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+      const liked = await Campaign.findExistenceLiked({
+        userId: currentUserId,
+        campaignId,
+      });
+      const participantsCount =
+        await Campaign.findParticipantsCountByCampaignId({ campaignId });
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: liked ? true : false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getLikedCampaigns: async ({ currentUserId }) => {
+    const user = await User.findByUserId({ userId: currentUserId });
+
+    const campaigns = await Campaign.findLikedCampaignByUserId({
+      userId: currentUserId,
+    });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: true,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getUsersCampaigns: async ({ currentUserId, userId }) => {
+    const campaigns = await Campaign.findByUserIdWithParticipants({ userId });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+      const liked = await Campaign.findExistenceLiked({
+        userId: currentUserId,
+        campaignId,
+      });
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: liked ? true : false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
+  },
+  getUsersCampaignsForGuest: async ({ userId }) => {
+    const campaigns = await Campaign.findByUserIdWithParticipants({ userId });
+
+    const filteredCampaigns = [];
+    let status;
+
+    for (let campaign of campaigns) {
+      const {
+        campaign_id: campaignId,
+        title,
+        thumbnail,
+        recruitment_start_date: recruitmentStartDate,
+        recruitment_end_date: recruitmentEndDate,
+        campaign_start_date: campaignStartDate,
+        campaign_end_date: campaignEndDate,
+        recruitment_number: recruitmentNumber,
+        introduce,
+        participants_count: participantsCount,
+        user_id: userId,
+        nickname,
+        image,
+      } = campaign;
+
+      status = setStatus(recruitmentStartDate, recruitmentEndDate);
+      await Campaign.updateStatus({ campaignId, status });
+      const thumbnailUrl = makeImageUrl("campaignThumbnail", thumbnail);
+      const imageUrl = makeImageUrl("profiles", image);
+
+      filteredCampaigns.push({
+        campaignId,
+        title,
+        introduce,
+        thumbnail: thumbnailUrl,
+        recruitmentStartDate,
+        recruitmentEndDate,
+        campaignStartDate,
+        campaignEndDate,
+        recruitmentNumber,
+        participantsCount,
+        status,
+        liked: false,
+        writer: {
+          userId,
+          nickname,
+          imageUrl,
+        },
+      });
+    }
+
+    return filteredCampaigns;
   },
 };
 

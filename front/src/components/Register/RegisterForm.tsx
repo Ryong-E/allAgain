@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { ButtonBlock, LargeButton } from "../common/Buttons";
 import { InputBlock, InputIconText, InputIcon, InputIconBlock, InputErrorMsg, Label } from "../common/Form";
-import { RegisterRequiredParams } from "../../api/types";
+import { RegisterRequiredParams } from "../../types/userTypes";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,6 @@ type Inputs = {
   passwordConfirm: string,
   name: string,
   nickname: string,
-  RegisterError: string,
 };
 
 
@@ -53,8 +52,12 @@ export default function RegisterForm() {
   // React query
   const RegisterMutation = useMutation([REGISTER], createUser, {
     onError: (error:any) => {
-      console.log(error);
-      // setError("RegisterError", {message: error.message});  // 실패 시 원인에 따른 에러메세지 출력 필요 - 백엔드에 에러구분 요청
+      console.log(error.data.errorMessage);
+      if(error.data.errorMessage == "이미 가입된 이메일입니다.") {
+        setError("email", {message: error.data.errorMessage});
+      } else if (error.data.errorMessage == "이미 존재하는 닉네임입니다.") {
+        setError("nickname", {message: error.data.errorMessage});
+      }
     },
     onSuccess: (data) => {
       console.log("success", data);
@@ -133,7 +136,6 @@ export default function RegisterForm() {
         </InputIconBlock>
         {errors.nickname && <InputErrorMsg>{errors.nickname.message}</InputErrorMsg>}
       </InputBlock>
-      {errors.RegisterError && <InputErrorMsg>{errors.RegisterError.message}</InputErrorMsg>}
       <ButtonBlock>
         <LargeButton>회원가입</LargeButton>
       </ButtonBlock>

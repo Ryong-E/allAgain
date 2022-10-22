@@ -13,7 +13,7 @@ import "swiper/css/navigation";
 import { Autoplay, EffectFade, Navigation} from "swiper";
 
 const SlideWrap = styled(Swiper)`
-  
+  min-width: 1330px;
 
 
   .swiper-button-next,.swiper-button-prev{
@@ -32,11 +32,11 @@ const SlideWrap = styled(Swiper)`
   
 `
 const Slide = styled(SwiperSlide)`
-  
   img{
     display:block;
     margin: 0 auto;
     max-width:1920px;
+    width:100%;
   }
 `
 
@@ -84,15 +84,15 @@ export default function CampaignSlide() {
   const [banners, setBanners] = useState([
     {
       sildeItem :banner01,
-      color : "#3A4860"
+      color : "#668774"
     },
     {
       sildeItem :banner02,
-      color : "#BBADCE"
+      color : "#3A4860"
     },
     {
       sildeItem :banner03,
-      color : "#668774"
+      color : "#BBADCE"
     },
   ])
   const [currentIdx, setCurrentIdx] = useState(0);

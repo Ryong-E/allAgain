@@ -1,92 +1,188 @@
 import axios from "axios";
-// export interface CampaignItem{
-//   id : number;
-//   campaignId : number;
-//   title : String;
-//   content : String;
-//   thumbnail : File[];
-//   recruitmentStartDate : Date;
-//   recruitmentEndDate : Date;
-//   campaignStartDate : Date;
-//   campaignEndDate : Date;
-//   recruitmentNumber : number;
-//   introduce : String;
-//   status : String;
-//   writer : {
-//     nickname : String;
-//     imageUrl : String;
-//   }
-  
-// }
+import { CampaignItemType, CreateCampaignType } from "../types/campaignTypes";
 
+const BASE_URL = process.env.REACT_APP_BASE_API_URL + "/campaigns";
+const APPLCATION_JSON = "application/json";
+const APPLCATION_URLENCODED = "application/x-www-form-urlencoded";
 
-// export interface UpdateItem{
+const campaignApi = (contentType: string = APPLCATION_JSON) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": contentType,
+      Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+    },
+  });
 
-// }
+const campaignNoTokenApi = (contentType: string = APPLCATION_JSON) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "Content-Type": contentType,
+    },
+  });
 
-// export interface DeleteItem{
-//   campaignId : number;
-// }
+export const getCampaignList = async (isLogin?: number | null) => {
+  try {
+    if (sessionStorage.getItem("jwtToken")) {
+      const response = await campaignApi().get<CampaignItemType[]>("");
+      return response.data;
+    } else {
+      const response = await campaignNoTokenApi().get<CampaignItemType[]>(
+        "/guest"
+      );
+      return response.data;
+    }
+  } catch (err: any) {
+    throw new Error("리스트 못가져옴..");
+  }
+};
 
-// import {
-//   CampaignItem,
-//   UpdateItem,
-//   DeleteItem
-// } from "./types";
+export const getCampaignListByUserId = async (
+  userId: string,
+  isLogin?: number | null
+) => {
+  try {
+    if (sessionStorage.getItem("jwtToken")) {
+      const response = await campaignApi().get<CampaignItemType[]>(
+        `/${userId}`
+      );
+      return response.data;
+    } else {
+      const response = await campaignNoTokenApi().get<CampaignItemType[]>(
+        `/${userId}/guest`
+      );
+      return response.data;
+    }
+  } catch (err: any) {
+    // throw new Error("리스트 못가져옴..");
+    console.log(err);
+  }
+};
 
-// const BASE_URL = "http://localhost:5001/campaigns/";
-// const userApi  = axios.create({
-//   baseURL: BASE_URL,
-//   headers: {
-//     "Content-Type": "application/json"
-//   },
-// });
+export const getCampaignListParticipated = async () => {
+  try {
+    const response = await campaignApi().get<CampaignItemType[]>(
+      "/participated"
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
 
+export const getCampaignListLiked = async () => {
+  try {
+    const response = await campaignApi().get<CampaignItemType[]>("/liked");
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
 
-// // export const createCampaignItem = async (data:CreateItem) => {
-// //   try {
-// //     const response = await userApi.post<CreateItem>(data);
-// //     console.log(response);
-// //     return response.data;
-// //   } catch (err: any) {
-// //     throw new Error("생성 실패..");
-// //   }
-// // };
+export const getCampaignItem = async (
+  campaginId: number,
+  isLogin?: number | null
+) => {
+  try {
+    if (sessionStorage.getItem("jwtToken")) {
+      const response = await campaignApi().get<CampaignItemType>(
+        `/campaign/${campaginId}`
+      );
+      return response.data;
+    } else {
+      const response = await campaignNoTokenApi().get<CampaignItemType>(
+        `/campaign/guest/${campaginId}`
+      );
+      return response.data;
+    }
+  } catch (err: any) {
+    throw new Error("아이템 못가져옴..");
+  }
+};
 
-// // export const getCampaignList = async (data:GetList) => {
-// //   try {
-// //     const response = await userApi.get<GetList>(data);
-// //     return response.data;
-// //   } catch (err: any) {
-// //     throw new Error("리스트 못가져옴..");
-// //   }
-// // };
+export const insertImage = async (data: FormData) => {
+  try {
+    const response = await axios.post(BASE_URL + "/images", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
+    return response;
+  } catch (err: any) {
+    throw new Error("사진 업로드 실패");
+  }
+};
 
-// export const getCampaignItem = async (data:CampaignItem) => {
-//   try {
-//     const response = await userApi.get<CampaignItem>(`:campaginId`,data);
-//     return response.data;
-//   } catch (err: any) {
-//     throw new Error("아이템 못가져옴..");
-//   }
-// };
+export const createCampaign = async (formData: FormData) => {
+  try {
+    const response = await axios.post(BASE_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
+  } catch (err: any) {
+    throw new Error("캠페인 생성 실패");
+  }
+};
 
+export const updateCampaign = async ({
+  formData,
+  campaignId,
+}: CreateCampaignType) => {
+  try {
+    const response = await axios.put(BASE_URL + `/${campaignId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + sessionStorage.getItem("jwtToken"),
+      },
+    });
+  } catch (err: any) {
+    throw new Error("캠페인 수정 실패");
+  }
+};
 
+export const deleteCampaignItem = async (campaignId: number) => {
+  try {
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(
+      `/${campaignId}`,
+      {
+        data: {
+          campaignId,
+        },
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error("삭제 실패..");
+  }
+};
 
-// // export const updateCampaignItem = async (data:UpdateItem) => {
-// //   try {
-// //     const response = await userApi.put<UpdateItem>(data);
-// //     return response.data;
-// //   } catch (err: any) {
-// //     throw new Error("업데이트 실패..");
-// //   }
-// // };
-
-// export const deleteCampaignItem = async ({campaignId}:DeleteItem) => {
-//   try {
-//     const response = await userApi.delete<DeleteItem>(`:campaginId`,{campaignId});
-//     return response.data;
-//   } catch (err: any) {
-//     throw new Error("삭제 실패..");
-//   }
-// };
+export const joinParticipateCampaign = async (campaignId: number) => {
+  try {
+    const response = await campaignApi(APPLCATION_URLENCODED).post(
+      `/${campaignId}/participants`,
+      { campaignId }
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error("캠페인 참여 안됨...");
+  }
+};
+export const cancelParticipateCampaign = async (campaignId: number) => {
+  try {
+    const response = await campaignApi(APPLCATION_URLENCODED).delete(
+      `/${campaignId}/participants`,
+      {
+        data: {
+          campaignId,
+        },
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    throw new Error("캠페인 탈퇴 안됨...");
+  }
+};

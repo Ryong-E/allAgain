@@ -6,73 +6,94 @@ import {
   RegisterRequiredParams,
   RegisterResponse,
   MyProfileEditParams,
-} from "./types";
+  UserInfoResponse,
+} from "../types/userTypes";
 
-const BASE_URL = "http://localhost:5001/users";
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
 const userApi = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
 });
 
 // 회원가입
-export const createUser = async ({ email, password, passwordConfirm, name, nickname }: RegisterRequiredParams) => {
+export const createUser = async ({
+  email,
+  password,
+  passwordConfirm,
+  name,
+  nickname,
+}: RegisterRequiredParams) => {
   try {
-    const { data } = await userApi.post<RegisterResponse>("register", { email, password, passwordConfirm, name, nickname });
+    const { data } = await userApi.post<RegisterResponse>("/users", {
+      email,
+      password,
+      passwordConfirm,
+      name,
+      nickname,
+    });
     return data;
   } catch (err: any) {
-    throw new Error(err.message);
+    throw err.response;
   }
 };
 
 // 로그인
 export const loginUser = async ({ email, password }: User) => {
   try {
-    const { data } = await userApi.post<LoginResponse>("/login", { email, password });
+    const { data } = await userApi.post<LoginResponse>("/users/login", {
+      email,
+      password,
+    });
     return data;
   } catch (err: any) {
-    throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
+    throw err.response;
   }
 };
 
-// 나의 계정프로필 조회하기
+// 나의 계정프로필 조회
 export const getUserProfile = async () => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/informations/me`,
+      method: "get",
+      url: `${BASE_URL}/users/me`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
     });
     return data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response;
   }
 };
 
-
-// 나의 계정프로필 수정하기
-export const updateUserProfile = async ({ nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
+// 나의 계정프로필 수정
+export const updateUserProfile = async ({
+  userId,
+  nickname,
+  currentPassword,
+  password,
+  passwordConfirm,
+}: MyProfileEditParams) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const { data } = await axios({
-      method: 'put',
-      url: `${BASE_URL}/profile`,
+      method: "put",
+      url: `${BASE_URL}/users/${userId}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
       data: {
         nickname,
         currentPassword,
         password,
-        passwordConfirm
-      }
+        passwordConfirm,
+      },
     });
     return data;
   } catch (err: any) {
@@ -81,41 +102,108 @@ export const updateUserProfile = async ({ nickname, currentPassword, password, p
   }
 };
 
-
-export const updateUserImage = async ({ formData }: any) => {
+// 프로필이미지 수정
+export const updateUserImage = async ({ userId, formData }: any) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
 
-    const { data } = await axios.post(`${BASE_URL}/profile/image`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: 'Bearer ' + token
-      },
-    });
+    const { data } = await axios.post(
+      `${BASE_URL}/users/${userId}/profile/image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
     return data;
-
   } catch (err: any) {
     console.log(err);
     throw err;
   }
 };
 
-
-export const deleteUser = async () => {
+// 회원 탈퇴
+export const deleteUser = async ({ userId }: User) => {
   try {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     await axios({
-      method: 'delete',
-      url: `${BASE_URL}`,
+      method: "delete",
+      url: `${BASE_URL}/users/${userId}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ' + token
+        Authorization: "Bearer " + token,
       },
-    })
-    .then((res) => {
-      localStorage.removeItem("jwtToken");
+    }).then((res) => {
+      sessionStorage.removeItem("jwtToken");
     });
   } catch (err: any) {
     throw new Error(err);
+  }
+};
+
+export const getUserProfileById = async (
+  userId: string,
+  currentUserId: number | null
+) => {
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    if (currentUserId) {
+      const { data } = await axios<UserInfoResponse>({
+        method: "get",
+        url: `${BASE_URL}/users/${userId}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      return data;
+    } else {
+      const { data } = await axios<UserInfoResponse>({
+        method: "get",
+        url: `${BASE_URL}/users/${userId}/guest`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return data;
+    }
+  } catch (err: any) {
+    throw err.response;
+  }
+};
+
+export const followUser = async (userId: number) => {
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    const { data } = await axios<string>({
+      method: "post",
+      url: `${BASE_URL}/users/${userId}/follow`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (err: any) {
+    throw err.response;
+  }
+};
+
+export const deleteFollowUser = async (userId: number) => {
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    const { data } = await axios<string>({
+      method: "delete",
+      url: `${BASE_URL}/users/${userId}/follow`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (err: any) {
+    throw err.response;
   }
 };

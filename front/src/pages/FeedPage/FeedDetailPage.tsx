@@ -1,38 +1,33 @@
-import { useParams } from 'react-router-dom';
-import Comments from '../../components/Comment/Comments';
-import { Container, Container1200 } from '../../components/common/Containers';
-import FeedDetail from '../../components/feed/FeedDetail';
-
-interface IFeed {
-  feedId: number;
-  userId: number;
-  category: string;
-  tags: string;
-  imageUrls: string[];
-  description: string;
-}
-
-const test: IFeed = {
-  imageUrls: [
-    'https://post-phinf.pstatic.net/MjAyMDAyMjlfMjY4/MDAxNTgyOTU0Nzg3MjQ4.PBMFV4WrSJmeSUJ56c4C7Vkz_SsQlJ1SByKU18kkJh0g.T7mQnadCWVtEZ448AGk_9kG1HFBAzdztXZcBjvSbduwg.JPEG/%EA%B3%A0%EC%96%91%EC%9D%B4_%EB%82%98%EC%9D%B41.jpg?type=w1200',
-    'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-    'https://file.mk.co.kr/meet/neds/2021/06/image_readtop_2021_535745_16226846584668330.jpg',
-  ],
-  userId: 112233,
-  feedId: 1122,
-  category: 'tata,tata',
-  tags: 'tata,tata',
-  description: 'radsfdsafsdfsafasfsdafsdfdfdssagah',
-};
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { getFeed } from "../../api/feedApi";
+import Comments from "../../components/Comment/Comments";
+import { Container, Container1200 } from "../../components/common/Containers";
+import FeedDetail from "../../components/Feed/FeedDetail";
+import { FEED_DETAIL } from "../../constant/queryKeys";
 
 function FeedDetailPage() {
   const { id } = useParams();
+  const navigator = useNavigate();
+
+  const { isSuccess, data } = useQuery(
+    [FEED_DETAIL, id],
+    () => getFeed(parseInt(id!)),
+    {
+      refetchOnWindowFocus: false,
+      onError: () => navigator(-1),
+    }
+  );
+
+  if (!isSuccess) {
+    return <></>;
+  }
 
   return (
     <Container>
       <Container1200>
-        <FeedDetail {...test} />
-        <Comments />
+        <FeedDetail {...data} />
+        {<Comments comments={data.comments!} />}
       </Container1200>
     </Container>
   );

@@ -1,12 +1,7 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ROUTE } from "../../constant/route";
-import { useState } from "react";
-
-interface NavIndicatorProps {
-  posL: number,
-  posR: number
-}
+import { useEffect, useState } from "react";
 
 const NavWrap = styled.div`
   width: 100%;
@@ -39,12 +34,15 @@ const NavListWrap = styled.nav`
 
 const NavList = styled.ul`
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   height: 100%;
 `;
 
 const NavListLi = styled.li`
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
 
   & + & {
     margin-left: 20px;
@@ -53,35 +51,38 @@ const NavListLi = styled.li`
   a {
     display: block;
     padding: 10px;
-    color: ${({ theme }) => theme.colors.brown};
+    font-size: 16px;
 
     &:hover {
       font-weight: 500;
     }
-  }
-`;
 
-const NavIndicator = styled.div<NavIndicatorProps>`
-  position: absolute;
-  left: ${(props) => props.posL + "px"};
-  right: ${(props) => props.posR + "px"};
-  bottom: -1px;
-  height: 2px;
-  background: ${({ theme }) => theme.colors.lightBeige};
+    &:after {
+      display: none;
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 3em;
+      height: 2px;
+      background: ${({ theme }) => theme.colors.lightBeige};
+    }
+  }
+
+  a.activeNavLink {
+    &:after {
+      display: block;
+    }
+  }
+
 `;
 
 
 
 export default function NavBar() {
 
-  const [indicatorPosX, stIndicatorPosX] = useState<number[]>([0, 300]);
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    const posL = e.currentTarget.offsetLeft;
-    const posR = 300 - (e.currentTarget.offsetLeft + e.currentTarget.offsetWidth);
-    return stIndicatorPosX([posL, posR]);
-  }
-  
   return (
     <NavWrap>
       <MenuButton>
@@ -92,30 +93,28 @@ export default function NavBar() {
       <NavListWrap>
         <NavList>
           <NavListLi>
-            <Link 
-              to={ROUTE.ABOUT.link}
-              onClick={handleClick}
+            <NavLink 
+              to={ROUTE.LANDING.link}
               >다시, 다?
-            </Link>
+            </NavLink>
           </NavListLi>
           <NavListLi>
-            <Link
+            <NavLink
               to={ ROUTE.FEED_LIST.link }
-              onClick={handleClick}
+              className={({ isActive }) => isActive ? "activeNavLink" : undefined}
             >
               피드
-            </Link>
+            </NavLink>
           </NavListLi>
           <NavListLi>
-            <Link
+            <NavLink
               to={ ROUTE.CAMPAGIN_LIST.link }
-              onClick={handleClick}
+              className={({ isActive }) => isActive ? "activeNavLink" : undefined}
             >
               캠페인
-            </Link>
+            </NavLink>
           </NavListLi>
         </NavList>
-        <NavIndicator posL={indicatorPosX[0]} posR={indicatorPosX[1]}/>
       </NavListWrap>
     </NavWrap>
   );

@@ -3,20 +3,8 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { userRouter } from "./routers/userRouter";
 import { feedRouter } from "./routers/feedRouter";
 import { campaignRouter } from "./routers/campaignRouter";
+import { imageRouter } from "./routers/imageRouter";
 import cors from "cors";
-const mysql = require("mysql2");
-
-const connection = mysql.createConnection({
-  host: "34.64.61.16",
-  user: "testuser",
-  password: "test",
-  database: "TESTDB",
-});
-
-connection.connect((error) => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
 
 const app = express();
 
@@ -32,7 +20,8 @@ app.get("/", function (req, res) {
 app.use("/users", userRouter);
 app.use("/feeds", feedRouter);
 app.use("/campaigns", campaignRouter);
+app.use("/images", imageRouter);
 
 app.use(errorMiddleware);
 
-export { app, connection };
+export { app };

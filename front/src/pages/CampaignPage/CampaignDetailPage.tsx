@@ -1,23 +1,37 @@
-import CampaignDetail from '../../components/CampaignItems/CampaignDetail';
-import CampaignItem from '../../components/CampaignItems/CampaignItem';
-import { Container } from '../../components/common/Containers';
-import { Container1300Ver2 } from './CampaignPage';
-import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { campaignDumData } from '../../atoms/atoms';
-import { useState } from 'react';
+import CampaignDetail from "../../components/CampaignItems/CampaignDetail";
+import { Container } from "../../components/common/Containers";
+import { CampaingContainer } from "./CampaignPage";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCampaignItem } from "../../api/campaignApi";
+import { GET_DETAILCAMPAIGN } from "../../constant/queryKeys";
+import { loggedInUserId } from "../../atoms/atoms";
+import styled from "styled-components";
+
+const CampaignDetailRoot = styled(Container)`
+  min-height: calc(100vh - 50px);
+
+  ${CampaingContainer} {
+    padding: 0;
+  }
+`
 
 export default function CampaignDetailPage() {
-  const dum = useRecoilValue(campaignDumData);
   const { id } = useParams();
-  const [currentData, setCurrentData] = useState(
-    dum.find((x) => x.id === Number(id)),
+  const isLogin = useRecoilValue(loggedInUserId);
+  const { status, data, error } = useQuery(
+    [GET_DETAILCAMPAIGN, id],
+    () => getCampaignItem(Number(id!), isLogin),
+    { cacheTime: 5 }
   );
+
   return (
-    <Container>
-      <Container1300Ver2>
-        <CampaignDetail {...currentData} />
-      </Container1300Ver2>
-    </Container>
+    <CampaignDetailRoot>
+      <CampaingContainer>
+        {data && <CampaignDetail {...data!} />}
+      </CampaingContainer>
+    </CampaignDetailRoot>
   );
 }

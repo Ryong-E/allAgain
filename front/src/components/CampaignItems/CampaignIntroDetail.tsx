@@ -6,6 +6,8 @@ const IntroBox = styled.div`
   background:${({theme}) => theme.colors.white};
   box-shadow: ${({theme})=> theme.boxShadowDefault};
   border: 1px solid rgba(231,225,210,.8);
+  border-radius: 20px;
+
   .introTitle{
     font-weight:600;
     font-size:20px;
@@ -27,9 +29,11 @@ export default function CampaignIntroDetail({desc} : IntroDetail) {
         캠페인 소개
       </div>
       <div className="introDescDetail">
-        {desc.split('\n').map((ele,idx) => (
-          <p key={ele + idx}>{ele}</p>
-        ))}
+        {desc.includes('\n') ? desc.split('\n').map((ele,idx) => (
+          <p key={ele + idx + Date.now()}>{ele}</p>
+        )):
+        <p>{desc} </p>
+      }
       </div>
     </IntroBox>
   )

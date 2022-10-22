@@ -1,17 +1,7 @@
-import { body, check, validationResult, param } from "express-validator";
+import { body, check, param } from "express-validator";
+import { validate } from "./commonValidator";
 
-const validate = (req, res, next) => {
-  const errors = validationResult(req);
-
-  if (errors.isEmpty()) {
-    return next();
-  }
-
-  const error = new Error(errors.errors[0].msg);
-  return next(error);
-};
-
-exports.campaignCreateValidator = () => {
+const campaignCreateValidator = () => {
   return [
     body("title").notEmpty().withMessage("제목이 없습니다."),
     body("content").notEmpty().withMessage("내용이 없습니다."),
@@ -69,7 +59,7 @@ exports.campaignCreateValidator = () => {
   ];
 };
 
-exports.getCampaignValidator = () => {
+const getCampaignValidator = () => {
   return [
     param("campaignId")
       .notEmpty()
@@ -78,16 +68,16 @@ exports.getCampaignValidator = () => {
   ];
 };
 
-exports.deleteCampaignValidator = () => {
+const deleteCampaignValidator = () => {
   return [
-    body("campaignId")
+    param("campaignId")
       .notEmpty()
       .withMessage("삭제하려는 캠페인 아이디가 없습니다."),
     validate,
   ];
 };
 
-exports.updateCampaignValidator = () => {
+const updateCampaignValidator = () => {
   return [
     body("title").notEmpty().withMessage("제목이 없습니다."),
     body("content").notEmpty().withMessage("내용이 없습니다."),
@@ -135,14 +125,14 @@ exports.updateCampaignValidator = () => {
         return true;
       }),
     body("introduce").notEmpty().withMessage("소개글이 없습니다."),
-    body("campaignId")
+    param("campaignId")
       .notEmpty()
       .withMessage("수정하려는 캠페인 아이디가 없습니다."),
     validate,
   ];
 };
 
-exports.campaignImageCreateValidator = () => {
+const campaignImageCreateValidator = () => {
   return [
     check().custom((value, { req }) => {
       if (!req.file?.path) {
@@ -152,4 +142,46 @@ exports.campaignImageCreateValidator = () => {
     }),
     validate,
   ];
+};
+
+const campaignIdCheckValidator = () => {
+  return [
+    param("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
+    validate,
+  ];
+};
+
+const createCommentValidator = () => {
+  return [
+    body("content").notEmpty().withMessage("내용이 없습니다."),
+    body("campaignId").notEmpty().withMessage("캠페인 아이디가 없습니다."),
+    validate,
+  ];
+};
+
+const putCommentValidator = () => {
+  return [
+    param("commentId").notEmpty().withMessage("댓글 아이디가 없습니다."),
+    body("content").notEmpty().withMessage("내용이 없습니다."),
+    validate,
+  ];
+};
+
+const deleteCommentValidator = () => {
+  return [
+    param("commentId").notEmpty().withMessage("댓글 아이디가 없습니다."),
+    validate,
+  ];
+};
+
+export {
+  campaignCreateValidator,
+  getCampaignValidator,
+  updateCampaignValidator,
+  deleteCampaignValidator,
+  campaignImageCreateValidator,
+  campaignIdCheckValidator,
+  createCommentValidator,
+  putCommentValidator,
+  deleteCommentValidator,
 };

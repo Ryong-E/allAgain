@@ -4,34 +4,30 @@ import {
   userRegisterValidator,
   userLoginValidator,
   userProfileUpdateVaildator,
-  getUserValidator,
   userProfilePostVaildator,
+  userDeleteValidator,
 } from "../middlewares/userValidator";
 import { loginRequired } from "../middlewares/loginRequired";
 import { uploadStrategy } from "../middlewares/imageUploadMiddleware";
 
 const userRouter = Router();
 
-userRouter.post(
-  "/register",
-  userRegisterValidator(),
-  async (req, res, next) => {
-    try {
-      const { email, password, name, nickname } = req.body;
-      // DB에 저장
-      const register = await userService.register({
-        email,
-        password,
-        name,
-        nickname,
-      });
+userRouter.post("/", userRegisterValidator(), async (req, res, next) => {
+  try {
+    const { email, password, name, nickname } = req.body;
+    // DB에 저장
+    const register = await userService.postUser({
+      email,
+      password,
+      name,
+      nickname,
+    });
 
-      res.status(201).json(register);
-    } catch (error) {
-      next(error);
-    }
+    res.status(201).json(register);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 userRouter.post("/login", userLoginValidator(), async (req, res, next) => {
   try {
@@ -45,16 +41,18 @@ userRouter.post("/login", userLoginValidator(), async (req, res, next) => {
 });
 
 userRouter.put(
-  "/profile",
+  "/:userId",
   loginRequired,
   userProfileUpdateVaildator(),
   async (req, res, next) => {
     try {
-      const currentUserId = req.currentUserId;
+      const { currentUserId } = req;
       const { nickname, currentPassword, password } = req.body;
+      const { userId } = req.params;
 
       const updatedUser = await userService.updateProfile({
-        userId: currentUserId,
+        userId,
+        currentUserId,
         currentPassword,
         password,
         nickname,
@@ -68,18 +66,20 @@ userRouter.put(
 );
 
 userRouter.post(
-  "/profile/image",
+  "/:userId/profile/image",
   loginRequired,
   uploadStrategy("profiles").single("image"),
   userProfilePostVaildator(),
   async function (req, res, next) {
     try {
-      const { path } = req.file;
-      const currentUserId = req.currentUserId;
+      const { filename } = req.file;
+      const { currentUserId } = req;
+      const { userId } = req.params;
 
       const updatedUser = await userService.updateProfileImage({
-        imagePath: path,
-        userId: currentUserId,
+        filename,
+        currentUserId,
+        userId,
       });
 
       res.status(201).json(updatedUser);
@@ -89,39 +89,85 @@ userRouter.post(
   }
 );
 
-userRouter.delete("/", loginRequired, async (req, res, next) => {
-  try {
-    const currentUserId = req.currentUserId;
-    await userService.withdrawal({ userId: currentUserId });
-
-    res.status(204).json("ok");
-  } catch (error) {
-    next(error);
-  }
-});
-
-userRouter.get(
-  "/informations/others/:nickname",
+userRouter.delete(
+  "/:userId",
   loginRequired,
-  getUserValidator(),
+  userDeleteValidator(),
   async (req, res, next) => {
     try {
-      const { nickname } = req.params;
-      const targetUser = await userService.getUserInfo({ nickname });
+      const { currentUserId } = req;
+      const { userId } = req.params;
 
-      res.status(200).json(targetUser);
+      await userService.deleteUser({ userId, currentUserId });
+
+      res.status(204).json("ok");
     } catch (error) {
       next(error);
     }
   }
 );
 
-userRouter.get("/informations/me", loginRequired, async (req, res, next) => {
+userRouter.get("/me", loginRequired, async (req, res, next) => {
   try {
-    const currentUserId = req.currentUserId;
-    const userInfo = await userService.getMyInfo({ userId: currentUserId });
+    const { currentUserId } = req;
+    const userInfo = await userService.getMyInfo({ currentUserId });
 
     res.status(200).json(userInfo);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+    const targetUser = await userService.getUserInfo({ userId, currentUserId });
+
+    res.status(200).json(targetUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/:userId/guest", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const targetUser = await userService.getUserInfoForGuest({ userId });
+
+    res.status(200).json(targetUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.post("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const createdfollow = await userService.postFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(201).json(createdfollow);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.delete("/:userId/follow", loginRequired, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentUserId } = req;
+
+    const deletedfollow = await userService.deleteFollowee({
+      currentUserId,
+      targetUserId: userId,
+    });
+
+    res.status(204).json(deletedfollow);
   } catch (error) {
     next(error);
   }

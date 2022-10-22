@@ -2,7 +2,7 @@ import * as StyledProfile from "./Profile.style";
 import { getUserProfile, updateUserProfile } from '../../api/userApi';
 import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
-import { MyProfile, MyProfileEditParams } from "../../api/types"
+import { MyProfile, MyProfileEditParams } from "../../types/userTypes"
 import { useForm } from "react-hook-form";
 import { InputErrorMsg } from "../common/Form";
 import ProfileFormLoading from "./ProfileFormLoading";
@@ -10,18 +10,25 @@ import {
   GET_PROFILE,
   UPDATE_PROFILE
 } from "../../constant/queryKeys"
+import { useRecoilValue } from "recoil";
+import { loggedInUserId } from "../../atoms/atoms";
 
 type Inputs = {
   nickname: string,
   currentPassword: string,
   password: string,
   passwordConfirm: string,
-  UpdateError: string,
 };
 
 
 export default function ProfileForm() {
-  // const myProfileInfo = useRecoilState(myProfileState);
+  const loginUserId = useRecoilValue(loggedInUserId);
+  const [userId, setUserId] = useState(loginUserId);
+
+  useEffect(() => {
+    setUserId(userId);
+  }, [userId]);
+
 
   const { 
     data, 
@@ -32,6 +39,9 @@ export default function ProfileForm() {
   } = useQuery<MyProfile, Error>([GET_PROFILE], getUserProfile, {
       // staleTime: 5 * 1000,  // 5초간 fresh상태 유지 후 stale됨
       refetchOnWindowFocus: true, // window에 포커스되면 refetch됨,
+      onError: (error) => {
+        console.log(error);
+      },
       onSuccess: (data) => {
         setNickInput(data.nickname);
         setValue("nickname", data.nickname);
@@ -71,15 +81,14 @@ export default function ProfileForm() {
   const queryClient = useQueryClient();
 
   const updateProfileMutation = useMutation([UPDATE_PROFILE], updateUserProfile, {
-    onMutate: variable => {
-      console.log("onMutate", variable);
-    },
     onError: (error: any, variable, context) => {
-      // console.log(error);
-      setError("UpdateError", {message: error.data.errorMessage});
+      if(error.data.errorMessage === "이미 존재하는 닉네임입니다.") {
+        setError("nickname", {message: "다른 닉네임을 사용해주세요."});
+      }
     },
     onSuccess: (data: any, variables, context) => {
-      console.log("success", data, variables, context);
+      console.log("success", data);
+      alert("프로필 정보가 수정되었습니다.");
       queryClient.invalidateQueries([GET_PROFILE]);
       setValue("currentPassword", "");
       setValue("password", "");
@@ -91,18 +100,20 @@ export default function ProfileForm() {
   // 프로필 수정 submit 시
   const handleProfileSubmit = ({ nickname, currentPassword, password, passwordConfirm }: MyProfileEditParams) => {
     console.log("리액트훅폼", nickname, currentPassword, password, passwordConfirm);
-    clearErrors("UpdateError");
 
     // 현재 비밀번호값을 입력했으면 새 비밀번호도 입력 필요
-    if((getValues("currentPassword") !== "") && (getValues("password") == "")) {
-      return setError("UpdateError", {message: "새 비밀번호를 입력하세요"});
+    if((getValues("currentPassword") !== "") && (getValues("password") === "")) {
+      return setError("password", {message: "새 비밀번호를 입력하세요"});
     }
 
     // 비밀번호 변경 시 현재 비밀번호 필수로 입력
     else if((getValues("password") !== "") && (getValues("currentPassword") === "")) {
-      return setError("UpdateError", {message: "현재 비밀번호를 입력하세요"});
+      return setError("currentPassword", {message: "현재 비밀번호를 입력하세요"});
     }
-    updateProfileMutation.mutate({ nickname, currentPassword, password, passwordConfirm });
+    else if((getValues('currentPassword') !== "") && (getValues('currentPassword') === getValues('password'))){
+      return setError('password',{message:"현재 비밀번호와 변경될 비밀번호가 같습니다"});
+    }
+    updateProfileMutation.mutate({ userId, nickname, currentPassword, password, passwordConfirm });
   }
 
   return (
@@ -156,7 +167,6 @@ export default function ProfileForm() {
                     {errors.currentPassword && <InputErrorMsg>{errors.currentPassword.message}</InputErrorMsg>}
                     {errors.password && <InputErrorMsg>{errors.password.message}</InputErrorMsg>}
                     {!errors.password && errors.passwordConfirm && <InputErrorMsg>{errors.passwordConfirm.message}</InputErrorMsg>}
-                    {!errors.passwordConfirm && errors.UpdateError && <InputErrorMsg>{errors.UpdateError.message}</InputErrorMsg>}
                   </StyledProfile.PwChangeBlock>
                 </li>
               </StyledProfile.InfoList>
