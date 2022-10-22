@@ -6,7 +6,7 @@
 
 `cd ~/team02/back`  
 `npm install`<br>
-`npm run start`<br>
+`npm start`<br>
 <br>
 
 ### 2. 사용 기술<br>
@@ -36,19 +36,3 @@
 - API 문서 링크: [API 문서](https://documenter.getpostman.com/view/22452329/2s83zjtPNY)
   <br><br>
 
-### 5. 폴더 구조
-
-🖥 back  
-├─ 📁node_modules  
-└─ 📁src  
-  ├─ 📁db  
-    ├─ 📁model  
-  ├─ 📁images  
-    ├─ 📁campaignImages  
-    ├─ 📁campaignThumbnail  
-    ├─ 📁feeds  
-    └─ 📁profiles  
-  ├─ 📁middlewares  
-  ├─ 📁routers  
-  ├─ 📁services  
-  └─ 📁utils
