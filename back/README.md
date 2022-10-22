@@ -28,7 +28,7 @@
 
 ### 3. ERD<br>
 
-- DB구조 링크: [ERD](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1#G1_W7HI96DsrTseSDR_KjYSBkSQ4n_3Mkv)
+- DB구조 링크: [ERD](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=%EB%8B%A4%EC%8B%9C%2C%20%EB%8B%A4%20ERD.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1_W7HI96DsrTseSDR_KjYSBkSQ4n_3Mkv%26export%3Ddownload)
   <br>
 
 ### 4. API<br>
