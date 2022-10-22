@@ -185,6 +185,25 @@
    ├─ 📁types
    └─ 📁utils
 ```
+
+```
+🖥 back
+├─ 📁node_modules
+└─ 📁src
+   ├─ 📁constants
+   ├─ 📁db
+   │  └─ 📁models
+   ├─ 📁images
+   │  ├─ 📁campaignImages
+   │  ├─ 📁campaignThumbnail
+   │  ├─ 📁feeds
+   │  └─ 📁profiles
+   ├─ 📁middlewares
+   ├─ 📁routers
+   ├─ 📁services
+   └─ 📁utils
+```
+
 <br/>
 <br/>
 
