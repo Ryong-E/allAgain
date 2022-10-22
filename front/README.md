@@ -42,3 +42,10 @@ props를 활용하여 조건부 스타일링이 가능하다
 >쉽게 배울 수 있고 리액트스럽게 사용가능하여 hook을 사용해봤다면 익숙하게 사용할 수 있습니다<br/>
 selector를 이용해 복잡한 연산도 간단하게 할 수 있습니다<br/>
 
+
+# 실행방법
+``` bash
+    cd front
+    npm install 
+    npm start
+```
