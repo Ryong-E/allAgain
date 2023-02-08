@@ -1,6 +1,7 @@
 <h1 style="font-family:SANGJUGyeongcheonIsland;font-size: 50px;color:#000">"다시, 다"</h1>
-
+<img width="300" alt="Screen Shot 2023-02-08 at 22 46 22" src="https://user-images.githubusercontent.com/96985256/217547523-b65a871b-8af2-4405-af63-46e94297bb2e.png">
 # 목차
+
 1. [소개](#📋소개)
 
 2. [기획서](#📜기획서)
